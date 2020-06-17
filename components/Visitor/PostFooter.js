@@ -54,7 +54,7 @@ export default ({ likes, caption }) => {
           <Feather name="message-circle" size={24} style={styles.icon} />
           <Feather name="send" size={24} style={styles.icon} />
         </View>
-        <Icon name="bookmark" size={24} />
+        <Feather name="bookmark" size={24} />
       </View>
       <Text style={styles.caption}>{caption}</Text>
       <Text style={styles.likes}>{`${likes} likes`}</Text>

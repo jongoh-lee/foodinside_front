@@ -14,7 +14,7 @@ const authLink = setContext(async (_, { headers }) => {
 });
 
 const link = new HttpLink({
-  uri: "http://b0d390bfcd7a.ngrok.io"
+  uri: "http://172.30.1.2:4000/"
 });
 
 const options = {

@@ -151,7 +151,6 @@ export default ({style}) => {
 const styles = StyleSheet.create({
   drawerContainer: {
     flex:1,
-    flexDirection:'column'
   },
   case1:{
     flex:1,

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
-import { Entypo as Icon } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
 import constants from "../../constants";
 
 
@@ -63,9 +63,9 @@ export default ({listing}) => {
     <View style={styles.container}>
       <Text style={styles.title}>{listing.title}</Text>
       <View style={styles.details}>
-        <Icon name="star" color="rgb(255, 56, 92)" size={18} />
+        <Entypo name="star" color="rgb(255, 56, 92)" size={18} />
         <Text style={styles.detailText}>4.93 (891)</Text>
-        <Icon name="medal" color="rgb(255, 56, 92)" size={18} />
+        <Entypo name="medal" color="rgb(255, 56, 92)" size={18} />
         <Text style={styles.detailText}>4.93 (891)</Text>
       </View>
       <View>

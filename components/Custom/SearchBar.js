@@ -1,7 +1,7 @@
 import { TouchableOpacity } from "react-native-gesture-handler";
 import * as React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { Feather as Icon } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import constants from "../../constants";
 
 const styles = StyleSheet.create({
@@ -66,7 +66,7 @@ export default () => {
 
         <TouchableOpacity style={styles.search}>
           <Text style={styles.placeHolder}>검색</Text>
-          <Icon name="search" size={24} style={styles.icon} />
+          <Feather name="search" size={24} style={styles.icon} />
         </TouchableOpacity>
 
         {/* <View style={styles.chips}>

@@ -25,7 +25,7 @@ import {
   useValues,
 } from "react-native-redash";
 import { useMemoOne } from "use-memo-one";
-import { Feather as Icon } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
 import ShopDescription from "../../components/Franchise/ShopDescription";
 
@@ -115,7 +115,7 @@ export default ({ route }) => {
               source={listing.picture[0]}
               />
             <View style={styles.thumbnailOverlay}>
-              <Icon.Button
+              <Feather.Button
                 name="x"
                 backgroundColor="transparent"
                 underlayColor="transparent"

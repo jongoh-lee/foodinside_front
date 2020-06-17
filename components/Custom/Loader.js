@@ -12,6 +12,6 @@ const styles = StyleSheet.create({
 
 export default () => (
   <View style={styles.constainer}>
-    <ActivityIndicator color={theme.blackColor} />
+    <ActivityIndicator color="#666"/>
   </View>
 );

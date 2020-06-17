@@ -4,7 +4,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { View } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import {Feather, MaterialIcons} from '@expo/vector-icons';
+import {Feather, MaterialIcons, MaterialCommunityIcons} from '@expo/vector-icons';
 
 // screens
 import SearchShop from '../screens/Franchise/SearchShop';
@@ -37,7 +37,7 @@ function SearchStackScreen({navigation}) {
   //   });
   // }, [navigation]);
   return (
-    <SearchStack.Navigator screenOptions={{cardStyle:{backgroundColor:'#ffffff'}}}>
+    <SearchStack.Navigator screenOptions={{headerShown:true, cardStyle:{backgroundColor:'#ffffff'}}}>
         <SearchStack.Screen name="Home" component={SearchShop} options={{
             headerTitle:() => <Logo nav={'공유 음식점'}/>,
             headerRight: () => <FranchiseButton />,
@@ -71,7 +71,7 @@ const ChatStack = createStackNavigator();
 
 function ChatStackScreen() {
     return (
-    <ChatStack.Navigator screenOptions={{cardStyle:{backgroundColor:'#ffffff'}, headerTitleStyle:{fontSize:20, fontWeight:'bold'}}}>
+    <ChatStack.Navigator screenOptions={{cardStyle:{backgroundColor:'#ffffff'}, headerTitleStyle:{fontSize:20, fontWeight:'bold'}, headerShown:true}}>
       <ChatStack.Screen name="채팅" component={ChatTabScreen} />
     </ChatStack.Navigator>
   );
@@ -81,7 +81,7 @@ const FavoriteStack = createStackNavigator();
 
 function FavoriteStackScreen() {
     return (
-    <FavoriteStack.Navigator screenOptions={{cardStyle:{backgroundColor:'#ffffff'}, headerTitleStyle:{fontSize:20, fontWeight:'bold'}}}>
+    <FavoriteStack.Navigator screenOptions={{cardStyle:{backgroundColor:'#ffffff'}, headerTitleStyle:{fontSize:20, fontWeight:'bold'}, headerShown:true}}>
       <FavoriteStack.Screen name="즐겨찾기" component={Favorite} />
     </FavoriteStack.Navigator>
   );
@@ -93,7 +93,7 @@ function ProfileStackScreen() {
   const [lisensed, setLisensed] = React.useState(false);
     return (
     <ProfileStack.Navigator 
-    initialRouteName={lisensed? "승인" : "미승인"}>
+    initialRouteName={lisensed? "승인" : "미승인"} screenOptions={{ headerTitleStyle:{fontSize:20, fontWeight:'bold'}, headerShown:true}}>
       <ProfileStack.Screen name="승인" component={ProfileSample} options={{
         headerTitleAlign:"left",
         headerRight:() => <Feather name="more-vertical" size={24} />
@@ -149,7 +149,7 @@ export default () => {
   return (
     <FranchiseStack.Navigator screenOptions={{headerShown:false}} >
       <FranchiseStack.Screen name='Tabs' component={TabsScreen}/>
-      <FranchiseStack.Screen name='ShopDetail' component={ShopDetail} options={{headerShown:false, cardStyle:{backgroundColor:'transparent'}}}/>
+      <FranchiseStack.Screen name='ShopDetail' component={ShopDetail} options={{cardStyle:{backgroundColor:'transparent'}}}/>
       <FranchiseStack.Screen name='채팅 내용' component={Chat} options={
         ({route}) => ({
         headerShown:true,

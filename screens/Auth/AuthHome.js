@@ -22,6 +22,7 @@ export default ({ navigation }) => {
     try {
       setLoading(true);
       const { data: { requestSecret } } = await requestSecretMutation();
+      console.log(requestSecret)
       if(requestSecret) {
         navigation.navigate("Confirm", { email: value });
         return;

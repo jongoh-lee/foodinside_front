@@ -3,7 +3,7 @@ import * as React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Image, View} from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Feather, FontAwesome5} from '@expo/vector-icons';
+import { FontAwesome5} from '@expo/vector-icons';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 //screens
@@ -12,10 +12,15 @@ import Feed from '../screens/Visitor/Feed';
 import Map from '../screens/Visitor/Map';
 import User from '../screens/Visitor/User';
 import Around from '../screens/Visitor/Around';
+import Location from '../screens/Visitor/Location';
+import Search from '../screens/Visitor/Search';
 
 //button
 import NavIcon from '../components/Custom/NavIcon';
 import Logo from '../components/Custom/Logo';
+import LocationButton from '../components/Visitor/LocationButton';
+import SearchButton from '../components/Visitor/SearchButton';
+
     
 const FeedStack = createStackNavigator();
 
@@ -31,17 +36,20 @@ function FeedStackScreen({navigation}) {
   //   });
   // }, [navigation]);
   return (
-    <FeedStack.Navigator screenOptions={{cardStyle:{backgroundColor:'#ffffff'}}}>
+    <FeedStack.Navigator >
         <FeedStack.Screen name="Home" component={Feed} options={{
+            headerShown:true,
             headerTitle:()=> <Logo nav={'피드'}/>,
             headerTitleAlign:'center',
             headerLeft:()=>(
-              <Feather name={'map-pin'} size={25} style={{marginLeft:10}}/>
+              <LocationButton/>
             ),
             headerRight:() => (
-              <Feather name={'search'} size={25} style={{marginRight:10}}/>
+              <SearchButton/>
             )
         }} />
+        <FeedStack.Screen name="Location" component={Location} />
+        <FeedStack.Screen name="Search" component={Search} />
     </FeedStack.Navigator>
     );
 }
@@ -50,8 +58,8 @@ const MapStack = createStackNavigator();
 
 function MapStackScreen() {
     return (
-    <MapStack.Navigator screenOptions={{cardStyle:{backgroundColor:'#ffffff'}, headerTitleStyle:{fontSize:20, fontWeight:'bold'}}}>
-      <MapStack.Screen name="지도" component={Map} />
+    <MapStack.Navigator screenOptions={{ cardStyle:{backgroundColor:'#ffffff'}, headerTitleStyle:{fontSize:20, fontWeight:'bold'}}}>
+      <MapStack.Screen name="지도" component={Map} options={{headerShown:true}}/>
     </MapStack.Navigator>
   );
 }
@@ -61,7 +69,7 @@ const FavoriteTabStack = createMaterialTopTabNavigator();
 
 function favoriteTabScreen(){
   return (
-    <FavoriteTabStack.Navigator 
+    <FavoriteTabStack.Navigator
       tabBarOptions={{
       indicatorStyle:{ backgroundColor: 'transparent'}, 
       style:{ 
@@ -71,7 +79,7 @@ function favoriteTabScreen(){
         borderColor:'transparent'
       }, 
       labelStyle:{fontSize:14, fontWeight:"bold"}}}>
-      <FavoriteTabStack.Screen name='단골' component={Dangol}/>
+      <FavoriteTabStack.Screen name='단골' component={Dangol} />
       <FavoriteTabStack.Screen name='주변 음식점' component={Around}/>
     </FavoriteTabStack.Navigator>
   )
@@ -81,7 +89,7 @@ const FavoriteStack = createStackNavigator();
 
 function FavoriteStackScreen() {
     return (
-    <FavoriteStack.Navigator screenOptions={{cardStyle:{backgroundColor:'#ffffff'}, headerTitleStyle:{fontSize:20, fontWeight:'bold'}}}>
+    <FavoriteStack.Navigator screenOptions={{headerShown:true, headerTitleStyle:{fontSize:20, fontWeight:'bold'}}}>
       <FavoriteStack.Screen name="즐겨찾기" component={favoriteTabScreen} />
     </FavoriteStack.Navigator>
   );
@@ -106,7 +114,6 @@ function TabScreen() {
         tabBarOptions={{
           showLabel: false,
           keyboardHidesTabBar:true,
-          
         }}
         >
           <Tabs.Screen name='피드' component={FeedStackScreen} options={{tabBarIcon: ({ focused, color }) => (
@@ -133,7 +140,7 @@ const VisitorStack = createStackNavigator();
 
 export default () => {
   return (
-    <VisitorStack.Navigator screenOptions={{headerShown:false}}>
+    <VisitorStack.Navigator >
       <VisitorStack.Screen name='Tabs' component={TabScreen}/>
     </VisitorStack.Navigator>
   )
