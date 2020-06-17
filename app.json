@@ -11,7 +11,7 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/logoMain.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -23,6 +23,12 @@
     ],
     "ios": {
       "supportsTablet": true
+    },
+    "android": { 
+      "package": "com.foodinside.rn_prac", 
+      "config": { 
+        "googleMaps": { "apiKey": "AIzaSyB77l5gKZERH5nDSvT5PboXLkl_uJbVcUQ" } 
+      } 
     }
   }
 }
