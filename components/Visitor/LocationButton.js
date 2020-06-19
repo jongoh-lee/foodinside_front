@@ -6,7 +6,7 @@ import { Feather } from '@expo/vector-icons';
 export default () => {
     const navigation = useNavigation();
     return (
-        <TouchableWithoutFeedback onPress={navigation.navigate("Location")}>
+        <TouchableWithoutFeedback onPress={() => navigation.navigate("Location")}>
             <Feather name={'map-pin'} size={25} style={{marginLeft:10}}/>        
         </TouchableWithoutFeedback>
     )

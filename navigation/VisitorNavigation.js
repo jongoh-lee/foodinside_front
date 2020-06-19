@@ -3,7 +3,7 @@ import * as React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Image, View} from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { FontAwesome5} from '@expo/vector-icons';
+import { FontAwesome5, Feather} from '@expo/vector-icons';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 //screens
@@ -99,8 +99,10 @@ const UserStack = createStackNavigator();
 
 function UserStackScreen() {
     return (
-    <UserStack.Navigator screenOptions={{cardStyle:{backgroundColor:'#ffffff'}, headerTitleStyle:{fontSize:20, fontWeight:'bold'}}}>
-      <UserStack.Screen name="아이디" component={User} />  
+    <UserStack.Navigator screenOptions={{headerShown:true, headerTitleStyle:{fontSize:20, fontWeight:'bold'}}}>
+      <UserStack.Screen name="아이디" component={User} options={{
+        headerRight:() => <Feather name="more-vertical" size={24} />
+      }}/>  
     </UserStack.Navigator>
   );
 }

@@ -4,6 +4,7 @@ import { TextInput, ScrollView } from "react-native-gesture-handler";
 import constants from "../../constants";
 import SubButton from "../../components/Custom/SubButton";
 import { AntDesign } from '@expo/vector-icons'; 
+import FindPhotoButton from "../../components/Custom/FindPhotoButton";
 
 const styles = StyleSheet.create({
   container:{
@@ -14,22 +15,6 @@ const styles = StyleSheet.create({
   imageBox:{
     flexDirection:"row",
     justifyContent:"space-between",
-  },
-  imageInput:{
-    width:constants.width * 0.25,
-    height:constants.width * 0.25,
-    backgroundColor:'white', 
-    borderRadius:20,
-    margin:5,
-    justifyContent:'center',
-    alignItems:'center',
-    shadowOffset: {
-      width: 1,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 3,
   },
   textContainer:{
     marginTop:20,
@@ -74,17 +59,11 @@ export default () => {
         <Text style={styles.warning}>가게 사진을 보여주세요, 선정 결과는 이메일/문자로 알려드립니다</Text> 
     
       <View style={styles.imageBox}>
-        <View style={styles.imageInput}>
-          <AntDesign name="plus" size={30} color="black" />
-        </View>
+        <FindPhotoButton />
 
-        <View style={styles.imageInput}>
-          <AntDesign name="plus" size={30} color="black" />
-        </View>
+        <FindPhotoButton />
 
-        <View style={styles.imageInput}>
-          <AntDesign name="plus" size={30} color="black" />
-        </View>
+        <FindPhotoButton />
       </View>
 
       <View style={styles.imageBox}>
@@ -110,9 +89,7 @@ export default () => {
       <Text style={styles.warning}>영업 사실확인 용도로만 사용됩니다</Text> 
       
       <View style={{flexDirection:"row"}}>
-        <View style={styles.imageInput}>
-            <AntDesign name="plus" size={30} color="black" />
-        </View>
+        <FindPhotoButton />
 
         <Text style={styles.text}>업종: 일반/ 휴게</Text> 
       </View>

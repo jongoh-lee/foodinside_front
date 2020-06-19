@@ -24,7 +24,7 @@ export default () => {
       <ScrollView
         pinchGestureEnabled={false}
         showsVerticalScrollIndicator={false} >
-        {posts.map((post) => (<Post key={post.id} {...{ post }} />))}
+        {posts.map((post) => (<Post key={post.id} { ...{post}} />))}
         <Card {...{shopProfile}}/>
         <Card5 {...{shopProfile}}/>
         <Card4 {...{shopProfile}}/>

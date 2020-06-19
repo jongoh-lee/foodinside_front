@@ -50,10 +50,10 @@ const DrawerContent = props => {
             resizeMode="center"
             style={{width:130, height:40, resizeMode:"contain",marginLeft:-4, marginBottom:10}}
           />
-          <Text white title>
+          <Text style={{color:"white", fontSize:16}}>
             푸드 인사이드
           </Text>
-          <Text white size={15} style={{marginBottom:20}} >
+          <Text style={{color:"white", marginBottom:20}} >
             www.foodinside.net
           </Text>
         </View>

@@ -2,7 +2,7 @@ import * as React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { Text, View } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import {Feather} from '@expo/vector-icons';
+import {Feather, MaterialCommunityIcons} from '@expo/vector-icons';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 //screens
@@ -18,6 +18,8 @@ import Earnings from '../screens/Owner/Earnings';
 import NavIcon from '../components/Custom/NavIcon';
 import {MaterialIcons} from '@expo/vector-icons'
 import Reservations from '../screens/Owner/Reservations';
+import SelectPhoto from '../components/SelectPhoto';
+import BackArrow from '../components/Custom/BackArrow';
 
 const ChatStack = createStackNavigator();
 
@@ -127,6 +129,11 @@ export default () => {
         headerShown:true,
         title: route.params.chat.user})
       }/>
+      <OwnerStack.Screen name='SelectPhoto' component={SelectPhoto} options={{
+        headerShown:true,
+        headerTitle:"최근 항목",
+        headerTitleAlign:"center",
+        headerLeft:()=> <BackArrow />}}/>
     </OwnerStack.Navigator>
   )
 }
