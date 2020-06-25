@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   }
 })
 
-export default () => (
+export default ( openInfo ) => (
   <View style={styles.container}>
     <MapView 
     style={styles.map} 

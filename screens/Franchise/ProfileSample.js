@@ -14,6 +14,6 @@ const styles = StyleSheet.create({
 export default () => {
   return (
       <View style={styles.container}>
-        <MenuInfo {...{shopProfile}}/>
+        <MenuInfo {...shopProfile}/>
       </View>
 )};

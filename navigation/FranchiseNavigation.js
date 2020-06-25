@@ -90,7 +90,7 @@ function FavoriteStackScreen() {
 const ProfileStack = createStackNavigator();
 
 function ProfileStackScreen() {
-  const [lisensed, setLisensed] = React.useState(false);
+  const [lisensed, setLisensed] = React.useState(true);
     return (
     <ProfileStack.Navigator 
     initialRouteName={lisensed? "승인" : "미승인"} screenOptions={{ headerTitleStyle:{fontSize:20, fontWeight:'bold'}, headerShown:true}}>

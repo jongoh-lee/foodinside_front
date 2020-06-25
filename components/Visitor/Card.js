@@ -132,8 +132,8 @@ const styles = StyleSheet.create({
 })
 
 // 내 정보 중 단골 업체 정보와 해당 업체의 단골/ 포스팅 수 + 내 포스팅 수 + 좋아요 수 + 적립 포인트
-export default ({ shopProfile }) => {
-    const { mainImage, mainMenu, subMenu, name, sort } = shopProfile;
+export default ({ mainImage, subMenu, shopName, sort, mainMenu }) => {
+    const { menuName, image, fullPrice, salePrice } = mainMenu;
     const [logoBtn, setLogoBtn] = React.useState(false);
     return (
         <View style={styles.container}>
@@ -144,11 +144,11 @@ export default ({ shopProfile }) => {
                         <ScrollView >
                             <View style={styles.menuBar}>
                                 <View style={styles.menuContainer}>
-                                    <Text style={styles.menuName} numberOfLines={1}>{mainMenu.name}</Text>
-                                    <Image style={styles.menuImage} source={{uri:mainMenu.image}}/>
+                                    <Text style={styles.menuName} numberOfLines={1}>{menuName}</Text>
+                                    <Image style={styles.menuImage} source={{uri:image}}/>
                                     <View style={styles.priceBox}>
-                                        <Text style={styles.fullPrice}>{mainMenu.fullPrice}</Text>
-                                        <Text style={styles.salePrice}>{mainMenu.salePrice}</Text>
+                                        <Text style={styles.fullPrice}>{fullPrice}</Text>
+                                        <Text style={styles.salePrice}>{salePrice}</Text>
                                     </View>
                                 </View>
                                 {subMenu && subMenu.map((menu) => (
@@ -165,7 +165,7 @@ export default ({ shopProfile }) => {
                         </ScrollView>
 
                         <View style={styles.shopInfo}>
-                            <Text style={styles.headerTitle}>{name}1 <Text style={styles.headerSubtitle}>{sort}</Text></Text>
+                            <Text style={styles.headerTitle}>{shopName}1 <Text style={styles.headerSubtitle}>{sort}</Text></Text>
                                 <View style={styles.cardGrid}>
 
                                     <View style={styles.cardCol}>

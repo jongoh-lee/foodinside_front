@@ -131,8 +131,8 @@ const styles = StyleSheet.create({
 })
 
 // 내 정보 중 단골 업체 정보와 해당 업체의 단골/ 포스팅 수 + 내 포스팅 수 + 좋아요 수 + 적립 포인트
-export default ({ shopProfile }) => {
-    const { mainImage, mainMenu, subMenu, name, sort } = shopProfile;
+export default ({ mainImage, subMenu, shopName, sort, mainMenu}) => {
+    const { menuName, image, fullPrice, salePrice } = mainMenu;
     const [logoBtn, setLogoBtn] = React.useState(false);
     return (
         <View style={styles.container}>
@@ -144,7 +144,7 @@ export default ({ shopProfile }) => {
                     <Image style={styles.mainImage} source={{ uri: mainImage }} />
                         <View>
                             <View style={styles.titleAlign}>
-                                <Text style={styles.headerTitle} numberOfLines={1}>{name}2</Text>
+                                <Text style={styles.headerTitle} numberOfLines={1}>{shopName}2</Text>
                                 <Text style={styles.headerSubtitle}>  {sort}</Text>
                             </View>
                             <Text style={styles.headerSubtitle}>7/15 - 7/21</Text>
@@ -159,7 +159,7 @@ export default ({ shopProfile }) => {
             
             {/* 메인 메뉴 */}
             <View style={styles.menuContainer}>
-                <Text style={styles.menuName} numberOfLines={1}>{mainMenu.name}</Text>
+                <Text style={styles.menuName} numberOfLines={1}>{mainMenu.menuName}</Text>
                 <Image style={styles.menuImage} source={{uri:mainMenu.image}}/>
                 <View style={styles.priceBox}>
                     <Text style={styles.fullPrice}>{mainMenu.fullPrice}</Text>

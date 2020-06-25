@@ -130,8 +130,7 @@ const styles = StyleSheet.create({
 })
 
 // 내 정보 중 단골 업체 정보와 해당 업체의 단골/ 포스팅 수 + 내 포스팅 수 + 좋아요 수 + 적립 포인트
-export default ({ shopProfile }) => {
-    const { mainImage, mainMenu, subMenu, name, sort } = shopProfile;
+export default ({ mainImage, mainMenu, subMenu, name, sort }) => {
     const [logoBtn, setLogoBtn] = React.useState(false);
     return (
         <View style={styles.container}>
@@ -142,7 +141,7 @@ export default ({ shopProfile }) => {
                         <ScrollView >
                             <View style={styles.menuBar}>
                                 <View style={styles.menuContainer}>
-                                    <Text style={styles.menuName} numberOfLines={1}>{mainMenu.name}</Text>
+                                    <Text style={styles.menuName} numberOfLines={1}>{mainMenu.menuName}</Text>
                                     <Image style={styles.menuImage} source={{uri:mainMenu.image}}/>
                                     <View style={styles.priceBox}>
                                         <Text style={styles.fullPrice}>{mainMenu.fullPrice}</Text>

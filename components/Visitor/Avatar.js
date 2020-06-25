@@ -2,6 +2,7 @@ import React from "react";
 import { Image, StyleSheet, View } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
 
 const MARGIN = 2;
 const SIZE = 70;
@@ -32,14 +33,15 @@ const styles = StyleSheet.create({
     },
   });
 
-  export default ({ add=true }) => {
+  export default ({ add=true, image=require("../../assets/Icons/avatarBasic.png") }) => {
+    const navigation = useNavigation();
     return (
         <View>
           <View style={styles.background} >
-            <Image source={require("../../assets/Icons/avatarBasic.png")} style={styles.avatar} />
+            <Image source={image} style={styles.avatar} />
                 {add && (
                     <View style={styles.add}>
-                        <TouchableWithoutFeedback onPress={() => console.log('hi')}>
+                        <TouchableWithoutFeedback onPress={() => navigation.navigate("SelectPhoto")}>
                             <Feather name="plus" size={20} color="white" />
                         </TouchableWithoutFeedback>
                     </View>

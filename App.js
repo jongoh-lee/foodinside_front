@@ -9,7 +9,7 @@ import { persistCache } from 'apollo-cache-persist';
 import { ApolloClient } from 'apollo-client';
 
 import {ApolloProvider} from '@apollo/react-hooks';
-import options from './apollo'
+import apolloClientOptions from './apollo'
 import Navcontroller from './components/Navcontroller';
 import { AuthProvider } from './AuthContext';
 
@@ -21,7 +21,7 @@ export default function App() {
   const preload = async () => {
     try {
       await Font.loadAsync({
-        ...Ionicons.font
+        ...Ionicons.font,
        });
       await Asset.loadAsync([require('./assets/Logo.png')]);
       const cache = new InMemoryCache();
@@ -31,7 +31,7 @@ export default function App() {
       });
       const client = new ApolloClient({
         cache,
-        ...options
+        ...apolloClientOptions,
       });
       const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
       if (!isLoggedIn || isLoggedIn === "false") {
@@ -43,16 +43,15 @@ export default function App() {
       setClient(client);
     } catch (e) {
       console.log(e);
-    }
+    } 
   }
   React.useEffect(()=>{
     preload()
   }, []);
 
-
   return loaded && client && isLoggedIn !== null ?  (
     <ApolloProvider client={client}>
-        <AuthProvider isLoggedInProp={isLoggedIn}>
+        <AuthProvider isLoggedIn={isLoggedIn}>
           <StatusBar barStyle={'dark-content'} backgroundColor={'transparent'} translucent={true}/>
           <Navcontroller/>
         </AuthProvider>

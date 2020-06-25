@@ -1,10 +1,11 @@
 import * as React from "react";
-import { StyleSheet, View, Image, ScrollView } from "react-native";
+import { StyleSheet, View, Image, ScrollView, Text, Button } from "react-native";
 import * as Permissions from "expo-permissions";
 import * as MediaLibrary from "expo-media-library";
-import Loader from "./Custom/Loader";
+import Loader from "../components/Custom/Loader";
 import constants from "../constants";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import SubmitPhotoButton from "../components/Custom/SubmitPhotoButton";
 
 const styles = StyleSheet.create({
     container:{
@@ -14,7 +15,7 @@ const styles = StyleSheet.create({
     }
 });
 
-export default () => {
+export default ({ navigation }) => {
     const [loading, setLoading] = React.useState(true);
     const [hasPermission, setHasPermission] = React.useState(false);
     const [selected, setSelected] = React.useState();
@@ -46,8 +47,18 @@ export default () => {
             setHasPermission(false);
         }
     }
+
+    const handleSelected = () => {
+        navigation.navigate('내 정보', { image : selected })
+    }
     React.useEffect(()=>{
-        askPermission()
+        askPermission(),
+        navigation.setOptions({
+            headerRight:() => 
+            <TouchableWithoutFeedback onPress={handleSelected}>
+                <Text>선택</Text>
+            </TouchableWithoutFeedback>
+        })
     }, [])
     return (
     <View style={styles.container}>

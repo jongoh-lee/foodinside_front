@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
 export default () => (
   <View style={styles.container}>
     <ScrollView pinchGestureEnabled={false} showsVerticalScrollIndicator={false}>
-      {chats[0].toUser.map((shop) => (<FranchiseChatList key={shop.id} {...{shop}}/>))}
+      {chats[0].toUser.map((shop) => (<FranchiseChatList key={shop.id} shop={shop}/>))}
     </ScrollView>
   </View>
 );

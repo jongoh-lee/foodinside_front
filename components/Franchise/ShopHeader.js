@@ -16,9 +16,9 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ({ name, sort }) => (
+export default ({ shopName, sort }) => (
     <View style={styles.headerContainer}>
-      <Text style={styles.headerTitle} numberOfLines={1}>{name}
+      <Text style={styles.headerTitle} numberOfLines={1}>{shopName}
         <Text style={styles.headerSubtitle}>  {sort}</Text>
       </Text>
     </View>

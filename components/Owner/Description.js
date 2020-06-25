@@ -1,16 +1,51 @@
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import * as React from "react";
-import { StyleSheet, View, Text, Platform } from "react-native";
+import { StyleSheet, View, Text, Platform, Image } from "react-native";
 import MapView, {Marker} from "react-native-maps";
 import constants from "../../constants";
 import Calendar from "../Calendar";
 import { MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
+import Facility from "./Facility";
+import Swiper from 'react-native-swiper';
 
 const styles = StyleSheet.create({
-    constainer:{
-        paddingHorizontal:20
+    imageBox:{
+        width: constants.width,
+        height: constants.height * 0.45,
+    },
+    image:{
+        width: '100%',
+        height: '100%',
+        resizeMode:"cover"
+    },
+    tabBar:{
+        flexDirection:"row",
+        justifyContent:"space-around",
+        borderBottomWidth:1,
+        borderBottomColor:"#e7e7e7",
+    },
+    tabBox:{
+        width: constants.width / 6,
+        alignItems:"center",
+    },
+    activeTab:{
+        fontSize:14,
+        fontWeight:"bold",
+        marginVertical:12,
+    },
+    inactiveTab:{
+        fontSize:14,
+        fontWeight:"bold",
+        color:"#666",
+        marginVertical:12,
+    },
+    scaleTitle: {
+        fontSize: 32,
+        lineHeight: 36,
     },
     box:{
         paddingVertical:25,
+        paddingHorizontal:20,
         borderBottomWidth:1,
         borderBottomColor:"#e7e7e7",
     },
@@ -86,11 +121,41 @@ const styles = StyleSheet.create({
     }
 })
 
-export default ({ tables, chairs, scale, description, precaution, address, checkIn, checkOut, minCheckIn, maxCheckIn, refund }) => {
+export default ({ picture, tables, chairs, scale, description, precaution, address, checkIn, checkOut, minCheckIn, maxCheckIn, refund }) => {
+    const [tabName, setTabName] = React.useState('외부');
     return (
-        <View style={styles.constainer}>
+        <View>
+            <View style={styles.imageBox}>
+                <Swiper paginationStyle={{bottom:10}}>
+                  {picture.map(i => <Image key={i} style={styles.image} source={i}/>)}
+                </Swiper>
+            </View>
+
+            <View style={styles.tabBar}>
+              <TouchableWithoutFeedback style={styles.tabBox} onPress={()=> setTabName('외부')}>
+                  <Text style={tabName=='외부'? styles.activeTab : styles.inactiveTab}>외부</Text>
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback style={styles.tabBox} onPress={()=> setTabName('홀')}>
+                  <Text style={tabName=='홀'? styles.activeTab : styles.inactiveTab}>홀</Text>
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback style={styles.tabBox} onPress={()=> setTabName('주방')}>
+                  <Text style={tabName=='주방'? styles.activeTab : styles.inactiveTab}>주방</Text>
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback style={styles.tabBox} onPress={()=> setTabName('식기')}>
+                  <Text style={tabName=='식기'? styles.activeTab : styles.inactiveTab}>식기</Text>
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback style={styles.tabBox} onPress={()=> setTabName('청소도구')}>
+                  <Text style={tabName=='청소도구'? styles.activeTab : styles.inactiveTab}>청소도구</Text>
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback style={styles.tabBox} onPress={()=> setTabName('기타')}>
+                  <Text style={tabName=='기타'? styles.activeTab : styles.inactiveTab}>기타</Text>
+              </TouchableWithoutFeedback>
+            </View>
+        
+            <Facility />
+
             <View style={styles.box}>
-                <Text style={styles.title}>규모</Text>
+                <Text style={styles.scaleTitle}>규모</Text>
 
                 <View style={styles.rowBox}>
                     <View style={styles.scaleInner}>

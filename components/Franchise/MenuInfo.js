@@ -91,16 +91,14 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ({ shopProfile }) => {
-  const profile = shopProfile;
+export default ({shopName, sort, mainImage, mainMenu, subMenu, foodGuide, origin, dangol, posts, comments, photoReviews, point, openInfo, team}) => {
   const navigation = useNavigation();
-  const {name, sort, photoReviews, openInfo, team} = profile;
-  const [foodGuide, setFoodGuide] = React.useState(false);
+  const [showGuide, setShowGuide] = React.useState(false);
   const [tabName, setTabName] = React.useState('포토리뷰');
   React.useEffect(()=>{
-    if(name && sort) {
+    if(shopName && sort) {
       navigation.setOptions({
-        headerTitle: () => <ShopHeader name={name} sort={sort}/>
+        headerTitle: () => <ShopHeader shopName={shopName} sort={sort}/>
         })
       }
     }, [])
@@ -110,22 +108,22 @@ export default ({ shopProfile }) => {
       stickyHeaderIndices={[2]} 
       showsVerticalScrollIndicator={false}
       >
-      <Image style={styles.mainImage} source={{uri:shopProfile.mainImage}}/>
+      <Image style={styles.mainImage} source={{uri:mainImage}}/>
       
       {/* 메뉴 수평 스크롤 */}
       <View style={styles.subContainer}>
         <ScrollView style={styles.menuScroll} showsHorizontalScrollIndicator={false} horizontal>
           <View style={styles.menuContainer}>
-            <Text style={styles.menuName} numberOfLines={1}>{profile.mainMenu.name}</Text>
-            <Image style={styles.menuImage} source={{uri:profile.mainMenu.image}}/>
+            <Text style={styles.menuName} numberOfLines={1}>{mainMenu.menuName}</Text>
+            <Image style={styles.menuImage} source={{uri:mainMenu.image}}/>
 
             <View style={styles.priceBox}>
-                <Text style={styles.fullPrice}>{profile.mainMenu.fullPrice}</Text>
-                <Text style={styles.salePrice}>{profile.mainMenu.salePrice}</Text>
+                <Text style={styles.fullPrice}>{mainMenu.fullPrice}</Text>
+                <Text style={styles.salePrice}>{mainMenu.salePrice}</Text>
             </View>
           </View>
 
-          {profile.subMenu && profile.subMenu.map((menu) => (
+          {subMenu && subMenu.map((menu) => (
           <View key={menu.id} style={styles.menuContainer}>
             <Text style={styles.menuName} numberOfLines={1}>{menu.name}</Text>
             <Image style={styles.menuImage} source={{uri:menu.image}}/>
@@ -143,28 +141,28 @@ export default ({ shopProfile }) => {
           <View style={styles.notice}>
             <View>
               <Text style={styles.text}>👩‍🍳 '단골' 고객 단일 메뉴 할인</Text>
-              <Text style={styles.text}>💰  포토리뷰가 받는 좋아요 1개당 {profile.point}C 적립</Text>
+              <Text style={styles.text}>💰  포토리뷰가 받는 좋아요 1개당 {point}C 적립</Text>
             </View>
             
 
             <View style={styles.touchBox}>
-              <TouchableOpacity onPress={()=>setFoodGuide(!foodGuide)}>
-                {foodGuide? <Entypo name="chevron-thin-up" size={20} color="black" /> : <Entypo name="chevron-thin-down" size={20} color="black" />}
+              <TouchableOpacity onPress={()=>setShowGuide(!showGuide)}>
+                {showGuide? <Entypo name="chevron-thin-up" size={20} color="black" /> : <Entypo name="chevron-thin-down" size={20} color="black" />}
               </TouchableOpacity>
             </View>
           </View>
         
-          {foodGuide? (
+          {showGuide? (
           <View style={{padding:10}}>
             <Text style={{marginVertical:8, alignSelf:"center", fontSize:18, fontWeight:'bold'}}>푸드 가이드</Text>
-            <Text>{profile.foodGuide}</Text>
+            <Text>{foodGuide}</Text>
             <Text style={{marginVertical:8, alignSelf:"center", fontSize:18, fontWeight:'bold'}}>원산지</Text>
-            <Text>{profile.origin}</Text>
+            <Text>{origin}</Text>
           </View>
           ) : null}
         </View>
         {/* 단골, 포스트 수, 영업 횟수, 가맹점 수 */}
-        <DangolBar dangol={profile.dangol} posts={profile.posts} comments={profile.comments}/>
+        <DangolBar dangol={dangol} posts={posts} comments={comments}/>
       </View>
           
       <>
@@ -181,9 +179,9 @@ export default ({ shopProfile }) => {
         </View>
       </>
 
-      {tabName=='포토리뷰'? <PhotoReview {...{photoReviews}}/> : null}
-      {tabName=='영업정보'? <OpenInfo {...{openInfo}}/> : null}
-      {tabName=='팀원소개'? <Team {...{team}}/> : null}
+      {tabName=='포토리뷰'? <PhotoReview photoReviews={photoReviews} /> : null}
+      {tabName=='영업정보'? <OpenInfo openInfo={openInfo} /> : null}
+      {tabName=='팀원소개'? <Team team={team} /> : null}
       
     </ScrollView>
 )};

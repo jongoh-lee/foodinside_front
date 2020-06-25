@@ -16,12 +16,12 @@ const styles = StyleSheet.create({
 export default () => (
   <View style={styles.container}>
     <ScrollView showsVerticalScrollIndicator={false}>
-    <Card {...{shopProfile}}/>
-    <Card {...{shopProfile}}/>
-    <Card {...{shopProfile}}/>
-    <Card {...{shopProfile}}/>
-    <Card {...{shopProfile}}/>
-    <Card {...{shopProfile}}/>
+    <Card {...shopProfile}/>
+    <Card {...shopProfile}/>
+    <Card {...shopProfile}/>
+    <Card {...shopProfile}/>
+    <Card {...shopProfile}/>
+    <Card {...shopProfile}/>
     </ScrollView>
   </View>
 );

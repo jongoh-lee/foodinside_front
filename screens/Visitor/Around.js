@@ -18,9 +18,9 @@ export default () => (
      <ScrollView
         pinchGestureEnabled={false}
         showsVerticalScrollIndicator={false} >
-      <Card3 {...{shopProfile}}/>
-      <Card33 {...{shopProfile}}/>
-      <Card3 {...{shopProfile}}/>
+      <Card3 {...shopProfile}/>
+      <Card33 {...shopProfile}/>
+      <Card3 {...shopProfile}/>
     </ScrollView>
   </View>
 );

@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     },
 })
 
-export default ({ photoReviews }) => {
+export default ( { photoReviews } ) => {
     return (
     <View style={styles.container}>
     <TouchableWithoutFeedback style={styles.grid}>
@@ -30,6 +30,6 @@ export default ({ photoReviews }) => {
         </View>
     </TouchableWithoutFeedback>
 
-    {photoReviews.map((photo) => <Image key={photo.id} style={{width: constants.width / 3 - 2, height: constants.width / 3 - 2, margin:1}} source={{uri:photo.image}} />)}
+    {photoReviews && photoReviews.map((photo) => <Image key={photo.id} style={{width: constants.width / 3 - 2, height: constants.width / 3 - 2, margin:1}} source={{uri:photo.image}} />)}
     </View>
 )}

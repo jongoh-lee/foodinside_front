@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 export default () => (
   <View style={styles.container}>
     <ScrollView pinchGestureEnabled={false} showsVerticalScrollIndicator={false}>
-      {chats.map((chat) => (<OwnerChatList key={chat.id} {...{chat}} />))}
+      {chats.map((chat) => (<OwnerChatList key={chat.id} chat={chat} />))}
     </ScrollView>
   </View>
 );

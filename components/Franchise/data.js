@@ -1,12 +1,14 @@
 export const shopProfile = {
     id:"1234",
+    username:"jongohLee",
     region:"",
     isOpen: false,
-    name: "큐슈 고쿠리",
+    shopName: "큐슈 고쿠리",
     sort: "일식",
     mainImage:"https://pgnqdrjultom1827145.cdn.ntruss.com/img/51/ea/51ea7dca83ff797cfbd36c39957bfb6c0bf2f53f7065db799d18575d97d460b1_v1.jpg",
     mainMenu:{
-        name:"큐슈 라멘",
+        id:"sdsd",
+        menuName:"큐슈 라멘",
         image: "https://t1.daumcdn.net/cfile/tistory/99E8504C5C0A665834",
         fullPrice: "8,500",
         salePrice: "7,000"
@@ -191,3 +193,68 @@ export const shopProfile = {
         },
     ]
 }
+
+const Images = [
+    { image: "https://post-phinf.pstatic.net/MjAyMDAxMTdfMTM1/MDAxNTc5MjI4NDM2Njgz.eG2vZM4DgqzByze6UfGiv9yf_J2poimzgcMv4YrHV04g.YQert7ATlpMQG4TU4iStXXfZUhqrBOKqdmiYy_od7s0g.JPEG/%EC%98%A4%EB%B3%B5%EA%BC%AC%EC%B9%98%EC%A7%911.jpg?type=w1200"},
+    { image: "https://post-phinf.pstatic.net/MjAxNzExMDVfMTY4/MDAxNTA5ODkxNDIxNTgz.aqGYcfq0RIN_BvqLxdy3D937Yw9s1dDz44-YcpvWD0cg.OQdlydvYsu95R5jlcKou2Z6GBzr5vF9NXC8zoqbaIHUg.JPEG/20171025823181.jpg?type=w1200"},
+    { image: "https://post-phinf.pstatic.net/MjAxNzExMTZfMTk2/MDAxNTEwNzYyNTczNjM2.ErKG3TKTPkjnc8Lyfebcdjz1tEZr3VinuNHJi2jh73wg.DHuKyjpmm4mk_eYWy-5MHLpWkdbAImO08hrwGkoheGwg.JPEG/20171108336461.jpg?type=w1200"},
+    { image: "https://lh3.googleusercontent.com/proxy/7ueDOKDot6PUhKa7iiP89cG3BE7iSNeGG8ZgcPDy91Vff9Bcd_41EwJgAGBJRbR_XPxO0MptfMqE0DQExYG_QmR3l0ws-jyOc1JqIylavq1f1SR6d7CZgRp5WrMhRpkHiFwFUUJegi26_0yuEcJqkQ"},
+];
+
+export const markers = [
+    {
+      coordinate: {
+        latitude: 22.6293867,
+        longitude: 88.4354486,
+      },
+      title: "Amazing Food Place",
+      description: "This is the best food place",
+      image: Images[0].image,
+      rating: 4,
+      reviews: 99,
+    },
+    {
+      coordinate: {
+        latitude: 22.6345648,
+        longitude: 88.4377279,
+      },
+      title: "Second Amazing Food Place",
+      description: "This is the second best food place",
+      image: Images[1].image,
+      rating: 5,
+      reviews: 102,
+    },
+    {
+      coordinate: {
+        latitude: 22.6281662,
+        longitude: 88.4410113,
+      },
+      title: "Third Amazing Food Place",
+      description: "This is the third best food place",
+      image: Images[2].image,
+      rating: 3,
+      reviews: 220,
+    },
+    {
+      coordinate: {
+        latitude: 22.6341137,
+        longitude: 88.4497463,
+      },
+      title: "Fourth Amazing Food Place",
+      description: "This is the fourth best food place",
+      image: Images[3].image,
+      rating: 4,
+      reviews: 48,
+    },
+    {
+      coordinate: {
+        latitude: 22.6292757,
+        longitude: 88.444781,
+      },
+      title: "Fifth Amazing Food Place",
+      description: "This is the fifth best food place",
+      image: Images[3].image,
+      rating: 4,
+      reviews: 178,
+    },
+];

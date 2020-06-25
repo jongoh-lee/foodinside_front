@@ -30,7 +30,7 @@ export default () => (
   <View style={styles.container}>
     <View style={styles.container}>
       {listings.map((listing) => (
-        <ShopList key={listing.id} {...{ listing }} />
+        <ShopList key={listing.id} listing={listing} />
       ))}
     </View>
   </View>

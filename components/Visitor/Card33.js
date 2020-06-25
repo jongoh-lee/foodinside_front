@@ -127,15 +127,15 @@ const styles = StyleSheet.create({
 })
 
 // 내 정보 중 단골 업체 정보와 해당 업체의 단골/ 포스팅 수 + 내 포스팅 수 + 좋아요 수 + 적립 포인트
-export default ({ shopProfile }) => {
-    const { mainImage, mainMenu, subMenu, name, sort } = shopProfile;
+export default ({ mainImage, mainMenu, subMenu, shopName, sort }) => {
+    const { menuName, image, fullPrice, salePrice } = mainMenu;
     const [btn, setBtn] = React.useState(false);
     return (
         <View >
             <View style={styles.box}>
                 {/* 헤더 */}
                 <View style={styles.headerRight}>
-                    <Text style={styles.headerTitle} numberOfLines={1}>{name}33</Text>
+                    <Text style={styles.headerTitle} numberOfLines={1}>{shopName}33</Text>
                     <Text style={styles.headerSubtitle}>  {sort} · 7/14 - 7/21</Text>
                 </View>
                 {/*메인 이미지*/}    
@@ -146,11 +146,11 @@ export default ({ shopProfile }) => {
 
                     {/* 메인 메뉴 */}
                     <View style={styles.menuContainer}>
-                        <Text style={styles.menuName} numberOfLines={1}>{mainMenu.name}</Text>
-                        <Image style={styles.menuImage} source={{uri:mainMenu.image}}/>
+                        <Text style={styles.menuName} numberOfLines={1}>{menuName}</Text>
+                        <Image style={styles.menuImage} source={{uri:image}}/>
                         <View style={styles.priceBox}>
-                            <Text style={styles.fullPrice}>{mainMenu.fullPrice}</Text>
-                            <Text style={styles.salePrice}>{mainMenu.salePrice}</Text>
+                            <Text style={styles.fullPrice}>{fullPrice}</Text>
+                            <Text style={styles.salePrice}>{salePrice}</Text>
                         </View>
                     </View>
 

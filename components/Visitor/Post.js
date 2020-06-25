@@ -13,12 +13,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ({ post }) => {
+export default ({ avatar, user, shopName, timestamp, picture, likes, caption }) => {
   return (
     <>
-      <PostHeader avatar={post.avatar} user={post.user} shopName={post.shopName} timeStamp={post.timestamp}/>
-      <Image style={styles.image} source={{ uri: post.picture.uri }}/>
-      <PostFooter likes={post.likes} caption={post.caption} />
+      <PostHeader avatar={avatar} user={user} shopName={shopName} timeStamp={timestamp}/>
+      <Image style={styles.image} source={{ uri: picture.uri }}/>
+      <PostFooter likes={likes} caption={caption} />
     </>
   );
 };

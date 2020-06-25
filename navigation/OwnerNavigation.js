@@ -18,7 +18,7 @@ import Earnings from '../screens/Owner/Earnings';
 import NavIcon from '../components/Custom/NavIcon';
 import {MaterialIcons} from '@expo/vector-icons'
 import Reservations from '../screens/Owner/Reservations';
-import SelectPhoto from '../components/SelectPhoto';
+import SelectPhoto from '../screens/SelectPhoto';
 import BackArrow from '../components/Custom/BackArrow';
 
 const ChatStack = createStackNavigator();
@@ -75,7 +75,7 @@ function EarningsStackScreen() {
 const MyShopStack = createStackNavigator();
 
 function MyShopStackScreen() {
-    const [lisensed, setLisensed] = React.useState(false);
+    const [lisensed, setLisensed] = React.useState(true);
     return (
     <MyShopStack.Navigator initialRouteName={lisensed? "공유음식점" : "공유 음식점 등록"} screenOptions={{ headerTitleStyle:{fontSize:20, fontWeight:'bold'},headerShown:true}}>
       <MyShopStack.Screen name="공유음식점" component={MyShop} options={{

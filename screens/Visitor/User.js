@@ -37,10 +37,9 @@ const styles = StyleSheet.create({
     }
   });
 
-  export default () => {
+  export default ({ route }) => {
     return (
     <ScrollView showsVerticalScrollIndicator={false} refreshControl={<RefreshControl />}>
-
     <View style={styles.container}>
         
         {/* 아바타 + 자기소개 + 함께아는 팔로워 */}

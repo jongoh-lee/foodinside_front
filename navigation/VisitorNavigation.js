@@ -14,12 +14,14 @@ import User from '../screens/Visitor/User';
 import Around from '../screens/Visitor/Around';
 import Location from '../screens/Visitor/Location';
 import Search from '../screens/Visitor/Search';
+import SelectPhoto from '../screens/SelectPhoto';
 
 //button
 import NavIcon from '../components/Custom/NavIcon';
 import Logo from '../components/Custom/Logo';
 import LocationButton from '../components/Visitor/LocationButton';
 import SearchButton from '../components/Visitor/SearchButton';
+import BackArrow from '../components/Custom/BackArrow';
 
     
 const FeedStack = createStackNavigator();
@@ -144,6 +146,11 @@ export default () => {
   return (
     <VisitorStack.Navigator >
       <VisitorStack.Screen name='Tabs' component={TabScreen}/>
+      <VisitorStack.Screen name='SelectPhoto' component={SelectPhoto} options={{
+        headerShown:true,
+        headerTitle:"최근 항목",
+        headerTitleAlign:"center",
+        headerLeft:()=> <BackArrow />}}/>
     </VisitorStack.Navigator>
   )
 }
