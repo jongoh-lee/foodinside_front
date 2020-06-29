@@ -1,6 +1,6 @@
 import { HttpLink } from "apollo-link-http";
 import { setContext } from "apollo-link-context";
-import { AsyncStorage } from "react-native";
+import AsyncStorage from "@react-native-community/async-storage";
 
 const authLink = setContext(async (_, { headers }) => {
   const token = await AsyncStorage.getItem("jwt");
@@ -14,7 +14,7 @@ const authLink = setContext(async (_, { headers }) => {
 });
 
 const link = new HttpLink({
-  uri: "https://240c236e32cf.ngrok.io"
+  uri: "http://c2e29763c576.ngrok.io"
 });
 
 const options = {

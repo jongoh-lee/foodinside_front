@@ -83,7 +83,7 @@ export default ({ dangol, posts, comment }) => {
     </View>
 
     <View style={styles.dangolBar_l}>
-        <Text style={styles.barText}>수거량</Text>
+        <Text style={styles.barText}>회수량</Text>
         <Text style={styles.barNum}>1,134,300C</Text>
     </View>
 

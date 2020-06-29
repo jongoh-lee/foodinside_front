@@ -21,15 +21,14 @@ const styles = StyleSheet.create({
     },
 })
 
-export default ( { photoReviews } ) => {
+export default ( {photoReviews} ) => {
     return (
     <View style={styles.container}>
-    <TouchableWithoutFeedback style={styles.grid}>
-        <View style={styles.upload}>
-            <Text>음식점 홍보하기</Text>
-        </View>
-    </TouchableWithoutFeedback>
-
-    {photoReviews && photoReviews.map((photo) => <Image key={photo.id} style={{width: constants.width / 3 - 2, height: constants.width / 3 - 2, margin:1}} source={{uri:photo.image}} />)}
+        <TouchableWithoutFeedback style={styles.grid}>
+            <View style={styles.upload}>
+                <Text>음식점 홍보하기</Text>
+            </View>
+        </TouchableWithoutFeedback>
+        {photoReviews && photoReviews.map((review) => <Image key={review.id} source={{uri:review.image}}/>)}
     </View>
 )}

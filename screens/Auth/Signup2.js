@@ -65,7 +65,7 @@ export default ({ navigation, route }) => {
         <Text style={styles.title}>아이디를 입력하세요</Text>
         <Text style={styles.text}>한글, 영문, 숫자 조합만 사용 가능합니다</Text>
 
-        <AuthInput {...idInput} placeholder="아이디를 입력하세요" keyboardType="default" autoFocus={true}/>
+        <AuthInput {...idInput} placeholder="아이디를 입력하세요" keyboardType="default" autoFocus={true} editable={!loading}/>
         <Text style={{fontSize:10, color:"red", paddingLeft:5}}>{alert}</Text>
 
         <AuthButton text="다음(2/4단계)" disabled={value === ""? true : false} onPress={handlecheckUsername} loading={loading}/>

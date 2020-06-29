@@ -9,7 +9,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 //screens
 import Dangol from '../screens/Visitor/Dangol';
 import Feed from '../screens/Visitor/Feed';
-import Map from '../screens/Visitor/Map';
+import Map2 from '../screens/Visitor/Map2';
 import User from '../screens/Visitor/User';
 import Around from '../screens/Visitor/Around';
 import Location from '../screens/Visitor/Location';
@@ -61,7 +61,7 @@ const MapStack = createStackNavigator();
 function MapStackScreen() {
     return (
     <MapStack.Navigator screenOptions={{ cardStyle:{backgroundColor:'#ffffff'}, headerTitleStyle:{fontSize:20, fontWeight:'bold'}}}>
-      <MapStack.Screen name="지도" component={Map} options={{headerShown:true}}/>
+      <MapStack.Screen name="지도" component={Map2} options={{headerShown:true}}/>
     </MapStack.Navigator>
   );
 }
@@ -92,7 +92,7 @@ const FavoriteStack = createStackNavigator();
 function FavoriteStackScreen() {
     return (
     <FavoriteStack.Navigator screenOptions={{headerShown:true, headerTitleStyle:{fontSize:20, fontWeight:'bold'}}}>
-      <FavoriteStack.Screen name="즐겨찾기" component={favoriteTabScreen} />
+      <FavoriteStack.Screen name="단골" component={Dangol} />
     </FavoriteStack.Navigator>
   );
 }
@@ -114,19 +114,19 @@ const Tabs = createBottomTabNavigator();
 function TabScreen() {
     return (
         <Tabs.Navigator 
-        initialRouteName="피드" 
+        initialRouteName="지도" 
         tabBarOptions={{
           showLabel: false,
           keyboardHidesTabBar:true,
         }}
         >
-          <Tabs.Screen name='피드' component={FeedStackScreen} options={{tabBarIcon: ({ focused, color }) => (
+          {/* <Tabs.Screen name='피드' component={FeedStackScreen} options={{tabBarIcon: ({ focused, color }) => (
             <FontAwesome5 name='concierge-bell' color={focused? 'black' : color} size={23} />
-          )}}/>
+          )}}/> */}
           <Tabs.Screen name='지도' component={MapStackScreen} options={{tabBarIcon: ({ focused, color }) => (
             <FontAwesome5 name='question' color={focused?  'black' : color} size={20} solid/>
           )}}/>
-          <Tabs.Screen name='즐겨찾기' component={FavoriteStackScreen} options={{tabBarIcon: ({ focused, color }) => (
+          <Tabs.Screen name='단골' component={FavoriteStackScreen} options={{tabBarIcon: ({ focused, color }) => (
             <NavIcon name='heart' color={focused? 'black' : color} size={23} />
           )}}/>
           <Tabs.Screen name='내 정보' component={UserStackScreen} options={{tabBarIcon: ({ focused, color }) => (

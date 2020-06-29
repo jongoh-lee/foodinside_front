@@ -9,17 +9,9 @@ const styles=StyleSheet.create({
   container:{
     marginBottom:5
   },
-  inputBox:{
-    width:constants.width * 0.9,
-    padding: 15,
-    backgroundColor: "#F9F9F9",
-    borderBottomWidth:1,
-    borderColor: "#05e6f4",
-    borderRadius:6
-  }
 })
 
-const AuthInput = ({
+const BasicInput = ({
   placeholder,
   value,
   keyboardType = "default",
@@ -28,16 +20,17 @@ const AuthInput = ({
   returnKeyType = "send",
   autoFocus = false,
   size = 0.9,
-  editable=true
+  editable=true,
+  multiline=true
 }) => (
   <View style={styles.container}>
     <TextInput style={{
+      fontSize:14,
       width:constants.width * size,
-      padding: 15,
-      backgroundColor: "#F9F9F9",
-      borderBottomWidth:1,
-      borderColor: "#05e6f4",
-      borderRadius:6
+      backgroundColor:'white',
+      borderRadius:20,
+      padding:15,
+      justifyContent:'flex-start'
     }}
       onChangeText={onChange}
       keyboardType={keyboardType}
@@ -47,11 +40,12 @@ const AuthInput = ({
       value={value}
       autoFocus={autoFocus}
       editable={editable}
+      multiline={multiline}
     />
   </View>
 );
 
-AuthInput.propTypes = {
+BasicInput.propTypes = {
   placeholder: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   keyboardType: PropTypes.oneOf([
@@ -66,7 +60,8 @@ AuthInput.propTypes = {
   returnKeyType: PropTypes.oneOf(["done", "go", "next", "search", "send"]),
   onChange: PropTypes.func.isRequired,
   size: PropTypes.number,
-  editable: PropTypes.bool
+  editable: PropTypes.bool,
+  multiline: PropTypes.bool
 };
 
-export default AuthInput;
+export default BasicInput;

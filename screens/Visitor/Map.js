@@ -1,13 +1,14 @@
 import * as React from "react";
 import { View, Text, StyleSheet} from "react-native";
 import MapView, { Marker, Callout } from "react-native-maps";
+import constants from "../../constants";
 
 const styles = StyleSheet.create({
   container:{
     ...StyleSheet.absoluteFillObject,
   },
   map:{
-    height: '100%'
+    height: constants.height
   }
 })
 
@@ -16,7 +17,7 @@ export default () => (
     <MapView 
     style={styles.map} 
     initialRegion={{
-      latitude:37.537140,
+      latitude:37.537712,
       longitude:126.989935,
       latitudeDelta: 0.01,
       longitudeDelta: 0.005,}}
@@ -39,7 +40,7 @@ export default () => (
         description="9/21 ~ 10/12"
       >
         <Callout tooltip>
-          
+          <View></View>
         </Callout>
       </Marker>
 

@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     rowBox:{
         flex:1,
         flexDirection:"row",
-        paddingTop:8
+        paddingVertical:5,
     },
     dangolBar:{
         flex:1,
@@ -133,8 +133,35 @@ export default ({ mainImage, mainMenu, subMenu, shopName, sort }) => {
                 {/*메인 이미지*/}    
                 <Image style={styles.mainImage} source={{uri:mainImage}}/>
 
-                {/* 단골 바*/}
-                <View style={styles.rowBox}>
+                {/* 메뉴 스크롤 */}
+                <ScrollView style={styles.menuScroll} showsHorizontalScrollIndicator={false} horizontal>
+
+                    {/* 메인 메뉴 */}
+                    <View style={styles.menuContainer}>
+                        <Text style={styles.menuName} numberOfLines={1}>{menuName}</Text>
+                        <Image style={styles.menuImage} source={{uri:image}}/>
+                        <View style={styles.priceBox}>
+                            <Text style={styles.fullPrice}>{fullPrice}</Text>
+                            <Text style={styles.salePrice}>{salePrice}</Text>
+                        </View>
+                    </View>
+
+                    {/* 추가 메뉴 */}
+                    {subMenu && subMenu.map((menu) => (
+                        <View key={menu.id} style={styles.menuContainer}>
+                            <Text style={styles.menuName} numberOfLines={1}>{menu.name}</Text>
+                            <Image style={styles.menuImage} source={{uri:menu.image}}/>
+
+                            <View style={styles.priceBox}>
+                                <Text style={styles.fullPrice}>{menu.fullPrice}</Text>
+                                <Text style={styles.salePrice}>{menu.salePrice}</Text>
+                            </View>
+                        </View>
+                    ))}
+                </ScrollView>
+
+                 {/* 단골 바*/}
+                 <View style={styles.rowBox}>
                     <View style={styles.dangolBar}>
                         <Text style={styles.barText}>단골</Text>
                         <Text style={styles.barNum}>3,948</Text>
@@ -167,33 +194,6 @@ export default ({ mainImage, mainMenu, subMenu, shopName, sort }) => {
                         </TouchableWithoutFeedback>
                     </View>
                 </View>
-      
-                {/* 메뉴 스크롤 */}
-                <ScrollView style={styles.menuScroll} showsHorizontalScrollIndicator={false} horizontal>
-
-                    {/* 메인 메뉴 */}
-                    <View style={styles.menuContainer}>
-                        <Text style={styles.menuName} numberOfLines={1}>{menuName}</Text>
-                        <Image style={styles.menuImage} source={{uri:image}}/>
-                        <View style={styles.priceBox}>
-                            <Text style={styles.fullPrice}>{fullPrice}</Text>
-                            <Text style={styles.salePrice}>{salePrice}</Text>
-                        </View>
-                    </View>
-
-                    {/* 추가 메뉴 */}
-                    {subMenu && subMenu.map((menu) => (
-                        <View key={menu.id} style={styles.menuContainer}>
-                            <Text style={styles.menuName} numberOfLines={1}>{menu.name}</Text>
-                            <Image style={styles.menuImage} source={{uri:menu.image}}/>
-
-                            <View style={styles.priceBox}>
-                                <Text style={styles.fullPrice}>{menu.fullPrice}</Text>
-                                <Text style={styles.salePrice}>{menu.salePrice}</Text>
-                            </View>
-                        </View>
-                    ))}
-                </ScrollView>
             
             </View>
         </View>

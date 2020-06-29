@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { shopProfile } from "../../components/Franchise/data";
 import Card3 from "../../components/Visitor/Card3";
+import Card from "../../components/Visitor/Card"
 import Card33 from "../../components/Visitor/Card33";
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -19,8 +20,8 @@ export default () => (
         pinchGestureEnabled={false}
         showsVerticalScrollIndicator={false} >
       <Card3 {...shopProfile}/>
+      <Card {...shopProfile}/>
       <Card33 {...shopProfile}/>
-      <Card3 {...shopProfile}/>
     </ScrollView>
   </View>
 );

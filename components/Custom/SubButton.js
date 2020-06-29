@@ -6,7 +6,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 
 const styles = StyleSheet.create({
     container:{
-        backgroundColor:'#50caef',
+        backgroundColor:'#05e6f4',
         padding: 10,
         margin: 20,
         borderRadius:4,

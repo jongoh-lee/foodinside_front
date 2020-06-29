@@ -49,7 +49,7 @@ export default ({ route }) => {
         <DismissKeyboard>
           <View style={styles.inner}>
             <View>
-              <AuthInput {...secretInput} placeholder="인증키를 입력하세요" keyboardType="default" autoFocus={false}/>
+              <AuthInput {...secretInput} placeholder="인증키를 입력하세요" keyboardType="default" autoFocus={false} editable={!loading}/>
               <Text style={{fontSize:10, color:"red", paddingLeft:5}}>{alert}</Text>
               <AuthButton text="로그인" onPress={handleConfirm} disabled={value ===""? true : false} loading={loading}/>
             </View>

@@ -7,7 +7,6 @@ import { MaterialCommunityIcons, FontAwesome, Entypo } from '@expo/vector-icons'
 
 // screens
 import DangolBar from "./DangolBar";
-import ShopHeader from "./ShopHeader";
 import PhotoReview from "./PhotoReview";
 import OpenInfo from "./OpenInfo";
 import Team from "./Team";
@@ -91,17 +90,9 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ({shopName, sort, mainImage, mainMenu, subMenu, foodGuide, origin, dangol, posts, comments, photoReviews, point, openInfo, team}) => {
-  const navigation = useNavigation();
+export default ({ mainImage, mainMenu, subMenu, foodGuide, origin, dangol, posts, comments, photoReviews, point, openInfo, team}) => {
   const [showGuide, setShowGuide] = React.useState(false);
   const [tabName, setTabName] = React.useState('포토리뷰');
-  React.useEffect(()=>{
-    if(shopName && sort) {
-      navigation.setOptions({
-        headerTitle: () => <ShopHeader shopName={shopName} sort={sort}/>
-        })
-      }
-    }, [])
   return (
     <ScrollView 
       style={styles.container} 
@@ -138,19 +129,19 @@ export default ({shopName, sort, mainImage, mainMenu, subMenu, foodGuide, origin
         
         {/* 가격 정보, 리뷰 할인, 푸드 가이드 */}
         <View style={{borderBottomWidth:1, borderBottomColor:"#e7e7e7"}}>
-          <View style={styles.notice}>
-            <View>
-              <Text style={styles.text}>👩‍🍳 '단골' 고객 단일 메뉴 할인</Text>
-              <Text style={styles.text}>💰  포토리뷰가 받는 좋아요 1개당 {point}C 적립</Text>
-            </View>
+          <TouchableOpacity onPress={()=>setShowGuide(!showGuide)}>
+            <View style={styles.notice}>
+              <View>
+                <Text style={styles.text}>👩‍🍳 '단골' 고객 단일 메뉴 할인</Text>
+                <Text style={styles.text}>💰  포토리뷰가 받는 좋아요 1개당 {point}P 적립</Text>
+              </View>
             
 
-            <View style={styles.touchBox}>
-              <TouchableOpacity onPress={()=>setShowGuide(!showGuide)}>
+              <View style={styles.touchBox}>
                 {showGuide? <Entypo name="chevron-thin-up" size={20} color="black" /> : <Entypo name="chevron-thin-down" size={20} color="black" />}
-              </TouchableOpacity>
+              </View>
             </View>
-          </View>
+          </TouchableOpacity>
         
           {showGuide? (
           <View style={{padding:10}}>

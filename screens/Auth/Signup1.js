@@ -62,7 +62,7 @@ export default ({ route, navigation }) => {
           <Text style={styles.title}>이메일을 입력하세요</Text>
           <Text style={styles.text}>자주 사용하는 이메일을 입력해 주세요</Text>
     
-          <AuthInput {...emailInput} placeholder="이메일을 입력하세요" keyboardType="email-address" autoFocus={true}/>
+          <AuthInput {...emailInput} placeholder="이메일을 입력하세요" keyboardType="email-address" autoFocus={true} editable={!loading}/>
           <Text style={{fontSize:10, color:"red", paddingLeft:5}}>{alert}</Text>
 
           <AuthButton text="다음(1/4단계)" onPress={handlecheckEmail} disabled={value === "" ? true : false} loading={loading}/>

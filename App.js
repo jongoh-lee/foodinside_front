@@ -3,7 +3,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset'
 import * as Font from 'expo-font';
-import { AsyncStorage, StatusBar } from 'react-native';
+import { StatusBar } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { persistCache } from 'apollo-cache-persist';
 import { ApolloClient } from 'apollo-client';

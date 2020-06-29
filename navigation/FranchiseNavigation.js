@@ -9,18 +9,26 @@ import {Feather, MaterialIcons, MaterialCommunityIcons} from '@expo/vector-icons
 // screens
 import SearchShop from '../screens/Franchise/SearchShop';
 import Favorite from '../screens/Franchise/Favorite';
-import Profile from '../screens/Franchise/Profile';
+import CreateProfile from '../screens/Franchise/CreateProfile';
 import ShopDetail from "../screens/Franchise/ShopDetail";
+
+
 import ProfileSample from "../screens/Franchise/ProfileSample";
+import MyProfile from "../screens/Franchise/MyProfile";
+import EditProfile from "../screens/Franchise/EditProfile";
+import BeforeProfile from '../screens/Franchise/BeforeProfile';
+
 import ChatListFranchise from "../screens/Franchise/ChatListFranchise";
 import ChatListShop from "../screens/Franchise/ChatListShop";
 import Chat from "../screens/Franchise/Chat";
+import SelectPhoto from "../screens/SelectPhoto";
 
 //button
 import NavIcon from '../components/Custom/NavIcon';
 import Logo from '../components/Custom/Logo';
 import FranchiseButton from '../components/Franchise/FranchiseButton';
 import ShopHeader from "../components/Franchise/ShopHeader";
+import BackArrow from '../components/Custom/BackArrow';
 
 
 const SearchStack = createStackNavigator();
@@ -90,18 +98,34 @@ function FavoriteStackScreen() {
 const ProfileStack = createStackNavigator();
 
 function ProfileStackScreen() {
-  const [lisensed, setLisensed] = React.useState(true);
+  const [lisensed, setLisensed] = React.useState("프로필 안내");
     return (
     <ProfileStack.Navigator 
-    initialRouteName={lisensed? "승인" : "미승인"} screenOptions={{ headerTitleStyle:{fontSize:20, fontWeight:'bold'}, headerShown:true}}>
-      <ProfileStack.Screen name="승인" component={ProfileSample} options={{
-        headerTitleAlign:"left",
+    initialRouteName={lisensed} screenOptions={{ headerTitleStyle:{fontSize:20, fontWeight:'bold'}, headerShown:true}}>
+      <ProfileStack.Screen name="승인" component={MyProfile} options={{
+        headerTitleAlign:"center",
         headerRight:() => <Feather name="more-vertical" size={24} />
       }} />
-      <ProfileStack.Screen name="미승인" component={Profile} options={{
+      <ProfileStack.Screen name="프로필 안내" component={BeforeProfile} options={{
         headerTitle:()=><Logo nav={'공유 음식점'}/>,
         headerRight: () => <FranchiseButton/>,
-        headerTitleAlign:"left"
+        headerTitleAlign:"center"
+      }} />
+       <ProfileStack.Screen name="프로필 예시" component={ProfileSample} options={{
+        headerTitle:()=><Logo nav={'공유 음식점'}/>,
+        headerRight:() => <Feather name="more-vertical" size={24} />,
+        headerLeft:()=> <BackArrow />,
+        headerTitleAlign:"center"
+      }} />
+      <ProfileStack.Screen name="프로필 신청" component={CreateProfile} options={{
+        headerTitle:"프로필 신청",
+        headerTitleAlign:"center",
+        headerLeft:()=> <BackArrow />,
+      }} />
+      <ProfileStack.Screen name="프로필 수정" component={EditProfile} options={{
+        headerTitle:"프로필 수정",
+        headerTitleAlign:"center",
+        headerLeft:()=> <BackArrow />,
       }} />
     </ProfileStack.Navigator>
   );
@@ -121,9 +145,9 @@ function TabsScreen() {
             <Tabs.Screen name='공유 음식점' component={SearchStackScreen}  options={{tabBarIcon: ({ focused, color }) => (
               <MaterialIcons name={ 'store' } color={focused? 'black': color} size={25} />
             )}}/>
-            <Tabs.Screen name='채팅' component={ChatStackScreen} options={{tabBarIcon:({focused, color })=>(
+            {/* <Tabs.Screen name='채팅' component={ChatStackScreen} options={{tabBarIcon:({focused, color })=>(
               <MaterialCommunityIcons name={ 'chat' } color={focused? 'black' : color} size={25}/>
-            )}}/>
+            )}}/> */}
             <Tabs.Screen name='즐겨찾기' component={FavoriteStackScreen} options={{tabBarIcon:({focused, color})=>(
               <MaterialCommunityIcons name={ 'star' } color={focused? 'black' : color} size={25}/>
             )}}/>
@@ -147,7 +171,7 @@ const FranchiseStack = createStackNavigator();
 
 export default () => {
   return (
-    <FranchiseStack.Navigator screenOptions={{headerShown:false}} >
+    <FranchiseStack.Navigator screenOptions={{headerShown:false}}>
       <FranchiseStack.Screen name='Tabs' component={TabsScreen}/>
       <FranchiseStack.Screen name='ShopDetail' component={ShopDetail} options={{cardStyle:{backgroundColor:'transparent'}}}/>
       <FranchiseStack.Screen name='채팅 내용' component={Chat} options={
@@ -155,6 +179,9 @@ export default () => {
         headerShown:true,
         title:route.params.shop.shopName
       })}/>
+      <FranchiseStack.Screen name='SelectPhoto' component={SelectPhoto} options={{
+        headerShown:false,
+        }}/>
     </FranchiseStack.Navigator>
   )
 }

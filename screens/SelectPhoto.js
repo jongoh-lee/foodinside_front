@@ -1,21 +1,42 @@
 import * as React from "react";
-import { StyleSheet, View, Image, ScrollView, Text, Button } from "react-native";
+import { StyleSheet, View, Image, ScrollView, Text, Button, StatusBar } from "react-native";
 import * as Permissions from "expo-permissions";
 import * as MediaLibrary from "expo-media-library";
 import Loader from "../components/Custom/Loader";
 import constants from "../constants";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import SubmitPhotoButton from "../components/Custom/SubmitPhotoButton";
+import BackArrow from "../components/Custom/BackArrow";
 
 const styles = StyleSheet.create({
     container:{
         flex:1,
-        justifyContent:"center",
-        alignItems:"center"
+    },
+    header:{
+        flexDirection:"row",
+        paddingVertical:10,
+        borderBottomWidth:1,
+        borderBottomColor:"rgba(0, 0, 0, .1)",
+        alignItems:"center",
+        justifyContent:"space-between"
+    },
+    headerTitle:{
+        fontSize:18,
+        fontWeight:"bold",
+        width:'100%',
+        position:"absolute",
+        textAlign:"center",
+    },
+    select:{
+        paddingHorizontal:5
+    },
+    selectText:{
+        color:'#05e6f4',
+        fontSize:16,
     }
 });
 
-export default ({ navigation }) => {
+export default ({ navigation, route }) => {
     const [loading, setLoading] = React.useState(true);
     const [hasPermission, setHasPermission] = React.useState(false);
     const [selected, setSelected] = React.useState();
@@ -47,21 +68,27 @@ export default ({ navigation }) => {
             setHasPermission(false);
         }
     }
-
     const handleSelected = () => {
-        navigation.navigate('내 정보', { image : selected })
+        navigation.goBack({ photo : selected });
+        route.params.onSelect({ photo : selected });
     }
     React.useEffect(()=>{
-        askPermission(),
-        navigation.setOptions({
-            headerRight:() => 
-            <TouchableWithoutFeedback onPress={handleSelected}>
-                <Text>선택</Text>
-            </TouchableWithoutFeedback>
-        })
+        askPermission()
     }, [])
     return (
     <View style={styles.container}>
+    <StatusBar hidden />
+        <View style={styles.header}>
+            <Text style={styles.headerTitle}>최근 항목</Text>
+            <BackArrow />
+
+            <TouchableWithoutFeedback onPress={handleSelected}>
+                <View style={styles.select}>
+                    <Text style={styles.selectText}>완료</Text>
+                </View>
+           </TouchableWithoutFeedback>
+        </View>
+
         {loading ? (
           <Loader />
         ) : (

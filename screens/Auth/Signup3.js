@@ -60,8 +60,8 @@ export default ({ navigation, route }) => {
         <Text style={styles.text}>성과 이름을 입력해 주세요</Text>
 
         <View style={{flexDirection:"row"}}>
-        <AuthInput {...lastName} placeholder="성" keyboardType="default" autoFocus={true} size={.3}/>
-        <AuthInput {...firstName} placeholder="이름(성 제외)" keyboardType="default" size={.6}/>
+        <AuthInput {...lastName} placeholder="성" keyboardType="default" autoFocus={true} size={.3} editable={!loading}/>
+        <AuthInput {...firstName} placeholder="이름(성 제외)" keyboardType="default" size={.6} editable={!loading}/>
         </View>
         <AuthButton text="다음(3/4단계)" onPress={handleSignUp} loading={loading} />
       </View>

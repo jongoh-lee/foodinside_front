@@ -4,7 +4,6 @@ import { TextInput, ScrollView } from "react-native-gesture-handler";
 import constants from "../../constants";
 import SubButton from "../../components/Custom/SubButton";
 import { AntDesign } from '@expo/vector-icons'; 
-import FindPhotoButton from "../../components/Custom/FindPhotoButton";
 
 const styles = StyleSheet.create({
   container:{
@@ -59,11 +58,11 @@ export default () => {
         <Text style={styles.warning}>가게 사진을 보여주세요, 선정 결과는 이메일/문자로 알려드립니다</Text> 
     
       <View style={styles.imageBox}>
-        <FindPhotoButton />
+        {/* <FindPhotoButton />
 
         <FindPhotoButton />
 
-        <FindPhotoButton />
+        <FindPhotoButton /> */}
       </View>
 
       <View style={styles.imageBox}>
@@ -89,7 +88,7 @@ export default () => {
       <Text style={styles.warning}>영업 사실확인 용도로만 사용됩니다</Text> 
       
       <View style={{flexDirection:"row"}}>
-        <FindPhotoButton />
+        {/* <FindPhotoButton /> */}
 
         <Text style={styles.text}>업종: 일반/ 휴게</Text> 
       </View>

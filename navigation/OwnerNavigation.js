@@ -92,15 +92,15 @@ const Tabs = createBottomTabNavigator();
 function TabsScreen() {
     return (
         <Tabs.Navigator  
-        initialRouteName="채팅" 
+        initialRouteName="달력" 
         tabBarOptions={{
           showLabel: false,
           keyboardHidesTabBar:true,
           }}
         >
-            <Tabs.Screen name='채팅' component={ChatStackScreen}  options={{tabBarIcon:({focused, color })=>(
+            {/* <Tabs.Screen name='채팅' component={ChatStackScreen}  options={{tabBarIcon:({focused, color })=>(
               <NavIcon name={ 'chat' } color={focused? 'black' : color} size={25}/>
-            )}}/>
+            )}}/> */}
             <Tabs.Screen name='달력' component={CalendarStackScreen}  options={{tabBarIcon:({focused, color })=>(
               <NavIcon name={ 'calendar-edit' } color={focused? 'black' : color} size={25}/>
             )}}/>
