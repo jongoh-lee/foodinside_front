@@ -3,6 +3,90 @@ import {StyleSheet, View, Text} from "react-native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import constants from "../../constants";
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'; 
+import { useQuery } from "react-apollo";
+import Loader from "../../components/Custom/Loader";
+import { CHECK_PROFILE } from "./ProfileQueries";
+
+export default ({ navigation }) => {
+  const { data, loading, error, refetch } = useQuery(CHECK_PROFILE);
+  console.log("쿼리데이타:",data)
+ 
+  if(loading) return <Loader />;
+  if(error) return console.log(error);
+
+  return (
+    <View style={styles.container}>
+    {data.checkProfile === 0 &&  (
+      <>
+        <Text style={styles.title}><Text style={{color:"black"}}>프로필</Text> 생성 후 영업 가능합니다</Text>
+        
+        <View style={styles.buttonBox}>
+
+          <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 예시")}>
+            <View style={styles.button}>
+                <MaterialCommunityIcons name="silverware-clean" size={34} color="rgba(0,0,0, .3)" />
+            </View>
+            <Text style={styles.buttonText}>프로필 예시</Text>
+          </TouchableWithoutFeedback>
+
+          <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 신청")}>
+            <View style={styles.button}>
+                <AntDesign name="form" size={34} color="rgba(0,0,0, .3)" />
+            </View>
+            <Text style={styles.buttonText}>프로필 신청</Text>
+          </TouchableWithoutFeedback>
+        </View>
+      </>
+      )}
+
+    {data.checkProfile === 1 &&  (
+      <>
+        <Text style={styles.title}><Text style={{color:"black"}}>프로필</Text> 심사 중 입니다</Text>
+        
+        <View style={styles.buttonBox}>
+
+          <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 예시")}>
+            <View style={styles.button}>
+                <MaterialCommunityIcons name="silverware-clean" size={34} color="rgba(0,0,0, .3)" />
+            </View>
+            <Text style={styles.buttonText}>프로필 예시</Text>
+          </TouchableWithoutFeedback>
+
+          <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 수정")}>
+            <View style={styles.button}>
+                <AntDesign name="form" size={34} color="rgba(0,0,0, .3)" />
+            </View>
+            <Text style={styles.buttonText}>프로필 수정</Text>
+          </TouchableWithoutFeedback>
+        </View>
+      </>
+      )}
+
+    {data.checkProfile === 2 && (
+      <>
+        <Text style={styles.title}>축하합니다! <Text style={{color:"black"}}>프로필</Text>을 완성해주세요</Text>
+        
+        <View style={styles.buttonBox}>
+
+          <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 예시")}>
+            <View style={styles.button}>
+                <MaterialCommunityIcons name="silverware-clean" size={34} color="rgba(0,0,0, .3)" />
+            </View>
+            <Text style={styles.buttonText}>프로필 예시</Text>
+          </TouchableWithoutFeedback>
+
+          <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 완성")}>
+            <View style={styles.button}>
+                <AntDesign name="form" size={34} color="rgba(0,0,0, .3)" />
+            </View>
+            <Text style={styles.buttonText}>프로필 완성</Text>
+          </TouchableWithoutFeedback>
+        </View>
+      </>
+    )}
+    </View>
+)};
+
 
 const styles = StyleSheet.create({
   container:{
@@ -44,28 +128,3 @@ const styles = StyleSheet.create({
       color:'rgba(0,0,0, .6)'
   }
 })
-
-export default ({ navigation }) => {
-  return (
-    <View style={styles.container}>
-        <View style={styles.titleBox}>
-            <Text style={styles.title}><Text style={{color:"black"}}>프로필</Text> 생성 후 영업 가능합니다</Text>
-        </View>
-
-        <View style={styles.buttonBox}>
-            <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 예시")}>
-                <View style={styles.button}>
-                    <MaterialCommunityIcons name="silverware-clean" size={34} color="rgba(0,0,0, .3)" />
-                </View>
-                <Text style={styles.buttonText}>프로필 예시</Text>
-            </TouchableWithoutFeedback>
-
-            <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 신청")}>
-                <View style={styles.button}>
-                    <AntDesign name="form" size={34} color="rgba(0,0,0, .3)" />
-                </View>
-                <Text style={styles.buttonText}>프로필 신청</Text>
-            </TouchableWithoutFeedback>
-        </View>
-    </View>
-)};

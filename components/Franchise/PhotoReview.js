@@ -29,6 +29,6 @@ export default ( {photoReviews} ) => {
                 <Text>음식점 홍보하기</Text>
             </View>
         </TouchableWithoutFeedback>
-        {photoReviews && photoReviews.map((review) => <Image key={review.id} source={{uri:review.image}}/>)}
+        {photoReviews && photoReviews.map((photo) => <Image key={photo.id} style={styles.grid} source={{uri:photo.image}}/>)}
     </View>
 )}

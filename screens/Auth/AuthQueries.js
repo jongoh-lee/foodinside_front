@@ -36,7 +36,7 @@ export const CHECK_EMAIL = gql`
 `;
 
 export const CHECK_USERNAME = gql`
-  mutation checkUsername($username: String!) {
+  query checkUsername($username: String!) {
     checkUsername(username: $username)
   }
 `;

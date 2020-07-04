@@ -9,7 +9,6 @@ import {
 import Animated from 'react-native-reanimated';
 import { FontAwesome5, AntDesign, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useLogOut } from '../AuthContext'
 
 // screens
 import Franchise from '../navigation/FranchiseNavigation';
@@ -40,7 +39,6 @@ const Screens = ({ navigation, style }) => {
 };
 
 const DrawerContent = props => {
-  const logOut = useLogOut();
   return (
     <DrawerContentScrollView {...props} scrollEnabled={false} contentContainerStyle={{ flex: 1 }}>
       <View style={styles.drawerContainer}>
@@ -82,25 +80,6 @@ const DrawerContent = props => {
         </View>
       </View>
 
-      <View>
-        <DrawerItem
-          label="Logout"
-          labelStyle={{ color: 'black' }}
-          icon={() => <AntDesign name="logout" color="black" size={16} />}
-          onPress={() => Alert.alert('확인','로그아웃 하시겠습니까?',
-          [
-            {
-              text: '취소',
-              style: 'cancel',
-            },
-            {text: '확인',
-            onPress: () => logOut(),
-          },
-          ],
-          {cancelable: true},
-          )}
-        />
-      </View>
     </DrawerContentScrollView>
   );
 };

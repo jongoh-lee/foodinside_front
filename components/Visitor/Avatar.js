@@ -33,19 +33,12 @@ const styles = StyleSheet.create({
     },
   });
 
-  export default ({ add=true, image=require("../../assets/Icons/avatarBasic.png") }) => {
+  export default ({ image=require("../../assets/Icons/avatarBasic.png") }) => {
     const navigation = useNavigation();
     return (
         <View>
           <View style={styles.background} >
             <Image source={image} style={styles.avatar} />
-                {add && (
-                    <View style={styles.add}>
-                        <TouchableWithoutFeedback onPress={() => navigation.navigate("SelectPhoto")}>
-                            <Feather name="plus" size={20} color="white" />
-                        </TouchableWithoutFeedback>
-                    </View>
-                )}
           </View>
         </View>
     );

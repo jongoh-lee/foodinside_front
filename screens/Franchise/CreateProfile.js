@@ -9,7 +9,7 @@ import BasicInput from "../../components/Custom/BasicInput";
 import { useMutation } from "@apollo/react-hooks";
 import BasicButton from "../../components/Custom/BasicButton";
 import { YellowBox } from 'react-native';
-import { CREATE_PROFILE } from "./ProfileQueries";
+import { CREATE_PROFILE, CHECK_PROFILE } from "./ProfileQueries";
 
 YellowBox.ignoreWarnings([
   'Non-serializable values were found in the navigation state',
@@ -25,19 +25,28 @@ export default ({ navigation, route }) => {
     setImage(photo)
   };
   const [createProfileMutation] = useMutation(CREATE_PROFILE, {
-    variables:{
-      mainMenu: image? image.photo.uri: null, 
-      foodGuide: conceptInput.value, 
-      career: careerInput.value, 
-      contact: Number(contactInput.value)
-    }
+    update(cache, { data: { createProfile } }) {
+      cache.writeQuery({
+        query: CHECK_PROFILE,
+        data: { checkProfile: createProfile.profileState },
+      });
+    },
+    refetchQueries: [`chechProfile`]
   })
   const handleSubmit = async () => {
     try {
       setLoading(true);
       const {
         data: { createProfile } 
-      } = await createProfileMutation();
+      } = await createProfileMutation({
+        variables:{
+          mainMenu: image? image.photo.uri: null, 
+          foodGuide: conceptInput.value, 
+          career: careerInput.value, 
+          contact: Number(contactInput.value),
+          profileState: 1
+        }
+      });
       console.log(createProfile)
       if ( createProfile ) {
         navigation.navigate("프로필 안내");
@@ -63,7 +72,7 @@ export default ({ navigation, route }) => {
       <View style={styles.textContainer}>
         <Text style={styles.title}>업체 컨셉</Text>
       </View>
-      <BasicInput {...conceptInput} placeholder={`메뉴 설명, 식재료 원산지, 조리과정, 먹는 방법 등 \n대표 메뉴의 스토리를 작성해주세요`} keyboardType="default" autoFocus={true} editable={!loading}/>
+      <BasicInput {...conceptInput} placeholder={`메뉴 설명, 식재료 원산지, 조리과정, 먹는 방법 등 \n대표 메뉴의 스토리를 작성해주세요`} keyboardType="default" editable={!loading}/>
 
       <View style={styles.textContainer_last}>
        <Text style={styles.title}>경력</Text> 

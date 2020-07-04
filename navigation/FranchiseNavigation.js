@@ -29,6 +29,7 @@ import Logo from '../components/Custom/Logo';
 import FranchiseButton from '../components/Franchise/FranchiseButton';
 import ShopHeader from "../components/Franchise/ShopHeader";
 import BackArrow from '../components/Custom/BackArrow';
+import BackWarningArrow from '../components/Custom/BackWarningArrow';
 
 
 const SearchStack = createStackNavigator();
@@ -102,14 +103,12 @@ function ProfileStackScreen() {
     return (
     <ProfileStack.Navigator 
     initialRouteName={lisensed} screenOptions={{ headerTitleStyle:{fontSize:20, fontWeight:'bold'}, headerShown:true}}>
-      <ProfileStack.Screen name="승인" component={MyProfile} options={{
-        headerTitleAlign:"center",
+      <ProfileStack.Screen name="내 프로필" component={MyProfile} options={{
         headerRight:() => <Feather name="more-vertical" size={24} />
       }} />
       <ProfileStack.Screen name="프로필 안내" component={BeforeProfile} options={{
         headerTitle:()=><Logo nav={'공유 음식점'}/>,
         headerRight: () => <FranchiseButton/>,
-        headerTitleAlign:"center"
       }} />
        <ProfileStack.Screen name="프로필 예시" component={ProfileSample} options={{
         headerTitle:()=><Logo nav={'공유 음식점'}/>,
@@ -119,12 +118,10 @@ function ProfileStackScreen() {
       }} />
       <ProfileStack.Screen name="프로필 신청" component={CreateProfile} options={{
         headerTitle:"프로필 신청",
-        headerTitleAlign:"center",
-        headerLeft:()=> <BackArrow />,
+        headerLeft:()=> <BackWarningArrow />,
       }} />
       <ProfileStack.Screen name="프로필 수정" component={EditProfile} options={{
         headerTitle:"프로필 수정",
-        headerTitleAlign:"center",
         headerLeft:()=> <BackArrow />,
       }} />
     </ProfileStack.Navigator>
