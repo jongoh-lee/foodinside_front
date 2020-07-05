@@ -65,7 +65,7 @@ const MapStack = createStackNavigator();
 function MapStackScreen() {
     return (
     <MapStack.Navigator screenOptions={{ cardStyle:{backgroundColor:'#ffffff'}, headerTitleStyle:{fontSize:20, fontWeight:'bold'}}}>
-      <MapStack.Screen name="공유음식점" component={Map2} options={{headerShown:true}}/>
+      <MapStack.Screen name="랜덤 음식점" component={Map2} options={{headerShown:true}}/>
     </MapStack.Navigator>
   );
 }
@@ -125,7 +125,7 @@ function TabScreen() {
           {/* <Tabs.Screen name='피드' component={FeedStackScreen} options={{tabBarIcon: ({ focused, color }) => (
             <FontAwesome5 name='concierge-bell' color={focused? 'black' : color} size={23} />
           )}}/> */}
-          <Tabs.Screen name='공유음식점' component={MapStackScreen} options={{tabBarIcon: ({ focused, color }) => (
+          <Tabs.Screen name='랜덤 음식점' component={MapStackScreen} options={{tabBarIcon: ({ focused, color }) => (
             <FontAwesome5 name='question' color={focused?  'black' : color} size={20} solid/>
           )}}/>
           <Tabs.Screen name='단골' component={FavoriteStackScreen} options={{tabBarIcon: ({ focused, color }) => (

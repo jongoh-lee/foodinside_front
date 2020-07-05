@@ -9,6 +9,7 @@ import { CHECK_PROFILE } from "./ProfileQueries";
 
 export default ({ navigation }) => {
   const { data, loading, error, refetch } = useQuery(CHECK_PROFILE);
+  refetch()
   console.log("쿼리데이타:",data)
  
   if(loading) return <Loader />;
@@ -52,11 +53,11 @@ export default ({ navigation }) => {
             <Text style={styles.buttonText}>프로필 예시</Text>
           </TouchableWithoutFeedback>
 
-          <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 수정")}>
+          <TouchableWithoutFeedback onPress={() => navigation.navigate("심사 중")}>
             <View style={styles.button}>
                 <AntDesign name="form" size={34} color="rgba(0,0,0, .3)" />
             </View>
-            <Text style={styles.buttonText}>프로필 수정</Text>
+            <Text style={styles.buttonText}>프로필 보기</Text>
           </TouchableWithoutFeedback>
         </View>
       </>

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { TouchableWithoutFeedback, ScrollView } from "react-native-gesture-handler";
-import {StyleSheet, View, Text, Image} from "react-native";
+import {StyleSheet, View, Text, Image, SafeAreaView} from "react-native";
 import constants from "../../constants";
 import { AntDesign } from '@expo/vector-icons'; 
 import useInput from "../../hooks/useInput";
@@ -9,26 +9,28 @@ import BasicInput from "../../components/Custom/BasicInput";
 import { useMutation } from "@apollo/react-hooks";
 import BasicButton from "../../components/Custom/BasicButton";
 import { YellowBox } from 'react-native';
-import { CREATE_PROFILE, CHECK_PROFILE } from "./ProfileQueries";
+import { EDIT_PROFILE, MY_PROFILE } from "./ProfileQueries";
 
 YellowBox.ignoreWarnings([
   'Non-serializable values were found in the navigation state',
 ]);
 
 export default ({ navigation, route }) => {
-  const [image, setImage] = React.useState(null);
+  const [image, setImage] = React.useState(route.params.myProfile.mainMenu);
   const [ loading, setLoading ] = React.useState(false);
-  const conceptInput = useInput("");
-  const careerInput = useInput("");
-  const contactInput = numInput("")
+  const conceptInput = useInput(route.params.myProfile.foodGuide);
+  const careerInput = useInput(route.params.myProfile.career);
+  const contactInput = numInput(String(route.params.myProfile.contact));
   const onSelect = (photo) => {
     setImage(photo)
   };
-  const [createProfileMutation] = useMutation(CREATE_PROFILE, {
-    update(cache, { data: { createProfile } }) {
+  const [editProfileMutation] = useMutation(EDIT_PROFILE, {
+    update(cache, { data: { editProfile } }) {
       cache.writeQuery({
-        query: CHECK_PROFILE,
-        data: { checkProfile: createProfile.profileState },
+        query: MY_PROFILE,
+        data: {
+            myProfile: {...editProfile}
+        },
       });
     },
     refetchQueries: [`chechProfile`]
@@ -37,19 +39,18 @@ export default ({ navigation, route }) => {
     try {
       setLoading(true);
       const {
-        data: { createProfile } 
-      } = await createProfileMutation({
+        data: { editProfile } 
+      } = await editProfileMutation({
         variables:{
-          mainMenu: image? image.photo.uri: null, 
+          mainMenu: image.photo? image.photo.uri : image, 
           foodGuide: conceptInput.value, 
           career: careerInput.value, 
           contact: String(contactInput.value),
-          profileState: 1
         }
       });
-      console.log(createProfile)
-      if ( createProfile ) {
-        navigation.navigate("프로필 안내");
+      console.log(editProfile)
+      if ( editProfile ) {
+        navigation.goBack();
       }
     } catch (e) {
       console.log('프로필 에러:', e);
@@ -59,6 +60,7 @@ export default ({ navigation, route }) => {
   }
 
   return (
+  <SafeAreaView>
   <ScrollView showsVerticalScrollIndicator={false}>
     <View style={styles.container}>
 
@@ -66,7 +68,7 @@ export default ({ navigation, route }) => {
         <Text style={styles.title}>대표 메뉴</Text>
       </View>
       <TouchableWithoutFeedback style={styles.imageInput} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelect})}>
-        {image === null? <AntDesign name="plus" size={30} color="black" /> : <Image style={styles.image} source={{uri: image.photo.uri}}/>}
+            <Image style={styles.image} source={image.photo? {uri:image.photo.uri} : {uri: image}}/>
       </TouchableWithoutFeedback>
 
       <View style={styles.textContainer}>
@@ -89,6 +91,7 @@ export default ({ navigation, route }) => {
       <BasicButton text={'제출하기'} onPress={handleSubmit} disabled={image && conceptInput.value && contactInput.value && careerInput.value? false : true} loading={loading}/>
     </View>
   </ScrollView>
+  </SafeAreaView>
 )};
 
 const styles = StyleSheet.create({

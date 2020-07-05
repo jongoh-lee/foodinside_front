@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, View, Image, ScrollView, Text, Button, StatusBar } from "react-native";
+import { StyleSheet, View, Image, ScrollView, Text, Platform, StatusBar, SafeAreaView } from "react-native";
 import * as Permissions from "expo-permissions";
 import * as MediaLibrary from "expo-media-library";
 import Loader from "../components/Custom/Loader";
@@ -11,6 +11,7 @@ import BackArrow from "../components/Custom/BackArrow";
 const styles = StyleSheet.create({
     container:{
         flex:1,
+        backgroundColor:'#ffffff'
     },
     header:{
         flexDirection:"row",
@@ -18,7 +19,7 @@ const styles = StyleSheet.create({
         borderBottomWidth:1,
         borderBottomColor:"rgba(0, 0, 0, .1)",
         alignItems:"center",
-        justifyContent:"space-between"
+        justifyContent:"space-between",
     },
     headerTitle:{
         fontSize:18,
@@ -76,9 +77,9 @@ export default ({ navigation, route }) => {
         askPermission()
     }, [])
     return (
-    <View style={styles.container}>
-    <StatusBar hidden />
-        <View style={styles.header}>
+    <SafeAreaView style={styles.container}>
+    
+        <View style={[styles.header, {marginTop:Platform.OS === 'android' ? StatusBar.currentHeight : 0}]}>
             <Text style={styles.headerTitle}>최근 항목</Text>
             <BackArrow />
 
@@ -119,6 +120,6 @@ export default ({ navigation, route }) => {
             ) : null }
         </View>
         )}
-    </View>
+    </SafeAreaView>
     );
 };
