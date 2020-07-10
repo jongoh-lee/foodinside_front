@@ -10,7 +10,7 @@ export default () => {
         <TouchableOpacity onPress={()=> (
             Alert.alert(
                 '주의',
-                '작성중인 내용이 저장되지 않습니다.',
+                '변경된 내용이 저장되지 않습니다.',
                 [
                   {
                     text: '취소',

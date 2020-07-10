@@ -28,15 +28,17 @@ const AuthInput = ({
   returnKeyType = "send",
   autoFocus = false,
   size = 0.9,
-  editable=true
+  editable=true,
+  padding=15,
+  borderColor="#05e6f4",
 }) => (
   <View style={styles.container}>
     <TextInput style={{
       width:constants.width * size,
-      padding: 15,
+      padding: padding,
       backgroundColor: "#F9F9F9",
       borderBottomWidth:1,
-      borderColor: "#05e6f4",
+      borderColor: borderColor,
       borderRadius:6
     }}
       onChangeText={onChange}
@@ -66,7 +68,9 @@ AuthInput.propTypes = {
   returnKeyType: PropTypes.oneOf(["done", "go", "next", "search", "send"]),
   onChange: PropTypes.func.isRequired,
   size: PropTypes.number,
-  editable: PropTypes.bool
+  editable: PropTypes.bool,
+  padding: PropTypes.number,
+  borderColor: PropTypes.oneOf(["#05e6f4", "#666", "white"])
 };
 
 export default AuthInput;

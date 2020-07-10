@@ -2,25 +2,29 @@ import * as React from "react";
 import { TouchableWithoutFeedback, ScrollView } from "react-native-gesture-handler";
 import {StyleSheet, View, Text, Image, SafeAreaView} from "react-native";
 import constants from "../../constants";
-import { AntDesign } from '@expo/vector-icons'; 
 import useInput from "../../hooks/useInput";
 import numInput from "../../hooks/numInput";
 import BasicInput from "../../components/Custom/BasicInput";
+import AuthInput from "../../components/Custom/AuthInput";
 import { useMutation } from "@apollo/react-hooks";
 import BasicButton from "../../components/Custom/BasicButton";
 import { YellowBox } from 'react-native';
 import { EDIT_PROFILE, MY_PROFILE } from "./ProfileQueries";
+import { RadioButton, } from "react-native-paper";
 
 YellowBox.ignoreWarnings([
   'Non-serializable values were found in the navigation state',
 ]);
 
 export default ({ navigation, route }) => {
-  const [image, setImage] = React.useState(route.params.myProfile.mainMenu);
+  const [image, setImage] = React.useState(route.params.myProfile.menuImage);
   const [ loading, setLoading ] = React.useState(false);
   const conceptInput = useInput(route.params.myProfile.foodGuide);
   const careerInput = useInput(route.params.myProfile.career);
   const contactInput = numInput(String(route.params.myProfile.contact));
+  const menuNameInput = useInput(route.params.myProfile.menuName);
+  const salePriceInput = numInput(String(route.params.myProfile.salePrice));
+  const [sector, setSector] = React.useState(route.params.myProfile.sector);
   const onSelect = (photo) => {
     setImage(photo)
   };
@@ -42,18 +46,20 @@ export default ({ navigation, route }) => {
         data: { editProfile } 
       } = await editProfileMutation({
         variables:{
-          mainMenu: image.photo? image.photo.uri : image, 
+          menuImage: image.photo? image.photo.uri : image, 
           foodGuide: conceptInput.value, 
           career: careerInput.value, 
           contact: String(contactInput.value),
+          menuName: menuNameInput.value,
+          salePrice: Number(salePriceInput.value),
+          sector: sector,
         }
       });
-      console.log(editProfile)
       if ( editProfile ) {
         navigation.goBack();
       }
     } catch (e) {
-      console.log('프로필 에러:', e);
+      console.log('프로필 수정 에러:', e);
     } finally {
       setLoading(false)
     }
@@ -68,8 +74,32 @@ export default ({ navigation, route }) => {
         <Text style={styles.title}>대표 메뉴</Text>
       </View>
       <TouchableWithoutFeedback style={styles.imageInput} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelect})}>
-            <Image style={styles.image} source={image.photo? {uri:image.photo.uri} : {uri: image}}/>
+        <Image style={styles.image} source={image.photo? {uri:image.photo.uri} : {uri: image}}/>
       </TouchableWithoutFeedback>
+
+      <View style={styles.action}>
+        <Text style={{fontWeight:'bold'}}>메뉴 이름:  </Text> 
+        <AuthInput {...menuNameInput} placeholder={"메뉴 이름"} size={0.5} padding={5} borderColor={'white'}/>
+      </View>
+
+      <View style={styles.action}>
+        <Text style={{fontWeight:'bold'}}>희망 가격:  </Text> 
+        <AuthInput {...salePriceInput} placeholder={"희망가격"} size={0.5} padding={5} borderColor={'white'}/>
+      </View>
+
+      <View style={styles.action}>
+        <Text style={{fontWeight:'bold'}}>업종:  </Text> 
+        <RadioButton.Group onValueChange={sector => setSector(sector)} value={sector}>
+          <View style={{flexDirection:"row", alignItems:"center"}}>
+            <RadioButton value="일반" color={'#05e6f4'} uncheckedColor={'rgba(5, 230, 244, .3)'}/>
+            <Text>일반 음식점</Text>
+          </View>
+          <View style={{flexDirection:"row", alignItems:"center"}}>
+            <RadioButton value="휴게" color={'#05e6f4'} uncheckedColor={'rgba(5, 230, 244, .3)'}/>
+            <Text>휴게 음식점</Text>
+          </View>
+        </RadioButton.Group>
+      </View>
 
       <View style={styles.textContainer}>
         <Text style={styles.title}>업체 컨셉</Text>
@@ -149,5 +179,11 @@ const styles = StyleSheet.create({
     borderRadius:20,
     padding:15,
     justifyContent:'flex-start'
+  },
+  action: {
+    flexDirection: 'row',
+    marginTop: 10,
+    marginBottom: 10,
+    alignItems:"center"
   },
 })

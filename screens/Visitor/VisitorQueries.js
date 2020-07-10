@@ -13,3 +13,13 @@ export const ME = gql`
         }
     }
 `;
+
+export const EDIT_USER = gql`
+    mutation editUser($username:String!, $avatar:String){
+        editUser(username:$username, avatar:$avatar){
+            id
+            username
+            avatar
+        }
+    }
+`;

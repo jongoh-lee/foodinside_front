@@ -1,44 +1,44 @@
-export const shopProfile = {
+export const profile = {
     id:"1234",
     username:"jongohLee",
     region:"",
     isOpen: false,
     shopName: "큐슈 고쿠리",
     sort: "일식",
-    mainImage:"https://pgnqdrjultom1827145.cdn.ntruss.com/img/51/ea/51ea7dca83ff797cfbd36c39957bfb6c0bf2f53f7065db799d18575d97d460b1_v1.jpg",
+    signBoard:"https://pgnqdrjultom1827145.cdn.ntruss.com/img/51/ea/51ea7dca83ff797cfbd36c39957bfb6c0bf2f53f7065db799d18575d97d460b1_v1.jpg",
     mainMenu:{
         id:"sdsd",
         menuName:"큐슈 라멘",
-        image: "https://t1.daumcdn.net/cfile/tistory/99E8504C5C0A665834",
+        menuImage: "https://t1.daumcdn.net/cfile/tistory/99E8504C5C0A665834",
         fullPrice: "8,500",
         salePrice: "7,000"
     },
     subMenu:[
         {
             id:"b123",
-            name:"큐슈 카라멘",
-            image:"https://img.hankyung.com/photo/201903/BF.19132284.1.jpg",
+            menuName:"큐슈 카라멘",
+            menuImage:"https://img.hankyung.com/photo/201903/BF.19132284.1.jpg",
             fullPrice:"8,400",
             salePrice: "7,500"
         },
         {
             id:"b124",
-            name:"큐슈 돈코츠라멘",
-            image:"https://m.atemshop.com/web/product/big/201907/8996ae614ea5343038ec2a22eb5c20c7.jpg",
+            menuName:"큐슈 돈코츠라멘",
+            menuImage:"https://m.atemshop.com/web/product/big/201907/8996ae614ea5343038ec2a22eb5c20c7.jpg",
             fullPrice:"8,800",
             salePrice: "7,500"
         },
         {
             id:"b125",
-            name:"마차 가츠동",
-            image:"https://culture.lottemart.com/files/culture/LMC/Storage/attach/Lecture/2018/07/201803413360131176613_IMG.JPG",
+            menuName:"마차 가츠동",
+            menuImage:"https://culture.lottemart.com/files/culture/LMC/Storage/attach/Lecture/2018/07/201803413360131176613_IMG.JPG",
             fullPrice:"8,700",
             salePrice: "7,500"
         },
         {
             id:"b126",
-            name:"마차 규동",
-            image:"https://rimage.gnst.jp/livejapan.com/public/article/detail/a/00/01/a0001501/img/basic/a0001501_main.jpg?20180808224201&q=80&rw=750&rh=536",
+            menuName:"마차 규동",
+            menuImage:"https://rimage.gnst.jp/livejapan.com/public/article/detail/a/00/01/a0001501/img/basic/a0001501_main.jpg?20180808224201&q=80&rw=750&rh=536",
             fullPrice:"8,900",
             salePrice: "8,000"
         },

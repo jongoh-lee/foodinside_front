@@ -1,6 +1,6 @@
 import * as React from "react";
-import { ScrollView } from "react-native-gesture-handler";
-import {StyleSheet, View, Text, Image, SafeAreaView} from "react-native";
+import { ScrollView, TouchableWithoutFeedback } from "react-native-gesture-handler";
+import {StyleSheet, View, Text, Image, SafeAreaView, AsyncStorage} from "react-native";
 import constants from "../../constants";
 import { useQuery } from "@apollo/react-hooks";
 import BasicButton from "../../components/Custom/BasicButton";
@@ -13,9 +13,17 @@ YellowBox.ignoreWarnings([
 ]);
 
 export default ({ navigation, route }) => {
-  const {data, loading, error} = useQuery(MY_PROFILE);
+  const {data, loading, error, refetch} = useQuery(MY_PROFILE);
   navigation.setOptions({
-    headerRight:() => (<Text>hi1</Text>, <Text>hi2</Text>)
+    headerRight:() => (
+    <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 수정(pre)",{
+      myProfile:data.myProfile
+    })}>
+      <View style={styles.edit}>
+        <Text style={styles.editText}>수정</Text>
+      </View>
+    </TouchableWithoutFeedback>
+    )
   })
   
   if (loading) return <Loader />;
@@ -28,8 +36,22 @@ export default ({ navigation, route }) => {
       <View style={styles.textContainer}>
         <Text style={styles.title}>대표 메뉴</Text>
       </View>
-      <Image style={styles.image} source={{uri: data.myProfile.mainMenu}} />
+      <Image style={styles.image} source={{uri: data.myProfile.menuImage}} />
 
+      <View style={styles.action}>
+        <Text style={{fontWeight:'bold'}}>메뉴 이름:  </Text> 
+        <Text style={styles.text}>{data.myProfile.menuName}</Text>
+      </View>
+
+      <View style={styles.action}>
+        <Text style={{fontWeight:'bold'}}>희망 가격:  </Text> 
+        <Text style={styles.text}>{data.myProfile.salePrice}</Text>
+      </View>
+
+      <View style={styles.action}>
+        <Text style={{fontWeight:'bold'}}>업종:  </Text> 
+        <Text style={styles.text}>{data.myProfile.sector} 음식점</Text>
+      </View>
 
       <View style={styles.textContainer}>
         <Text style={styles.title}>업체 컨셉</Text>
@@ -49,9 +71,6 @@ export default ({ navigation, route }) => {
       <Text style={styles.text}>{data.myProfile.contact}</Text>
       
       <BasicButton text={'확인'} onPress={() => navigation.goBack()} />
-      <BasicButton text={'수정하기'} onPress={() => navigation.navigate('프로필 수정(pre)',{
-        myProfile: data.myProfile
-      })} />
     </View>}
   </ScrollView>
 )};
@@ -60,6 +79,13 @@ const styles = StyleSheet.create({
   container:{
     flex:1,
     alignItems:'center',
+  },
+  edit:{
+    paddingHorizontal:5
+  },
+  editText:{
+    color:'#05e6f4',
+    fontSize:16,
   },
   image:{
     width:constants.width * 0.25,
@@ -90,10 +116,17 @@ const styles = StyleSheet.create({
   text:{
     flex:1,
     fontSize:14,
-    width:constants.width * 0.9,
+    width:constants.width * .9,
     backgroundColor:'white',
     borderRadius:20,
     padding:15,
     justifyContent:'flex-start'
+  },
+  action: {
+    flexDirection: 'row',
+    width:constants.width * .9,
+    marginTop: 10,
+    marginBottom: 10,
+    alignItems:"center"
   },
 })

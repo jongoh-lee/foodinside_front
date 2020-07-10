@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   container:{
     backgroundColor:"white",
   },
-  mainImage:{
+  signBoard:{
     width: constants.width,
     height: constants.height / 4,
     resizeMode:"cover",
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ({ mainImage, mainMenu, subMenu, foodGuide, origin, dangol, posts, comments, photoReviews, point, openInfo, team}) => {
+export default ({ signBoard, mainMenu, subMenu, foodGuide, origin, dangol, posts, comments, photoReviews, point, openInfo, team}) => {
   const [showGuide, setShowGuide] = React.useState(false);
   const [tabName, setTabName] = React.useState('포토리뷰');
   return (
@@ -99,14 +99,14 @@ export default ({ mainImage, mainMenu, subMenu, foodGuide, origin, dangol, posts
       stickyHeaderIndices={[2]} 
       showsVerticalScrollIndicator={false}
       >
-      <Image style={styles.mainImage} source={{uri:mainImage}}/>
+      <Image style={styles.signBoard} source={{uri:signBoard}}/>
       
       {/* 메뉴 수평 스크롤 */}
       <View style={styles.subContainer}>
         <ScrollView style={styles.menuScroll} showsHorizontalScrollIndicator={false} horizontal>
           <View style={styles.menuContainer}>
             <Text style={styles.menuName} numberOfLines={1}>{mainMenu.menuName}</Text>
-            <Image style={styles.menuImage} source={{uri:mainMenu.image}}/>
+            <Image style={styles.menuImage} source={{uri:mainMenu.menuImage}}/>
 
             <View style={styles.priceBox}>
                 <Text style={styles.fullPrice}>{mainMenu.fullPrice}</Text>
@@ -116,8 +116,8 @@ export default ({ mainImage, mainMenu, subMenu, foodGuide, origin, dangol, posts
 
           {subMenu && subMenu.map((menu) => (
           <View key={menu.id} style={styles.menuContainer}>
-            <Text style={styles.menuName} numberOfLines={1}>{menu.name}</Text>
-            <Image style={styles.menuImage} source={{uri:menu.image}}/>
+            <Text style={styles.menuName} numberOfLines={1}>{menu.menuName}</Text>
+            <Image style={styles.menuImage} source={{uri:menu.menuImage}}/>
 
             <View style={styles.priceBox}>
                 <Text style={styles.fullPrice}>{menu.fullPrice}</Text>

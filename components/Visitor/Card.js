@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         overflow:"hidden",
     },
-    mainImage:{
+    signBoard:{
         width: WIDTH ,
         height: constants.height / 4,
         resizeMode:"cover",
@@ -132,20 +132,20 @@ const styles = StyleSheet.create({
 })
 
 // 내 정보 중 단골 업체 정보와 해당 업체의 단골/ 포스팅 수 + 내 포스팅 수 + 좋아요 수 + 적립 포인트
-export default ({ mainImage, subMenu, shopName, sort, mainMenu }) => {
-    const { menuName, image, fullPrice, salePrice } = mainMenu;
+export default ({ signBoard, subMenu, shopName, sort, mainMenu }) => {
+    const { menuName, menuImage, fullPrice, salePrice } = mainMenu;
     const [logoBtn, setLogoBtn] = React.useState(false);
     return (
         <View style={styles.container}>
             <View style={styles.mainCard}>
-                <ImageBackground source={{uri:mainImage}} style={styles.mainImage}>
+                <ImageBackground source={{uri:signBoard}} style={styles.signBoard}>
                     <View style={styles.layer}>
                 
                         <ScrollView >
                             <View style={styles.menuBar}>
                                 <View style={styles.menuContainer}>
                                     <Text style={styles.menuName} numberOfLines={1}>{menuName}</Text>
-                                    <Image style={styles.menuImage} source={{uri:image}}/>
+                                    <Image style={styles.menuImage} source={{uri:menuImage}}/>
                                     <View style={styles.priceBox}>
                                         <Text style={styles.fullPrice}>{fullPrice}</Text>
                                         <Text style={styles.salePrice}>{salePrice}</Text>
@@ -153,8 +153,8 @@ export default ({ mainImage, subMenu, shopName, sort, mainMenu }) => {
                                 </View>
                                 {subMenu && subMenu.map((menu) => (
                                     <View key={menu.id} style={styles.menuContainer}>
-                                      <Text style={styles.menuName} numberOfLines={1}>{menu.name}</Text>
-                                      <Image style={styles.menuImage} source={{uri:menu.image}}/>
+                                      <Text style={styles.menuName} numberOfLines={1}>{menu.menuName}</Text>
+                                      <Image style={styles.menuImage} source={{uri:menu.menuImage}}/>
                                       <View style={styles.priceBox}>
                                           <Text style={styles.fullPrice}>{menu.fullPrice}</Text>
                                           <Text style={styles.salePrice}>{menu.salePrice}</Text>

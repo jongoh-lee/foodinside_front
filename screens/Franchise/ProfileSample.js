@@ -1,6 +1,6 @@
 import * as React from "react";
 import {StyleSheet, View} from "react-native";
-import { shopProfile } from "../../components/Franchise/data";
+import { profile } from "../../components/Franchise/data";
 import MenuInfo from "../../components/Franchise/MenuInfo";
 import ShopHeader from "../../components/Franchise/ShopHeader";
 
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 });
 
 export default ({ navigation }) => {
-  const { shopName, sort } = shopProfile;
+  const { shopName, sort } = profile;
   React.useEffect(()=>{
     if(shopName && sort) {
       navigation.setOptions({
@@ -23,6 +23,6 @@ export default ({ navigation }) => {
     }, [])
   return (
       <View style={styles.container}>
-        <MenuInfo {...shopProfile}/>
+        <MenuInfo {...profile}/>
       </View>
 )};

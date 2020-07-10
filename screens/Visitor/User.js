@@ -2,7 +2,7 @@ import { ScrollView, TouchableWithoutFeedback } from "react-native-gesture-handl
 import * as React from "react";
 import { Image, StyleSheet, Text, View, RefreshControl, TouchableOpacity, Alert } from "react-native";
 import { Avatar, Title, Caption } from "react-native-paper";
-import { shopProfile } from "../../components/Franchise/data";
+import { profile } from "../../components/Franchise/data";
 import constants from "../../constants";
 import { Feather, MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 import Modal from "react-native-modal";
@@ -26,14 +26,13 @@ import { useLogOut } from "../../AuthContext";
           </TouchableWithoutFeedback>
         )
     });
-
     if(loading) return <Loader/>;
     if(error) return console.log(error);
 
     return (
     <>
     {data && data.me &&
-    <ScrollView showsVerticalScrollIndicator={false} refreshControl={<RefreshControl onRefresh={() => refetch()} />}>
+    <ScrollView showsVerticalScrollIndicator={false} >
     <View style={styles.container}>
         
 
@@ -77,7 +76,7 @@ import { useLogOut } from "../../AuthContext";
 
     {/* 리뷰 리스트 */}
     <View style={{flexDirection:"row", flexWrap:"wrap"}}>
-        {shopProfile.photoReviews.map((photo) => <Image key={photo.id} style={{width: constants.width / 3 - 2, height: constants.width / 3 - 2, margin:1}} source={{uri:photo.image}} />)}
+        {profile.photoReviews.map((photo) => <Image key={photo.id} style={{width: constants.width / 3 - 2, height: constants.width / 3 - 2, margin:1}} source={{uri:photo.image}} />)}
     </View>
 
     </ScrollView>}

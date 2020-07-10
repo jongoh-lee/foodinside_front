@@ -13,40 +13,41 @@ import BasicButton from '../../components/Custom/BasicButton';
 import { ScrollView } from 'react-native-gesture-handler';
 import strickInput from '../../hooks/strickInput';
 import useInput from '../../hooks/useInput';
-import { useQuery } from "@apollo/react-hooks";
-import { CHECK_EMAIL, CHECK_USERNAME } from '../Auth/AuthQueries';
+import { useQuery, useMutation } from "@apollo/react-hooks";
+import { EDIT_USER, ME } from './VisitorQueries';
+import constants from '../../constants';
 
 export default ({ navigation, route }) => {
     const [avatar, setAvatar] = React.useState(route.params.avatar? route.params.avatar : require('../../assets/Icons/avatarBasic.png'));
-    const [alert, setAlert] = React.useState("");
-    const [color, setColor] = React.useState('warn');
-    const [edit, setEdit] = React.useState(true)
+    const [loading, setLoading] = React.useState(false)
     const usernameInput = strickInput(route.params.username);
-    const email = useInput(route.params.email);
-    const { value: username } = usernameInput;
-    const { value: editEmail } = email;
-    
+    const { value: username } = usernameInput;    
     const onSelect = (image) => {
       setAvatar(image.photo.uri)
     };
-    const { data, error } = useQuery(CHECK_USERNAME, {
-      variables:{
-        username: username
-      }
-    });
+    const [editUserMutation, {error}] = useMutation(EDIT_USER)
 
-    React.useEffect(()=>{
-      if(username.length > 1 && data && data.checkUsername){
-        setColor('pass')
-        setAlert("사용 가능한 아이디 입니다")
-      } else {
-        setColor('warn')
-        setAlert("사용할 수 없는 아이디 입니다")
+    const handleEdit = async () => {
+      try {
+        setLoading(true);
+        const {
+          data: { editUser }
+        } = await editUserMutation({
+          variables: {
+            username: username,
+            avatar: avatar,
+            email: route.params.email
+          }
+        });
+      if( editUser ){
+        navigation.goBack();
+        }
+      } catch(e){
+      console.log(error);
+      } finally {
+        setLoading(false)
       }
-      if(username === ""){
-        setAlert("")
-      }
-    }, [route.params.username ==! username])
+    }
     return (
     <View style={styles.container}>
       <DismissKeyboard>
@@ -92,27 +93,39 @@ export default ({ navigation, route }) => {
           </TouchableOpacity>
 
           <Text style={{marginTop: 10, fontSize: 18, fontWeight: 'bold'}}>
-            {username.value}
+            {username}
           </Text>
         </View>
 
         <View style={styles.action}>
           <FontAwesome name="user-o" size={20} />
-          <BasicInput {...username} placeholder={'아이디'} keyboardType="default"/>
-          <Text style={color === 'warn'? {fontSize:10, color:"red", paddingLeft:5} : {fontSize:10, color:"green", paddingLeft:5}}>{alert}</Text>
+          <View>
+          <BasicInput {...usernameInput} placeholder={'아이디'} keyboardType="default"/>
+          {error ? <Text style={{fontSize:10, color:"red", paddingLeft:10, marginTop:-15}}>사용할 수 없는 아이디 입니다</Text>: null}
+          </View>
         </View>
         
-        <View style={styles.action}>
-          <FontAwesome name="envelope-o" size={20} />
-          <BasicInput {...email} placeholder={'이메일'} keyboardType="default"/>
-        </View>
 
         <View style={styles.action}>
           <Feather name="phone" size={20} />
           <BasicInput placeholder={'연락처'} keyboardType="default"/>
         </View>
 
-        <BasicButton text={'수정하기'}/>
+        <View style={styles.action}>
+          <FontAwesome name="envelope-o" size={20} />
+          <BasicInput style={{
+                fontSize:14,
+                width:constants.width * 0.9,
+                color:'#666',
+                backgroundColor:'white',
+                borderRadius:20,
+                padding:15,
+                justifyContent:'flex-start',
+                }} 
+              placeholder={route.params.email} editable={false}/>
+        </View>
+
+        <BasicButton text={'수정하기'} disabled={(avatar === route.params.avatar || avatar === require('../../assets/Icons/avatarBasic.png')) && route.params.username === username} onPress={handleEdit} loading={loading}/>
 
         </ScrollView>
       </DismissKeyboard>

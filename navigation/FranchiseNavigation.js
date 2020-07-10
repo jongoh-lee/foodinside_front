@@ -15,7 +15,7 @@ import ShopDetail from "../screens/Franchise/ShopDetail";
 
 import ProfileSample from "../screens/Franchise/ProfileSample";
 import MyProfile from "../screens/Franchise/MyProfile";
-import EditProfile from "../screens/Franchise/EditProfile";
+import CompleteProfile from "../screens/Franchise/CompleteProfile";
 import EditPreProfile from "../screens/Franchise/EditPreProfile";
 import BeforeProfile from '../screens/Franchise/BeforeProfile';
 
@@ -124,8 +124,9 @@ function ProfileStackScreen() {
         headerLeft:()=> <BackArrow />,
         headerTitleAlign:"center"
       }} />
-      <ProfileStack.Screen name="프로필 수정" component={EditProfile} options={{
-        headerTitle:"프로필 수정",
+      <ProfileStack.Screen name="프로필 완성" component={CompleteProfile} options={{
+        headerTitle:"프로필 완성",
+        headerTitleAlign:"center",
         headerLeft:()=> <BackArrow />,
       }} />
     </ProfileStack.Navigator>

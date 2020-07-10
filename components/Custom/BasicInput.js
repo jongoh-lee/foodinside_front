@@ -4,7 +4,7 @@ import {StyleSheet, View } from "react-native";
 import PropTypes from "prop-types";
 import constants from "../../constants";
 
-
+const WIDTH = constants.width;
 const styles=StyleSheet.create({
   container:{
     marginBottom:5
@@ -21,16 +21,17 @@ const BasicInput = ({
   autoFocus = false,
   size = 0.9,
   editable=true,
-  multiline=true
+  multiline=true,
+  padding=15
 }) => (
   <View style={styles.container}>
     <TextInput style={{
       fontSize:14,
-      width:constants.width * size,
+      width:WIDTH * size,
       backgroundColor:'white',
       borderRadius:20,
-      padding:15,
-      justifyContent:'flex-start'
+      padding:padding,
+      justifyContent:'flex-start',
     }}
       onChangeText={onChange}
       keyboardType={keyboardType}
@@ -61,7 +62,8 @@ BasicInput.propTypes = {
   onChange: PropTypes.func.isRequired,
   size: PropTypes.number,
   editable: PropTypes.bool,
-  multiline: PropTypes.bool
+  multiline: PropTypes.bool,
+  padding: PropTypes.number
 };
 
 export default BasicInput;

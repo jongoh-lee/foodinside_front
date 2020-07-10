@@ -7,4 +7,5 @@ export default {
     blueColor: "#3897f0",
     darkBlueColor: "#003569",
     basicBlue: "#05e6f4",
+    basicBlue_opacity:"rgba(5, 230, 244, .3)",
   };

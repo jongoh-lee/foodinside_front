@@ -2,7 +2,6 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import * as React from "react";
 import {StyleSheet, Text, ActivityIndicator } from "react-native";
 import PropTypes from "prop-types";
-import constants from "../../constants";
 
 const styles=StyleSheet.create({
   container:{
@@ -10,14 +9,14 @@ const styles=StyleSheet.create({
     padding:15,
     marginVertical:15,
     borderRadius:6,
-    width:constants.width *  0.9
+    width:'100%'
   },
   container_disabled:{
     backgroundColor:"rgba(5, 230, 244, .4)",
     padding:15,
     marginVertical:15,
     borderRadius:6,
-    width:constants.width *  0.9
+    width:'100%'
   },
   text:{
     color:"white",

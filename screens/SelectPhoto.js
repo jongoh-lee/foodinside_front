@@ -5,7 +5,6 @@ import * as MediaLibrary from "expo-media-library";
 import Loader from "../components/Custom/Loader";
 import constants from "../constants";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import SubmitPhotoButton from "../components/Custom/SubmitPhotoButton";
 import BackArrow from "../components/Custom/BackArrow";
 
 const styles = StyleSheet.create({
