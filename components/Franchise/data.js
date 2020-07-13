@@ -10,37 +10,37 @@ export const profile = {
         id:"sdsd",
         menuName:"큐슈 라멘",
         menuImage: "https://t1.daumcdn.net/cfile/tistory/99E8504C5C0A665834",
-        fullPrice: "8,500",
-        salePrice: "7,000"
+        fullPrice: "8500",
+        salePrice: "7000"
     },
     subMenu:[
         {
             id:"b123",
             menuName:"큐슈 카라멘",
             menuImage:"https://img.hankyung.com/photo/201903/BF.19132284.1.jpg",
-            fullPrice:"8,400",
-            salePrice: "7,500"
+            fullPrice:"8400",
+            salePrice: "7500"
         },
         {
             id:"b124",
             menuName:"큐슈 돈코츠라멘",
             menuImage:"https://m.atemshop.com/web/product/big/201907/8996ae614ea5343038ec2a22eb5c20c7.jpg",
-            fullPrice:"8,800",
-            salePrice: "7,500"
+            fullPrice:"8800",
+            salePrice: "7500"
         },
         {
             id:"b125",
             menuName:"마차 가츠동",
             menuImage:"https://culture.lottemart.com/files/culture/LMC/Storage/attach/Lecture/2018/07/201803413360131176613_IMG.JPG",
-            fullPrice:"8,700",
-            salePrice: "7,500"
+            fullPrice:"8700",
+            salePrice: "7500"
         },
         {
             id:"b126",
             menuName:"마차 규동",
             menuImage:"https://rimage.gnst.jp/livejapan.com/public/article/detail/a/00/01/a0001501/img/basic/a0001501_main.jpg?20180808224201&q=80&rw=750&rh=536",
-            fullPrice:"8,900",
-            salePrice: "8,000"
+            fullPrice:"8900",
+            salePrice: "8000"
         },
     ],
     point:10,
@@ -175,21 +175,21 @@ export const profile = {
             image:"https://secure.i.telegraph.co.uk/multimedia/archive/03536/Yuki_Onishi_prepar_3536086b.jpg",
             name:"야마구치",
             position:"사장님",
-            career:"sdf \nfdfd \ndfdf \nd dfd \ndfdf \ndfdfd \ndfdfd \ndfdfdf \ndfdfdfd \ndfdfd \ndfdfdf \ndfdfd"
+            career:"2007년 요리 입문 \nOO대학교 호텔조리학과 졸업 \n2년간의 군 취사병 경력 \n4종 이상의 자격증 보유(한식, 양식, 일식, 중식) \n현재 외식업체 운영 중 \n오사카 현지에서 라멘 비법 직접 전수받음"
         },
         {
             id:"df",
             image:"https://i.pinimg.com/originals/98/4b/80/984b80d8e54f27ea18a1a7060bd9e721.jpg",
             name:"히메지",
             position:"주방장",
-            career:"sdf"
+            career:"2010년 요리 입문 \n일식 종사 경력 10년 이상"
         },
         {
             id:"2esd",
             image:"https://www.mercurynews.com/wp-content/uploads/2018/06/SJM-L-NAGI-0628-01.jpg?w=620",
             name:"라이토",
             position:"홀/서빙",
-            career:"sdf"
+            career:"분위기 메이커입니다. \n잘부탁드립니다"
         },
     ]
 }

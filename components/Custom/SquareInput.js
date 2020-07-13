@@ -17,7 +17,8 @@ const SquareInput = ({
   editable=true,
   padding=5,
   width='100%',
-  multiline=false
+  multiline=false,
+  maxHeight=150
 }) => {
     return (
         <View style={{width:width}}>
@@ -38,6 +39,7 @@ const SquareInput = ({
             editable={editable}
             blurOnSubmit={true}
             multiline={multiline}
+            maxHeight={maxHeight}
             />
         </View>
     )
@@ -62,7 +64,8 @@ SquareInput.propTypes = {
   padding: PropTypes.number,
   borderColor: PropTypes.oneOf(["#05e6f4", "#666", "white"]),
   width: PropTypes.string,
-  multiline: PropTypes.bool
+  multiline: PropTypes.bool,
+  maxHeight: PropTypes.number
 };
 
 export default SquareInput;

@@ -8,11 +8,20 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 //screens
 import Calendar from '../screens/Owner/Calendar';
 import ChatList from '../screens/Owner/ChatList';
-import ShopCheck from '../screens/Owner/ShopCheck';
 import Chat from '../screens/Owner/Chat';
-import MyShop from '../screens/Owner/MyShop';
 import Earnings from '../screens/Owner/Earnings';
 
+//register Nav
+import CompletePage from '../screens/Owner/CompletePage';
+import CreatePage from '../screens/Owner/CreatePage';
+import EditPage from '../screens/Owner/EditPage';
+import FailPage from '../screens/Owner/FailPage';
+
+
+//Restaurant Info
+import CompleteRestaurant from '../screens/Owner/CompleteRestaurant';
+import SubmitRestaurant from '../screens/Owner/SubmitRestaurant';
+import MyRestaurant from '../screens/Owner/MyRestaurant';
 
 //button
 import NavIcon from '../components/Custom/NavIcon';
@@ -20,6 +29,7 @@ import {MaterialIcons} from '@expo/vector-icons'
 import Reservations from '../screens/Owner/Reservations';
 import SelectPhoto from '../screens/SelectPhoto';
 import BackArrow from '../components/Custom/BackArrow';
+import Logo from '../components/Custom/Logo';
 
 const ChatStack = createStackNavigator();
 
@@ -75,13 +85,37 @@ function EarningsStackScreen() {
 const MyShopStack = createStackNavigator();
 
 function MyShopStackScreen() {
-    const [lisensed, setLisensed] = React.useState(true);
+    const [restaurantState, setRestaurantState] = React.useState(null);
     return (
-    <MyShopStack.Navigator initialRouteName={lisensed? "공유음식점" : "공유 음식점 등록"} screenOptions={{ headerTitleStyle:{fontSize:20, fontWeight:'bold'},headerShown:true}}>
-      <MyShopStack.Screen name="공유음식점" component={MyShop} options={{
-      headerRight:() => <Feather name="more-vertical" size={24}/>,
+    <MyShopStack.Navigator 
+      initialRouteName={
+        restaurantState === null ? "신청 전" : (
+          restaurantState === 0 ? "심사 중" : (
+            restaurantState === 1 ? "불합격" : (
+              restaurantState === 2 ? "합격" : "내 음식점"
+            )
+          )
+        ) 
+      } 
+      screenOptions={{ headerTitleStyle:{fontSize:20, fontWeight:'bold'},headerShown:true}}
+      >
+      <MyShopStack.Screen name="내 음식점" component={MyRestaurant} options={{
+        headerRight:() => <Feather name="more-vertical" size={24}/>,
       }}/>
-      <MyShopStack.Screen name="공유 음식점 등록" component={ShopCheck} />
+      <MyShopStack.Screen name="신청 전" options={{
+        headerTitle:() => <Logo nav={'공유 음식점'}/>,
+      }} component={CreatePage} />
+      <MyShopStack.Screen name="심사 중"  options={{
+        headerTitle:() => <Logo nav={'공유 음식점'}/>,
+      }} component={EditPage}/>
+      <MyShopStack.Screen name="합격" options={{
+        headerTitle:() => <Logo nav={'공유 음식점'}/>,
+      }} component={CompletePage}/>
+      <MyShopStack.Screen name="불합격" options={{
+        headerTitle:() => <Logo nav={'공유 음식점'}/>,
+      }} component={FailPage}/>
+      <MyShopStack.Screen name="공간 신청" component={SubmitRestaurant}/>
+      <MyShopStack.Screen name="공간 등록" component={CompleteRestaurant}/>
     </MyShopStack.Navigator>
   );
 }

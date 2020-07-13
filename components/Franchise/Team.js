@@ -23,16 +23,17 @@ const styles = StyleSheet.create({
     position:{
         flexDirection:"row",
         marginVertical:5,
+        marginBottom:10
     },
     text:{
-        fontSize:16
+        fontSize:14
     },
-    textBox:{
+    careerBox:{
         marginHorizontal:20,
         height: constants.width / 3.5
     },
     careerText:{
-        fontSize:15,
+        fontSize:13,
         color:"#666",
     }
 })
@@ -52,8 +53,8 @@ export default ( { team } ) => {
                 
                 <View style={{flex:1}}>
                     <Text style={{padding:10, fontWeight:"bold", color:"#666"}}>경력🍴</Text>
-                    <View style={styles.textBox}>
-                        <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled={true}>
+                    <View style={styles.careerBox}>
+                        <ScrollView showsVerticalScrollIndicator={false}>
                             <Text style={styles.careerText}>{member.career}</Text>
                         </ScrollView>
                     </View>

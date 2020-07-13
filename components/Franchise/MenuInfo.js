@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   menuName:{
-    fontSize:16,
+    fontSize:14,
     marginVertical:3,
   },
   priceBox:{
@@ -53,10 +53,11 @@ const styles = StyleSheet.create({
   fullPrice:{
     textDecorationLine:"line-through",
     justifyContent:"flex-start",
-    fontSize:16,
+    fontSize:14,
+    color:'#666'
   },
   salePrice:{
-    fontSize:16,
+    fontSize:14,
   },
   notice:{
     flexDirection:"row",
@@ -65,7 +66,7 @@ const styles = StyleSheet.create({
   },
   text:{
     marginLeft:5,
-    fontSize:15,
+    fontSize:14,
   },
   touchBox:{
     marginLeft:'auto',

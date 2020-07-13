@@ -7,14 +7,14 @@ const styles=StyleSheet.create({
   container:{
     backgroundColor:"#05e6f4",
     padding:15,
-    marginVertical:15,
+    marginVertical:10,
     borderRadius:6,
     width:'100%'
   },
   container_disabled:{
     backgroundColor:"rgba(5, 230, 244, .4)",
     padding:15,
-    marginVertical:15,
+    marginVertical:10,
     borderRadius:6,
     width:'100%'
   },

@@ -39,10 +39,6 @@ const styles = StyleSheet.create({
         color:"#666",
         marginVertical:12,
     },
-    scaleTitle: {
-        fontSize: 32,
-        lineHeight: 36,
-    },
     box:{
         paddingVertical:25,
         paddingHorizontal:20,
@@ -155,7 +151,7 @@ export default ({ picture, tables, chairs, scale, description, precaution, addre
             <Facility />
 
             <View style={styles.box}>
-                <Text style={styles.scaleTitle}>규모</Text>
+                <Text style={styles.title}>규모</Text>
 
                 <View style={styles.rowBox}>
                     <View style={styles.scaleInner}>
