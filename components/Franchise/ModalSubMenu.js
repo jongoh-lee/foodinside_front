@@ -7,7 +7,7 @@ import constants from "../../constants";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 
-export default ({ id, menuName, menuImage, fullPrice, salePrice, subMenus, setEditMenuModal, setSubMenus, newMenuList, setNewMenuList }) => {
+export default ({ id, menuName, menuImage, fullPrice, salePrice, subMenus, setEditMenuModal, setSubmenus, newMenuList, setNewMenuList }) => {
     const navigation = useNavigation();
     const [image, setImage] = React.useState(menuImage);
     const menuNameInput = useInput(menuName? menuName : "");
@@ -18,12 +18,12 @@ export default ({ id, menuName, menuImage, fullPrice, salePrice, subMenus, setEd
     const { value : _salePrice } = salePriceInput;
     
     const handleMenuSubmit = () => {
-      let newSubMenus = subMenus;
-      let index = newSubMenus.findIndex(menu => menu.id === id);
+      let newSubmenus = subMenus;
+      let index = newSubmenus.findIndex(menu => menu.id === id);
       let _newMenuList = newMenuList;
       if(index > -1){
-        newSubMenus[index] = { id: id, menuName: _menuName, fullPrice:_fullPrice, salePrice:_salePrice, menuImage:image };
-        setSubMenus(newSubMenus);
+        newSubmenus[index] = { id: id, menuName: _menuName, fullPrice:_fullPrice, salePrice:_salePrice, menuImage:image };
+        setSubmenus(newSubmenus);
       } else {
         setNewMenuList(_newMenuList.concat({ id: id, menuName: _menuName, fullPrice:_fullPrice, salePrice:_salePrice, menuImage:image }));
       }

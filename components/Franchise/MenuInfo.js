@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ({ signBoard, mainMenu, subMenu, foodGuide, origin, dangol, posts, comments, photoReviews, point, openInfo, team}) => {
+export default ({ signBoard, mainMenu, Submenu, foodGuide, origin, dangol, posts, comments, photoReviews, point, openInfo, members}) => {
   const [showGuide, setShowGuide] = React.useState(false);
   const [tabName, setTabName] = React.useState('포토리뷰');
   return (
@@ -115,7 +115,7 @@ export default ({ signBoard, mainMenu, subMenu, foodGuide, origin, dangol, posts
             </View>
           </View>
 
-          {subMenu && subMenu.map((menu) => (
+          {Submenu && Submenu.map((menu) => (
           <View key={menu.id} style={styles.menuContainer}>
             <Text style={styles.menuName} numberOfLines={1}>{menu.menuName}</Text>
             <Image style={styles.menuImage} source={{uri:menu.menuImage}}/>
@@ -173,7 +173,7 @@ export default ({ signBoard, mainMenu, subMenu, foodGuide, origin, dangol, posts
 
       {tabName=='포토리뷰'? <PhotoReview photoReviews={photoReviews} /> : null}
       {tabName=='영업정보'? <OpenInfo openInfo={openInfo} /> : null}
-      {tabName=='팀원소개'? <Team team={team} /> : null}
+      {tabName=='팀원소개'? <Team members={members} /> : null}
       
     </ScrollView>
 )};

@@ -13,7 +13,7 @@ export const profile = {
         fullPrice: "8500",
         salePrice: "7000"
     },
-    subMenu:[
+    Submenu:[
         {
             id:"b123",
             menuName:"큐슈 카라멘",
@@ -169,7 +169,7 @@ export const profile = {
             date:"",
         }
     ],
-    team:[
+    members:[
         {
             id:"dfdf",
             image:"https://secure.i.telegraph.co.uk/multimedia/archive/03536/Yuki_Onishi_prepar_3536086b.jpg",

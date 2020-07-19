@@ -7,7 +7,7 @@ import constants from "../../constants";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 
-export default ({ id, name, image, position, career, team, setTeam, newTeam, setNewTeam, setEditTeamModal }) => {
+export default ({ id, name, image, position, career, members, setMembers, newMembers, setNewMembers, setEditMemberModal }) => {
     const navigation = useNavigation();
     const [memberImage, setMemberImage] = React.useState(image);
     const nameInput = useInput(name? name : "");
@@ -17,15 +17,15 @@ export default ({ id, name, image, position, career, team, setTeam, newTeam, set
     const { value : _position } = positionInput;
     const { value : _career } = careerInput;
     
-    const handleTeamInfoSubmit = () => {
-      let _team = team;
-      let index = _team.findIndex(member => member.id === id);
-      let _newTeam = newTeam;
+    const handleMemberInfoSubmit = () => {
+      let _members = members;
+      let index = _members.findIndex(member => member.id === id);
+      let _newMembers = newMembers;
       if(index > -1){
-        _team[index] = { id: id, name: _name, position:_position, career:_career, image:memberImage };
-        setTeam(_team);
+        _members[index] = { id: id, name: _name, position:_position, career:_career, image:memberImage };
+        setMembers(_members);
       } else {
-        setNewTeam(_newTeam.concat({ id: id, name: _name, position:_position, career:_career, image:memberImage }));
+        setNewMembers(_newMembers.concat({ id: id, name: _name, position:_position, career:_career, image:memberImage }));
       }
     };
 
@@ -80,8 +80,8 @@ export default ({ id, name, image, position, career, team, setTeam, newTeam, set
         <SquareInput {...careerInput} placeholder={'경력'} width={'100%'} multiline={true} returnKeyType={'none'} maxHeight={80}/>
 
         <TouchableOpacity onPress={() => (
-          setEditTeamModal(false),
-          handleTeamInfoSubmit()
+          setEditMemberModal(false),
+          handleMemberInfoSubmit()
           )}>
           <Text>확인</Text>
         </TouchableOpacity>

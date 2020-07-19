@@ -6,8 +6,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 export default () => {
     const navigation = useNavigation();
     return (
-        <TouchableOpacity onPress={()=> navigation.goBack()}>
-            <MaterialCommunityIcons name="chevron-left" size={30} color="black" />
+        <TouchableOpacity style={{padding:10}} onPress={()=> navigation.goBack()}>
+            <MaterialCommunityIcons name="chevron-left" size={34} color="black"/>
         </TouchableOpacity>
     )
 }

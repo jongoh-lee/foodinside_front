@@ -5,10 +5,10 @@ import constants from "../../constants";
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { useQuery } from "react-apollo";
 import Loader from "../../components/Custom/Loader";
-import { CHECK_PROFILE } from "./ProfileQueries";
+import { MY_PROFILE } from "./ProfileQueries";
 
 export default ({ navigation }) => {
-  const { data, loading, error, refetch } = useQuery(CHECK_PROFILE);
+  const { data, loading, error, refetch } = useQuery(MY_PROFILE);
   refetch()
   console.log("쿼리데이타:",data)
  
@@ -17,30 +17,7 @@ export default ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-    {data.checkProfile === 0 &&  (
-      <>
-        <Text style={styles.title}><Text style={{color:"black"}}>프로필</Text> 생성 후 영업 가능합니다</Text>
-        
-        <View style={styles.buttonBox}>
-
-          <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 예시")}>
-            <View style={styles.button}>
-                <MaterialCommunityIcons name="silverware-clean" size={34} color="rgba(0,0,0, .3)" />
-            </View>
-            <Text style={styles.buttonText}>프로필 예시</Text>
-          </TouchableWithoutFeedback>
-
-          <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 신청")}>
-            <View style={styles.button}>
-                <AntDesign name="form" size={34} color="rgba(0,0,0, .3)" />
-            </View>
-            <Text style={styles.buttonText}>프로필 신청</Text>
-          </TouchableWithoutFeedback>
-        </View>
-      </>
-      )}
-
-    {data.checkProfile === 1 &&  (
+    {data.myProfile && data.myProfile.profileState === 1 &&  (
       <>
         <Text style={styles.title}><Text style={{color:"black"}}>프로필</Text> 심사 중 입니다</Text>
         
@@ -53,7 +30,9 @@ export default ({ navigation }) => {
             <Text style={styles.buttonText}>프로필 예시</Text>
           </TouchableWithoutFeedback>
 
-          <TouchableWithoutFeedback onPress={() => navigation.navigate("심사 중")}>
+          <TouchableWithoutFeedback onPress={() => navigation.navigate("심사 중", {
+            myProfile : data.myProfile
+          })}>
             <View style={styles.button}>
                 <AntDesign name="form" size={34} color="rgba(0,0,0, .3)" />
             </View>
@@ -63,7 +42,7 @@ export default ({ navigation }) => {
       </>
       )}
 
-    {data.checkProfile === 2 && (
+    {data.myProfile && data.myProfile.profileState === 2 && (
       <>
         <Text style={styles.title}>축하합니다! <Text style={{color:"black"}}>프로필</Text>을 완성해주세요</Text>
         
@@ -81,6 +60,29 @@ export default ({ navigation }) => {
                 <AntDesign name="form" size={34} color="rgba(0,0,0, .3)" />
             </View>
             <Text style={styles.buttonText}>프로필 완성</Text>
+          </TouchableWithoutFeedback>
+        </View>
+      </>
+    )}
+
+    {data.myProfile === null &&  (
+      <>
+        <Text style={styles.title}><Text style={{color:"black"}}>프로필</Text> 생성 후 영업 가능합니다</Text>
+        
+        <View style={styles.buttonBox}>
+
+          <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 예시")}>
+            <View style={styles.button}>
+                <MaterialCommunityIcons name="silverware-clean" size={34} color="rgba(0,0,0, .3)" />
+            </View>
+            <Text style={styles.buttonText}>프로필 예시</Text>
+          </TouchableWithoutFeedback>
+
+          <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 신청")}>
+            <View style={styles.button}>
+                <AntDesign name="form" size={34} color="rgba(0,0,0, .3)" />
+            </View>
+            <Text style={styles.buttonText}>프로필 신청</Text>
           </TouchableWithoutFeedback>
         </View>
       </>

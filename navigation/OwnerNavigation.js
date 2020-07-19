@@ -11,13 +11,6 @@ import ChatList from '../screens/Owner/ChatList';
 import Chat from '../screens/Owner/Chat';
 import Earnings from '../screens/Owner/Earnings';
 
-//register Nav
-import CompletePage from '../screens/Owner/CompletePage';
-import CreatePage from '../screens/Owner/CreatePage';
-import EditPage from '../screens/Owner/EditPage';
-import FailPage from '../screens/Owner/FailPage';
-
-
 //Restaurant Info
 import CompleteRestaurant from '../screens/Owner/CompleteRestaurant';
 import SubmitRestaurant from '../screens/Owner/SubmitRestaurant';
@@ -30,6 +23,17 @@ import Reservations from '../screens/Owner/Reservations';
 import SelectPhoto from '../screens/SelectPhoto';
 import BackArrow from '../components/Custom/BackArrow';
 import Logo from '../components/Custom/Logo';
+import BeforeOwner from '../screens/Owner/BeforeOwner';
+
+//음식점 등록
+import CreateShop from '../screens/Owner/CreateShop';
+import FormShopImage from '../screens/Owner/FormShopImage';
+import FormShopFacility from '../screens/Owner/FormShopFacility';
+import FormShopScale from '../screens/Owner/FormShopScale';
+import FormShopDescription from '../screens/Owner/FormShopDescription';
+import FormShopLocation from '../screens/Owner/FormShopLocation';
+import FormShopRefund from '../screens/Owner/FormShopRefund';
+import FormShopRules from '../screens/Owner/FormShopRules';
 
 const ChatStack = createStackNavigator();
 
@@ -85,18 +89,9 @@ function EarningsStackScreen() {
 const MyShopStack = createStackNavigator();
 
 function MyShopStackScreen() {
-    const [restaurantState, setRestaurantState] = React.useState(null);
     return (
     <MyShopStack.Navigator 
-      initialRouteName={
-        restaurantState === null ? "신청 전" : (
-          restaurantState === 0 ? "심사 중" : (
-            restaurantState === 1 ? "불합격" : (
-              restaurantState === 2 ? "합격" : "내 음식점"
-            )
-          )
-        ) 
-      } 
+      initialRouteName={"신청 전"} 
       screenOptions={{ headerTitleStyle:{fontSize:20, fontWeight:'bold'},headerShown:true}}
       >
       <MyShopStack.Screen name="내 음식점" component={MyRestaurant} options={{
@@ -104,18 +99,13 @@ function MyShopStackScreen() {
       }}/>
       <MyShopStack.Screen name="신청 전" options={{
         headerTitle:() => <Logo nav={'공유 음식점'}/>,
-      }} component={CreatePage} />
-      <MyShopStack.Screen name="심사 중"  options={{
-        headerTitle:() => <Logo nav={'공유 음식점'}/>,
-      }} component={EditPage}/>
-      <MyShopStack.Screen name="합격" options={{
-        headerTitle:() => <Logo nav={'공유 음식점'}/>,
-      }} component={CompletePage}/>
-      <MyShopStack.Screen name="불합격" options={{
-        headerTitle:() => <Logo nav={'공유 음식점'}/>,
-      }} component={FailPage}/>
-      <MyShopStack.Screen name="공간 신청" component={SubmitRestaurant}/>
-      <MyShopStack.Screen name="공간 등록" component={CompleteRestaurant}/>
+      }} component={BeforeOwner} />
+      <MyShopStack.Screen name="신청 하기" component={SubmitRestaurant}/>
+      <MyShopStack.Screen name="공간 작성" component={CreateShop} options={{
+        headerTitle:"공간 등록",
+        headerTitleAlign:"center",
+        headerLeft:() => <BackArrow />,
+      }}/>
     </MyShopStack.Navigator>
   );
 }
@@ -156,18 +146,29 @@ const OwnerStack = createStackNavigator();
 
 export default () => {
   return (
-    <OwnerStack.Navigator>
-      <OwnerStack.Screen name='Tabs' component={TabsScreen}/>
+    <OwnerStack.Navigator screenOptions={{
+      headerShown:true,
+      headerTitleAlign:"center",
+      headerLeft:() => <BackArrow />,
+    }}>
+      <OwnerStack.Screen name='Tabs' component={TabsScreen} options={{
+        headerShown:false
+      }}/>
       <OwnerStack.Screen name='채팅 내용' component={Chat} options={
       ({route}) => ({ 
         headerShown:true,
         title: route.params.chat.user})
       }/>
       <OwnerStack.Screen name='SelectPhoto' component={SelectPhoto} options={{
-        headerShown:true,
-        headerTitle:"최근 항목",
-        headerTitleAlign:"center",
-        headerLeft:()=> <BackArrow />}}/>
+        headerShown:false
+      }}/>
+      <OwnerStack.Screen name='사진 올리기' component={FormShopImage} />
+      <OwnerStack.Screen name='설비 등록 (1/3)' component={FormShopFacility} />
+      <OwnerStack.Screen name='규모 안내' component={FormShopScale} />
+      <OwnerStack.Screen name='공간 소개' component={FormShopDescription} />
+      <OwnerStack.Screen name='위치 등록' component={FormShopLocation} />
+      <OwnerStack.Screen name='입점 규칙' component={FormShopRules} />
+      <OwnerStack.Screen name='환불 정책' component={FormShopRefund} />
     </OwnerStack.Navigator>
   )
 }

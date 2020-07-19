@@ -10,7 +10,7 @@ import BasicInput from "../../components/Custom/BasicInput";
 import { useMutation } from "@apollo/react-hooks";
 import BasicButton from "../../components/Custom/BasicButton";
 import { YellowBox } from 'react-native';
-import { CREATE_PROFILE, CHECK_PROFILE } from "./ProfileQueries";
+import { CREATE_PROFILE, MY_PROFILE } from "./ProfileQueries";
 import { RadioButton, } from "react-native-paper";
 
 YellowBox.ignoreWarnings([
@@ -32,11 +32,10 @@ export default ({ navigation, route }) => {
   const [createProfileMutation] = useMutation(CREATE_PROFILE, {
     update(cache, { data: { createProfile } }) {
       cache.writeQuery({
-        query: CHECK_PROFILE,
-        data: { checkProfile: createProfile.profileState },
+        query: MY_PROFILE,
+        data: { myProfile: {...createProfile} },
       });
     },
-    refetchQueries: [`chechProfile`]
   })
   const handleSubmit = async () => {
     try {
@@ -119,7 +118,9 @@ export default ({ navigation, route }) => {
       <Text style={styles.warning}>선정 결과는 문자로 안내드립니다</Text> 
       <BasicInput {...contactInput} placeholder={`( - ) 없이 번호만 입력해 주세요`} keyboardType="numeric" editable={!loading}/>
       
-      <BasicButton text={'제출하기'} onPress={handleSubmit} disabled={image && menuNameInput.value && salePriceInput.value && conceptInput.value && contactInput.value && careerInput.value? false : true} loading={loading}/>
+      <View style={{width:constants.width * .9}}>
+        <BasicButton text={'제출하기'} onPress={handleSubmit} disabled={image && menuNameInput.value && salePriceInput.value && conceptInput.value && contactInput.value && careerInput.value? false : true} loading={loading}/>
+      </View>
     </View>
   </ScrollView>
 )};

@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
 })
 
 // 내 정보 중 단골 업체 정보와 해당 업체의 단골/ 포스팅 수 + 내 포스팅 수 + 좋아요 수 + 적립 포인트
-export default ({ mainImage, mainMenu, subMenu, shopName, sort }) => {
+export default ({ mainImage, mainMenu, Submenu, shopName, sort }) => {
     const { menuName, image, fullPrice, salePrice } = mainMenu;
     const [btn, setBtn] = React.useState(false);
     return (
@@ -155,7 +155,7 @@ export default ({ mainImage, mainMenu, subMenu, shopName, sort }) => {
                     </View>
 
                     {/* 추가 메뉴 */}
-                    {subMenu && subMenu.map((menu) => (
+                    {Submenu && Submenu.map((menu) => (
                         <View key={menu.id} style={styles.menuContainer}>
                             <Text style={styles.menuName} numberOfLines={1}>{menu.name}</Text>
                             <Image style={styles.menuImage} source={{uri:menu.image}}/>

@@ -9,8 +9,8 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import constants from "../../constants";
 import BasicButton from "../../components/Custom/BasicButton";
 import Modal from "react-native-modal";
-import ModalSubMenu from "../../components/Franchise/ModalSubMenu";
-import ModalTeamInfo from "../../components/Franchise/ModalTeamInfo";
+import ModalSubmenu from "../../components/Franchise/ModalSubmenu";
+import ModalMemberInfo from "../../components/Franchise/ModalMemberInfo";
 import DismissKeyboard from "../../components/Custom/DismissKeyboard";
 
 export default ({ navigation, route }) => {
@@ -24,7 +24,7 @@ export default ({ navigation, route }) => {
   const originInput = useInput(profile.origin);
 
   //메뉴 수정
-  const [subMenus, setSubMenus] = React.useState(profile.subMenu);
+  const [subMenus, setSubmenus] = React.useState(profile.Submenu);
   
   //메뉴 추가
   const [newMenuList, setNewMenuList] = React.useState([]);
@@ -34,8 +34,8 @@ export default ({ navigation, route }) => {
   const deleteMenu = (menuId) => {
     const found = subMenus.some(el => el.id === menuId);
     if(found){
-      setSubMenus(subMenus.filter(
-        (subMenu) => subMenu.id !== menuId
+      setSubmenus(subMenus.filter(
+        (Submenu) => Submenu.id !== menuId
         ));
       }else {
         setNewMenuList(newMenuList.filter(
@@ -46,31 +46,31 @@ export default ({ navigation, route }) => {
   };
 
   //멤버 수정
-  const [team, setTeam] = React.useState(profile.team);
+  const [members, setMembers] = React.useState(profile.members);
   //멤버 추가
-  const [newTeam, setNewTeam] = React.useState([]);
+  const [newMembers, setNewMembers] = React.useState([]);
   //멤버 삭제
   const [chosenMember, setChosenMember] = React.useState("");
   const deleteMember = (Id) => {
-    const found = team.some(member => member.id === Id);
+    const found = members.some(member => member.id === Id);
     if(found){
-      setTeam(team.filter(
+      setMembers(members.filter(
         (member) => member.id !== Id
         ));
       }else {
-        setNewTeam(newTeam.filter(
+        setNewMembers(newMembers.filter(
           (member) => member.id !== Id
       ))
     }
-    setTeamModal(false);
+    setMemberModal(false);
   };
 
 
   // 모달
   const [menuModal, setMenuModal] = React.useState(false);
   const [editMenuModal, setEditMenuModal] = React.useState(false);
-  const [teamModal, setTeamModal] = React.useState(false);
-  const [editTeamModal, setEditTeamModal] = React.useState(false);
+  const [memberModal, setMemberModal] = React.useState(false);
+  const [editMemberModal, setEditMemberModal] = React.useState(false);
 
   // changImage hook
   const onSelect = (mainImage) => {
@@ -82,8 +82,8 @@ export default ({ navigation, route }) => {
     if(id){
       edit
     }
-    //만약 id가 있다면 subMenu 리스트를 찾아서 해당 메뉴를 업데이트
-    //만약 id가 없다면 create subMenu Mutation으로 메뉴 만들기
+    //만약 id가 있다면 Submenu 리스트를 찾아서 해당 메뉴를 업데이트
+    //만약 id가 없다면 create Submenu Mutation으로 메뉴 만들기
 
     //프로트엔드는 id 유무를 찾아서 수정 혹은 새로운 배열 만들기
   }
@@ -166,7 +166,7 @@ export default ({ navigation, route }) => {
           </TouchableOpacity>
         </View>
 
-          <ScrollView style={styles.menuScroll} showsHorizontalScrollIndicator={false} horizontal>
+          <ScrollView style={styles.menuScroll} showsHorizontalScrollIndicator={false} contentContainerStyle={{flexGrow:1}} horizontal>
             <View style={styles.menuContainer}>
               <Text style={styles.menuName} numberOfLines={1}>{profile.mainMenu.menuName}</Text>
               <Image style={styles.menuImage} source={{uri:profile.mainMenu.menuImage}}/>
@@ -218,7 +218,7 @@ export default ({ navigation, route }) => {
         <View style={{flexDirection:"row", justifyContent:"space-between", paddingVertical:10}}>
           <Text style={styles.title}>팀원 정보</Text>
           <TouchableOpacity style={{flexDirection:"row"}} onPress={() => (
-            setEditTeamModal(true),
+            setEditMemberModal(true),
             setChosenMember({id:new Date().valueOf()})
             )}>
             <MaterialCommunityIcons
@@ -237,10 +237,10 @@ export default ({ navigation, route }) => {
         </View>
 
           <View style={styles.innerBox}>
-            <View style={styles.teamContainer}>
-              {team && team.map((member) => 
+            <View style={styles.memberContainer}>
+              {members && members.map((member) => 
               <TouchableOpacity key={member.id} onPress={() => (
-                setTeamModal(true),
+                setMemberModal(true),
                 setChosenMember(member)
                 )}>
                 <View key={member.id} style={styles.card}>
@@ -263,9 +263,9 @@ export default ({ navigation, route }) => {
                 </View>
               </TouchableOpacity>)}
 
-              {newTeam && newTeam.map((member) => 
+              {newMembers && newMembers.map((member) => 
               <TouchableOpacity key={member.id} onPress={() => (
-                setTeamModal(true),
+                setMemberModal(true),
                 setChosenMember(member)
                 )}>
                 <View key={member.id} style={styles.card}>
@@ -337,13 +337,13 @@ export default ({ navigation, route }) => {
       style={{justifyContent:"center", alignItems:"center"}}
       coverScreen={false}
       >
-      <ModalSubMenu {...chosenMenu} setEditMenuModal={setEditMenuModal} setSubMenus={setSubMenus} subMenus={subMenus} newMenuList={newMenuList} setNewMenuList={setNewMenuList}/>
+      <ModalSubmenu {...chosenMenu} setEditMenuModal={setEditMenuModal} setSubmenus={setSubmenus} subMenus={subMenus} newMenuList={newMenuList} setNewMenuList={setNewMenuList}/>
     </Modal>
     
 
     <Modal
-      isVisible={teamModal}
-      onBackdropPress={() => setTeamModal(false)}
+      isVisible={memberModal}
+      onBackdropPress={() => setMemberModal(false)}
       backdropColor={'#ffffff'}
       backdropOpacity={.6}
       animationIn="slideInLeft"
@@ -352,12 +352,12 @@ export default ({ navigation, route }) => {
       >
       <View style={styles.content}>
         <TouchableOpacity style={styles.modalList} onPress={()=> (
-            setTeamModal(false),
-            setEditTeamModal(true)
+            setMemberModal(false),
+            setEditMemberModal(true)
             )}>
             <MaterialCommunityIcons name="circle-edit-outline" size={24} color="#666" /><Text style={styles.modalText}>정보 수정</Text>
         </TouchableOpacity>
-        {team.findIndex(member => member.id === chosenMember.id) === 0 ? null : (
+        {members.findIndex(member => member.id === chosenMember.id) === 0 ? null : (
           <TouchableOpacity style={styles.modalList} onPress={() => Alert.alert('확인','선택한 팀원이 사라집니다.',
           [
             {
@@ -377,8 +377,8 @@ export default ({ navigation, route }) => {
     </Modal>
 
     <Modal
-      isVisible={editTeamModal}
-      onBackdropPress={() => setEditTeamModal(false)}
+      isVisible={editMemberModal}
+      onBackdropPress={() => setEditMemberModal(false)}
       backdropColor={'#ffffff'}
       backdropOpacity={.5}
       animationIn="slideInLeft"
@@ -387,7 +387,7 @@ export default ({ navigation, route }) => {
       coverScreen={false}
       >
         <DismissKeyboard>
-          <ModalTeamInfo {...chosenMember} setEditTeamModal={setEditTeamModal} team={team} setTeam={setTeam} newTeam={newTeam} setNewTeam={setNewTeam}/>
+          <ModalMemberInfo {...chosenMember} setEditMemberModal={setEditMemberModal} members={members} setMembers={setMembers} newMembers={newMembers} setNewMembers={setNewMembers}/>
         </DismissKeyboard>
     </Modal>
   </>
@@ -455,7 +455,7 @@ const styles = StyleSheet.create({
   },
 
   //팀원 스크롤
-  teamContainer:{
+  memberContainer:{
     padding:5
   },
   card:{

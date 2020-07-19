@@ -12,8 +12,8 @@ YellowBox.ignoreWarnings([
   'Non-serializable values were found in the navigation state',
 ]);
 
-export default ({ navigation, route }) => {
-  const {data, loading, error, refetch} = useQuery(MY_PROFILE);
+export default ({ navigation }) => {
+  const {data, loading, error} = useQuery(MY_PROFILE);
   navigation.setOptions({
     headerRight:() => (
     <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 수정(pre)",{
@@ -70,7 +70,9 @@ export default ({ navigation, route }) => {
       <Text style={styles.warning}>선정 결과는 문자로 안내드립니다</Text> 
       <Text style={styles.text}>{data.myProfile.contact}</Text>
       
-      <BasicButton text={'확인'} onPress={() => navigation.goBack()} />
+      <View style={{width:constants.width * .9}}>
+        <BasicButton text={'확인'} onPress={() => navigation.goBack()} />
+      </View>
     </View>}
   </ScrollView>
 )};

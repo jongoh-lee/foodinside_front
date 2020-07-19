@@ -41,9 +41,11 @@ export default ({ navigation, route }) => {
     const [hasPermission, setHasPermission] = React.useState(false);
     const [selected, setSelected] = React.useState();
     const [allPhotos, setAllPhotos] = React.useState();
+    const data = route.params.data;
     const changeSelected = photo => {
         setSelected(photo);
-      };
+    };
+
     const getPhotos = async () => {
         try{
             const { assets } = await MediaLibrary.getAssetsAsync();
@@ -51,11 +53,12 @@ export default ({ navigation, route }) => {
             setSelected(firstPhoto);
             setAllPhotos(assets);
         } catch (e) {
-            console.log(e);
+            console.log('사진 선택 에러:',e);
         } finally {
             setLoading(false);
         }
-    }
+    };
+
     const askPermission = async () => {
         try{
             const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL)
@@ -67,16 +70,19 @@ export default ({ navigation, route }) => {
             console.log(e);
             setHasPermission(false);
         }
-    }
+    };
+
     const handleSelected = () => {
         navigation.goBack({ photo : selected });
-        route.params.onSelect({ photo : selected });
-    }
+        route.params.onSelect({ photo : selected, data: data});
+    };
+
     React.useEffect(()=>{
         askPermission()
-    }, [])
+    }, []);
+
     return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
     
         <View style={[styles.header, {marginTop:Platform.OS === 'android' ? StatusBar.currentHeight : 0}]}>
             <Text style={styles.headerTitle}>최근 항목</Text>
@@ -119,6 +125,6 @@ export default ({ navigation, route }) => {
             ) : null }
         </View>
         )}
-    </SafeAreaView>
+    </View>
     );
 };

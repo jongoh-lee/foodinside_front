@@ -34,10 +34,9 @@ export default ({ navigation, route }) => {
         query: MY_PROFILE,
         data: {
             myProfile: {...editProfile}
-        },
+        }
       });
-    },
-    refetchQueries: [`chechProfile`]
+    }
   })
   const handleSubmit = async () => {
     try {
@@ -53,10 +52,13 @@ export default ({ navigation, route }) => {
           menuName: menuNameInput.value,
           salePrice: Number(salePriceInput.value),
           sector: sector,
+          profileState: 1
         }
       });
       if ( editProfile ) {
-        navigation.goBack();
+        navigation.goBack({
+          myProfile:editProfile
+        });
       }
     } catch (e) {
       console.log('프로필 수정 에러:', e);
@@ -118,7 +120,9 @@ export default ({ navigation, route }) => {
       <Text style={styles.warning}>선정 결과는 문자로 안내드립니다</Text> 
       <BasicInput {...contactInput} placeholder={`( - ) 없이 번호만 입력해 주세요`} keyboardType="numeric" editable={!loading}/>
       
-      <BasicButton text={'제출하기'} onPress={handleSubmit} disabled={image && conceptInput.value && contactInput.value && careerInput.value? false : true} loading={loading}/>
+      <View style={{width:constants.width * .9}}>
+        <BasicButton text={'수정하기'} onPress={handleSubmit} loading={loading}/>
+      </View>
     </View>
   </ScrollView>
   </SafeAreaView>

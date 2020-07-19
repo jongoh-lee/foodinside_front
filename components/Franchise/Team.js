@@ -38,10 +38,10 @@ const styles = StyleSheet.create({
     }
 })
 
-export default ( { team } ) => {
+export default ( { members } ) => {
     return (
         <View style={styles.container}>
-            {team && team.map((member) => 
+            {members && members.map((member) => 
             <View key={member.id} style={styles.card}>
                 <View style={styles.member}>
                     <Image style={styles.image} source={{uri:member.image}} />
