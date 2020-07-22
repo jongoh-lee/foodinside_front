@@ -2,9 +2,11 @@ import * as React from "react";
 import {StyleSheet, View, Text, ImageBackground, TouchableOpacity} from "react-native";
 import { TextInput, ScrollView, TouchableWithoutFeedback } from "react-native-gesture-handler";
 import constants from "../../constants";
-import SubButton from "../../components/Custom/SubButton";
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons'; 
 import BasicButton from "../../components/Custom/BasicButton";
+import { useQuery } from "@apollo/react-hooks";
+import { MY_SHOP } from "./OwnerQueries";
+import Loader from "../../components/Custom/Loader";
 
 
 const WIDTH = constants.width;
@@ -64,12 +66,16 @@ const styles = StyleSheet.create({
 
 
 export default ({ navigation }) => {
+    const { data, error, loading } = useQuery(MY_SHOP);
 
+    if(loading) return <Loader />
+    if(error) return console.log(error);
     return (
         <View style={styles.container}>
+            {data && data.myShop &&
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{justifyContent:"center", alignItems:"center", padding:20}}>
                 <View style={styles.buttonShadow}>
-                    <TouchableOpacity onPress={() => navigation.navigate("사진 올리기")}>
+                    <TouchableOpacity onPress={() => navigation.navigate("사진 올리기", {shopImages:data.myShop.shopImages})}>
                         <View style={styles.buttonRow}>
                             <View style={[styles.buttonCircle, true? {borderColor: 'rgba(5, 230, 244, .6)'} : null]}>
                                 <MaterialCommunityIcons name="camera-wireless-outline" size={30} color={true? "rgba(5, 230, 244, .6)" : "#E0E0E0"} />
@@ -82,7 +88,7 @@ export default ({ navigation }) => {
                 </View>
 
                 <View style={styles.buttonShadow}>
-                    <TouchableOpacity onPress={() => navigation.navigate("설비 등록 (1/3)")}>
+                    <TouchableOpacity onPress={() => navigation.navigate("설비 등록")}>
                         <View style={styles.buttonRow}>
                             <View style={styles.buttonCircle}>
                                 <MaterialIcons name="kitchen" size={30} color="#E0E0E0" />
@@ -160,6 +166,6 @@ export default ({ navigation }) => {
                 </View>
 
                 <BasicButton text="제출하기"/>
-            </ScrollView>
+            </ScrollView>}
         </View>
 )};

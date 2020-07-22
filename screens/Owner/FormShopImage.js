@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, View, Text, TouchableOpacity, Alert} from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, Alert, Image} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Caption } from "react-native-paper";
@@ -129,7 +129,7 @@ const files = [
     }
 ]
 
-export default ({ navigation }) => {
+export default ({ navigation, route }) => {
     // 스크롤 ref 변수 대입 가능
     const scrollViewRef1 = React.useRef();
     const scrollViewRef2 = React.useRef();
@@ -142,7 +142,8 @@ export default ({ navigation }) => {
     const [editImageModal, setEditImageModal] = React.useState(false);
 
     // 모든 이미지 파일을 배열이 아닌 각각의 객체로 받아 옵니다.
-    const [allImages, setAllImages] = React.useState(files);
+    const [allImages, setAllImages] = React.useState(route.params.shopImages);
+    console.log(allImages);
     
     // --------- data 관리 ---------------
     // 새로운 이미지 배열 > create
@@ -223,9 +224,7 @@ export default ({ navigation }) => {
                                                 setEditImageModal(true),
                                                 setChosenImage(image)
                                             )}>
-                                                <View style={styles.image}>
-                                                    <Text>{image.url}</Text>
-                                                </View>
+                                                <Image style={styles.image} source={{uri:image.url}} />
                                             </TouchableOpacity>
                                     )
                                 )
@@ -237,9 +236,7 @@ export default ({ navigation }) => {
                                             setEditImageModal(true),
                                             setChosenImage(image)
                                         )}>
-                                            <View style={styles.image}>
-                                                <Text>{image.url}</Text>
-                                            </View>
+                                            <Image style={styles.image} source={{uri:image.url}} />
                                         </TouchableOpacity>
                                     )
                                 )
@@ -294,9 +291,7 @@ export default ({ navigation }) => {
                                                 setEditImageModal(true),
                                                 setChosenImage(image)
                                             )}>
-                                                <View style={styles.image}>
-                                                    <Text>{image.url}</Text>
-                                                </View>
+                                                <Image style={styles.image} source={{uri:image.url}} />
                                             </TouchableOpacity>
                                     )
                                 )
@@ -308,9 +303,7 @@ export default ({ navigation }) => {
                                             setEditImageModal(true),
                                             setChosenImage(image)
                                         )}>
-                                            <View style={styles.image}>
-                                                <Text>{image.url}</Text>
-                                            </View>
+                                            <Image style={styles.image} source={{uri:image.url}} />
                                         </TouchableOpacity>
                                     )
                                 )
@@ -365,9 +358,7 @@ export default ({ navigation }) => {
                                                 setEditImageModal(true),
                                                 setChosenImage(image)
                                             )}>
-                                                <View style={styles.image}>
-                                                    <Text>{image.url}</Text>
-                                                </View>
+                                                <Image style={styles.image} source={{uri:image.url}} />
                                             </TouchableOpacity>
                                     )
                                 )
@@ -379,9 +370,7 @@ export default ({ navigation }) => {
                                             setEditImageModal(true),
                                             setChosenImage(image)
                                         )}>
-                                            <View style={styles.image}>
-                                                <Text>{image.url}</Text>
-                                            </View>
+                                            <Image style={styles.image} source={{uri:image.url}} />
                                         </TouchableOpacity>
                                     )
                                 )
@@ -436,9 +425,7 @@ export default ({ navigation }) => {
                                                 setEditImageModal(true),
                                                 setChosenImage(image)
                                             )}>
-                                                <View style={styles.image}>
-                                                    <Text>{image.url}</Text>
-                                                </View>
+                                                <Image style={styles.image} source={{uri:image.url}} />
                                             </TouchableOpacity>
                                     )
                                 )
@@ -450,9 +437,7 @@ export default ({ navigation }) => {
                                             setEditImageModal(true),
                                             setChosenImage(image)
                                         )}>
-                                            <View style={styles.image}>
-                                                <Text>{image.url}</Text>
-                                            </View>
+                                            <Image style={styles.image} source={{uri:image.url}} />
                                         </TouchableOpacity>
                                     )
                                 )
@@ -507,9 +492,7 @@ export default ({ navigation }) => {
                                                 setEditImageModal(true),
                                                 setChosenImage(image)
                                             )}>
-                                                <View style={styles.image}>
-                                                    <Text>{image.url}</Text>
-                                                </View>
+                                                <Image style={styles.image} source={{uri:image.url}} />
                                             </TouchableOpacity>
                                     )
                                 )
@@ -521,9 +504,7 @@ export default ({ navigation }) => {
                                             setEditImageModal(true),
                                             setChosenImage(image)
                                         )}>
-                                            <View style={styles.image}>
-                                                <Text>{image.url}</Text>
-                                            </View>
+                                            <Image style={styles.image} source={{uri:image.url}} />
                                         </TouchableOpacity>
                                     )
                                 )
@@ -578,9 +559,7 @@ export default ({ navigation }) => {
                                                 setEditImageModal(true),
                                                 setChosenImage(image)
                                             )}>
-                                                <View style={styles.image}>
-                                                    <Text>{image.url}</Text>
-                                                </View>
+                                                <Image style={styles.image} source={{uri:image.url}} />
                                             </TouchableOpacity>
                                     )
                                 )
@@ -592,9 +571,7 @@ export default ({ navigation }) => {
                                             setEditImageModal(true),
                                             setChosenImage(image)
                                         )}>
-                                            <View style={styles.image}>
-                                                <Text>{image.url}</Text>
-                                            </View>
+                                            <Image style={styles.image} source={{uri:image.url}} />
                                         </TouchableOpacity>
                                     )
                                 )

@@ -9,14 +9,14 @@ import {Feather, MaterialIcons, MaterialCommunityIcons} from '@expo/vector-icons
 // screens
 import SearchShop from '../screens/Franchise/SearchShop';
 import Favorite from '../screens/Franchise/Favorite';
-import CreateProfile from '../screens/Franchise/CreateProfile';
+import EnrollProfile from '../screens/Franchise/EnrollProfile';
 import ShopDetail from "../screens/Franchise/ShopDetail";
 
 
 import ProfileSample from "../screens/Franchise/ProfileSample";
 import MyProfile from "../screens/Franchise/MyProfile";
 import CompleteProfile from "../screens/Franchise/CompleteProfile";
-import EditPreProfile from "../screens/Franchise/EditPreProfile";
+import EditEnrollProfile from "../screens/Franchise/EditEnrollProfile";
 import BeforeProfile from '../screens/Franchise/BeforeProfile';
 
 import ChatListFranchise from "../screens/Franchise/ChatListFranchise";
@@ -182,13 +182,13 @@ export default () => {
         title:route.params.shop.shopName
       })}/>
       <FranchiseStack.Screen name='SelectPhoto' component={SelectPhoto} />
-      <FranchiseStack.Screen name="프로필 신청" component={CreateProfile} options={{
+      <FranchiseStack.Screen name="프로필 신청" component={EnrollProfile} options={{
         headerShown:true,
         headerTitle:"프로필 신청",
         headerTitleAlign:"center",
         headerLeft:()=> <BackWarningArrow />,
       }} />
-      <FranchiseStack.Screen name="프로필 수정(pre)" component={EditPreProfile} options={{
+      <FranchiseStack.Screen name="프로필 수정(pre)" component={EditEnrollProfile} options={{
         headerShown:true,
         headerTitle:"프로필 수정",
         headerTitleAlign:"center",

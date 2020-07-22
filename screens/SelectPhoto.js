@@ -1,11 +1,17 @@
 import * as React from "react";
-import { StyleSheet, View, Image, ScrollView, Text, Platform, StatusBar, SafeAreaView } from "react-native";
 import * as Permissions from "expo-permissions";
 import * as MediaLibrary from "expo-media-library";
+import { StyleSheet, View, Image, ScrollView, Text, Platform, StatusBar, SafeAreaView } from "react-native";
 import Loader from "../components/Custom/Loader";
 import constants from "../constants";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import BackArrow from "../components/Custom/BackArrow";
+import { YellowBox } from 'react-native';
+
+YellowBox.ignoreWarnings([
+    'Non-serializable values were found in the navigation state',
+  ]);
+  
 
 const styles = StyleSheet.create({
     container:{
@@ -14,7 +20,6 @@ const styles = StyleSheet.create({
     },
     header:{
         flexDirection:"row",
-        paddingVertical:10,
         borderBottomWidth:1,
         borderBottomColor:"rgba(0, 0, 0, .1)",
         alignItems:"center",
@@ -33,6 +38,7 @@ const styles = StyleSheet.create({
     selectText:{
         color:'#05e6f4',
         fontSize:16,
+        marginRight:5
     }
 });
 
@@ -41,7 +47,7 @@ export default ({ navigation, route }) => {
     const [hasPermission, setHasPermission] = React.useState(false);
     const [selected, setSelected] = React.useState();
     const [allPhotos, setAllPhotos] = React.useState();
-    const data = route.params.data;
+    const data = route.params.data? route.params.data : null;
     const changeSelected = photo => {
         setSelected(photo);
     };
@@ -87,7 +93,6 @@ export default ({ navigation, route }) => {
         <View style={[styles.header, {marginTop:Platform.OS === 'android' ? StatusBar.currentHeight : 0}]}>
             <Text style={styles.headerTitle}>최근 항목</Text>
             <BackArrow />
-
             <TouchableWithoutFeedback onPress={handleSelected}>
                 <View style={styles.select}>
                     <Text style={styles.selectText}>완료</Text>
@@ -102,11 +107,12 @@ export default ({ navigation, route }) => {
             {hasPermission ? (
             <>
               <Image
-                style={{ width: constants.width, height: constants.height / 2.3 }}
+                style={{ width: constants.width, height: constants.height / 2}}
                 source={{ uri: selected.uri }}
               />
 
-              <ScrollView contentContainerStyle={{ flexDirection: "row" }}>
+            <View style={{height: constants.height / 3}}>
+              <ScrollView contentContainerStyle={{flexDirection:"row", flexWrap:"wrap"}}>
                 {allPhotos.map(photo => (
                 <TouchableWithoutFeedback key={photo.id} onPress={() => changeSelected(photo)}>
                   <Image
@@ -121,6 +127,7 @@ export default ({ navigation, route }) => {
                 </TouchableWithoutFeedback>
                 ))}
               </ScrollView>
+            </View>
             </>
             ) : null }
         </View>

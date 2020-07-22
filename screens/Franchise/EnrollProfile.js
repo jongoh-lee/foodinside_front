@@ -1,15 +1,16 @@
 import * as React from "react";
 import { TouchableWithoutFeedback, ScrollView } from "react-native-gesture-handler";
-import {StyleSheet, View, Text, Image, SafeAreaView} from "react-native";
+import {StyleSheet, View, Text, Image,} from "react-native";
 import constants from "../../constants";
+import { AntDesign } from '@expo/vector-icons'; 
 import useInput from "../../hooks/useInput";
 import numInput from "../../hooks/numInput";
-import BasicInput from "../../components/Custom/BasicInput";
 import AuthInput from "../../components/Custom/AuthInput";
+import BasicInput from "../../components/Custom/BasicInput";
 import { useMutation } from "@apollo/react-hooks";
 import BasicButton from "../../components/Custom/BasicButton";
 import { YellowBox } from 'react-native';
-import { EDIT_PROFILE, MY_PROFILE } from "./ProfileQueries";
+import { CREATE_PROFILE, MY_PROFILE } from "./ProfileQueries";
 import { RadioButton, } from "react-native-paper";
 
 YellowBox.ignoreWarnings([
@@ -17,35 +18,33 @@ YellowBox.ignoreWarnings([
 ]);
 
 export default ({ navigation, route }) => {
-  const [image, setImage] = React.useState(route.params.myProfile.menuImage);
+  const [image, setImage] = React.useState(null);
   const [ loading, setLoading ] = React.useState(false);
-  const conceptInput = useInput(route.params.myProfile.foodGuide);
-  const careerInput = useInput(route.params.myProfile.career);
-  const contactInput = numInput(String(route.params.myProfile.contact));
-  const menuNameInput = useInput(route.params.myProfile.menuName);
-  const salePriceInput = numInput(String(route.params.myProfile.salePrice));
-  const [sector, setSector] = React.useState(route.params.myProfile.sector);
+  const conceptInput = useInput("");
+  const contactInput = numInput("");
+  const careerInput = useInput("");
+  const menuNameInput = useInput("");
+  const salePriceInput = numInput("");
+  const [sector, setSector] = React.useState('일반');
   const onSelect = (photo) => {
     setImage(photo)
   };
-  const [editProfileMutation] = useMutation(EDIT_PROFILE, {
-    update(cache, { data: { editProfile } }) {
+  const [createProfileMutation] = useMutation(CREATE_PROFILE, {
+    update(cache, { data: { createProfile } }) {
       cache.writeQuery({
         query: MY_PROFILE,
-        data: {
-            myProfile: {...editProfile}
-        }
+        data: { myProfile: {...createProfile} },
       });
-    }
+    },
   })
   const handleSubmit = async () => {
     try {
       setLoading(true);
       const {
-        data: { editProfile } 
-      } = await editProfileMutation({
+        data: { createProfile } 
+      } = await createProfileMutation({
         variables:{
-          menuImage: image.photo? image.photo.uri : image, 
+          menuImage: image? image.photo.uri: null, 
           foodGuide: conceptInput.value, 
           career: careerInput.value, 
           contact: String(contactInput.value),
@@ -55,40 +54,29 @@ export default ({ navigation, route }) => {
           profileState: 1
         }
       });
-      if ( editProfile ) {
-        navigation.goBack({
-          myProfile:editProfile
-        });
+      console.log(createProfile)
+      if ( createProfile ) {
+        navigation.navigate("프로필 안내");
       }
     } catch (e) {
-      console.log('프로필 수정 에러:', e);
+      console.log('프로필 생성 에러:', e);
     } finally {
       setLoading(false)
     }
   }
 
   return (
-  <SafeAreaView>
   <ScrollView showsVerticalScrollIndicator={false}>
     <View style={styles.container}>
 
       <View style={styles.textContainer}>
         <Text style={styles.title}>대표 메뉴</Text>
       </View>
+
       <TouchableWithoutFeedback style={styles.imageInput} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelect})}>
-        <Image style={styles.image} source={image.photo? {uri:image.photo.uri} : {uri: image}}/>
+        {image === null? <AntDesign name="plus" size={30} color="black" /> : <Image style={styles.image} source={{uri: image.photo.uri}}/>}
       </TouchableWithoutFeedback>
-
-      <View style={styles.action}>
-        <Text style={{fontWeight:'bold'}}>메뉴 이름:  </Text> 
-        <AuthInput {...menuNameInput} placeholder={"메뉴 이름"} size={0.5} padding={5} borderColor={'white'}/>
-      </View>
-
-      <View style={styles.action}>
-        <Text style={{fontWeight:'bold'}}>희망 가격:  </Text> 
-        <AuthInput {...salePriceInput} placeholder={"희망가격"} size={0.5} padding={5} borderColor={'white'}/>
-      </View>
-
+        
       <View style={styles.action}>
         <Text style={{fontWeight:'bold'}}>업종:  </Text> 
         <RadioButton.Group onValueChange={sector => setSector(sector)} value={sector}>
@@ -101,6 +89,16 @@ export default ({ navigation, route }) => {
             <Text>휴게 음식점</Text>
           </View>
         </RadioButton.Group>
+      </View>
+
+      <View style={styles.action}>
+        <Text style={{fontWeight:'bold'}}>메뉴 이름:  </Text> 
+        <AuthInput {...menuNameInput} placeholder={"메뉴 이름"} width={0.5} padding={5} borderColor={'white'}/>
+      </View>
+
+      <View style={styles.action}>
+        <Text style={{fontWeight:'bold'}}>희망 가격:  </Text> 
+        <AuthInput {...salePriceInput} placeholder={"희망가격"} width={0.5} padding={5} borderColor={'white'} keyboardType="numeric"/>
       </View>
 
       <View style={styles.textContainer}>
@@ -121,11 +119,10 @@ export default ({ navigation, route }) => {
       <BasicInput {...contactInput} placeholder={`( - ) 없이 번호만 입력해 주세요`} keyboardType="numeric" editable={!loading}/>
       
       <View style={{width:constants.width * .9}}>
-        <BasicButton text={'수정하기'} onPress={handleSubmit} loading={loading}/>
+        <BasicButton text={'제출하기'} onPress={handleSubmit} disabled={image && menuNameInput.value && salePriceInput.value && conceptInput.value && contactInput.value && careerInput.value? false : true} loading={loading}/>
       </View>
     </View>
   </ScrollView>
-  </SafeAreaView>
 )};
 
 const styles = StyleSheet.create({

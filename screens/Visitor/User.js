@@ -6,7 +6,7 @@ import { profile } from "../../components/Franchise/data";
 import constants from "../../constants";
 import { Feather, MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 import Modal from "react-native-modal";
-import { useQuery } from "react-apollo";
+import { useQuery } from "@apollo/react-hooks";
 import Loader from "../../components/Custom/Loader";
 import { ME } from "./VisitorQueries";
 import { useLogOut } from "../../AuthContext";
@@ -64,7 +64,7 @@ import { useLogOut } from "../../AuthContext";
                 <Text style={styles.title}>포스트</Text>
             </View>
             <View style={styles.inner}>
-                <Text style={styles.number}>{'0'}c</Text>
+                <Text style={styles.number}>{'0'}</Text>
                 <Text style={styles.title}>암호화폐</Text>
             </View>
             <View style={styles.inner}>

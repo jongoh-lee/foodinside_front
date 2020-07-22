@@ -11,9 +11,9 @@ import ChatList from '../screens/Owner/ChatList';
 import Chat from '../screens/Owner/Chat';
 import Earnings from '../screens/Owner/Earnings';
 
-//Restaurant Info
-import CompleteRestaurant from '../screens/Owner/CompleteRestaurant';
-import SubmitRestaurant from '../screens/Owner/SubmitRestaurant';
+//shop Info
+import EnrollShop from '../screens/Owner/EnrollShop';
+import EditEnrollShop from '../screens/Owner/EditEnrollShop';
 import MyRestaurant from '../screens/Owner/MyRestaurant';
 
 //button
@@ -34,6 +34,7 @@ import FormShopDescription from '../screens/Owner/FormShopDescription';
 import FormShopLocation from '../screens/Owner/FormShopLocation';
 import FormShopRefund from '../screens/Owner/FormShopRefund';
 import FormShopRules from '../screens/Owner/FormShopRules';
+import MyShop from '../screens/Owner/MyShop';
 
 const ChatStack = createStackNavigator();
 
@@ -94,13 +95,17 @@ function MyShopStackScreen() {
       initialRouteName={"신청 전"} 
       screenOptions={{ headerTitleStyle:{fontSize:20, fontWeight:'bold'},headerShown:true}}
       >
-      <MyShopStack.Screen name="내 음식점" component={MyRestaurant} options={{
+      <MyShopStack.Screen name="음식점 예시" component={MyRestaurant} options={{
         headerRight:() => <Feather name="more-vertical" size={24}/>,
       }}/>
       <MyShopStack.Screen name="신청 전" options={{
         headerTitle:() => <Logo nav={'공유 음식점'}/>,
       }} component={BeforeOwner} />
-      <MyShopStack.Screen name="신청 하기" component={SubmitRestaurant}/>
+      <MyShopStack.Screen name="내 음식점" options={{
+        headerTitle:"심사 중",
+        headerTitleAlign:"center",
+        headerLeft:()=> <BackArrow />,
+      }} component={MyShop} />
       <MyShopStack.Screen name="공간 작성" component={CreateShop} options={{
         headerTitle:"공간 등록",
         headerTitleAlign:"center",
@@ -162,8 +167,10 @@ export default () => {
       <OwnerStack.Screen name='SelectPhoto' component={SelectPhoto} options={{
         headerShown:false
       }}/>
+      <OwnerStack.Screen name='신청 하기' component={EnrollShop} />
+      <OwnerStack.Screen name='수정 하기' component={EditEnrollShop} />
       <OwnerStack.Screen name='사진 올리기' component={FormShopImage} />
-      <OwnerStack.Screen name='설비 등록 (1/3)' component={FormShopFacility} />
+      <OwnerStack.Screen name='설비 등록' component={FormShopFacility} />
       <OwnerStack.Screen name='규모 안내' component={FormShopScale} />
       <OwnerStack.Screen name='공간 소개' component={FormShopDescription} />
       <OwnerStack.Screen name='위치 등록' component={FormShopLocation} />

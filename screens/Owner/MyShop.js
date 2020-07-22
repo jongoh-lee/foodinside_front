@@ -1,29 +1,43 @@
 import * as React from "react";
-import {StyleSheet, View, Text} from "react-native";
-import { TextInput, ScrollView } from "react-native-gesture-handler";
+import {StyleSheet, View, Text, Image} from "react-native";
+import { ScrollView, TouchableOpacity, TouchableWithoutFeedback } from "react-native-gesture-handler";
 import constants from "../../constants";
-import SubButton from "../../components/Custom/SubButton";
-import SelectPhotoButton from "../../components/Custom/SelectPhotoButton";
+import BasicButton from "../../components/Custom/BasicButton";
 import { RadioButton, } from "react-native-paper";
-import BasicInput from "../../components/Custom/BasicInput";
+import { useQuery } from "@apollo/react-hooks";
+import { MY_SHOP } from "./OwnerQueries";
+import Loader from "../../components/Custom/Loader";
 
-export default () => {
-  const [sector, setSector] = React.useState("일반")
+export default ({ navigation }) => {
+  const { data , error, loading } = useQuery(MY_SHOP);
+  navigation.setOptions({
+    headerRight:() => (
+    <TouchableWithoutFeedback onPress={() => navigation.navigate("수정 하기",{
+      myShop:data.myShop
+    })}>
+      <View style={styles.edit}>
+        <Text style={styles.editText}>수정</Text>
+      </View>
+    </TouchableWithoutFeedback>
+    )
+  });
+
+  if (loading) return <Loader />;
+  if (error) return console.log(error);
+
   return (
-  <View style={styles.container}>
+    <View style={styles.container}>
+    {data && data.myShop && 
     <ScrollView showsVerticalScrollIndicator={false}>
-
       <View style={styles.textContainer}>
         <Text style={styles.title}>내 가게가 공유 음식점이 될 수 있나요?</Text>
       </View>
-        <Text style={styles.warning}>가게 사진을 제출해주세요, 선정 결과는 이메일/문자로 알려드립니다</Text> 
+      <Text style={styles.warning}>가게 사진을 제출해주세요, 선정 결과는 이메일/문자로 알려드립니다</Text> 
     
       <View style={styles.imageBox}>
-        <SelectPhotoButton />
-
-        <SelectPhotoButton />
-
-        <SelectPhotoButton />
+        {data.myShop.shopImages.map(el => 
+          <Image key={el.id} style={styles.image} source={{uri: el.url}}/>  
+        )}
       </View>
 
       <View style={styles.imageBox}>
@@ -37,7 +51,7 @@ export default () => {
       </View>
       <Text style={styles.warning}>주변 음식점과 함께 신청하면 선정 될 확률이 높습니다</Text> 
 
-      <BasicInput />
+        <Text style={styles.textInput}>{data.myShop.location}</Text>
 
       <View style={styles.textContainer}>
        <Text style={styles.title}>사업자등록증을 확인합니다</Text> 
@@ -46,7 +60,9 @@ export default () => {
       <Text style={styles.warning}>영업 사실확인 용도로만 사용됩니다</Text> 
       
       <View style={{flexDirection:"row"}}>
-        <SelectPhotoButton />
+        <TouchableOpacity style={styles.imageInput} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelectRegistration})}>
+          <Image style={styles.image} source={{uri: data.myShop.registration}}/>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.textContainer}>
@@ -57,14 +73,14 @@ export default () => {
       
       <View style={styles.action}>
         <Text style={{fontWeight:'bold'}}>업종:  </Text> 
-        <RadioButton.Group onValueChange={sector => setSector(sector)} value={sector}>
+        <RadioButton.Group value={data.myShop.classification} >
           <View style={{flexDirection:"row", alignItems:"center"}}>
             <RadioButton value="일반" color={'#05e6f4'} uncheckedColor={'rgba(5, 230, 244, .3)'}/>
             <Text>일반 음식점</Text>
           </View>
           <View style={{flexDirection:"row", alignItems:"center"}}>
             <RadioButton value="휴게" color={'#05e6f4'} uncheckedColor={'rgba(5, 230, 244, .3)'}/>
-            <Text>휴계 음식점</Text>
+            <Text>휴게 음식점</Text>
           </View>
         </RadioButton.Group>
       </View>
@@ -75,13 +91,10 @@ export default () => {
     
       <Text style={styles.warning}>선정 결과는 문자로 안내해 드립니다</Text> 
       
-      <BasicInput />
-
-      
+      <Text style={styles.textInput}>{data.myShop.contact}</Text>
     
-      <SubButton text={'제출하기'}/>
-    
-    </ScrollView>
+      <BasicButton text={'뒤로 가기'} onPress={() => navigation.goBack()}/>
+    </ScrollView>}
   </View>
 )};
 
@@ -90,10 +103,25 @@ const styles = StyleSheet.create({
   container:{
     flex:1,
     paddingHorizontal:20,
+    backgroundColor:"#ffffff"
+  },
+  edit:{
+    paddingHorizontal:10
+  },
+  editText:{
+    color:'#05e6f4',
+    fontSize:16,
   },
   imageBox:{
     flexDirection:"row",
     justifyContent:"space-between",
+  },
+  image:{
+    width:constants.width * 0.25,
+    height:constants.width * 0.25,
+    backgroundColor:'white', 
+    borderRadius:20,
+    margin:5,
   },
   textContainer:{
     marginTop:50,

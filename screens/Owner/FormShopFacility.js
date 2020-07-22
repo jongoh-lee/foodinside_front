@@ -2,6 +2,7 @@ import * as React from "react";
 import { StyleSheet, View, Text} from "react-native";
 import { MaterialCommunityIcons, Entypo, FontAwesome5, Ionicons, Feather } from "@expo/vector-icons"
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import SquareInput from "../../components/Custom/SquareInput";
 
 const facility = {
     fridge:{
@@ -55,13 +56,13 @@ const facility = {
         "기타": false,
     },
     cafe:{
-        "에스프레소 머신": false,
-        "원두 그라인더": false,
-        "온수기": false,
-        "제빙기": false,
-        "블렌더": false,
-        "로스팅 머신": false,
-        "기타": false,
+        "에스프레소 머신": null,
+        "원두 그라인더": null,
+        "온수기": null,
+        "제빙기": null,
+        "블렌더": null,
+        "로스팅 머신": null,
+        "기타": null,
     },
     Electronics:{
         "전기 밥솥": false,
@@ -305,6 +306,7 @@ export default () => {
                         return (
                             <TouchableOpacity key={key} onPress={() => valueChanger("cafe", key, value)}>
                                 <Text style={value? styles.item_true : styles.item_false}>{key}</Text>
+                                <SquareInput />
                             </TouchableOpacity>
                         )
                     })}
@@ -446,19 +448,19 @@ const styles = StyleSheet.create({
     item_false:{
         color:'#666',
         marginRight:20,
-        marginBottom:15
+        marginBottom:15,
     },
     item_true:{
         color:'black',
         marginRight:20,
         marginBottom:15,
-        fontWeight:'bold'
+        fontWeight:'bold',
     },
     noTitleBox:{
         flex:1, 
         flexDirection:"row", 
         flexWrap:"wrap",
         paddingVertical:20,
-        justifyContent:"center"
+        justifyContent:"center",
     },
 });

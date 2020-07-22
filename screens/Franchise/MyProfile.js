@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     alignItems:'center',
   },
   edit:{
-    paddingHorizontal:5
+    paddingHorizontal:10
   },
   editText:{
     color:'#05e6f4',
