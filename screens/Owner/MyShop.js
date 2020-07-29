@@ -9,7 +9,7 @@ import { MY_SHOP } from "./OwnerQueries";
 import Loader from "../../components/Custom/Loader";
 
 export default ({ navigation }) => {
-  const { data , error, loading } = useQuery(MY_SHOP);
+  const { data , error, loading, refetch } = useQuery(MY_SHOP);
   navigation.setOptions({
     headerRight:() => (
     <TouchableWithoutFeedback onPress={() => navigation.navigate("수정 하기",{

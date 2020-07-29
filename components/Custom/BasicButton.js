@@ -1,20 +1,18 @@
 import { TouchableOpacity } from "react-native-gesture-handler";
 import * as React from "react";
-import {StyleSheet, Text, ActivityIndicator } from "react-native";
+import {StyleSheet, Text, ActivityIndicator, View } from "react-native";
 import PropTypes from "prop-types";
 
 const styles=StyleSheet.create({
   container:{
     backgroundColor:"#05e6f4",
     padding:15,
-    marginVertical:20,
     borderRadius:6,
-    width:'100%'
+    width:'100%',
   },
   container_disabled:{
     backgroundColor:"rgba(5, 230, 244, .4)",
     padding:15,
-    marginVertical:10,
     borderRadius:6,
     width:'100%'
   },
@@ -26,9 +24,11 @@ const styles=StyleSheet.create({
 });
 
 const BasicButton = ({ text, onPress, disabled = false, loading = false }) => (
-  <TouchableOpacity style={ disabled? styles.container_disabled : styles.container} onPress={onPress} disabled={disabled}>
+  <View style={{marginVertical:20}}>
+    <TouchableOpacity style={ disabled? styles.container_disabled : styles.container} onPress={onPress} disabled={disabled}>
      {loading ? <ActivityIndicator color={"white"} /> : <Text style={styles.text}>{text}</Text>}
-  </TouchableOpacity>
+    </TouchableOpacity>
+  </View>
 );
 
 BasicButton.propTypes = {

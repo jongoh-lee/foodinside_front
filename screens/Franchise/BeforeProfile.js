@@ -10,7 +10,6 @@ import { MY_PROFILE } from "./ProfileQueries";
 export default ({ navigation }) => {
   const { data, loading, error, refetch } = useQuery(MY_PROFILE);
   refetch()
-  console.log("쿼리데이타:",data)
  
   if(loading) return <Loader />;
   if(error) return console.log(error);

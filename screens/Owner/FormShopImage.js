@@ -5,129 +5,9 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Caption } from "react-native-paper";
 import constants from "../../constants";
 import Modal from "react-native-modal";
-
-const files = [
-    {
-        id:'a',
-        type:'EXTERIOR',
-        url:'asdfkj',
-    },
-    {
-        id:'b',
-        type:'EXTERIOR',
-        url:'asdfkj2',
-    },
-    {
-        id:'c',
-        type:'EXTERIOR',
-        url:'asdfkj3',
-    },
-    {
-        id:'d',
-        type:'EXTERIOR',
-        url:'asdfkj4',
-    },
-    {
-        id:'a1',
-        type:'HALL',
-        url:'ㄱㄴㄷㄹ1',
-    },
-    {
-        id:'b1',
-        type:'HALL',
-        url:'ㄱㄴㄷㄹ2',
-    },
-    {
-        id:'c1',
-        type:'HALL',
-        url:'ㄱㄴㄷㄹ3',
-    },
-    {
-        id:'d1',
-        type:'HALL',
-        url:'ㄱㄴㄷㄹ4',
-    },
-    {
-        id:'ㄱ1',
-        type:'KITCHEN',
-        url:'abcd1',
-    },
-    {
-        id:'ㄴ1',
-        type:'KITCHEN',
-        url:'abcd2',
-    },
-    {
-        id:'ㄷ1',
-        type:'KITCHEN',
-        url:'abcd3',
-    },
-    {
-        id:'ㄹ1',
-        type:'KITCHEN',
-        url:'abcd4',
-    },
-    {
-        id:'ㄱ11',
-        type:'TABLEWARE',
-        url:'abcd12',
-    },
-    {
-        id:'ㄴ11',
-        type:'TABLEWARE',
-        url:'abcd22',
-    },
-    {
-        id:'ㄷ11',
-        type:'TABLEWARE',
-        url:'abcd32',
-    },
-    {
-        id:'ㄹ11',
-        type:'TABLEWARE',
-        url:'abcd43',
-    },
-    {
-        id:'ㄱ22',
-        type:'CLEANER',
-        url:'gggggs1',
-    },
-    {
-        id:'ㄴ22',
-        type:'CLEANER',
-        url:'gggggs2',
-    },
-    {
-        id:'ㄷ22',
-        type:'CLEANER',
-        url:'gggggs33',
-    },
-    {
-        id:'ㄹ22',
-        type:'CLEANER',
-        url:'gggggs3',
-    },
-    {
-        id:'ㄱ35',
-        type:'ECT',
-        url:'gggggaas1',
-    },
-    {
-        id:'ㄴ35',
-        type:'ECT',
-        url:'gggaaggs2',
-    },
-    {
-        id:'ㄷ35',
-        type:'ECT',
-        url:'ggsgggs33',
-    },
-    {
-        id:'ㄹ35',
-        type:'ECT',
-        url:'ggsgggs3',
-    }
-]
+import { useMutation } from "@apollo/react-hooks";
+import BasicButton from "../../components/Custom/BasicButton";
+import { COMPLETE_SHOP_IMAGE, MY_SHOP } from "./OwnerQueries";
 
 export default ({ navigation, route }) => {
     // 스크롤 ref 변수 대입 가능
@@ -137,13 +17,12 @@ export default ({ navigation, route }) => {
     const scrollViewRef4 = React.useRef();
     const scrollViewRef5 = React.useRef();
     const scrollViewRef6 = React.useRef();
-
+    const [loading, setLoading] = React.useState(false);
     //모달
     const [editImageModal, setEditImageModal] = React.useState(false);
 
-    // 모든 이미지 파일을 배열이 아닌 각각의 객체로 받아 옵니다.
+    // 모든 이미지 파일을 배열에 담긴 각각의 객체로 받아 옵니다.
     const [allImages, setAllImages] = React.useState(route.params.shopImages);
-    console.log(allImages);
     
     // --------- data 관리 ---------------
     // 새로운 이미지 배열 > create
@@ -153,26 +32,26 @@ export default ({ navigation, route }) => {
     const [editImages, setEditImages] = React.useState([]);
 
     // 삭제하는 이미지 배열 > delete
-    const [deletImages, setDeletImages] = React.useState([]);
+    const [deleteImages, setDeleteImages] = React.useState([]);
 
     //선택한 이미지 index > front 수정
     const [chosenImage, setChosenImage] = React.useState();
 
-    //이미지 추가 함수 front list 바꾸고 back_end data 추가
+    //이미지 추가 함수 front: list 바꾸고 back_end: data 추가
     const onSelect = ({ photo, data }) => {
         setNewImages(newImages.concat({type:data, url:photo.uri}))
     };
 
     // 이미지 수정 함수 front 바꾸고 edit list 추가
     const onEdit = ({ photo, data }) => {
-        setAllImages(allImages.map((el) => el.id === data ? {...el, url:photo.uri} : el))
-        setEditImages(editImages.concat({id:data, url:photo.uri}))
+        setAllImages(allImages.map((el) => el.id === data.id ? {...el, url:photo.uri} : el))
+        setEditImages(editImages.concat({id:data.id,type:data.type, url:photo.uri}))
     };
 
     //이미지 삭제 > id 있으면 삭제 리스트 추가 없으면 삭제
     const deleteImage = ( image ) => {
         if(image.id) {
-            setDeletImages(deletImages.concat(image.id)),
+            setDeleteImages(deleteImages.concat({id:image.id})),
             setAllImages(allImages.filter((el) => el.id !== image.id))
         } else {
             setNewImages(newImages.filter((el) => el !== image))
@@ -180,6 +59,30 @@ export default ({ navigation, route }) => {
         return setEditImageModal(false)
     };
 
+    const [ completeShopImageMutation ] = useMutation(COMPLETE_SHOP_IMAGE);
+
+    const handleSubmit = async () => {
+        try {
+            setLoading(true);
+            const {
+                data : { completeShopImage }
+            } = await completeShopImageMutation({
+                variables:{
+                    createImages:[...newImages],
+                    deleteImages:[...deleteImages],
+                    editImages:[...editImages]
+                }
+            });
+            if(completeShopImage){
+                navigation.goBack()
+            }
+        } catch(e) {
+          console.log("가게 이미지 에러:",e)
+        } finally {
+          setLoading(false);
+        }
+    }
+    
     return (
         <View style={styles.container}>
             <ScrollView>
@@ -189,7 +92,7 @@ export default ({ navigation, route }) => {
                         <View style={{flexDirection:"row", justifyContent:"space-between", paddingVertical:10, alignItems:"center"}}>
                             <Text style={styles.title}>외부 사진{`\n`}<Caption>출입구를 한눈에 보여주세요</Caption></Text>
 
-                            <TouchableOpacity style={{flexDirection:"row"}} onPress={() => (
+                            <TouchableOpacity style={{flexDirection:"row"}} disabled={loading} onPress={() => (
                               navigation.navigate('SelectPhoto', {
                                 onSelect : onSelect,
                                 data: 'EXTERIOR'
@@ -256,7 +159,7 @@ export default ({ navigation, route }) => {
                         <View style={{flexDirection:"row", justifyContent:"space-between", paddingVertical:10, alignItems:"center"}}>
                             <Text style={styles.title}>홀 사진{`\n`}<Caption>인테리어/의자/테이블을 보여주세요</Caption></Text>
 
-                            <TouchableOpacity style={{flexDirection:"row"}} onPress={() => (
+                            <TouchableOpacity style={{flexDirection:"row"}} disabled={loading} onPress={() => (
                               navigation.navigate('SelectPhoto', {
                                 onSelect : onSelect,
                                 data: 'HALL'
@@ -323,7 +226,7 @@ export default ({ navigation, route }) => {
                         <View style={{flexDirection:"row", justifyContent:"space-between", paddingVertical:10, alignItems:"center"}}>
                             <Text style={styles.title}>주방 사진{`\n`}<Caption>주방구조/조리기기를 보여주세요</Caption></Text>
 
-                            <TouchableOpacity style={{flexDirection:"row"}} onPress={() => (
+                            <TouchableOpacity style={{flexDirection:"row"}} disabled={loading} onPress={() => (
                               navigation.navigate('SelectPhoto', {
                                 onSelect : onSelect,
                                 data: 'KITCHEN'
@@ -390,7 +293,7 @@ export default ({ navigation, route }) => {
                         <View style={{flexDirection:"row", justifyContent:"space-between", paddingVertical:10, alignItems:"center"}}>
                             <Text style={styles.title}>식기 사진{`\n`}<Caption>식기류/잔을 보여주세요</Caption></Text>
 
-                            <TouchableOpacity style={{flexDirection:"row"}} onPress={() => (
+                            <TouchableOpacity style={{flexDirection:"row"}} disabled={loading} onPress={() => (
                               navigation.navigate('SelectPhoto', {
                                 onSelect : onSelect,
                                 data: 'TABLEWARE'
@@ -457,7 +360,7 @@ export default ({ navigation, route }) => {
                         <View style={{flexDirection:"row", justifyContent:"space-between", paddingVertical:10, alignItems:"center"}}>
                             <Text style={styles.title}>청소 도구 사진{`\n`}<Caption>청소 도구를 보여주세요</Caption></Text>
 
-                            <TouchableOpacity style={{flexDirection:"row"}} onPress={() => (
+                            <TouchableOpacity style={{flexDirection:"row"}} disabled={loading} onPress={() => (
                               navigation.navigate('SelectPhoto', {
                                 onSelect : onSelect,
                                 data: 'CLEANER'
@@ -524,7 +427,7 @@ export default ({ navigation, route }) => {
                         <View style={{flexDirection:"row", justifyContent:"space-between", paddingVertical:10, alignItems:"center"}}>
                             <Text style={styles.title}>기타{`\n`}<Caption>기타 물품(포장 용품/빔 프로젝터 등)을 보여주세요</Caption></Text>
 
-                            <TouchableOpacity style={{flexDirection:"row"}} onPress={() => (
+                            <TouchableOpacity style={{flexDirection:"row"}} disabled={loading} onPress={() => (
                               navigation.navigate('SelectPhoto', {
                                 onSelect : onSelect,
                                 data: 'ECT'
@@ -586,7 +489,7 @@ export default ({ navigation, route }) => {
                             </ScrollView>
                         </View>
                     </View>
-
+                    <BasicButton text={'사진 올리기'} onPress={handleSubmit} loading={loading} disabled={newImages.length + deleteImages.length + editImages.length > 0 ? false : true} />
                 </View>   
             </ScrollView>
 
@@ -604,7 +507,7 @@ export default ({ navigation, route }) => {
                     <TouchableOpacity style={styles.modalList} onPress={()=> (
                         navigation.navigate('SelectPhoto', {
                             onSelect : onEdit,
-                            data: chosenImage.id
+                            data: chosenImage
                         }
                         ),
                         setEditImageModal(false)

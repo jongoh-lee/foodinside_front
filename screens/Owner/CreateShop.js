@@ -66,8 +66,9 @@ const styles = StyleSheet.create({
 
 
 export default ({ navigation }) => {
-    const { data, error, loading } = useQuery(MY_SHOP);
-
+    const { data, error, loading, refetch } = useQuery(MY_SHOP);
+    refetch()
+    console.log(data)
     if(loading) return <Loader />
     if(error) return console.log(error);
     return (
@@ -88,7 +89,7 @@ export default ({ navigation }) => {
                 </View>
 
                 <View style={styles.buttonShadow}>
-                    <TouchableOpacity onPress={() => navigation.navigate("설비 등록")}>
+                    <TouchableOpacity onPress={() => navigation.navigate("설비 등록", {myShop: data.myShop})}>
                         <View style={styles.buttonRow}>
                             <View style={styles.buttonCircle}>
                                 <MaterialIcons name="kitchen" size={30} color="#E0E0E0" />

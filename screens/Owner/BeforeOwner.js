@@ -10,7 +10,6 @@ import { CHECK_SHOP } from "./OwnerQueries";
 export default ({ navigation }) => {
   const { data, loading, error, refetch } = useQuery(CHECK_SHOP);
   refetch()
-
   if(loading) return <Loader />;
   if(error) return console.log("Owner Error",error);
 

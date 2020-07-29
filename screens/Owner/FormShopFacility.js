@@ -2,183 +2,270 @@ import * as React from "react";
 import { StyleSheet, View, Text} from "react-native";
 import { MaterialCommunityIcons, Entypo, FontAwesome5, Ionicons, Feather } from "@expo/vector-icons"
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
-import SquareInput from "../../components/Custom/SquareInput";
+import ShadowInput from "../../components/Custom/ShadowInput";
+import useInput from "../../hooks/useInput";
+import BasicButton from "../../components/Custom/BasicButton";
+import { useMutation } from "@apollo/react-hooks";
+import { COMPLETE_SHOP_FACILITY, MY_SHOP } from "./OwnerQueries";
 
-const facility = {
-    fridge:{
-        "25": false,
-        "30": false,
-        "45": false,
-        "65": false,
-        "기타": false,
+const translate = {
+    BoxFridge:{
+        "25": "size_25",
+        "30": "size_30",
+        "45": "size_45",
+        "65": "size_65",
+        "기타": "fridgeBox_ect",
     },
-    fridge_ect:{
-        "음료 쇼케이스": false,
-        "테이블": false,
-        "밧드": false,
-        "김치": false,
-        "참치": false,
-        "와인": false,
-        "아이스크림": false,
-        "기타": false,
+    Fridge:{
+        "음료 쇼케이스": "showcase",
+        "테이블": "table",
+        "밧드": "vat",
+        "김치": "kimchi",
+        "참치": "tuna",
+        "와인": "wine",
+        "아이스크림": "ice_cream",
+        "기타": "fridge_ect",
     },
-    fire:{
-        "낮은 레인지": false,
-        "중화 레인지": false,
-        "업소용 레인지": false,
-        "가정용 레인지": false,
-        "인덕션 레인지": false,
-        "기타": false,
+    Fire:{
+        "낮은 레인지": "lower_stove",
+        "중화 레인지": "chinese_stove",
+        "업소용 레인지": "gas_stove",
+        "가정용 레인지": "house_stove",
+        "인덕션 레인지": "induction",
+        "기타": "fire_ect",
     },
-    griller:{
-        "상화식": false,
-        "하화식": false,
-        "숯불": false,
-        "기타": false,
+    Griller:{
+        "상화식": "fire_above",
+        "하화식": "fire_below",
+        "숯불": "charcoal",
+        "기타": "griller_ect",
     },
-    griddle:{
-        "600": false,
-        "900": false,
-        "1200": false,
-        "1500": false,
-        "기타": false,
+    Griddle:{
+        "600": "size_600",
+        "900": "size_900",
+        "1200": "size_1200",
+        "1500": "size_1500",
+        "기타": "griddle_ect",
     },
-    fryer:{
-        "전기식": false,
-        "가스식": false,
-        "기타": false,
+    Fryer:{
+        "전기식": "electric",
+        "가스식": "gas",
+        "기타": "fryer_ect",
     },
-    oven:{
-        "데크": false,
-        "컨벡션": false,
-        "스팀 컨벡션": false,
-        "콤비 스티머": false,
-        "기타": false,
+    Oven:{
+        "데크": "deck",
+        "컨벡션": "convection",
+        "스팀 컨벡션": "steam_convection",
+        "콤비 스티머": "combi_steamer",
+        "기타": "oven_ect",
     },
-    cafe:{
-        "에스프레소 머신": null,
-        "원두 그라인더": null,
-        "온수기": null,
-        "제빙기": null,
-        "블렌더": null,
-        "로스팅 머신": null,
-        "기타": null,
+    Cafe:{
+        "에스프레소 머신": "espresso_machine",
+        "원두 그라인더": "coffee_bean_grinder",
+        "온수기": "roasting_machine",
+        "제빙기": "ice_maker",
+        "빙삭기": "ice_shaver",
+        "블렌더": "water_heater",
+        "로스팅 머신": "blender",
+        "기타 기기": "cafe_ect",
     },
-    Electronics:{
-        "전기 밥솥": false,
-        "전기 국통": false,
-        "식기 세척기": false,
-        "전자 레인지": false,
-        "take out 포장기": false,
-        "인덕션": false,
-        "믹서기": false,
-        "온장고": false,
-        "반죽기": false,
-        "발효기": false,
-        "제빙기": false,
-        "빙삭기": false,
-        "해면기": false,
-        "제면기계": false,
-        "파스타 기계": false,
-        "냉면 기계": false,
-        "탄산음료 기계": false,
-        "소프트아이스크림 기계": false,
-        "생맥주 디스펜서 + 탄산가스": false,
+    Electronic:{
+        "전기 밥솥": "rice_cooker",
+        "전기 국통": "soup_heater",
+        "식기 세척기": "dish_washer",
+        "전자 레인지": "microwave",
+        "take out 포장기": "take_out_packer",
+        "인덕션": "induction_small",
+        "믹서기": "blender_small",
+        "온장고": "food_warmer",
+        "반죽기": "dough_machine",
+        "발효기": "fermenter",
+        "해면기": "noodle_cooker",
+        "제면기계": "noodle_maker",
+        "파스타 기계": "pasta_noodle_maker",
+        "냉면 기계": "cold_noodle_maker",
+        "탄산음료 기계": "soda_dispenser",
+        "소프트아이스크림 기계": "soft_cone_machine",
+        "생맥주 디스펜서 + 탄산가스": "beer_dispenser",
     },
-    tableware:{
-        "수저통": false,
-        "냅킨통": false,
-        "양념통": false,
-        "물수건": false,
-        "오프너": false,
-        "수저": false,
-        "젓가락": false,
-        "포크": false,
-        "나이프": false,
-        "쟁반": false,
-        "물병": false,
-        "주전자": false,
-        "가스버너": false,
-        "호출벨": false,
+    Tableware:{
+        "수저통": "spoon_holder",
+        "냅킨통": "napkin_holder",
+        "양념통": "seasoning_container",
+        "물수건": "wet_wipe",
+        "오프너": "opener",
+        "수저": "spoon",
+        "젓가락": "chopsticks",
+        "포크": "fork",
+        "나이프": "knife",
+        "쟁반": "tray",
+        "물병": "water_bottle",
+        "주전자": "kettle",
+        "가스버너": "portable_stove",
+        "호출벨": "table_bell",
     },
-    container:{
-        "보울": false,
-        "스텐밧드": false,
-        "대형 국통": false,
-        "플라스틱 밧드": false,
-        "유리 밧드": false,
-        "반찬통": false,
-        "대야": false,
-        "take out 용기": false,
+    Container:{
+        "보울": "bowl_container",
+        "스텐밧드": "stainless_vat",
+        "대형 국통": "soup_container",
+        "플라스틱 밧드": "plastic_vat",
+        "유리 밧드": "glass_vat",
+        "반찬통": "side_dish_container",
+        "대야": "wash_basin",
+        "take out 용기": "take_out_container",
     },
-    glass:{
-        "음료": false,
-        "물": false,
-        "머그": false,
-        "소주": false,
-        "사케": false,
-        "고량주": false,
-        "샷": false,
-        "와인": false,
-        "샴페인": false,
-        "칵테일": false,
-        "언더락": false,
-        "하이볼": false,
-        "글라스": false,
-        "500cc": false,
-        "2000cc": false,
-        "3000cc": false,
+    Glass:{
+        "음료": "beverage",
+        "물": "water",
+        "머그": "mug",
+        "소주": "soju",
+        "사케": "sake",
+        "고량주": "kaoliang",
+        "샷": "shot",
+        "와인": "wine_glass",
+        "샴페인": "champagne",
+        "칵테일": "cocktail",
+        "온더락": "on_the_rock",
+        "하이볼": "highball",
+        "글라스": "glass",
+        "500cc": "pitcher_500cc",
+        "2000cc": "pitcher_2000cc",
+        "3000cc": "pitcher_3000cc",
     },
-    serving:{
-        "공기": false,
-        "접시류": false,
-        "뚝배기": false,
-        "옹기": false,
-        "돌솥": false,
-        "냄비": false,
-        "볶음판": false,
-        "찬기": false,
-        "종지": false,
-        "쿠프": false,
-        "대접": false,
-        "볼": false,
-        "가위": false,
-        "국자": false,
+    Serving:{
+        "공기": "rice_bowl",
+        "접시류": "dish",
+        "뚝배기": "earthenware",
+        "옹기": "pottery",
+        "돌솥": "stone_pot",
+        "냄비": "pot",
+        "볶음판": "frying_pan",
+        "찬기": "side_dish_bowl",
+        "종지": "small_dish",
+        "볼": "bowl",
+        "가위": "scissors",
+        "국자": "ladle",
     },
-    cleaner:{
-        "주방 세제": false,
-        "락스": false,
-        "살균 세척제": false,
-        "빗자루": false,
-        "쓰레받기": false,
-        "밀대": false,
-        "양동이": false,
-        "호스": false,
-        "마포": false,
-        "청소솔": false,
-        "진공청소기": false,
+    Cleaner:{
+        "주방 세제": "detergent",
+        "락스": "clorox",
+        "살균 세척제": "abstergent",
+        "빗자루": "bloom",
+        "쓰레받기": "dustpan",
+        "밀대": "floorcloth",
+        "양동이": "bucket",
+        "호스": "hose",
+        "청소솔": "brush",
+        "진공청소기": "vacuum_cleaner",
     },
-    ect:{
-        "음향 기기": false,
-        "TV": false,
-        "프롬프터": false,
-        "에어컨": false,
-        "와이파이": false,
-        "CCTV": false,
-        "무인 키오스크": false,
-        "우산 꽂이": false,
+    Ect:{
+        "음향 기기": "speaker",
+        "TV": "tv",
+        "프로젝터": "projector",
+        "에어컨": "air_conditioner",
+        "와이파이": "wifi",
+        "CCTV": "cctv",
+        "무인 키오스크": "kiosk",
+        "우산 꽂이": "umbrella_stand",
     }
-
 }
 
-export default () => {
-    const [data, setData] = React.useState(facility);
-    const valueChanger = ( type, key, value) => {
-        let target = data[type];
-        let newData = Object.assign(target, {[key] : !value});
-        let hi = Object.assign(data, {[type] : newData});
-        setData({...hi})
+export default ({ navigation, route}) => {
+    const [loading, setLoading] = React.useState(false);
+    //query data
+    const [boxFridge, setBoxFridge] = React.useState(route.params.myShop.boxFridge);
+    const [fridge, setFridge] = React.useState(route.params.myShop.fridge);
+    const [fire, setFire] = React.useState(route.params.myShop.fire);
+    const [griller, setGriller] = React.useState(route.params.myShop.griller);
+    const [griddle, setGriddle] = React.useState(route.params.myShop.griddle);
+    const [fryer, setFryer] = React.useState(route.params.myShop.fryer);
+    const [oven, setOven] = React.useState(route.params.myShop.oven);
+    const [cafe, setCafe] = React.useState(route.params.myShop.cafe);
+    const [electronic, setElectronic] = React.useState(route.params.myShop.electronic);
+    const [tableware, setTableware] = React.useState(route.params.myShop.tableware);
+    const [container, setContainer] = React.useState(route.params.myShop.container);
+    const [glass, setGlass] = React.useState(route.params.myShop.glass);
+    const [serving, setServing] = React.useState(route.params.myShop.serving);
+    const [cleaner, setCleaner] = React.useState(route.params.myShop.cleaner);
+    const [ect, setEct] = React.useState(route.params.myShop.ect);
+    //korean data
+    const [korean, setKorean] = React.useState(translate);
+    const {BoxFridge, Fridge, Fire, Griller, Griddle, Fryer, Oven, Cafe, Electronic, Tableware, Container, Glass, Serving, Cleaner, Ect } = korean;
+    const [CompleteShopFacilityMutation] = useMutation(COMPLETE_SHOP_FACILITY);
+
+    //cafe value
+    const espresso_machineInput = useInput(cafe["espresso_machine"]);
+    const coffee_bean_grinderInput = useInput(cafe["coffee_bean_grinder"]);
+    const roasting_machineInput = useInput(cafe["roasting_machine"]);
+    const ice_makerInput = useInput(cafe["ice_maker"]);
+    const ice_shaverInput = useInput(cafe["ice_shaver"]);
+    const water_heaterInput = useInput(cafe["water_heater"]);
+    const blenderInput = useInput(cafe["blender"]);
+    const cafe_ectInput = useInput(cafe["cafe_ect"]);
+    //changed data
+    const dataChanger = ( type , setType, en ) => {
+        let bool = type[en];
+        type[en] = !bool;
+        setType({...type});
     };
+    const handleShopFacility = async () => {
+        ["__typename", "id"].forEach(el => delete boxFridge[el]);
+        ["__typename", "id"].forEach(el => delete fridge[el]);
+        ["__typename", "id"].forEach(el => delete fire[el]);
+        ["__typename", "id"].forEach(el => delete griller[el]);
+        ["__typename", "id"].forEach(el => delete griddle[el]);
+        ["__typename", "id"].forEach(el => delete fryer[el]);
+        ["__typename", "id"].forEach(el => delete oven[el]);
+        ["__typename", "id"].forEach(el => delete cafe[el]);
+        ["__typename", "id"].forEach(el => delete electronic[el]);
+        ["__typename", "id"].forEach(el => delete tableware[el]);
+        ["__typename", "id"].forEach(el => delete container[el]);
+        ["__typename", "id"].forEach(el => delete glass[el]);
+        ["__typename", "id"].forEach(el => delete serving[el]);
+        ["__typename", "id"].forEach(el => delete cleaner[el]);
+        ["__typename", "id"].forEach(el => delete ect[el]);
+        let _cafe = {
+            espresso_machine: espresso_machineInput.value,
+            coffee_bean_grinder: coffee_bean_grinderInput.value,
+            roasting_machine: roasting_machineInput.value,
+            ice_maker: ice_makerInput.value,
+            ice_shaver: ice_shaverInput.value,
+            water_heater: water_heaterInput.value,
+            blender: blenderInput.value,
+            cafe_ect: cafe_ectInput.value,
+        }
+        try {
+            setLoading(true);
+            const {
+                data : { completeShopFacility }
+            } = await CompleteShopFacilityMutation({
+                variables:{
+                    boxFridge: {...boxFridge},
+                    fridge: {...fridge},
+                    fire: {...fire},
+                    griller: {...griller},
+                    griddle: {...griddle},
+                    fryer: {...fryer},
+                    oven: {...oven},
+                    cafe: _cafe,
+                    electronic: {...electronic},
+                    tableware: {...tableware},
+                    container: {...container},
+                    glass: {...glass},
+                    serving: {...serving},
+                    cleaner: {...cleaner},
+                    ect: {...ect},
+                }
+            });
+            if(completeShopFacility){
+                navigation.goBack()
+            }
+        } catch(e) {
+            console.log("가게 facility 에러:",e)
+        } finally {
+          setLoading(false);
+        }
+    }
     return (
     <View style={styles.container}> 
         <ScrollView>
@@ -189,14 +276,14 @@ export default () => {
 
                 <View style={styles.rowBox}>
                     <View style={styles.titleBox}>
-                        <Text style={styles.title}>Box 냉장고</Text>
+                        <Text style={styles.title}>Box 냉장고{`\n`}(용량)</Text>
                     </View>
 
                     <View style={styles.listBox}>
-                        {Object.entries(data.fridge).map(([key,value])=>{
+                        {Object.entries(BoxFridge).map(([kor , en])=>{
                             return (
-                                <TouchableOpacity key={key} onPress={() => valueChanger("fridge", key, value)}>
-                                    <Text style={value? styles.item_true : styles.item_false}>{key}</Text>
+                                <TouchableOpacity key={kor} onPress={() => dataChanger(boxFridge, setBoxFridge, en)}>
+                                    <Text style={boxFridge[en]? styles.item_true : styles.item_false}>{kor}</Text>
                                 </TouchableOpacity>
                             )
                         })}
@@ -208,10 +295,10 @@ export default () => {
                         <Text style={styles.title}>기타 냉장고</Text>
                     </View>
                     <View style={styles.listBox}>
-                        {Object.entries(data.fridge_ect).map(([key,value])=>{
+                        {Object.entries(Fridge).map(([kor , en])=>{
                             return (
-                                <TouchableOpacity key={key} onPress={() => valueChanger("fridge_ect", key, value)}>
-                                    <Text style={value? styles.item_true : styles.item_false}>{key}</Text>
+                                <TouchableOpacity key={kor} onPress={() => dataChanger(fridge, setFridge, en)}>
+                                    <Text style={fridge[en]? styles.item_true : styles.item_false}>{kor}</Text>
                                 </TouchableOpacity>
                             )
                         })}
@@ -227,10 +314,10 @@ export default () => {
                         <Text style={styles.title}>화구</Text>
                     </View>
                     <View style={styles.listBox}>
-                        {Object.entries(data.fire).map(([key,value])=>{
+                        {Object.entries(Fire).map(([kor , en])=>{
                             return (
-                                <TouchableOpacity key={key} onPress={() => valueChanger("fire", key, value)}>
-                                    <Text style={value? styles.item_true : styles.item_false}>{key}</Text>
+                                <TouchableOpacity key={kor} onPress={() => dataChanger(fire, setFire, en)}>
+                                    <Text style={fire[en]? styles.item_true : styles.item_false}>{kor}</Text>
                                 </TouchableOpacity>
                             )
                         })}
@@ -242,10 +329,10 @@ export default () => {
                         <Text style={styles.title}>그릴러</Text>
                     </View>
                     <View style={styles.listBox}>
-                        {Object.entries(data.griller).map(([key,value])=>{
+                        {Object.entries(Griller).map(([kor , en])=>{
                             return (
-                                <TouchableOpacity key={key} onPress={() => valueChanger("griller", key, value)}>
-                                    <Text style={value? styles.item_true : styles.item_false}>{key}</Text>
+                                <TouchableOpacity key={kor} onPress={() => dataChanger(griller, setGriller, en)}>
+                                    <Text style={griller[en]? styles.item_true : styles.item_false}>{kor}</Text>
                                 </TouchableOpacity>
                             )
                         })}
@@ -257,10 +344,10 @@ export default () => {
                         <Text style={styles.title}>그리들</Text>
                     </View>
                     <View style={styles.listBox}>
-                        {Object.entries(data.griddle).map(([key,value])=>{
+                        {Object.entries(Griddle).map(([kor , en])=>{
                             return (
-                                <TouchableOpacity key={key} onPress={() => valueChanger("griddle", key, value)}>
-                                    <Text style={value? styles.item_true : styles.item_false}>{key}</Text>
+                                <TouchableOpacity key={kor} onPress={() => dataChanger(griddle, setGriddle, en)}>
+                                    <Text style={griddle[en]? styles.item_true : styles.item_false}>{kor}</Text>
                                 </TouchableOpacity>
                             )
                         })}
@@ -272,10 +359,10 @@ export default () => {
                         <Text style={styles.title}>튀김기</Text>
                     </View>
                     <View style={styles.listBox}>
-                        {Object.entries(data.fryer).map(([key,value])=>{
+                        {Object.entries(Fryer).map(([kor , en])=>{
                             return (
-                                <TouchableOpacity key={key} onPress={() => valueChanger("fryer", key, value)}>
-                                    <Text style={value? styles.item_true : styles.item_false}>{key}</Text>
+                                <TouchableOpacity key={kor} onPress={() => dataChanger(fryer, setFryer, en)}>
+                                    <Text style={fryer[en]? styles.item_true : styles.item_false}>{kor}</Text>
                                 </TouchableOpacity>
                             )
                         })}
@@ -287,10 +374,10 @@ export default () => {
                         <Text style={styles.title}>오븐</Text>
                     </View>
                     <View style={styles.listBox}>
-                        {Object.entries(data.oven).map(([key,value])=>{
+                        {Object.entries(Oven).map(([kor , en])=>{
                             return (
-                                <TouchableOpacity key={key} onPress={() => valueChanger("oven", key, value)}>
-                                    <Text style={value? styles.item_true : styles.item_false}>{key}</Text>
+                                <TouchableOpacity key={kor} onPress={() => dataChanger(oven, setOven, en)}>
+                                    <Text style={oven[en]? styles.item_true : styles.item_false}>{kor}</Text>
                                 </TouchableOpacity>
                             )
                         })}
@@ -301,15 +388,50 @@ export default () => {
             <View style={styles.box}>
                 <Ionicons name="ios-cafe" size={30} color="#c1a183"/>
 
-                <View style={styles.noTitleBox}>
-                    {Object.entries(data.cafe).map(([key,value])=>{
-                        return (
-                            <TouchableOpacity key={key} onPress={() => valueChanger("cafe", key, value)}>
-                                <Text style={value? styles.item_true : styles.item_false}>{key}</Text>
-                                <SquareInput />
-                            </TouchableOpacity>
-                        )
-                    })}
+                <View style={[styles.cafeBox, {paddingTop:10}]}>
+                    <View style={{alignItems:"center", padding:10, flex:1}}>
+                        <Text style={{color:'black', marginBottom:10, fontWeight:'bold'}}>에스프레소 머신*</Text>
+                        <ShadowInput {...espresso_machineInput} placeholder={'명칭'}/>
+                    </View>
+
+                    <View style={{alignItems:"center", padding:10, flex:1}}>
+                        <Text style={{color:'black', marginBottom:10, fontWeight:'bold'}}>원두 그라인더*</Text>
+                        <ShadowInput {...coffee_bean_grinderInput} placeholder={'명칭'}/>
+                    </View>
+
+                    <View style={{alignItems:"center", padding:10, flex:1}}>
+                        <Text style={{color:'black', marginBottom:10, fontWeight:'bold'}}>온수기*</Text>
+                        <ShadowInput {...water_heaterInput} placeholder={'용량'}/>
+                    </View>
+                </View>
+
+                <View style={styles.cafeBox}>
+                    <View style={{alignItems:"center", padding:10, flex:1}}>
+                        <Text style={{color:'black', marginBottom:10, fontWeight:'bold'}}>제빙기*</Text>
+                        <ShadowInput {...ice_makerInput} placeholder={'용량'}/>
+                    </View>
+
+                    <View style={{alignItems:"center", padding:10, flex:1}}>
+                        <Text style={{color:'black', marginBottom:10, fontWeight:'bold'}}>빙삭기</Text>
+                        <ShadowInput {...ice_shaverInput} placeholder={'용량'}/>
+                    </View>
+
+                    <View style={{alignItems:"center", padding:10, flex:1}}>
+                        <Text style={{color:'black', marginBottom:10, fontWeight:'bold'}}>블렌더</Text>
+                        <ShadowInput {...blenderInput} placeholder={'명칭'} />
+                    </View>
+                </View>
+
+                <View style={[styles.cafeBox, {paddingBottom:20}]}>
+                    <View style={{alignItems:"center", padding:10, flex:1}}>
+                        <Text style={{color:'black', marginBottom:10, fontWeight:'bold'}}>로스팅 머신</Text>
+                        <ShadowInput {...roasting_machineInput} placeholder={'명칭'} />
+                    </View>
+
+                    <View style={{alignItems:"center", padding:10, flex:1}}>
+                        <Text style={{color:'black', marginBottom:10, fontWeight:'bold'}}>기타</Text>
+                        <ShadowInput {...cafe_ectInput} placeholder={'기타 기기'} />
+                    </View>
                 </View>
             </View>
 
@@ -317,10 +439,10 @@ export default () => {
                 <Entypo name="flash" size={24} color="#f7ca09" />
 
                 <View style={styles.noTitleBox}>
-                    {Object.entries(data.Electronics).map(([key,value])=>{
+                    {Object.entries(Electronic).map(([kor , en])=>{
                         return (
-                            <TouchableOpacity key={key} onPress={() => valueChanger("Electronics", key, value)}>
-                                <Text style={value? styles.item_true : styles.item_false}>{key}</Text>
+                            <TouchableOpacity key={kor} onPress={() => dataChanger(electronic, setElectronic, en)}>
+                                <Text style={electronic[en]? styles.item_true : styles.item_false}>{kor}</Text>
                             </TouchableOpacity>
                         )
                     })}
@@ -331,10 +453,10 @@ export default () => {
                 <Entypo name="download" size={24} color="#a7a6b0" />
 
                 <View style={styles.noTitleBox}>
-                    {Object.entries(data.container).map(([key,value])=>{
+                    {Object.entries(Container).map(([kor , en])=>{
                         return (
-                            <TouchableOpacity key={key} onPress={() => valueChanger("container", key, value)}>
-                                <Text style={value? styles.item_true : styles.item_false}>{key}</Text>
+                            <TouchableOpacity key={kor} onPress={() => dataChanger(container, setTableware, en)}>
+                                <Text style={container[en]? styles.item_true : styles.item_false}>{kor}</Text>
                             </TouchableOpacity>
                         )
                     })}
@@ -345,10 +467,10 @@ export default () => {
                 <MaterialCommunityIcons name="silverware-variant" size={30} color="#cacece" />
 
                 <View style={styles.noTitleBox}>
-                    {Object.entries(data.tableware).map(([key,value])=>{
+                    {Object.entries(Tableware).map(([kor , en])=>{
                         return (
-                            <TouchableOpacity key={key} onPress={() => valueChanger("tableware", key, value)}>
-                                <Text style={value? styles.item_true : styles.item_false}>{key}</Text>
+                            <TouchableOpacity key={kor} onPress={() => dataChanger(tableware, setContainer, en)}>
+                                <Text style={tableware[en]? styles.item_true : styles.item_false}>{kor}</Text>
                             </TouchableOpacity>
                         )
                     })}
@@ -359,10 +481,10 @@ export default () => {
                 <MaterialCommunityIcons name="glass-cocktail" size={30} color="#b0f8ef" />
 
                 <View style={styles.noTitleBox}>
-                    {Object.entries(data.glass).map(([key,value])=>{
+                    {Object.entries(Glass).map(([kor , en])=>{
                         return (
-                            <TouchableOpacity key={key} onPress={() => valueChanger("glass", key, value)}>
-                                <Text style={value? styles.item_true : styles.item_false}>{key}</Text>
+                            <TouchableOpacity key={kor} onPress={() => dataChanger(glass, setGlass, en)}>
+                                <Text style={glass[en]? styles.item_true : styles.item_false}>{kor}</Text>
                             </TouchableOpacity>
                         )
                     })}
@@ -373,10 +495,10 @@ export default () => {
                 <FontAwesome5 name="hand-holding" size={24} color="black" style={{marginBottom:8}}/>
 
                 <View style={styles.noTitleBox}>
-                    {Object.entries(data.serving).map(([key,value])=>{
+                    {Object.entries(Serving).map(([kor , en])=>{
                         return (
-                            <TouchableOpacity key={key} onPress={() => valueChanger("serving", key, value)}>
-                                <Text style={value? styles.item_true : styles.item_false}>{key}</Text>
+                            <TouchableOpacity key={kor} onPress={() => dataChanger(serving, setServing, en)}>
+                                <Text style={serving[en]? styles.item_true : styles.item_false}>{kor}</Text>
                             </TouchableOpacity>
                         )
                     })}
@@ -387,10 +509,10 @@ export default () => {
                 <Entypo name="trash" size={22} color="#0735c6" style={{marginBottom:3}}/>
 
                 <View style={styles.noTitleBox}>
-                    {Object.entries(data.cleaner).map(([key,value])=>{
+                    {Object.entries(Cleaner).map(([kor , en])=>{
                         return (
-                            <TouchableOpacity key={key} onPress={() => valueChanger("cleaner", key, value)}>
-                                <Text style={value? styles.item_true : styles.item_false}>{key}</Text>
+                            <TouchableOpacity key={kor} onPress={() => dataChanger(cleaner, setCleaner, en)}>
+                                <Text style={cleaner[en]? styles.item_true : styles.item_false}>{kor}</Text>
                             </TouchableOpacity>
                         )
                     })}
@@ -401,15 +523,17 @@ export default () => {
                 <Feather name="more-horizontal" size={24} color="#000000"/>
 
                 <View style={styles.noTitleBox}>
-                    {Object.entries(data.ect).map(([key,value])=>{
+                    {Object.entries(Ect).map(([kor , en])=>{
                         return (
-                            <TouchableOpacity key={key} onPress={() => valueChanger("ect", key, value)}>
-                                <Text style={value? styles.item_true : styles.item_false}>{key}</Text>
+                            <TouchableOpacity key={kor} onPress={() => dataChanger(ect, setEct, en)}>
+                                <Text style={ect[en]? styles.item_true : styles.item_false}>{kor}</Text>
                             </TouchableOpacity>
                         )
                     })}
                 </View>
             </View>
+
+            <BasicButton text={'등록 하기'} onPress={handleShopFacility} loading={loading}/>
 
             </View>
         </ScrollView>
@@ -461,6 +585,12 @@ const styles = StyleSheet.create({
         flexDirection:"row", 
         flexWrap:"wrap",
         paddingVertical:20,
+        justifyContent:"center",
+    },
+    cafeBox:{
+        flex:1, 
+        flexDirection:"row", 
+        flexWrap:"wrap",
         justifyContent:"center",
     },
 });
