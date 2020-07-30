@@ -1,172 +1,224 @@
 import * as React from "react";
-import {StyleSheet, View, Text, ImageBackground, TouchableOpacity} from "react-native";
-import { TextInput, ScrollView, TouchableWithoutFeedback } from "react-native-gesture-handler";
+import {StyleSheet, View, Text, Image} from "react-native";
+import { TextInput, ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import constants from "../../constants";
-import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons'; 
 import BasicButton from "../../components/Custom/BasicButton";
-import { useQuery } from "@apollo/react-hooks";
-import { MY_SHOP } from "./OwnerQueries";
-import Loader from "../../components/Custom/Loader";
+import { RadioButton, } from "react-native-paper";
+import BasicInput from "../../components/Custom/BasicInput";
+import { AntDesign } from '@expo/vector-icons'; 
+import useInput from "../../hooks/strickInput";
+import numInput from "../../hooks/numInput";
+import { useMutation } from "@apollo/react-hooks";
+import { CREATE_SHOP, CHECK_SHOP } from "./OwnerQueries";
 
+export default ({ navigation, route }) => {
+  const [loading, setLoading] = React.useState(false);
+  const [ exterior, setExterior] = React.useState(null);
+  const [ hall, setHall] = React.useState(null);
+  const [ kitchen, setKitchen] = React.useState(null);
+  const addressInput = useInput('');
+  const [registration, setRegistration] = React.useState(null);
+  const [classification, setClassification] = React.useState("일반");
+  const contactInput = numInput('');
+  const onSelectExterior = ({ photo, data }) => {
+    setExterior({ url: photo.uri, type: data});
+  };
+  const onSelectHall = ({ photo, data }) => {
+    setHall({ url: photo.uri, type: data});
+  };
+  const onSelectKitchen = ({ photo, data }) => {
+    setKitchen({ url: photo.uri, type: data});
+  };
+  const onSelectRegistration = ({ photo }) => {
+    setRegistration(photo.uri);
+  };
 
-const WIDTH = constants.width;
-const HEIGHT = constants.height;
-const styles = StyleSheet.create({
-    container:{
-        backgroundColor:'white',
-        flex:1,
-    },
-    buttonShadow:{
-        width: WIDTH * .8, 
-        height: HEIGHT * .14,
-        borderRadius: HEIGHT * .07,
-        justifyContent:"center",
-        marginVertical:20,
-        shadowColor: "#000",
-        shadowOffset: {
-    	    width: 0,
-    	    height: 1,
-        },
-        shadowOpacity: 0.18,
-        shadowRadius: 1.00,
-        elevation: 2,
-        backgroundColor:'white',
-    },
-    buttonRow:{
-        flexDirection:"row", 
-        justifyContent:"center", 
-        alignItems:"center",
-        paddingHorizontal: HEIGHT * 0.01,
-    },
-    buttonCircle:{
-        width: HEIGHT * 0.12,
-        height: HEIGHT * 0.12,
-        borderRadius: HEIGHT * 0.06,
-        justifyContent:"center",
-        alignItems:"center",
-        borderWidth:1,
-        borderColor:'#E0E0E0'
-    },
-    buttonText:{
-        flex:1, 
-        alignItems:"center"
-    },
-    text:{
-        fontSize:18,
-        color:'#E0E0E0'
-    },
-    submit:{
-        paddingHorizontal:10
-    },
-    submitText:{
-        color:'#05e6f4',
-        fontSize:16,
+  const [createShopMutation] = useMutation(CREATE_SHOP,{
+    update(cache, {data: { createShop }}) {
+      cache.writeQuery({
+        query: CHECK_SHOP,
+        data: { myShop: {
+          __typename: "Owner",
+         id:createShop.id,
+         ownerState:createShop.ownerState,
+        } },
+      });
     }
-});
+  });
+  const [shopImages, setShopImages] = React.useState([]);
+  const handleCreateShop = async () => {
+    setShopImages(shopImages.push(exterior, hall, kitchen));
+    try {
+      setLoading(true);
+      const {
+        data : { createShop }
+      } = await createShopMutation({
+        variables:{
+            shopImages: shopImages,
+            address: addressInput.value,
+            registration: registration,
+            classification: classification,
+            contact:String(contactInput.value),
+            ownerState:1
+        }
+      });
+      if(createShop){
+        navigation.navigate("신청 전");
+      }
+    } catch(e){
+      console.log("가게 신청 에러:",e)
+    } finally {
+      setLoading(false);
+    }
+  }
+  return (
+  <View style={styles.container}>
+    <ScrollView showsVerticalScrollIndicator={false}>
 
+      <View style={styles.textContainer}>
+        <Text style={styles.title}>내 가게가 공유 음식점이 될 수 있나요?</Text>
+      </View>
+      <Text style={styles.warning}>가게 사진을 제출해주세요, 선정 결과는 이메일/문자로 알려드립니다</Text> 
+    
+      <View style={styles.imageBox}>
+        <TouchableOpacity style={styles.imageInput} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelectExterior, data: "EXTERIOR"})}>
+          {exterior === null? <AntDesign name="plus" size={30} color="black" /> : <Image style={styles.image} source={{uri: exterior.url}}/>}
+        </TouchableOpacity>
 
-export default ({ navigation }) => {
-    const { data, error, loading, refetch } = useQuery(MY_SHOP);
-    refetch()
-    console.log(data)
-    if(loading) return <Loader />
-    if(error) return console.log(error);
-    return (
-        <View style={styles.container}>
-            {data && data.myShop &&
-            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{justifyContent:"center", alignItems:"center", padding:20}}>
-                <View style={styles.buttonShadow}>
-                    <TouchableOpacity onPress={() => navigation.navigate("사진 올리기", {shopImages:data.myShop.shopImages})}>
-                        <View style={styles.buttonRow}>
-                            <View style={[styles.buttonCircle, true? {borderColor: 'rgba(5, 230, 244, .6)'} : null]}>
-                                <MaterialCommunityIcons name="camera-wireless-outline" size={30} color={true? "rgba(5, 230, 244, .6)" : "#E0E0E0"} />
-                            </View>
-                            <View style={styles.buttonText}>
-                                <Text style={[styles.text, true? {color: 'rgba(5, 230, 244, .6)'} : null]}>사진 올리기</Text>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
-                </View>
+        <TouchableOpacity style={styles.imageInput} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelectHall, data: "HALL"})}>
+          {hall === null? <AntDesign name="plus" size={30} color="black" /> : <Image style={styles.image} source={{uri: hall.url}}/>}
+        </TouchableOpacity>
 
-                <View style={styles.buttonShadow}>
-                    <TouchableOpacity onPress={() => navigation.navigate("설비 등록", {myShop: data.myShop})}>
-                        <View style={styles.buttonRow}>
-                            <View style={styles.buttonCircle}>
-                                <MaterialIcons name="kitchen" size={30} color="#E0E0E0" />
-                            </View>
-                            <View style={styles.buttonText}>
-                                <Text style={styles.text}>설비 등록</Text>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
-                </View>
+        <TouchableOpacity style={styles.imageInput} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelectKitchen, data: "KITCHEN"})}>
+          {kitchen === null? <AntDesign name="plus" size={30} color="black" /> : <Image style={styles.image} source={{uri: kitchen.url}}/>}
+        </TouchableOpacity>
+      </View>
 
-                <View style={styles.buttonShadow}>
-                    <TouchableOpacity onPress={() => navigation.navigate("규모 안내")}>
-                        <View style={styles.buttonRow}>
-                            <View style={styles.buttonCircle}>
-                                <MaterialIcons name="group" size={30} color="#E0E0E0" />
-                            </View>
-                            <View style={styles.buttonText}>
-                                <Text style={styles.text}>규모 안내</Text>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
-                </View>
+      <View style={styles.imageBox}>
+        <Text style={styles.text}>외부 사진</Text>
+        <Text style={styles.text}>홀 사진</Text>
+        <Text style={styles.text}>주방 사진</Text>
+      </View>
 
-                <View style={styles.buttonShadow}>
-                    <TouchableOpacity onPress={() => navigation.navigate("공간 소개")}>
-                        <View style={styles.buttonRow}>
-                            <View style={styles.buttonCircle}>
-                                <MaterialIcons name="description" size={30} color="#E0E0E0" />
-                            </View>
-                            <View style={styles.buttonText}>
-                                <Text style={styles.text}>공간 소개</Text>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
-                </View>
+      <View style={styles.textContainer}>
+       <Text style={styles.title}>사업장 위치를 알려주세요</Text>
+      </View>
+      <Text style={styles.warning}>주변 음식점과 함께 신청하면 선정 될 확률이 높습니다</Text> 
 
-                <View style={styles.buttonShadow}>
-                    <TouchableOpacity onPress={() => navigation.navigate("위치 등록")}>
-                        <View style={styles.buttonRow}>
-                            <View style={styles.buttonCircle}>
-                                <MaterialIcons name="location-on" size={30} color="#E0E0E0" />
-                            </View>
-                            <View style={styles.buttonText}>
-                                <Text style={styles.text}>위치 등록</Text>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
-                </View>
+      <BasicInput {...addressInput} placeholder={"음식점 위치"} keyboardType="default" editable={!loading}/>
 
-                <View style={styles.buttonShadow}>
-                    <TouchableOpacity onPress={() => navigation.navigate("입점 규칙")}>
-                        <View style={styles.buttonRow}>
-                            <View style={styles.buttonCircle}>
-                                <MaterialCommunityIcons name="check-circle-outline" size={30} color="#E0E0E0" />
-                            </View>
-                            <View style={styles.buttonText}>
-                                <Text style={styles.text}>입점 규칙</Text>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
-                </View>
+      <View style={styles.textContainer}>
+       <Text style={styles.title}>사업자등록증을 확인합니다</Text> 
+      </View>
+    
+      <Text style={styles.warning}>영업 사실확인 용도로만 사용됩니다</Text> 
+      
+      <View style={{flexDirection:"row"}}>
+        <TouchableOpacity style={styles.imageInput} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelectRegistration})}>
+          {registration === null? <AntDesign name="plus" size={30} color="black" /> : <Image style={styles.image} source={{uri: registration}}/>}
+        </TouchableOpacity>
+      </View>
 
-                <View style={styles.buttonShadow}>
-                    <TouchableOpacity onPress={() => navigation.navigate("환불 정책")}>
-                        <View style={styles.buttonRow}>
-                            <View style={styles.buttonCircle}>
-                                <MaterialCommunityIcons name="credit-card-refund-outline" size={34} color="#E0E0E0" />
-                            </View>
-                            <View style={styles.buttonText}>
-                                <Text style={styles.text}>환불 정책</Text>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
-                </View>
+      <View style={styles.textContainer}>
+       <Text style={styles.title}>업종을 알려주세요</Text> 
+      </View>
+    
+      <Text style={styles.warning}>일반/휴게 음식점만 등록할 수 있습니다</Text> 
+      
+      <View style={styles.action}>
+        <Text style={{fontWeight:'bold'}}>업종:  </Text> 
+        <RadioButton.Group onValueChange={classification => setClassification(classification)} value={classification}>
+          <View style={{flexDirection:"row", alignItems:"center"}}>
+            <RadioButton value="일반" color={'#05e6f4'} uncheckedColor={'rgba(5, 230, 244, .3)'}/>
+            <Text>일반 음식점</Text>
+          </View>
+          <View style={{flexDirection:"row", alignItems:"center"}}>
+            <RadioButton value="휴게" color={'#05e6f4'} uncheckedColor={'rgba(5, 230, 244, .3)'}/>
+            <Text>휴게 음식점</Text>
+          </View>
+        </RadioButton.Group>
+      </View>
 
-                <BasicButton text="제출하기"/>
-            </ScrollView>}
-        </View>
+      <View style={styles.textContainer}>
+       <Text style={styles.title}>연락처를 알려주세요</Text> 
+      </View>
+    
+      <Text style={styles.warning}>선정 결과는 문자로 안내해 드립니다</Text> 
+      
+      <BasicInput {...contactInput} placeholder={"연락처"} keyboardType="numeric" editable={!loading}/>
+    
+      <BasicButton text={'제출하기'} onPress={handleCreateShop} disabled={exterior && hall && kitchen && registration && addressInput.value && contactInput.value ? false : true} loading={loading} />
+    </ScrollView>
+  </View>
 )};
+
+
+const styles = StyleSheet.create({
+  container:{
+    flex:1,
+    paddingHorizontal:20,
+  },
+  imageBox:{
+    flexDirection:"row",
+    justifyContent:"space-between",
+  },
+  imageInput:{
+    width:constants.width * 0.25,
+    height:constants.width * 0.25,
+    backgroundColor:'white', 
+    borderRadius:20,
+    margin:5,
+    justifyContent:'center',
+    alignItems:'center',
+    shadowOffset: {
+      width: 1,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 3,
+  },
+  image:{
+    width:constants.width * 0.25,
+    height:constants.width * 0.25,
+    backgroundColor:'white', 
+    borderRadius:20,
+    margin:5,
+  },
+  textContainer:{
+    marginTop:50,
+    borderBottomWidth:2,
+    borderBottomColor:'#05e6f4',
+    alignSelf:"flex-start"
+  },
+  title:{
+    fontWeight:'bold',
+    fontSize:16,
+  },
+  text:{
+    fontSize:15,
+    width:constants.width * 0.25,
+    textAlign:"center",
+    marginTop: 4
+  },
+  warning:{
+    fontSize:12,
+    color:'#e0383e',
+    marginVertical:10,
+  },
+  textInput:{
+    fontSize:14,
+    width:constants.width * 0.9,
+    borderRadius:20,
+    padding:10,
+    borderWidth:1,
+    borderColor:"#e7e7e7",
+    justifyContent:'flex-start'
+  },
+  action: {
+    flexDirection: 'row',
+    marginTop: 10,
+    marginBottom: 10,
+    alignItems:"center"
+  },
+})

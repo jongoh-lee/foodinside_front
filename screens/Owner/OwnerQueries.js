@@ -4,11 +4,14 @@ export const MY_SHOP = gql`
     query myShop {
         myShop{
             id
-            location
             registration
             classification
+            address
             ownerState
             contact
+            chairs
+            tables
+            scale
             shopImages{
                 id
                 type
@@ -201,25 +204,25 @@ export const CHECK_SHOP = gql`
     }
 `;
 
-export const ENROLL_SHOP = gql`
-    mutation enrollShop(
+export const CREATE_SHOP = gql`
+    mutation createShop(
         $shopImages: [CreateShopImage!]!
-        $location: String!
+        $address: String!
         $registration: String!
         $classification: String!
         $contact: String!
         $ownerState: Int!
     ) {
-        enrollShop(
+        createShop(
             shopImages:$shopImages
-            location:$location
+            address:$address
             registration:$registration
             classification:$classification
             contact:$contact
             ownerState:$ownerState
         ) {
             id
-            location
+            address
             registration
             classification
             contact
@@ -228,25 +231,25 @@ export const ENROLL_SHOP = gql`
     }
 `;
 
-export const EDIT_ENROLL_SHOP = gql`
-    mutation editEnrollShop(
+export const EDIT_SHOP = gql`
+    mutation editShop(
         $shopImages: [EditShopImage!]!
-        $location: String!
+        $address: String!
         $registration: String!
         $classification: String!
         $contact: String!
         $ownerState: Int!
     ) {
-        editEnrollShop(
+        editShop(
             shopImages:$shopImages
-            location:$location
+            address:$address
             registration:$registration
             classification:$classification
             contact:$contact
             ownerState:$ownerState
         ) {
             id
-            location
+            address
             registration
             classification
             contact
@@ -256,6 +259,25 @@ export const EDIT_ENROLL_SHOP = gql`
                 type
                 url
             }
+        }
+    }
+`;
+
+export const COMPLETE_SHOP_SCALE = gql`
+    mutation completeShopScale(
+        $chairs: chairs
+        $tables: tables
+        $scale: scale
+    ){
+        completeShopScale(
+            chairs: $chairs
+            tables: $tables
+            scale: $scale
+        ){
+            id
+            chairs
+            tables
+            scale
         }
     }
 `;
@@ -486,7 +508,7 @@ export const COMPLETE_SHOP_IMAGE = gql`
             editImages:$editImages
         ){
             id
-            location
+            address
             registration
             classification
             contact

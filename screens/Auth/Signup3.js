@@ -8,6 +8,7 @@ import strickInput from "../../hooks/strickInput";
 import DismissKeyboard from "../../components/Custom/DismissKeyboard";
 import { useMutation } from "@apollo/react-hooks";
 import { CREATE_ACCOUNT } from "./AuthQueries";
+import constants from "../../constants";
 
 export default ({ navigation, route }) => {
   const [loading, setLoading] = React.useState(false);
@@ -59,9 +60,9 @@ export default ({ navigation, route }) => {
         <Text style={styles.title}>성함을 입력하세요</Text>
         <Text style={styles.text}>성과 이름을 입력해 주세요</Text>
 
-        <View style={{flexDirection:"row"}}>
-        <AuthInput {...lastName} placeholder="성" keyboardType="default" autoFocus={true} size={.3} editable={!loading}/>
-        <AuthInput {...firstName} placeholder="이름(성 제외)" keyboardType="default" size={.6} editable={!loading}/>
+        <View style={{flexDirection:"row", width: constants.width *  0.9, justifyContent:"space-between"}}>
+        <AuthInput {...lastName} placeholder="성" keyboardType="default" autoFocus={true} width={.2} editable={!loading}/>
+        <AuthInput {...firstName} placeholder="이름(성 제외)" keyboardType="default" width={.6} editable={!loading}/>
         </View>
         <AuthButton text="다음(3/4단계)" onPress={handleSignUp} loading={loading} />
       </View>

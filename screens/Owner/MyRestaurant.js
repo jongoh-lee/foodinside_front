@@ -5,19 +5,17 @@ import { myShopData } from "../../components/Owner/data";
 
 //screen
 import Description from "../../components/Owner/Description";
+import BackArrow from "../../components/Custom/BackArrow";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor:"white"
   },
-  headerContainer: {
-    flexDirection:"row",
-    alignItems:"baseline"
-  },
   headerTitle:{
     fontWeight:'bold',
     fontSize:20,
+    alignSelf:"center"
   },
   headerSort:{
     color:'#666',
@@ -30,15 +28,13 @@ const styles = StyleSheet.create({
 
 export default ({ navigation }) => {
   const {sort} = myShopData;
-  React.useEffect(()=>{
       navigation.setOptions({
       headerTitle: () => (
-        <View style={styles.headerContainer}>
-        <Text style={styles.headerTitle}>내 가게</Text>
-        <Text style={styles.headerSort}>{sort}음식점</Text>
-      </View>)
+        <Text style={styles.headerTitle}>내 가게 <Text style={styles.headerSort}>{sort}음식점</Text></Text>
+      ),
+      headerLeft:() => <BackArrow />
       })
-  }, [])
+  
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, Animated, Image, TouchableOpacity, Platform} from "react-native";
+import { StyleSheet, Text, View, Animated, Image, TouchableOpacity, Platform, AsyncStorage} from "react-native";
 import MapView, { Callout } from "react-native-maps";
 
 import { markers } from '../../components/Franchise/data';
@@ -82,7 +82,6 @@ const ExploreScreen = () => {
 
     _scrollView.current.getNode().scrollTo({x: x, y: 0, animated: true});
   }
-
   return (
     <View style={styles.container}>
       <MapView

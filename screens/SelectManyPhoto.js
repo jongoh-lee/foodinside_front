@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as Permissions from "expo-permissions";
 import * as MediaLibrary from "expo-media-library";
-import { StyleSheet, View, Image, ScrollView, Text, StatusBar, SafeAreaView, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Image, ScrollView, Text, StatusBar, SafeAreaView, TouchableOpacity, ImageBackground } from "react-native";
 import Loader from "../components/Custom/Loader";
 import constants from "../constants";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
@@ -46,19 +46,23 @@ const styles = StyleSheet.create({
 export default ({ navigation, route }) => {
     const [loading, setLoading] = React.useState(true);
     const [hasPermission, setHasPermission] = React.useState(false);
-    const [selected, setSelected] = React.useState();
+    const [selected, setSelected] = React.useState([]);
     const [allPhotos, setAllPhotos] = React.useState();
     const data = route.params.data? route.params.data : null;
-    const changeSelected = photo => {
-        setSelected(photo);
+    const merge = photo => {
+        let index = selected.indexOf(photo);
+        if(index > -1){
+            setSelected(selected.filter(el => el.id !== photo.id));
+        } else {
+            setSelected(selected.concat(photo));
+        }
     };
 
     const getPhotos = async () => {
         try{
             const { assets } = await MediaLibrary.getAssetsAsync();
-            const [firstPhoto] = assets;
-            setSelected(firstPhoto);
-            setAllPhotos(assets);
+            let _assets = assets.sort((a,b)=>a.creationTime-b.creationTime) 
+            setAllPhotos(_assets);
         } catch (e) {
             console.log('사진 선택 에러:',e);
         } finally {
@@ -78,52 +82,49 @@ export default ({ navigation, route }) => {
             setHasPermission(false);
         }
     };
-
     const handleSelected = () => {
-        navigation.goBack({ photo : selected });
+        navigation.goBack();
         route.params.onSelect({ photo : selected, data: data});
     };
 
+    navigation.setOptions({
+        headerRight:() => (
+            <TouchableOpacity style={styles.select}  onPress={handleSelected}>
+                <Text style={styles.selectText}>선택</Text>
+           </TouchableOpacity>
+        ),
+    })
     React.useEffect(()=>{
         askPermission()
     }, []);
 
-    
     return (
     <View style={styles.container}>
     
-        <View style={[styles.header, {marginTop: StatusBar.currentHeight}]}>
-            <BackArrow />
-            <Text style={styles.headerTitle}>최근 항목</Text>
-            <TouchableOpacity style={styles.select}  onPress={handleSelected}>
-                <Text style={styles.selectText}>선택</Text>
-           </TouchableOpacity>
-        </View>
-
         {loading ? (
           <Loader />
         ) : (
-        <View>
+        <View style={{flex:1}}>
             {hasPermission ? (
             <>
-              <Image
-                style={{ width: constants.width, height: constants.height / 2}}
-                source={{ uri: selected.uri }}
-              />
 
-            <View style={{height: constants.height / 3}}>
+            <View>
               <ScrollView contentContainerStyle={{flexDirection:"row", flexWrap:"wrap"}}>
                 {allPhotos.map(photo => (
-                <TouchableWithoutFeedback key={photo.id} onPress={() => changeSelected(photo)}>
-                  <Image
+                <TouchableWithoutFeedback key={photo.id} onPress={() => merge(photo)}>
+                  <ImageBackground
                     key={photo.id}
                     source={{ uri: photo.uri }}
                     style={{
                       width: constants.width / 3,
                       height: constants.height / 6,
-                      opacity: photo.id === selected.id ? 0.4 : 1
+                      opacity: selected.indexOf(photo) > -1 ? 0.8 : 1
                     }}
-                  />
+                  >
+                      {selected.indexOf(photo) > -1 ? (
+                        <Text style={{position:"absolute", top: 10, right:10, fontSize:12, color:'#05e6f4', borderWidth:2, width:20, height:20, borderRadius:10, borderColor:'#05e6f4', textAlign:"center", textAlignVertical:"center"}}>{selected.indexOf(photo) + 1}</Text>
+                      ) : null}
+                  </ImageBackground>
                 </TouchableWithoutFeedback>
                 ))}
               </ScrollView>

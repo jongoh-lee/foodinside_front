@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
 import AsyncStorage from "@react-native-community/async-storage";
+import { useQuery } from "react-apollo";
+import ApolloClient from "apollo-client";
 
 export const AuthContext = createContext();
 
@@ -18,7 +20,7 @@ export const AuthProvider = ({ isLoggedIn: isLoggedInProp, children }) => {
   const logUserOut = async () => {
     try {
       await AsyncStorage.setItem("isLoggedIn", "false");
-      await AsyncStorage.clear();
+      AsyncStorage.clear();
       setIsLoggedIn(false);
     } catch (e) {
       console.log(e);

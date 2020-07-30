@@ -7,6 +7,7 @@ import { RadioButton, } from "react-native-paper";
 import { useQuery } from "@apollo/react-hooks";
 import { MY_SHOP } from "./OwnerQueries";
 import Loader from "../../components/Custom/Loader";
+import BackArrow from "../../components/Custom/BackArrow";
 
 export default ({ navigation }) => {
   const { data , error, loading, refetch } = useQuery(MY_SHOP);
@@ -19,7 +20,8 @@ export default ({ navigation }) => {
         <Text style={styles.editText}>수정</Text>
       </View>
     </TouchableWithoutFeedback>
-    )
+    ),
+    headerLeft:() => <BackArrow />
   });
 
   if (loading) return <Loader />;
@@ -51,7 +53,7 @@ export default ({ navigation }) => {
       </View>
       <Text style={styles.warning}>주변 음식점과 함께 신청하면 선정 될 확률이 높습니다</Text> 
 
-        <Text style={styles.textInput}>{data.myShop.location}</Text>
+        <Text style={styles.textInput}>{data.myShop.address}</Text>
 
       <View style={styles.textContainer}>
        <Text style={styles.title}>사업자등록증을 확인합니다</Text> 

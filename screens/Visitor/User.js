@@ -13,7 +13,9 @@ import { useLogOut } from "../../AuthContext";
 
   export default ({ route, navigation }) => {
     const [visible, setVisible ] = React.useState(false);
-    const { data, loading, error, refetch } = useQuery(ME);
+    const { data, loading, error, refetch } = useQuery(ME, {
+        fetchPolicy:"network-only"
+    });
     const logOut = useLogOut();
     navigation.setOptions({
         headerRight:() => (

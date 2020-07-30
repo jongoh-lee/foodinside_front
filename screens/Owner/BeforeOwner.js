@@ -8,8 +8,9 @@ import Loader from "../../components/Custom/Loader";
 import { CHECK_SHOP } from "./OwnerQueries";
 
 export default ({ navigation }) => {
-  const { data, loading, error, refetch } = useQuery(CHECK_SHOP);
-  refetch()
+  const { data, loading, error } = useQuery(CHECK_SHOP, {
+    fetchPolicy:"network-only"
+  });
   if(loading) return <Loader />;
   if(error) return console.log("Owner Error",error);
 

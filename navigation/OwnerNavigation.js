@@ -12,8 +12,8 @@ import Chat from '../screens/Owner/Chat';
 import Earnings from '../screens/Owner/Earnings';
 
 //shop Info
-import EnrollShop from '../screens/Owner/EnrollShop';
-import EditEnrollShop from '../screens/Owner/EditEnrollShop';
+import CreateShop from '../screens/Owner/CreateShop';
+import EditShop from '../screens/Owner/EditShop';
 import MyRestaurant from '../screens/Owner/MyRestaurant';
 
 //button
@@ -21,20 +21,22 @@ import NavIcon from '../components/Custom/NavIcon';
 import {MaterialIcons} from '@expo/vector-icons'
 import Reservations from '../screens/Owner/Reservations';
 import SelectPhoto from '../screens/SelectPhoto';
+import SelectManyPhoto from '../screens/SelectManyPhoto';
 import BackArrow from '../components/Custom/BackArrow';
 import Logo from '../components/Custom/Logo';
 import BeforeOwner from '../screens/Owner/BeforeOwner';
 
 //음식점 등록
-import CreateShop from '../screens/Owner/CreateShop';
+import CompleteShop from '../screens/Owner/CompleteShop';
 import FormShopImage from '../screens/Owner/FormShopImage';
 import FormShopFacility from '../screens/Owner/FormShopFacility';
 import FormShopScale from '../screens/Owner/FormShopScale';
 import FormShopDescription from '../screens/Owner/FormShopDescription';
-import FormShopLocation from '../screens/Owner/FormShopLocation';
+import FormShopAddress from '../screens/Owner/FormShopAddress';
 import FormShopRefund from '../screens/Owner/FormShopRefund';
 import FormShopRules from '../screens/Owner/FormShopRules';
 import MyShop from '../screens/Owner/MyShop';
+import GetAddress from '../screens/GetAddress';
 
 const ChatStack = createStackNavigator();
 
@@ -106,7 +108,7 @@ function MyShopStackScreen() {
         headerTitleAlign:"center",
         headerLeft:()=> <BackArrow />,
       }} component={MyShop} />
-      <MyShopStack.Screen name="공간 작성" component={CreateShop} options={{
+      <MyShopStack.Screen name="공간 작성" component={CompleteShop} options={{
         headerTitle:"공간 등록",
         headerTitleAlign:"center",
         headerLeft:() => <BackArrow />,
@@ -167,15 +169,37 @@ export default () => {
       <OwnerStack.Screen name='SelectPhoto' component={SelectPhoto} options={{
         headerShown:false
       }}/>
-      <OwnerStack.Screen name='신청 하기' component={EnrollShop} />
-      <OwnerStack.Screen name='수정 하기' component={EditEnrollShop} />
-      <OwnerStack.Screen name='사진 올리기' component={FormShopImage} />
-      <OwnerStack.Screen name='설비 등록' component={FormShopFacility} />
-      <OwnerStack.Screen name='규모 안내' component={FormShopScale} />
-      <OwnerStack.Screen name='공간 소개' component={FormShopDescription} />
-      <OwnerStack.Screen name='위치 등록' component={FormShopLocation} />
-      <OwnerStack.Screen name='입점 규칙' component={FormShopRules} />
-      <OwnerStack.Screen name='환불 정책' component={FormShopRefund} />
+      <OwnerStack.Screen name='최근 항목' component={SelectManyPhoto} />
+      <OwnerStack.Screen name='주소 입력' component={GetAddress} options={{
+        headerTitleStyle:{fontWeight:"bold"}
+      }}/>
+      <OwnerStack.Screen name='신청 하기' component={CreateShop} options={{
+        headerTitleStyle:{fontWeight:"bold"}
+      }}/>
+      <OwnerStack.Screen name='수정 하기' component={EditShop} options={{
+        headerTitleStyle:{fontWeight:"bold"}
+      }}/>
+      <OwnerStack.Screen name='사진 올리기' component={FormShopImage} options={{
+        headerTitleStyle:{fontWeight:"bold"}
+      }}/>
+      <OwnerStack.Screen name='설비 등록' component={FormShopFacility} options={{
+        headerTitleStyle:{fontWeight:"bold"}
+      }}/>
+      <OwnerStack.Screen name='규모 안내' component={FormShopScale} options={{
+        headerTitleStyle:{fontWeight:"bold"}
+      }}/>
+      <OwnerStack.Screen name='공간 소개' component={FormShopDescription} options={{
+        headerTitleStyle:{fontWeight:"bold"}
+      }}/>
+      <OwnerStack.Screen name='위치 등록' component={FormShopAddress} options={{
+        headerTitleStyle:{fontWeight:"bold"}
+      }}/>
+      <OwnerStack.Screen name='입점 규칙' component={FormShopRules} options={{
+        headerTitleStyle:{fontWeight:"bold"}
+      }}/>
+      <OwnerStack.Screen name='환불 정책' component={FormShopRefund} options={{
+        headerTitleStyle:{fontWeight:"bold"}
+      }}/>
     </OwnerStack.Navigator>
   )
 }

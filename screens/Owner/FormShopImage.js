@@ -39,7 +39,7 @@ export default ({ navigation, route }) => {
 
     //이미지 추가 함수 front: list 바꾸고 back_end: data 추가
     const onSelect = ({ photo, data }) => {
-        setNewImages(newImages.concat({type:data, url:photo.uri}))
+        setNewImages(newImages.concat(photo.map( el => ({ type: data, url: el.uri}))))
     };
 
     // 이미지 수정 함수 front 바꾸고 edit list 추가
@@ -93,7 +93,7 @@ export default ({ navigation, route }) => {
                             <Text style={styles.title}>외부 사진{`\n`}<Caption>출입구를 한눈에 보여주세요</Caption></Text>
 
                             <TouchableOpacity style={{flexDirection:"row"}} disabled={loading} onPress={() => (
-                              navigation.navigate('SelectPhoto', {
+                              navigation.navigate('최근 항목', {
                                 onSelect : onSelect,
                                 data: 'EXTERIOR'
                               })
@@ -160,7 +160,7 @@ export default ({ navigation, route }) => {
                             <Text style={styles.title}>홀 사진{`\n`}<Caption>인테리어/의자/테이블을 보여주세요</Caption></Text>
 
                             <TouchableOpacity style={{flexDirection:"row"}} disabled={loading} onPress={() => (
-                              navigation.navigate('SelectPhoto', {
+                              navigation.navigate('최근 항목', {
                                 onSelect : onSelect,
                                 data: 'HALL'
                               })
@@ -227,7 +227,7 @@ export default ({ navigation, route }) => {
                             <Text style={styles.title}>주방 사진{`\n`}<Caption>주방구조/조리기기를 보여주세요</Caption></Text>
 
                             <TouchableOpacity style={{flexDirection:"row"}} disabled={loading} onPress={() => (
-                              navigation.navigate('SelectPhoto', {
+                              navigation.navigate('최근 항목', {
                                 onSelect : onSelect,
                                 data: 'KITCHEN'
                               })
@@ -294,7 +294,7 @@ export default ({ navigation, route }) => {
                             <Text style={styles.title}>식기 사진{`\n`}<Caption>식기류/잔을 보여주세요</Caption></Text>
 
                             <TouchableOpacity style={{flexDirection:"row"}} disabled={loading} onPress={() => (
-                              navigation.navigate('SelectPhoto', {
+                              navigation.navigate('최근 항목', {
                                 onSelect : onSelect,
                                 data: 'TABLEWARE'
                               })
@@ -361,7 +361,7 @@ export default ({ navigation, route }) => {
                             <Text style={styles.title}>청소 도구 사진{`\n`}<Caption>청소 도구를 보여주세요</Caption></Text>
 
                             <TouchableOpacity style={{flexDirection:"row"}} disabled={loading} onPress={() => (
-                              navigation.navigate('SelectPhoto', {
+                              navigation.navigate('최근 항목', {
                                 onSelect : onSelect,
                                 data: 'CLEANER'
                               })
@@ -428,7 +428,7 @@ export default ({ navigation, route }) => {
                             <Text style={styles.title}>기타{`\n`}<Caption>기타 물품(포장 용품/빔 프로젝터 등)을 보여주세요</Caption></Text>
 
                             <TouchableOpacity style={{flexDirection:"row"}} disabled={loading} onPress={() => (
-                              navigation.navigate('SelectPhoto', {
+                              navigation.navigate('최근 항목', {
                                 onSelect : onSelect,
                                 data: 'ECT'
                               })
@@ -505,7 +505,7 @@ export default ({ navigation, route }) => {
                 <View style={styles.content}>
                     {chosenImage && chosenImage.id ? (
                     <TouchableOpacity style={styles.modalList} onPress={()=> (
-                        navigation.navigate('SelectPhoto', {
+                        navigation.navigate('최근 항목', {
                             onSelect : onEdit,
                             data: chosenImage
                         }

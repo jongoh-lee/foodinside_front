@@ -15,7 +15,7 @@ const ShadowInput = ({
   autoFocus = false,
   borderRadius= 10,
   editable=true,
-  padding=5,
+  padding=10,
   width='100%',
   multiline=false,
   maxHeight=150,
@@ -31,12 +31,12 @@ const ShadowInput = ({
               textAlign:textAlign,
               borderRadius:borderRadius,
               shadowOffset: {
-                width: 1,
-                height: 2,
+                width: 0,
+                height: 1,
               },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-              elevation: 3,
+              shadowOpacity: 0.20,
+              shadowRadius: 1.41,
+              elevation: 2,
             }}
             onChangeText={onChange}
             keyboardType={keyboardType}

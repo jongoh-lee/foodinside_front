@@ -165,7 +165,7 @@ export const profile = {
     ],
     openInfo:[
         {
-            location:"",
+            address:"",
             date:"",
         }
     ],

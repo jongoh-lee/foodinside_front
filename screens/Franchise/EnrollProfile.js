@@ -54,7 +54,6 @@ export default ({ navigation, route }) => {
           profileState: 1
         }
       });
-      console.log(createProfile)
       if ( createProfile ) {
         navigation.navigate("프로필 안내");
       }

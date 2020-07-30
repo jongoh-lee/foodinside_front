@@ -5,69 +5,59 @@ import constants from "../../constants";
 import BasicButton from "../../components/Custom/BasicButton";
 import { RadioButton, } from "react-native-paper";
 import BasicInput from "../../components/Custom/BasicInput";
-import { AntDesign } from '@expo/vector-icons'; 
 import useInput from "../../hooks/strickInput";
 import numInput from "../../hooks/numInput";
 import { useMutation } from "@apollo/react-hooks";
-import { ENROLL_SHOP, CHECK_SHOP } from "./OwnerQueries";
-import OwnerChatList from "../../components/Owner/OwnerChatList";
+import { EDIT_SHOP } from "./OwnerQueries";
 
 export default ({ navigation, route }) => {
   const [loading, setLoading] = React.useState(false);
-  const [ exterior, setExterior] = React.useState(null);
-  const [ hall, setHall] = React.useState(null);
-  const [ kitchen, setKitchen] = React.useState(null);
-  const locationInput = useInput('');
-  const [registration, setRegistration] = React.useState(null);
-  const [classification, setClassification] = React.useState("일반");
-  const contactInput = numInput('');
+  const [ exterior, setExterior] = React.useState(route.params.myShop.shopImages.find(el => el.type === "EXTERIOR"));
+  const [ hall, setHall] = React.useState(route.params.myShop.shopImages.find(el => el.type === "HALL"));
+  const [ kitchen, setKitchen] = React.useState(route.params.myShop.shopImages.find(el => el.type === "KITCHEN"));
+  const addressInput = useInput(route.params.myShop.address);
+  const [registration, setRegistration] = React.useState(route.params.myShop.registration);
+  const [classification, setClassification] = React.useState(route.params.myShop.classification);
+  const contactInput = numInput(String(route.params.myShop.contact));
   const onSelectExterior = ({ photo, data }) => {
-    setExterior({ url: photo.uri, type: data});
+    setExterior({id: exterior.id, url: photo.uri, type: data});
   };
   const onSelectHall = ({ photo, data }) => {
-    setHall({ url: photo.uri, type: data});
+    setHall({ id: hall.id, url: photo.uri, type: data});
   };
   const onSelectKitchen = ({ photo, data }) => {
-    setKitchen({ url: photo.uri, type: data});
+    setKitchen({ id:kitchen.id, url: photo.uri, type: data});
   };
   const onSelectRegistration = ({ photo }) => {
     setRegistration(photo.uri);
   };
 
-  const [enrollShopMutation] = useMutation(ENROLL_SHOP,{
-    update(cache, {data: { enrollShop }}) {
-      cache.writeQuery({
-        query: CHECK_SHOP,
-        data: { myShop: {
-          __typename: "Owner",
-         id:enrollShop.id,
-         ownerState:enrollShop.ownerState,
-        } },
-      });
-    }
-  });
+  const [editShopMutation] = useMutation(EDIT_SHOP);
   const [shopImages, setShopImages] = React.useState([]);
-  const handleEnrollShop = async () => {
+  const handleEditShop = async () => {
+    delete exterior["__typename"];
+    delete hall["__typename"];
+    delete kitchen["__typename"];
     setShopImages(shopImages.push(exterior, hall, kitchen));
     try {
       setLoading(true);
       const {
-        data : { enrollShop }
-      } = await enrollShopMutation({
+        data : { editShop }
+      } = await editShopMutation({
         variables:{
             shopImages: shopImages,
-            location: locationInput.value,
+            address: addressInput.value,
             registration: registration,
             classification: classification,
             contact:String(contactInput.value),
             ownerState:1
         }
       });
-      if(enrollShop){
-        navigation.navigate("신청 전");
+      if(editShop){
+        navigation.goBack();
       }
     } catch(e){
-      console.log("가게 신청 에러:",e)
+      console.log("가게 수정 에러:",e)
     } finally {
       setLoading(false);
     }
@@ -83,15 +73,15 @@ export default ({ navigation, route }) => {
     
       <View style={styles.imageBox}>
         <TouchableOpacity style={styles.imageInput} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelectExterior, data: "EXTERIOR"})}>
-          {exterior === null? <AntDesign name="plus" size={30} color="black" /> : <Image style={styles.image} source={{uri: exterior.url}}/>}
+          <Image style={styles.image} source={{uri: exterior.url}}/>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.imageInput} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelectHall, data: "HALL"})}>
-          {hall === null? <AntDesign name="plus" size={30} color="black" /> : <Image style={styles.image} source={{uri: hall.url}}/>}
+          <Image style={styles.image} source={{uri: hall.url}}/>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.imageInput} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelectKitchen, data: "KITCHEN"})}>
-          {kitchen === null? <AntDesign name="plus" size={30} color="black" /> : <Image style={styles.image} source={{uri: kitchen.url}}/>}
+          <Image style={styles.image} source={{uri: kitchen.url}}/>
         </TouchableOpacity>
       </View>
 
@@ -106,7 +96,7 @@ export default ({ navigation, route }) => {
       </View>
       <Text style={styles.warning}>주변 음식점과 함께 신청하면 선정 될 확률이 높습니다</Text> 
 
-      <BasicInput {...locationInput} placeholder={"사업장 위치"} keyboardType="default" editable={!loading}/>
+      <BasicInput {...addressInput} placeholder={"사업장 위치"} keyboardType="default" editable={!loading}/>
 
       <View style={styles.textContainer}>
        <Text style={styles.title}>사업자등록증을 확인합니다</Text> 
@@ -116,7 +106,7 @@ export default ({ navigation, route }) => {
       
       <View style={{flexDirection:"row"}}>
         <TouchableOpacity style={styles.imageInput} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelectRegistration})}>
-          {registration === null? <AntDesign name="plus" size={30} color="black" /> : <Image style={styles.image} source={{uri: registration}}/>}
+          <Image style={styles.image} source={{uri: registration}}/>
         </TouchableOpacity>
       </View>
 
@@ -135,7 +125,7 @@ export default ({ navigation, route }) => {
           </View>
           <View style={{flexDirection:"row", alignItems:"center"}}>
             <RadioButton value="휴게" color={'#05e6f4'} uncheckedColor={'rgba(5, 230, 244, .3)'}/>
-            <Text>휴계 음식점</Text>
+            <Text>휴게 음식점</Text>
           </View>
         </RadioButton.Group>
       </View>
@@ -148,7 +138,7 @@ export default ({ navigation, route }) => {
       
       <BasicInput {...contactInput} placeholder={"연락처"} keyboardType="numeric" editable={!loading}/>
     
-      <BasicButton text={'제출하기'} onPress={handleEnrollShop} disabled={exterior && hall && kitchen && registration && locationInput.value && contactInput.value ? false : true} loading={loading} />
+      <BasicButton text={'제출하기'} onPress={handleEditShop} disabled={exterior && hall && kitchen && registration && addressInput.value && contactInput.value ? false : true} loading={loading} />
     </ScrollView>
   </View>
 )};

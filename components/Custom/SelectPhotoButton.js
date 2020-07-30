@@ -16,12 +16,12 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         alignItems:'center',
         shadowOffset: {
-          width: 1,
-          height: 2,
+          width: 0,
+          height: 1,
         },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 3,
+        shadowOpacity: 0.20,
+        shadowRadius: 1.41,
+        elevation: 2,
       },
       image:{
         width:constants.width * 0.25,

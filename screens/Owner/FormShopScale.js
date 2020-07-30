@@ -6,6 +6,71 @@ import DismissKeyboard from "../../components/Custom/DismissKeyboard";
 import ShadowInput from "../../components/Custom/ShadowInput";
 import constants from "../../constants";
 import BasicButton from "../../components/Custom/BasicButton";
+import { useMutation } from "@apollo/react-hooks";
+import { COMPLETE_SHOP_SCALE } from "./OwnerQueries";
+
+export default ({ navigation, route }) => {
+    const [loading, setLoading] = React.useState(false);
+    const chairInput = numInput(route.params["chairs"] ? route.params["chairs"] : '');
+    const tableInput = numInput(route.params["tables"] ? route.params["tables"] : '');
+    const scaleInput = numInput(route.params["scale"] ? route.params["scale"] : '');
+    const [completeShopScaleMutation] = useMutation(COMPLETE_SHOP_SCALE);
+    console.log(chairInput.value, tableInput.value, scaleInput.value)
+    const handleScale = async () => {
+        try {
+            setLoading(true);
+            const {
+                data : { completeShopScale }
+            } = await completeShopScaleMutation({
+                variables:{
+                    chairs:chairInput.value,
+                    tables:tableInput.value,
+                    scale:scaleInput.value
+                }
+            });
+            console.log('결과',completeShopScale);
+            if(completeShopScale){
+                navigation.goBack()
+            }
+        } catch(e) {
+          console.log("가게 스케일 에러:",e)
+        } finally {
+          setLoading(false);
+        }
+    }
+    return (
+        <View style={styles.container}>
+            <KeyboardAvoidingView 
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                style={{flex:1}}
+                keyboardVerticalOffset={50}
+                enabled >
+                <DismissKeyboard>
+                    <View style={{height:'100%', justifyContent:"center"}}>
+                        <View style={styles.rowBox}>
+                            <View style={styles.scaleBox}>
+                                <Text style={styles.scaleTitle}>의자 수</Text>
+                                <FontAwesome5 name="chair" size={26} color="silver"/>
+                                <ShadowInput {...chairInput} width={'50%'} placeholder={'개수'}/>
+                            </View>
+                            <View style={styles.scaleBox}>
+                                <Text style={styles.scaleTitle}>테이블 수</Text>
+                                <MaterialCommunityIcons name="format-text" size={34} color="silver"/>
+                                <ShadowInput {...tableInput} width={'50%'} placeholder={'개수'}/>
+                            </View>
+                            <View style={styles.scaleBox}>
+                                <Text style={styles.scaleTitle}>1회전 인원</Text>
+                                <FontAwesome5 name="users" size={26} color="silver"/>
+                                <ShadowInput {...scaleInput} width={'50%'} placeholder={'명'}/>
+                            </View>
+                        </View>
+                        <BasicButton disabled={chairInput.value && tableInput.value && scaleInput.value ? false : true} text={'제출 하기'} onPress={handleScale} loading={loading}/>
+                    </View>
+                </DismissKeyboard>
+            </KeyboardAvoidingView>
+        </View>    
+    )
+};
 
 const styles = StyleSheet.create({
     container:{
@@ -29,41 +94,4 @@ const styles = StyleSheet.create({
         justifyContent:"space-between",
         height: constants. height * 0.2
     },
-})
-
-export default () => {
-    const chairInput = numInput('');
-    const tableInput = numInput('');
-    const scaleInput = numInput('');
-    return (
-        <View style={styles.container}>
-            <KeyboardAvoidingView 
-                behavior={Platform.OS === "ios" ? "padding" : "height"}
-                style={{flex:1}}
-                enabled >
-                <DismissKeyboard>
-                    <View style={{height:'100%', justifyContent:"center"}}>
-                        <View style={styles.rowBox}>
-                            <View style={styles.scaleBox}>
-                                <Text style={styles.scaleTitle}>의자 수</Text>
-                                <FontAwesome5 name="chair" size={26} color="silver"/>
-                                <ShadowInput {...chairInput} width={'50%'} placeholder={'개수'}/>
-                            </View>
-                            <View style={styles.scaleBox}>
-                                <Text style={styles.scaleTitle}>테이블 수</Text>
-                                <MaterialCommunityIcons name="format-text" size={34} color="silver"/>
-                                <ShadowInput {...tableInput} width={'50%'} placeholder={'개수'}/>
-                            </View>
-                            <View style={styles.scaleBox}>
-                                <Text style={styles.scaleTitle}>1회전 인원</Text>
-                                <FontAwesome5 name="users" size={26} color="silver"/>
-                                <ShadowInput {...scaleInput} width={'50%'} placeholder={'명'}/>
-                            </View>
-                        </View>
-                        <BasicButton text={'제출 하기'} />
-                    </View>
-                </DismissKeyboard>
-            </KeyboardAvoidingView>
-        </View>    
-    )
-};
+});
