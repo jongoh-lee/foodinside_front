@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     width:constants.width * 0.65,
     justifyContent:"space-between",
   },
-  shopName: {
+  profileName: {
     fontWeight: "600",
     fontSize: 18,
   },
@@ -47,7 +47,7 @@ export default ({ shop }) => {
           <View style={styles.chatLeft}>
             <Image style={styles.shopImage} source={{ uri: shop.shopImage }} />
             <View style={styles.contents}>
-              <Text style={styles.shopName} numberOfLines={1}>{shop.shopName}</Text>
+              <Text style={styles.profileName} numberOfLines={1}>{shop.profileName}</Text>
               <Text style={styles.text} numberOfLines={1}>{shop.text}</Text>
             </View>
           </View>

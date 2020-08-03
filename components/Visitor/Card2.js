@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
 })
 
 // 내 정보 중 단골 업체 정보와 해당 업체의 단골/ 포스팅 수 + 내 포스팅 수 + 좋아요 수 + 적립 포인트
-export default ({ signBoard, Submenu, shopName, sort, mainMenu}) => {
+export default ({ signBoard, Submenu, profileName, sort, mainMenu}) => {
     const { menuName, menuImage, fullPrice, salePrice } = mainMenu;
     const [logoBtn, setLogoBtn] = React.useState(false);
     return (
@@ -144,7 +144,7 @@ export default ({ signBoard, Submenu, shopName, sort, mainMenu}) => {
                     <Image style={styles.mainImage} source={{ uri: signBoard }} />
                         <View>
                             <View style={styles.titleAlign}>
-                                <Text style={styles.headerTitle} numberOfLines={1}>{shopName}2</Text>
+                                <Text style={styles.headerTitle} numberOfLines={1}>{profileName}2</Text>
                                 <Text style={styles.headerSubtitle}>  {sort}</Text>
                             </View>
                             <Text style={styles.headerSubtitle}>7/15 - 7/21</Text>

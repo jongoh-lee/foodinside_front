@@ -15,6 +15,7 @@ export default ({ route }) => {
   const secretInput = useInput("");
   const logIn = useLogIn();
   const { value } = secretInput;
+  const [touchableActive, setTouchableActive] = React.useState(false)
   const [confirmSecretMutation] = useMutation(CONFIRM_SECRET, {
     variables: {
       email: route.params.email,
@@ -22,6 +23,7 @@ export default ({ route }) => {
     }
   });
   const handleConfirm = async () => {
+    setTouchableActive(true)
     try {
       setLoading(true);
       const {
@@ -33,6 +35,8 @@ export default ({ route }) => {
     } catch (e) {
       setAlert("인증키가 일치하지 않습니다");
       setLoading(false);
+    } finally {
+      setTouchableActive(false)
     }
   };
   React.useEffect(()=>{
@@ -51,7 +55,7 @@ export default ({ route }) => {
             <View>
               <AuthInput {...secretInput} placeholder="인증키를 입력하세요" keyboardType="default" autoFocus={false} editable={!loading}/>
               <Text style={{fontSize:10, color:"red", paddingLeft:5}}>{alert}</Text>
-              <AuthButton text="로그인" onPress={handleConfirm} disabled={value ===""? true : false} loading={loading}/>
+              <AuthButton text="로그인" onPress={handleConfirm} disabled={value ===""? true : touchableActive} loading={loading}/>
             </View>
           </View>
         </DismissKeyboard>

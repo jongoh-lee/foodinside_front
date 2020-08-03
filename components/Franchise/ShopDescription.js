@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
 export default ({listing}) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{listing.title}</Text>
+      <Text style={styles.title}>{listing.shopName}</Text>
       <View style={styles.details}>
         <Entypo name="star" color="rgb(255, 56, 92)" size={18} />
         <Text style={styles.detailText}>4.93 (891)</Text>

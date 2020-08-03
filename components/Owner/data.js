@@ -1,6 +1,6 @@
 export const myShopData = {
     id:"1",
-    title: "조명으로 포인트를 준 음식점",
+    shopName: "조명으로 포인트를 준 음식점",
     district:"부천 먹자 골목",
     picture: [require("../../assets/ShopImage/img_picture4.png"), require("../../assets/ShopImage/img_picture5.png"), require("../../assets/ShopImage/img_picture6.png"),require("../../assets/ShopImage/img_picture4.png"), require("../../assets/ShopImage/img_picture5.png"), require("../../assets/ShopImage/img_picture6.png"),require("../../assets/ShopImage/img_picture4.png"), require("../../assets/ShopImage/img_picture5.png"), require("../../assets/ShopImage/img_picture6.png")],
     sort: '일반',

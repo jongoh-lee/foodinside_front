@@ -8,7 +8,7 @@ const numInput = intialValue => {
     setValue(text);
     }
   };
-  return { value, onChange };
+  return { value,  onChange };
 };
 
 export default numInput;

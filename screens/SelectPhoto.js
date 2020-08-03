@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
 
 export default ({ navigation, route }) => {
     const [loading, setLoading] = React.useState(true);
+    const [inactive, setInactive] = React.useState(false);
     const [hasPermission, setHasPermission] = React.useState(false);
     const [selected, setSelected] = React.useState();
     const [allPhotos, setAllPhotos] = React.useState();
@@ -80,6 +81,7 @@ export default ({ navigation, route }) => {
     };
 
     const handleSelected = () => {
+        setInactive(true)
         navigation.goBack({ photo : selected });
         route.params.onSelect({ photo : selected, data: data});
     };
@@ -95,7 +97,7 @@ export default ({ navigation, route }) => {
         <View style={[styles.header, {marginTop: StatusBar.currentHeight}]}>
             <BackArrow />
             <Text style={styles.headerTitle}>최근 항목</Text>
-            <TouchableOpacity style={styles.select}  onPress={handleSelected}>
+            <TouchableOpacity style={styles.select}  onPress={handleSelected} disabled={inactive}>
                 <Text style={styles.selectText}>선택</Text>
            </TouchableOpacity>
         </View>

@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
 })
 
 // 내 정보 중 단골 업체 정보와 해당 업체의 단골/ 포스팅 수 + 내 포스팅 수 + 좋아요 수 + 적립 포인트
-export default ({ signBoard, Submenu, shopName, sort, mainMenu }) => {
+export default ({ signBoard, Submenu, profileName, sort, mainMenu }) => {
     const { menuName, menuImage, fullPrice, salePrice } = mainMenu;
     const [btn, setBtn] = React.useState(false);
     return (
@@ -135,7 +135,7 @@ export default ({ signBoard, Submenu, shopName, sort, mainMenu }) => {
             <View style={styles.box}>
                 {/* 헤더 */}
                 <View style={styles.headerRight}>
-                    <Text style={styles.headerTitle} numberOfLines={1}>{shopName}33</Text>
+                    <Text style={styles.headerTitle} numberOfLines={1}>{profileName}33</Text>
                     <Text style={styles.headerSubtitle}>  {sort} · 7/14 - 7/21</Text>
                 </View>
                 {/*메인 이미지*/}    

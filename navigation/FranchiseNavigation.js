@@ -179,7 +179,7 @@ export default () => {
       <FranchiseStack.Screen name='채팅 내용' component={Chat} options={
         ({route}) => ({
         headerShown:true,
-        title:route.params.shop.shopName
+        title:route.params.shop.profileName
       })}/>
       <FranchiseStack.Screen name='SelectPhoto' component={SelectPhoto} />
       <FranchiseStack.Screen name="프로필 신청" component={EnrollProfile} options={{

@@ -8,9 +8,7 @@ import Loader from "../../components/Custom/Loader";
 import { MY_PROFILE } from "./ProfileQueries";
 
 export default ({ navigation }) => {
-  const { data, loading, error, refetch } = useQuery(MY_PROFILE,{
-    fetchPolicy:"network-only"
-  });
+  const { data, loading, error, refetch } = useQuery(MY_PROFILE);
   refetch()
  
   if(loading) return <Loader />;

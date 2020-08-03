@@ -1,22 +1,40 @@
 import React from "react";
 import {StyleSheet, View, Text} from "react-native";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { TouchableWithoutFeedback, ScrollView } from "react-native-gesture-handler";
 import constants from "../../constants";
 import { MaterialCommunityIcons, AntDesign, } from '@expo/vector-icons'; 
 import { useQuery } from "@apollo/react-hooks";
 import Loader from "../../components/Custom/Loader";
-import { CHECK_SHOP } from "./OwnerQueries";
+import { MY_SHOP } from "./OwnerQueries";
+import Logo from "../../components/Custom/Logo";
+import Description from "../../components/Owner/Description";
 
-export default ({ navigation }) => {
-  const { data, loading, error } = useQuery(CHECK_SHOP, {
+export default ({ navigation, route }) => {
+  const { data, loading, error } = useQuery(MY_SHOP,{
     fetchPolicy:"network-only"
   });
-  if(loading) return <Loader />;
+  if(loading){
+    navigation.setOptions({
+      headerTitle:() => <Logo nav={'공유 음식점'}/>,
+      headerTitleAlign:'left'
+    });
+    return <Loader />
+  }
   if(error) return console.log("Owner Error",error);
-
+  if(data?.myShop?.ownerState === 3){
+    navigation.setOptions({
+      headerLeft:() => <Text style={styles.headerTitle}>내 음식점 <Text style={styles.headerSort}>음식점</Text></Text>,
+      headerRight:() => <Feather name="more-vertical" size={24}/>,
+    });
+  }else{
+    navigation.setOptions({
+      headerTitle:() => <Logo nav={'공유 음식점'}/>,
+      headerTitleAlign:'left'
+    });
+  }
   return (
     <View style={styles.container}>
-    {data.myShop !== null && data.myShop.ownerState === 1 &&  (
+    {data?.myShop?.ownerState === 0 &&  (
       <>
         <Text style={styles.title}><Text style={{color:"black"}}>심사 중</Text> 입니다</Text>
         
@@ -28,7 +46,7 @@ export default ({ navigation }) => {
             <Text style={styles.buttonText}>공유 음식점 예시</Text>
           </TouchableWithoutFeedback>
 
-          <TouchableWithoutFeedback style={{alignItems:"center"}} onPress={() => navigation.navigate("내 음식점")}>
+          <TouchableWithoutFeedback style={{alignItems:"center"}} onPress={() => navigation.navigate("신청서 보기")}>
             <View style={styles.button}>
                 <AntDesign name="form" size={34} color="rgba(0,0,0, .3)" />
             </View>
@@ -36,34 +54,11 @@ export default ({ navigation }) => {
           </TouchableWithoutFeedback>
         </View>
       </>
-      )}
-
-    {data.myShop !== null && data.myShop.ownerState === 2 && (
-      <>
-        <Text style={styles.title}><Text style={{color:"black"}}>축하합니다. </Text>음식점을 등록해 주세요</Text>
-        
-        <View style={styles.buttonBox}>
-
-          <TouchableWithoutFeedback style={{alignItems:"center"}} onPress={() => navigation.navigate("음식점 예시")}>
-            <View style={styles.button}>
-                <MaterialCommunityIcons name="store" size={34} color="rgba(0,0,0, .3)" />
-            </View>
-            <Text style={styles.buttonText}>공유 음식점 예시</Text>
-          </TouchableWithoutFeedback>
-
-          <TouchableWithoutFeedback style={{alignItems:"center"}} onPress={() => navigation.navigate("공간 작성")}>
-            <View style={styles.button}>
-                <AntDesign name="form" size={34} color="rgba(0,0,0, .3)" />
-            </View>
-            <Text style={styles.buttonText}>공유 음식점 등록</Text>
-          </TouchableWithoutFeedback>
-        </View>
-      </>
     )}
 
-    {data.myShop !== null && data.myShop.ownerState === 3 && (
+    {data?.myShop?.ownerState === 1 && (
       <>
-        <Text style={styles.title}>죄송합니다. 아쉽게도 사장님의 음식점은 <Text style={{color:"black"}}>{`\n`}푸드인사이드</Text>에 등록할 수 없습니다.</Text>
+        <Text style={styles.title}>죄송합니다. {`\n`}아쉽게도 사장님의 음식점은 <Text style={{color:"black"}}>{`\n`}푸드인사이드</Text>에 등록할 수 없습니다.</Text>
         <View style={styles.buttonBox}>
 
           <TouchableWithoutFeedback style={{alignItems:"center"}} onPress={() => navigation.navigate("음식점 예시")}>
@@ -83,7 +78,36 @@ export default ({ navigation }) => {
       </>
     )}
 
-    {data.myShop === null &&  (
+    {data?.myShop?.ownerState === 2 && (
+      <>
+        <Text style={styles.title}><Text style={{color:"black"}}>축하합니다. </Text>음식점을 등록해 주세요</Text>
+        
+        <View style={styles.buttonBox}>
+
+          <TouchableWithoutFeedback style={{alignItems:"center"}} onPress={() => navigation.navigate("음식점 예시")}>
+            <View style={styles.button}>
+                <MaterialCommunityIcons name="store" size={34} color="rgba(0,0,0, .3)" />
+            </View>
+            <Text style={styles.buttonText}>공유 음식점 예시</Text>
+          </TouchableWithoutFeedback>
+
+          <TouchableWithoutFeedback style={{alignItems:"center"}} onPress={() => navigation.navigate("공간 완성")}>
+            <View style={styles.button}>
+                <AntDesign name="form" size={34} color="rgba(0,0,0, .3)" />
+            </View>
+            <Text style={styles.buttonText}>공유 음식점 등록</Text>
+          </TouchableWithoutFeedback>
+        </View>
+      </>
+    )}
+
+    {data?.myShop?.ownerState === 3 && (
+      <ScrollView showsVerticalScrollIndicator={false} scrollEventThrottle={1}>
+        <Description {...data?.myShop} />
+      </ScrollView>
+    )}
+
+    {data?.myShop === null &&  (
     <>
         <Text style={styles.title}>내 음식점도 <Text style={{color:"black"}}>공유 음식점</Text>이 될 수 있나요?</Text>
         <View style={styles.buttonBox}>
@@ -114,6 +138,17 @@ const styles = StyleSheet.create({
       backgroundColor:"white",
       alignItems:"center",
       justifyContent:"center"
+    },
+    headerTitle:{
+      fontWeight:'bold',
+      fontSize:20,
+      alignSelf:"center",
+      paddingLeft:10
+    },
+    headerSort:{
+      color:'#666',
+      fontSize:10,
+      marginLeft:12,
     },
     title:{
       fontSize:18,

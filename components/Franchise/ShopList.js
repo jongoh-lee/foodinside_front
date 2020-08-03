@@ -118,7 +118,7 @@ export default ({ listing }) => {
             navigate("ShopDetail", {listing})
           }}
         >  
-          <Text style={styles.title} numberOfLines={1}>{listing.title}</Text>
+          <Text style={styles.title} numberOfLines={1}>{listing.shopName}</Text>
           <View style={styles.imageGallery}>
             <View style={styles.imageGalleryRow}>
                 <Image

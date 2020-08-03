@@ -5,8 +5,13 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default () => {
     const navigation = useNavigation();
+    const [inactive, setInactive] = React.useState(false);
+    const handleBack = () =>{
+        setInactive(true)
+        navigation.goBack();
+    }
     return (
-        <TouchableOpacity style={{padding:5}} onPress={()=> navigation.goBack()}>
+        <TouchableOpacity style={{padding:5}} onPress={handleBack} disabled={inactive}>
             <MaterialCommunityIcons name="chevron-left" size={34} color="black"/>
         </TouchableOpacity>
     )

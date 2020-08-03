@@ -7,6 +7,7 @@ import Calendar from "../Calendar";
 import { MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
 import Facility from "./Facility";
 import Swiper from 'react-native-swiper';
+import { Caption } from "react-native-paper";
 
 const styles = StyleSheet.create({
     imageBox:{
@@ -87,8 +88,7 @@ const styles = StyleSheet.create({
         alignItems:"center",
     },
     greyText:{
-        fontSize:15,
-        color:"#666",
+        fontSize:14,
         paddingBottom:10
     },
     rowBox_under:{
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
         alignItems:"center",
     },
     warnning:{
-        fontSize:16,
+        fontSize:14,
         color:"#e0383e",
     },
     calendar:{
@@ -117,13 +117,14 @@ const styles = StyleSheet.create({
     }
 })
 
-export default ({ picture, tables, chairs, scale, description, precaution, address, checkIn, checkOut, minCheckIn, maxCheckIn, refund }) => {
+export default ({ shopImages, tables, chairs, scale, description, precaution, address, checkIn, checkOut, minReserve, }) => {
     const [tabName, setTabName] = React.useState('외부');
     return (
         <View>
             <View style={styles.imageBox}>
-                <Swiper paginationStyle={{bottom:10}}>
-                  {picture.map(i => <Image key={i} style={styles.image} source={i}/>)}
+                <Swiper paginationStyle={{bottom:10}} >
+                  {shopImages.filter(el => el["type"] === "HALL").map(photo => <Image key={photo.id} style={styles.image} source={{uri:photo.url}}/>)}
+                  {shopImages.filter(el => el["type"] === "EXTERIOR").map(photo => <Image key={photo.id} style={styles.image} source={{uri:photo.url}}/>)}
                 </Swiper>
             </View>
 
@@ -217,22 +218,22 @@ export default ({ picture, tables, chairs, scale, description, precaution, addre
                 <View style={styles.rowBox}>
                     <View style={styles.ruleInner}>
                         <Text style={styles.greyText}>체크인</Text>
-                        <Text style={styles.subtitle}>{checkIn}</Text>
+                        <Caption>{checkIn}시</Caption>
                     </View>
 
                     <View style={styles.ruleInner}>
                         <Text style={styles.greyText}>체크아웃</Text>
-                        <Text style={styles.subtitle}>{checkOut}</Text>
+                        <Caption>{checkOut}시</Caption>
                     </View>
 
                     <View style={styles.ruleInner}>
                         <Text style={styles.greyText}>최소 예약</Text>
-                        <Text style={styles.subtitle}>{minCheckIn}일</Text>
+                        <Caption>{minReserve}일</Caption>
                     </View>
 
                     <View style={styles.ruleInner}>
                         <Text style={styles.greyText}>최대 예약</Text>
-                        <Text style={styles.subtitle}>{maxCheckIn}일</Text>
+                        <Caption>7일</Caption>
                     </View>
                 </View>
             </View>
@@ -243,45 +244,45 @@ export default ({ picture, tables, chairs, scale, description, precaution, addre
                 <View style={styles.rowBox}>
                     <View style={styles.refundInner}>
                         <Text style={styles.greyText}>8일</Text>
-                        <Text style={styles.text}>{refund[0]}%</Text>
+                        <Caption>100%</Caption>
                     </View>
 
                     <View style={styles.refundInner}>
                         <Text style={styles.greyText}>7일</Text>
-                        <Text style={styles.text}>{refund[1]}%</Text>
+                        <Caption>90%</Caption>
                     </View>
 
                     <View style={styles.refundInner}>
                         <Text style={styles.greyText}>6일</Text>
-                        <Text style={styles.text}>{refund[2]}%</Text>
+                        <Caption>80%</Caption>
                     </View>
 
                     <View style={styles.refundInner}>
                         <Text style={styles.greyText}>5일</Text>
-                        <Text style={styles.text}>{refund[3]}%</Text>
+                        <Caption>70%</Caption>
                     </View>
 
                     <View style={styles.refundInner}>
                         <Text style={styles.greyText}>4일</Text>
-                        <Text style={styles.text}>{refund[4]}%</Text>
+                        <Caption>60%</Caption>
                     </View>
 
                     <View style={styles.refundInner}>
                         <Text style={styles.greyText}>3일</Text>
-                        <Text style={styles.text}>{refund[5]}%</Text>
+                        <Caption>50%</Caption>
                     </View>
 
                     <View style={styles.refundInner}>
                         <Text style={styles.greyText}>2일</Text>
-                        <Text style={styles.text}>{refund[6]}%</Text>
+                        <Caption>40%</Caption>
                     </View>
                 </View>
 
                 <View>
                     <View style={styles.rowBox_under}>
-                        <Text style={styles.warnning}>1일: {refund[7]}%</Text>
-                        <Text style={styles.warnning}>당일: {refund[8]}%</Text>
-                        <Text style={styles.warnning}>영업 중: {refund[9]}%</Text>
+                        <Text style={styles.warnning}>1일: 0%</Text>
+                        <Text style={styles.warnning}>당일: 0%</Text>
+                        <Text style={styles.warnning}>영업 중: 0%</Text>
                     </View>
                 </View>
             </View>

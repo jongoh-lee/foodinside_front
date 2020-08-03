@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     }
 })
 
-export default ({mainImage, shopName, sort}) => {
+export default ({mainImage, profileName, sort}) => {
     return (
         <View style={styles.header}>
 
@@ -49,7 +49,7 @@ export default ({mainImage, shopName, sort}) => {
                 <Image style={styles.mainImage} source={{ uri: mainImage }} />
                 <View>
                     <View style={styles.titleAlign}>
-                        <Text style={styles.headerTitle} numberOfLines={1}>{shopName}2</Text>
+                        <Text style={styles.headerTitle} numberOfLines={1}>{profileName}2</Text>
                         <Text style={styles.headerSubtitle}>  {sort}</Text>
                     </View>
                     <Text style={styles.headerSubtitle}>7/15 - 7/21</Text>

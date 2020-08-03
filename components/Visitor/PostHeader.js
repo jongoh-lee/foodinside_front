@@ -24,21 +24,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginLeft:4
   },
-  shopName:{
+  profileName:{
     color:"#666",
     fontSize:14,
     marginLeft:4
   }
 });
 
-export default ({ avatar, user, shopName, timestamp }) => {
+export default ({ avatar, user, profileName, timestamp }) => {
   return (
     <View style={styles.header}>
       <View style={styles.headerLeft}>
         <Image style={styles.avatar} source={{ uri: avatar }} />
         <View>
           <Text style={styles.username}>{user}</Text>
-          <Text style={styles.shopName}>{shopName}</Text>
+          <Text style={styles.profileName}>{profileName}</Text>
         </View>
       </View>
       <Feather name="more-vertical" size={24} />

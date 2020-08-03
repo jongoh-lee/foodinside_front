@@ -50,7 +50,7 @@ export default ({ navigation, route }) => {
             registration: registration,
             classification: classification,
             contact:String(contactInput.value),
-            ownerState:1
+            ownerState:0
         }
       });
       if(editShop){

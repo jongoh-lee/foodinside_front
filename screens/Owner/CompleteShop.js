@@ -1,11 +1,11 @@
 import * as React from "react";
-import {StyleSheet, View, Text, ImageBackground, TouchableOpacity} from "react-native";
-import { TextInput, ScrollView, TouchableWithoutFeedback } from "react-native-gesture-handler";
+import {StyleSheet, View, Text, TouchableOpacity} from "react-native";
+import { ScrollView,  } from "react-native-gesture-handler";
 import constants from "../../constants";
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons'; 
 import BasicButton from "../../components/Custom/BasicButton";
-import { useQuery } from "@apollo/react-hooks";
-import { MY_SHOP } from "./OwnerQueries";
+import { useQuery, useMutation } from "@apollo/react-hooks";
+import { MY_SHOP, SEE_MYSHOP } from "./OwnerQueries";
 import Loader from "../../components/Custom/Loader";
 
 
@@ -66,10 +66,30 @@ const styles = StyleSheet.create({
 
 
 export default ({ navigation }) => {
-    const { data, error, loading, refetch } = useQuery(MY_SHOP,{
-        fetchPolicy:"network-only"
-    });
-    if(loading) return <Loader />
+    const [loading, setLoading] = React.useState(false);
+    const [seeMyShopMutation] = useMutation(SEE_MYSHOP);
+    const handleMyShop = async () => {
+        try {
+            setLoading(true);
+            const {
+                data : { seeMyShop }
+            } = await seeMyShopMutation({
+                variables:{
+                  ownerState:3
+                }
+            });
+            if(seeMyShop){
+                navigation.navigate("내 음식점");
+            }
+        } catch(e){
+            console.log("내 가게 보기 에러:",e)
+        } finally {
+            setLoading(false);
+        }
+    }
+    
+    const { data, error, loading : _loading, refetch } = useQuery(MY_SHOP);
+    if(_loading) return <Loader />
     if(error) return console.log(error);
     return (
         <View style={styles.container}>
@@ -115,7 +135,13 @@ export default ({ navigation }) => {
                 </View>
 
                 <View style={styles.buttonShadow}>
-                    <TouchableOpacity onPress={() => navigation.navigate("공간 소개")}>
+                    <TouchableOpacity onPress={() => navigation.navigate("공간 소개", {
+                        shopName : data.myShop.shopName,
+                        district : data.myShop.district,
+                        description : data.myShop.description,
+                        precaution : data.myShop.precaution,
+                        hashTag : data.myShop.hashTag,
+                    })}>
                         <View style={styles.buttonRow}>
                             <View style={[styles.buttonCircle, data.myShop.description? {borderColor: 'rgba(5, 230, 244, .6)'} : null]}>
                                 <MaterialIcons name="description" size={30} color={data.myShop.description? "rgba(5, 230, 244, .6)" : "#E0E0E0"} />
@@ -141,33 +167,37 @@ export default ({ navigation }) => {
                 </View>
 
                 <View style={styles.buttonShadow}>
-                    <TouchableOpacity onPress={() => navigation.navigate("입점 규칙")}>
+                    <TouchableOpacity onPress={() => navigation.navigate("입점 규칙", {
+                        checkIn: data.myShop.checkIn,
+                        checkOut: data.myShop.checkOut,
+                        minReserve: data.myShop.minReserve,
+                    })}>
                         <View style={styles.buttonRow}>
-                            <View style={[styles.buttonCircle, data.myShop.rules? {borderColor: 'rgba(5, 230, 244, .6)'} : null]}>
-                                <MaterialCommunityIcons name="check-circle-outline" size={30} color={data.myShop.rules? "rgba(5, 230, 244, .6)" : "#E0E0E0"} />
+                            <View style={[styles.buttonCircle, data.myShop.checkIn? {borderColor: 'rgba(5, 230, 244, .6)'} : null]}>
+                                <MaterialCommunityIcons name="check-circle-outline" size={30} color={data.myShop.checkIn? "rgba(5, 230, 244, .6)" : "#E0E0E0"} />
                             </View>
                             <View style={styles.buttonText}>
-                                <Text style={[styles.text, data.myShop.rules? {color: 'rgba(5, 230, 244, .6)'} : null]}>입점 규칙</Text>
+                                <Text style={[styles.text, data.myShop.checkIn? {color: 'rgba(5, 230, 244, .6)'} : null]}>입점 규칙</Text>
                             </View>
                         </View>
                     </TouchableOpacity>
                 </View>
 
                 <View style={styles.buttonShadow}>
-                    <TouchableOpacity onPress={() => navigation.navigate("환불 정책")}>
+                    <TouchableOpacity onPress={() => navigation.navigate("환불 정책",{refundAgree: data.myShop.refundAgree})}>
                         <View style={styles.buttonRow}>
-                            <View style={[styles.buttonCircle, data.myShop.refund? {borderColor: 'rgba(5, 230, 244, .6)'} : null]}>
-                                <MaterialCommunityIcons name="credit-card-refund-outline" size={34} color={data.myShop.refund? "rgba(5, 230, 244, .6)" : "#E0E0E0"} />
+                            <View style={[styles.buttonCircle, data.myShop.refundAgree? {borderColor: 'rgba(5, 230, 244, .6)'} : null]}>
+                                <MaterialCommunityIcons name="credit-card-refund-outline" size={34} color={data.myShop.refundAgree? "rgba(5, 230, 244, .6)" : "#E0E0E0"} />
                             </View>
                             <View style={styles.buttonText}>
-                                <Text style={[styles.text, data.myShop.refund? {color: 'rgba(5, 230, 244, .6)'} : null]}>환불 정책</Text>
+                                <Text style={[styles.text, data.myShop.refundAgree? {color: 'rgba(5, 230, 244, .6)'} : null]}>환불 정책</Text>
                             </View>
                         </View>
                     </TouchableOpacity>
                 </View>
 
                 <View style={{width:WIDTH * .8}}>
-                    <BasicButton text={'내 음식점 보기'} disabled={data.myShop.shopImages.length > 3 && data.myShop.fire && data.myShop.scale && data.myShop.description && data.myShop.address && data.myShop.rules && data.myShop.refund ? false : true}/>
+                    <BasicButton text={'내 음식점 보기'} onPress={handleMyShop} loading={loading} disabled={data.myShop.shopImages.length > 3 && data.myShop.fire && data.myShop.scale && data.myShop.description && data.myShop.address && data.myShop.checkIn && data.myShop.refundAgree ? loading : true}/>
                 </View>
             </ScrollView>}
         </View>

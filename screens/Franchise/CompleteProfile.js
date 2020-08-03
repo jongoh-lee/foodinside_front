@@ -16,7 +16,7 @@ import DismissKeyboard from "../../components/Custom/DismissKeyboard";
 export default ({ navigation, route }) => {
   // 초기 요청 값
   const [image, setImage] = React.useState(null);
-  const shopNameInput = useInput("");
+  const profileNameInput = useInput("");
   const sortInput = useInput("");
   const pointInput = numInput("");
   const regionInput = useInput("");
@@ -106,7 +106,7 @@ export default ({ navigation, route }) => {
 
           <View style={styles.innerBox_border}>
             <View style={{flexDirection:"row"}}>
-              <SquareInput {...shopNameInput} placeholder={'업체명'} width={'70%'}/>
+              <SquareInput {...profileNameInput} placeholder={'업체명'} width={'70%'}/>
               <SquareInput {...sortInput} placeholder={'분류'} width={'30%'}/>
             </View>
             <View style={{flexDirection:"row"}}>

@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
 const listings = [
   {
     id: "1",
-    title: "조명으로 포인트를 준 음식점 in 부천 먹자 골목",
+    shopName: "조명으로 포인트를 준 음식점 in 부천 먹자 골목",
     picture: [require("../../assets/ShopImage/img_picture1.png"), require("../../assets/ShopImage/img_picture2.png"), require("../../assets/ShopImage/img_picture3.png")],
     address: "경기도 부천시 원미구 심곡동 부일로 121",
     hashTags: '#오픈키친 #20평 #몽환적 분위기 #Pub 가능',
@@ -26,7 +26,7 @@ const listings = [
   },
   {
     id: "2",
-    title: "깔끔한 화이트 식당 in 부천",
+    shopName: "깔끔한 화이트 식당 in 부천",
     picture: [require("../../assets/ShopImage/img_picture4.png"), require("../../assets/ShopImage/img_picture5.png"), require("../../assets/ShopImage/img_picture6.png")],
     address: "경기도 부천시 원미구 심곡동 부일로 124",
     hashTags: "#1인 좌석 #식사 위주 #10평 공간 #차분함 #착한 가격",
@@ -37,7 +37,7 @@ const listings = [
   },
   {
     id: "3",
-    title: "뉴트로 분위기의 일반 음식점 in 부천대 상권",
+    shopName: "뉴트로 분위기의 일반 음식점 in 부천대 상권",
     picture: [require("../../assets/ShopImage/img_picture7.png"), require("../../assets/ShopImage/img_picture8.png"), require("../../assets/ShopImage/img_picture9.png")],
     address: "경기도 부천시 원미구 심곡동 부일로 13",
     hashTags: "#뉴트로 #깔끔 #포차 영업 #35평 #주차정 완비",
@@ -48,7 +48,7 @@ const listings = [
   },
   {
     id: "4",
-    title: "빈티지하고 아늑한 카페 in 부천 먹자 골목",
+    shopName: "빈티지하고 아늑한 카페 in 부천 먹자 골목",
     picture: [require("../../assets/ShopImage/img_picture10.png"),require("../../assets/ShopImage/img_picture11.png"),require("../../assets/ShopImage/img_picture12.png")],
     address: "경기도 부천시 원미구 심곡동 부일로 311",
     hashTags: "#디저트 #20평 #친환경적 #오븐 완비 #안락함",

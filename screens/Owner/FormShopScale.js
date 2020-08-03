@@ -11,11 +11,10 @@ import { COMPLETE_SHOP_SCALE } from "./OwnerQueries";
 
 export default ({ navigation, route }) => {
     const [loading, setLoading] = React.useState(false);
-    const chairInput = numInput(route.params["chairs"] ? route.params["chairs"] : '');
-    const tableInput = numInput(route.params["tables"] ? route.params["tables"] : '');
-    const scaleInput = numInput(route.params["scale"] ? route.params["scale"] : '');
+    const chairInput = numInput(route.params.chairs? String(route.params.chairs) : '');
+    const tableInput = numInput(route.params.tables? String(route.params.tables) : '');
+    const scaleInput = numInput(route.params.scale? String(route.params.scale) : '');
     const [completeShopScaleMutation] = useMutation(COMPLETE_SHOP_SCALE);
-    console.log(chairInput.value, tableInput.value, scaleInput.value)
     const handleScale = async () => {
         try {
             setLoading(true);
@@ -23,12 +22,11 @@ export default ({ navigation, route }) => {
                 data : { completeShopScale }
             } = await completeShopScaleMutation({
                 variables:{
-                    chairs:chairInput.value,
-                    tables:tableInput.value,
-                    scale:scaleInput.value
+                    chairs:Number(chairInput.value),
+                    tables:Number(tableInput.value),
+                    scale:Number(scaleInput.value)
                 }
             });
-            console.log('결과',completeShopScale);
             if(completeShopScale){
                 navigation.goBack()
             }
@@ -51,20 +49,20 @@ export default ({ navigation, route }) => {
                             <View style={styles.scaleBox}>
                                 <Text style={styles.scaleTitle}>의자 수</Text>
                                 <FontAwesome5 name="chair" size={26} color="silver"/>
-                                <ShadowInput {...chairInput} width={'50%'} placeholder={'개수'}/>
+                                <ShadowInput {...chairInput} editable={!loading} width={'50%'} placeholder={'개수'} keyboardType={"numeric"}/>
                             </View>
                             <View style={styles.scaleBox}>
                                 <Text style={styles.scaleTitle}>테이블 수</Text>
                                 <MaterialCommunityIcons name="format-text" size={34} color="silver"/>
-                                <ShadowInput {...tableInput} width={'50%'} placeholder={'개수'}/>
+                                <ShadowInput {...tableInput} editable={!loading} width={'50%'} placeholder={'개수'} keyboardType={"numeric"}/>
                             </View>
                             <View style={styles.scaleBox}>
                                 <Text style={styles.scaleTitle}>1회전 인원</Text>
                                 <FontAwesome5 name="users" size={26} color="silver"/>
-                                <ShadowInput {...scaleInput} width={'50%'} placeholder={'명'}/>
+                                <ShadowInput {...scaleInput} editable={!loading} width={'50%'} placeholder={'명'} keyboardType={"numeric"}/>
                             </View>
                         </View>
-                        <BasicButton disabled={chairInput.value && tableInput.value && scaleInput.value ? false : true} text={'제출 하기'} onPress={handleScale} loading={loading}/>
+                        <BasicButton disabled={chairInput.value && tableInput.value && scaleInput.value ? loading : true} text={'제출 하기'} onPress={handleScale} loading={loading}/>
                     </View>
                 </DismissKeyboard>
             </KeyboardAvoidingView>

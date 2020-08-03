@@ -489,7 +489,7 @@ export default ({ navigation, route }) => {
                             </ScrollView>
                         </View>
                     </View>
-                    <BasicButton text={'사진 올리기'} onPress={handleSubmit} loading={loading} disabled={newImages.length + deleteImages.length + editImages.length > 0 ? false : true} />
+                    <BasicButton text={'사진 올리기'} onPress={handleSubmit} loading={loading} disabled={newImages.length + deleteImages.length + editImages.length > 0 ? loading : true} />
                 </View>   
             </ScrollView>
 

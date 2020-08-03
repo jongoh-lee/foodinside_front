@@ -20,7 +20,8 @@ const ShadowInput = ({
   multiline=false,
   maxHeight=150,
   textAlign="center",
-  maxLength=300
+  maxLength=300,
+  textAlignVertical="center",
 }) => {
     return (
         <View style={{width:width, padding:3}}>
@@ -29,6 +30,7 @@ const ShadowInput = ({
               backgroundColor: backgroundColor,
               fontSize:14,
               textAlign:textAlign,
+              textAlignVertical:textAlignVertical,
               borderRadius:borderRadius,
               shadowOffset: {
                 width: 0,
@@ -78,7 +80,8 @@ ShadowInput.propTypes = {
   maxHeight: PropTypes.number,
   backgroundColor: PropTypes.string,
   textAlign: PropTypes.oneOf(["center", "rignt", "left", "auto", "justify"]),
-  maxLength: PropTypes.number
+  maxLength: PropTypes.number,
+  textAlignVertical: PropTypes.oneOf(["center", "top"])
 };
 
 export default ShadowInput;

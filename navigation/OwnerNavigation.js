@@ -14,7 +14,7 @@ import Earnings from '../screens/Owner/Earnings';
 //shop Info
 import CreateShop from '../screens/Owner/CreateShop';
 import EditShop from '../screens/Owner/EditShop';
-import MyRestaurant from '../screens/Owner/MyRestaurant';
+import ShopExample from '../screens/Owner/ShopExample';
 
 //button
 import NavIcon from '../components/Custom/NavIcon';
@@ -24,7 +24,7 @@ import SelectPhoto from '../screens/SelectPhoto';
 import SelectManyPhoto from '../screens/SelectManyPhoto';
 import BackArrow from '../components/Custom/BackArrow';
 import Logo from '../components/Custom/Logo';
-import BeforeOwner from '../screens/Owner/BeforeOwner';
+import Owner from '../screens/Owner/Owner';
 
 //음식점 등록
 import CompleteShop from '../screens/Owner/CompleteShop';
@@ -35,7 +35,7 @@ import FormShopDescription from '../screens/Owner/FormShopDescription';
 import FormShopAddress from '../screens/Owner/FormShopAddress';
 import FormShopRefund from '../screens/Owner/FormShopRefund';
 import FormShopRules from '../screens/Owner/FormShopRules';
-import MyShop from '../screens/Owner/MyShop';
+import SeeCreateShop from '../screens/Owner/SeeCreateShop';
 import GetAddress from '../screens/GetAddress';
 
 const ChatStack = createStackNavigator();
@@ -94,22 +94,22 @@ const MyShopStack = createStackNavigator();
 function MyShopStackScreen() {
     return (
     <MyShopStack.Navigator 
-      initialRouteName={"신청 전"} 
+      initialRouteName={"내 음식점"} 
       screenOptions={{ headerTitleStyle:{fontSize:20, fontWeight:'bold'},headerShown:true}}
       >
-      <MyShopStack.Screen name="음식점 예시" component={MyRestaurant} options={{
+      <MyShopStack.Screen name="내 음식점" component={Owner} options={{
+        headerTitle:() => null
+      }}/>
+      <MyShopStack.Screen name="음식점 예시" component={ShopExample} options={{
         headerRight:() => <Feather name="more-vertical" size={24}/>,
       }}/>
-      <MyShopStack.Screen name="신청 전" options={{
-        headerTitle:() => <Logo nav={'공유 음식점'}/>,
-      }} component={BeforeOwner} />
-      <MyShopStack.Screen name="내 음식점" options={{
+      <MyShopStack.Screen name="신청서 보기" component={SeeCreateShop} options={{
         headerTitle:"심사 중",
         headerTitleAlign:"center",
         headerLeft:()=> <BackArrow />,
-      }} component={MyShop} />
-      <MyShopStack.Screen name="공간 작성" component={CompleteShop} options={{
-        headerTitle:"공간 등록",
+      }} />
+      <MyShopStack.Screen name="공간 완성" component={CompleteShop} options={{
+        headerTitle:"공간 완성",
         headerTitleAlign:"center",
         headerLeft:() => <BackArrow />,
       }}/>
@@ -161,15 +161,16 @@ export default () => {
       <OwnerStack.Screen name='Tabs' component={TabsScreen} options={{
         headerShown:false
       }}/>
-      <OwnerStack.Screen name='채팅 내용' component={Chat} options={
+      {/* <OwnerStack.Screen name='채팅 내용' component={Chat} options={
       ({route}) => ({ 
         headerShown:true,
         title: route.params.chat.user})
-      }/>
+      }/> */}
       <OwnerStack.Screen name='SelectPhoto' component={SelectPhoto} options={{
         headerShown:false
       }}/>
       <OwnerStack.Screen name='최근 항목' component={SelectManyPhoto} />
+
       <OwnerStack.Screen name='주소 입력' component={GetAddress} options={{
         headerTitleStyle:{fontWeight:"bold"}
       }}/>

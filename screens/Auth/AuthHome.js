@@ -12,12 +12,14 @@ export default ({ navigation }) => {
   const emailInput = useInput("");
   const [loading, setLoading] = React.useState(false);
   const [alert, setAlert] = React.useState("")
+  const [touchableActive, setTouchableActive] = React.useState(false)
   const [requestSecretMutation] = useMutation(LOG_IN, {
     variables: {
       email: emailInput.value
     }
   });
   const handleLogin = async () => {
+    setTouchableActive(true)
     const { value } = emailInput;
     try {
       setLoading(true);
@@ -34,6 +36,7 @@ export default ({ navigation }) => {
       setAlert("현재 서버에 접속할 수 없습니다.")
     } finally {
       setLoading(false);
+      setTouchableActive(false)
     }
   }
   React.useEffect(()=>{
@@ -57,11 +60,11 @@ export default ({ navigation }) => {
 
               <Text style={{fontSize:10, color:"red", paddingLeft:5}}>{alert}</Text>
 
-              <AuthButton text="로그인 키 요청하기" onPress={handleLogin} disabled={emailInput.value === "" ? true : false} loading={loading}/>
+              <AuthButton text="로그인 키 요청하기" onPress={handleLogin} disabled={emailInput.value === ""? true : touchableActive} loading={loading}/>
             </View>
 
             <TouchableWithoutFeedback onPress={() => navigation.navigate("FindAccount")}>
-            <Text style={styles.findIdText}>계정이 기억나지 않으세요?</Text>
+              <Text style={styles.findIdText}>계정이 기억나지 않으세요?</Text>
             </TouchableWithoutFeedback>
 
           </View>
@@ -69,7 +72,7 @@ export default ({ navigation }) => {
         </DismissKeyboard>
       </KeyboardAvoidingView>
 
-      <TouchableOpacity style={{ borderTopWidth:1, borderTopColor:"rgba(0,0,0, .1)"}} onPress={() => navigation.navigate("Signup1", { email: emailInput.value})}>
+      <TouchableOpacity style={{ borderTopWidth:1, borderTopColor:"rgba(0,0,0, .1)"}} onPress={() => navigation.navigate("Signup1", { email: emailInput.value})} disabled={loading}>
         <View style={styles.signup}>
           <Text style={styles.signupText}>푸드인사이드 <Text style={{fontWeight:"bold"}}>가입하기</Text></Text>
         </View>

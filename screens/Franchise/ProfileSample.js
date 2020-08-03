@@ -13,11 +13,11 @@ const styles = StyleSheet.create({
 });
 
 export default ({ navigation }) => {
-  const { shopName, sort } = profile;
+  const { profileName, sort } = profile;
   React.useEffect(()=>{
-    if(shopName && sort) {
+    if(profileName && sort) {
       navigation.setOptions({
-        headerTitle: () => <ShopHeader shopName={shopName} sort={sort}/>
+        headerTitle: () => <ShopHeader profileName={profileName} sort={sort}/>
         })
       }
     }, [])

@@ -9,7 +9,8 @@ import { AntDesign } from '@expo/vector-icons';
 import useInput from "../../hooks/strickInput";
 import numInput from "../../hooks/numInput";
 import { useMutation } from "@apollo/react-hooks";
-import { CREATE_SHOP, CHECK_SHOP } from "./OwnerQueries";
+import { CREATE_SHOP, MY_SHOP} from "./OwnerQueries";
+import AsyncStorage from "@react-native-community/async-storage";
 
 export default ({ navigation, route }) => {
   const [loading, setLoading] = React.useState(false);
@@ -36,11 +37,9 @@ export default ({ navigation, route }) => {
   const [createShopMutation] = useMutation(CREATE_SHOP,{
     update(cache, {data: { createShop }}) {
       cache.writeQuery({
-        query: CHECK_SHOP,
+        query: MY_SHOP,
         data: { myShop: {
-          __typename: "Owner",
-         id:createShop.id,
-         ownerState:createShop.ownerState,
+          ...createShop
         } },
       });
     }
@@ -59,11 +58,12 @@ export default ({ navigation, route }) => {
             registration: registration,
             classification: classification,
             contact:String(contactInput.value),
-            ownerState:1
+            ownerState:0
         }
       });
+      console.log(createShop);
       if(createShop){
-        navigation.navigate("신청 전");
+        navigation.navigate("내 음식점");
       }
     } catch(e){
       console.log("가게 신청 에러:",e)
@@ -147,7 +147,7 @@ export default ({ navigation, route }) => {
       
       <BasicInput {...contactInput} placeholder={"연락처"} keyboardType="numeric" editable={!loading}/>
     
-      <BasicButton text={'제출하기'} onPress={handleCreateShop} disabled={exterior && hall && kitchen && registration && addressInput.value && contactInput.value ? false : true} loading={loading} />
+      <BasicButton text={'제출하기'} onPress={handleCreateShop} disabled={exterior && hall && kitchen && registration && addressInput.value && contactInput.value ? loading : true} loading={loading} />
     </ScrollView>
   </View>
 )};

@@ -18,7 +18,7 @@ export const CREATE_PROFILE = gql`
 
 export const COMPLETE_PROFILE = gql`
     mutation completeProfile(
-        $shopName:String!
+        $profileName:String!
         $classification:String!
         $region:String!
         $mainImage:String!
@@ -26,7 +26,7 @@ export const COMPLETE_PROFILE = gql`
         $members: [CreateMember!]
         $profileState: Int!){
             completeProfile(
-                shopName: $shopName
+                profileName: $profileName
                 classification: $classification
                 region: $region
                 mainImage: $mainImage
@@ -35,7 +35,7 @@ export const COMPLETE_PROFILE = gql`
                 profile: $profile
             ) {
                 id
-                shopName
+                profileName
                 classification
                 ri
                 menuImage
