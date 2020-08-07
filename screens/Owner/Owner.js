@@ -2,7 +2,7 @@ import React from "react";
 import {StyleSheet, View, Text} from "react-native";
 import { TouchableWithoutFeedback, ScrollView } from "react-native-gesture-handler";
 import constants from "../../constants";
-import { MaterialCommunityIcons, AntDesign, } from '@expo/vector-icons'; 
+import { MaterialCommunityIcons, AntDesign, Feather } from '@expo/vector-icons'; 
 import { useQuery } from "@apollo/react-hooks";
 import Loader from "../../components/Custom/Loader";
 import { MY_SHOP } from "./OwnerQueries";
@@ -13,17 +13,12 @@ export default ({ navigation, route }) => {
   const { data, loading, error } = useQuery(MY_SHOP,{
     fetchPolicy:"network-only"
   });
-  if(loading){
-    navigation.setOptions({
-      headerTitle:() => <Logo nav={'공유 음식점'}/>,
-      headerTitleAlign:'left'
-    });
-    return <Loader />
-  }
+  if(loading) return <Loader />
   if(error) return console.log("Owner Error",error);
   if(data?.myShop?.ownerState === 3){
     navigation.setOptions({
-      headerLeft:() => <Text style={styles.headerTitle}>내 음식점 <Text style={styles.headerSort}>음식점</Text></Text>,
+      headerTitle:() => null,
+      headerLeft:() => <Text style={styles.headerTitle}>내 음식점 <Text style={styles.headerSort}>{data?.myShop?.classification}음식점</Text></Text>,
       headerRight:() => <Feather name="more-vertical" size={24}/>,
     });
   }else{

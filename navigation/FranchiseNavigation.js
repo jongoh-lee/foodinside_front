@@ -9,14 +9,14 @@ import {Feather, MaterialIcons, MaterialCommunityIcons} from '@expo/vector-icons
 // screens
 import SearchShop from '../screens/Franchise/SearchShop';
 import Favorite from '../screens/Franchise/Favorite';
-import EnrollProfile from '../screens/Franchise/EnrollProfile';
+import CreateProfile from '../screens/Franchise/CreateProfile';
 import ShopDetail from "../screens/Franchise/ShopDetail";
 
 
 import ProfileSample from "../screens/Franchise/ProfileSample";
-import MyProfile from "../screens/Franchise/MyProfile";
+import SeeCreateProfile from "../screens/Franchise/SeeCreateProfile";
 import CompleteProfile from "../screens/Franchise/CompleteProfile";
-import EditEnrollProfile from "../screens/Franchise/EditEnrollProfile";
+import EditProfile from "../screens/Franchise/EditProfile";
 import BeforeProfile from '../screens/Franchise/BeforeProfile';
 
 import ChatListFranchise from "../screens/Franchise/ChatListFranchise";
@@ -100,34 +100,23 @@ function FavoriteStackScreen() {
 const ProfileStack = createStackNavigator();
 
 function ProfileStackScreen() {
-  const [lisensed, setLisensed] = React.useState("프로필 안내");
     return (
     <ProfileStack.Navigator 
-    initialRouteName={lisensed} screenOptions={{ headerTitleStyle:{fontSize:20, fontWeight:'bold'}, headerShown:true}}>
-      <ProfileStack.Screen name="내 프로필" component={MyProfile} options={{
-        headerTitle:"내 프로필",
-        headerTitleAlign:"center",
-        headerLeft:()=> <BackArrow />,
-      }} />
-      <ProfileStack.Screen name="심사 중" component={MyProfile} options={{
-        headerTitle:"심사 중",
-        headerTitleAlign:"center",
-        headerLeft:()=> <BackArrow />,
-      }} />
+    initialRouteName={"프로필 안내"} screenOptions={{ headerTitleStyle:{fontSize:20, fontWeight:'bold'}, headerShown:true}}>
       <ProfileStack.Screen name="프로필 안내" component={BeforeProfile} options={{
         headerTitle:()=><Logo nav={'공유 음식점'}/>,
         headerRight: () => <FranchiseButton/>,
+      }} />
+      <ProfileStack.Screen name="심사 중" component={SeeCreateProfile} options={{
+        headerTitle:"심사 중",
+        headerTitleAlign:"center",
+        headerLeft:()=> <BackArrow />,
       }} />
       <ProfileStack.Screen name="프로필 예시" component={ProfileSample} options={{
         headerTitle:()=><Logo nav={'공유 음식점'}/>,
         headerRight:() => <Feather name="more-vertical" size={24} />,
         headerLeft:()=> <BackArrow />,
         headerTitleAlign:"center"
-      }} />
-      <ProfileStack.Screen name="프로필 완성" component={CompleteProfile} options={{
-        headerTitle:"프로필 완성",
-        headerTitleAlign:"center",
-        headerLeft:()=> <BackArrow />,
       }} />
     </ProfileStack.Navigator>
   );
@@ -182,17 +171,23 @@ export default () => {
         title:route.params.shop.profileName
       })}/>
       <FranchiseStack.Screen name='SelectPhoto' component={SelectPhoto} />
-      <FranchiseStack.Screen name="프로필 신청" component={EnrollProfile} options={{
+      <FranchiseStack.Screen name="프로필 신청" component={CreateProfile} options={{
         headerShown:true,
         headerTitle:"프로필 신청",
         headerTitleAlign:"center",
         headerLeft:()=> <BackWarningArrow />,
       }} />
-      <FranchiseStack.Screen name="프로필 수정(pre)" component={EditEnrollProfile} options={{
+      <FranchiseStack.Screen name="프로필 수정(pre)" component={EditProfile} options={{
         headerShown:true,
         headerTitle:"프로필 수정",
         headerTitleAlign:"center",
         headerLeft:()=> <BackWarningArrow />,
+      }} />
+      <FranchiseStack.Screen name="프로필 완성" component={CompleteProfile} options={{
+        headerShown:true,
+        headerTitle:"프로필 완성",
+        headerTitleAlign:"center",
+        headerLeft:()=> <BackArrow />,
       }} />
     </FranchiseStack.Navigator>
   )

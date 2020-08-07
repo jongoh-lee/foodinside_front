@@ -3,6 +3,7 @@ import { StyleSheet, Image, Text, View } from "react-native";
 import { MaterialCommunityIcons, Entypo, FontAwesome5, Ionicons, Feather } from "@expo/vector-icons"
 import constants from "../../constants";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { Caption } from "react-native-paper";
 
 const styles = StyleSheet.create({
     container:{
@@ -22,31 +23,41 @@ const styles = StyleSheet.create({
         marginTop:2
     },
     facility:{
-        height:constants.height / 6,
+        padding:30,
         justifyContent:"center",
         alignItems:"center",
         borderBottomWidth:1,
         borderBottomColor:"#e7e7e7",
-    }
+    },
+    itemText:{
+        color:'black',
+        padding:10,
+        fontWeight:'bold',
+    },
+    itemBox:{
+        flex:1, 
+        flexDirection:"row", 
+        flexWrap:"wrap",
+        paddingVertical:20,
+        justifyContent:"center",
+    },
 })
 
 const translate = {
-    BoxFridge:{
-        "25": "size_25",
-        "30": "size_30",
-        "45": "size_45",
-        "65": "size_65",
-        "기타": "fridgeBox_ect",
-    },
     Fridge:{
+        "박스 냉장고 size 25": "size_25",
+        "박스 냉장고 size 30": "size_30",
+        "박스 냉장고 size 45": "size_45",
+        "박스 냉장고 size 65": "size_65",
+        "기타 대형 냉장고": "fridgeBox_ect",
         "음료 쇼케이스": "showcase",
-        "테이블": "table",
-        "밧드": "vat",
-        "김치": "kimchi",
-        "참치": "tuna",
-        "와인": "wine",
-        "아이스크림": "ice_cream",
-        "기타": "fridge_ect",
+        "테이블 냉장고": "table",
+        "밧드 냉장고": "vat",
+        "김치 냉장고": "kimchi",
+        "참치 냉장고": "tuna",
+        "와인 냉장고": "wine",
+        "아이스크림 냉장고": "ice_cream",
+        "기타 소형 냉장고": "fridge_ect",
     },
     Fire:{
         "업소용 레인지": "gas_stove",
@@ -54,41 +65,33 @@ const translate = {
         "중화 레인지": "chinese_stove",
         "가정용 레인지": "house_stove",
         "인덕션 레인지": "induction",
-        "기타": "fire_ect",
-    },
-    Griller:{
-        "상화식": "fire_above",
-        "하화식": "fire_below",
-        "숯불": "charcoal",
-        "기타": "griller_ect",
-    },
-    Griddle:{
-        "600": "size_600",
-        "900": "size_900",
-        "1200": "size_1200",
-        "1500": "size_1500",
-        "기타": "griddle_ect",
-    },
-    Fryer:{
-        "전기식": "electric",
-        "가스식": "gas",
-        "기타": "fryer_ect",
-    },
-    Oven:{
-        "데크": "deck",
-        "컨벡션": "convection",
-        "스팀 컨벡션": "steam_convection",
-        "콤비 스티머": "combi_steamer",
-        "기타": "oven_ect",
+        "기타 레인지": "fire_ect",
+        "상화식 그릴러": "fire_above",
+        "하화식 그릴러": "fire_below",
+        "숯불 그릴러": "charcoal",
+        "기타 그릴러": "griller_ect",
+        "그리들 600(가로)": "size_600",
+        "그리들 900(가로)": "size_900",
+        "그리들 1200(가로)": "size_1200",
+        "그리들 1500(가로)": "size_1500",
+        "기타 그리들": "griddle_ect",
+        "전기식 튀김기": "electric",
+        "가스식 튀김기": "gas",
+        "기타 튀김기": "fryer_ect",
+        "데크 오븐": "deck",
+        "컨벡션 오븐": "convection",
+        "스팀 컨벡션 오븐": "steam_convection",
+        "콤비 스티머 오븐": "combi_steamer",
+        "기타 오븐": "oven_ect",
     },
     Cafe:{
         "에스프레소 머신": "espresso_machine",
         "원두 그라인더": "coffee_bean_grinder",
-        "온수기": "roasting_machine",
+        "로스팅 머신": "roasting_machine",
         "제빙기": "ice_maker",
         "빙삭기": "ice_shaver",
-        "블렌더": "water_heater",
-        "로스팅 머신": "blender",
+        "온수기": "water_heater",
+        "블렌더": "blender",
         "기타 기기": "cafe_ect",
     },
     Electronic:{
@@ -137,18 +140,18 @@ const translate = {
         "take out 용기": "take_out_container",
     },
     Glass:{
-        "음료": "beverage",
-        "물": "water",
-        "머그": "mug",
-        "소주": "soju",
-        "사케": "sake",
-        "고량주": "kaoliang",
-        "샷": "shot",
-        "와인": "wine_glass",
-        "샴페인": "champagne",
-        "칵테일": "cocktail",
-        "온더락": "on_the_rock",
-        "하이볼": "highball",
+        "음료잔": "beverage",
+        "물잔": "water",
+        "머그잔": "mug",
+        "소주잔": "soju",
+        "사케잔": "sake",
+        "고량주잔": "kaoliang",
+        "샷잔": "shot",
+        "와인잔": "wine_glass",
+        "샴페인잔": "champagne",
+        "칵테일잔": "cocktail",
+        "온더락잔": "on_the_rock",
+        "하이볼잔": "highball",
         "글라스": "glass",
         "500cc": "pitcher_500cc",
         "2000cc": "pitcher_2000cc",
@@ -192,66 +195,82 @@ const translate = {
     }
 }
 
-export default () => {
-    const [ tab, setTab ] = React.useState('화기');
+export default (facility) => {
+    const [ tab, setTab ] = React.useState('Fire');
     return (
     <>
     <View style={styles.container}>
-        <TouchableWithoutFeedback style={styles.button} onPress={()=>setTab('BoxFridge')}>
+        <TouchableWithoutFeedback style={styles.button} onPress={()=>setTab('Fire')}>
             <MaterialCommunityIcons name="fire" size={30} color="red"/>
             <Text style={styles.text}>화기</Text>
         </TouchableWithoutFeedback>
 
-        <TouchableWithoutFeedback style={styles.button} onPress={()=>setTab('카페')}>
+        <TouchableWithoutFeedback style={styles.button} onPress={()=>setTab('Cafe')}>
             <Ionicons name="ios-cafe" size={30} color="#c1a183"/>
             <Text style={styles.text}>카페</Text>
         </TouchableWithoutFeedback>
 
-        <TouchableWithoutFeedback style={styles.button} onPress={()=>setTab('BoxFridge')}>
+        <TouchableWithoutFeedback style={styles.button} onPress={()=>setTab('Fridge')}>
             <MaterialCommunityIcons name="snowflake" size={30} color="#00c4f6"/>
             <Text style={styles.text}>냉동/냉장</Text>
         </TouchableWithoutFeedback>
 
-        <TouchableWithoutFeedback style={styles.button} onPress={()=>setTab('전자기기')}>
+        <TouchableWithoutFeedback style={styles.button} onPress={()=>setTab('Electronic')}>
         <Entypo name="flash" size={24} color="#f7ca09" />
             <Text style={styles.text}>전자기기</Text>
         </TouchableWithoutFeedback>
 
-        <TouchableWithoutFeedback style={styles.button} onPress={()=>setTab('보관용기')}>
+        <TouchableWithoutFeedback style={styles.button} onPress={()=>setTab('Container')}>
         <Entypo name="download" size={24} color="#a7a6b0" />
             <Text style={styles.text}>보관용기</Text>
         </TouchableWithoutFeedback>
     </View>
 
     <View style={styles.container}>
-        <TouchableWithoutFeedback style={styles.button} onPress={()=>setTab('식기')}>
+        <TouchableWithoutFeedback style={styles.button} onPress={()=>setTab('Tableware')}>
             <MaterialCommunityIcons name="silverware-variant" size={30} color="#cacece" />
             <Text style={styles.text}>식기</Text>
         </TouchableWithoutFeedback>
 
-        <TouchableWithoutFeedback style={styles.button} onPress={()=>setTab('잔')}>
+        <TouchableWithoutFeedback style={styles.button} onPress={()=>setTab('Glass')}>
             <MaterialCommunityIcons name="glass-cocktail" size={30} color="#b0f8ef" />
             <Text style={styles.text}>잔</Text>
         </TouchableWithoutFeedback>
 
-        <TouchableWithoutFeedback style={styles.button} onPress={()=>setTab('서빙용품')}>
+        <TouchableWithoutFeedback style={styles.button} onPress={()=>setTab('Serving')}>
         <FontAwesome5 name="hand-holding" size={24} color="black" style={{marginBottom:8}}/>
             <Text style={styles.text}>서빙용품</Text>
         </TouchableWithoutFeedback>
 
-        <TouchableWithoutFeedback style={styles.button} onPress={()=>setTab('청소도구')}>
+        <TouchableWithoutFeedback style={styles.button} onPress={()=>setTab('Cleaner')}>
         <Entypo name="trash" size={22} color="#0735c6" style={{marginBottom:3}}/>
             <Text style={styles.text}>청소도구</Text>
         </TouchableWithoutFeedback>
 
-        <TouchableWithoutFeedback style={styles.button} onPress={()=>setTab('기타')}>
+        <TouchableWithoutFeedback style={styles.button} onPress={()=>setTab('Ect')}>
         <Feather name="more-horizontal" size={24} color="#000000"/>
             <Text style={styles.text}>기타</Text>
         </TouchableWithoutFeedback>
     </View>
     
     <View style={styles.facility}>
-        <Text>여기에 {tab} Data가 표시 됩니다</Text>
+        <View style={styles.itemBox}>
+        {Object.entries(translate[tab]).map(([kor , en])=>{
+            if(facility[en]){
+                if(typeof(facility[en]) === 'string'){
+                    return(
+                    <View key={kor} style={{alignItems:"center", justifyContent:"center"}}>
+                        <Text style={[styles.itemText,{paddingBottom:-10}]}>{kor}</Text>
+                        <Caption>{facility[en]}</Caption>
+                    </View>
+                    )
+                }
+                return (
+                    <Text style={styles.itemText} key={kor}>{kor}</Text>
+                )
+            }
+        })}
+        </View>
     </View>
     </>
     )

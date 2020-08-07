@@ -4,8 +4,7 @@ import {StyleSheet, View, Text, Image, SafeAreaView} from "react-native";
 import constants from "../../constants";
 import useInput from "../../hooks/useInput";
 import numInput from "../../hooks/numInput";
-import BasicInput from "../../components/Custom/BasicInput";
-import AuthInput from "../../components/Custom/AuthInput";
+import ShadowInput from "../../components/Custom/ShadowInput";
 import { useMutation } from "@apollo/react-hooks";
 import BasicButton from "../../components/Custom/BasicButton";
 import { EDIT_PROFILE, MY_PROFILE } from "./ProfileQueries";
@@ -38,7 +37,7 @@ export default ({ navigation, route }) => {
           menuName: menuNameInput.value,
           salePrice: Number(salePriceInput.value),
           sector: sector,
-          profileState: 1
+          profileState: 0
         }
       });
       if ( editProfile ) {
@@ -53,7 +52,7 @@ export default ({ navigation, route }) => {
 
   return (
   <SafeAreaView>
-  <ScrollView showsVerticalScrollIndicator={false}>
+  <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{padding:15}}>
     <View style={styles.container}>
 
       <View style={styles.textContainer}>
@@ -79,43 +78,43 @@ export default ({ navigation, route }) => {
 
       <View style={styles.action}>
         <Text style={{fontWeight:'bold'}}>메뉴 이름:  </Text> 
-        <AuthInput {...menuNameInput} placeholder={"메뉴 이름"} width={0.5} padding={5} borderColor={'white'}/>
+        <ShadowInput {...menuNameInput} placeholder={"메뉴 이름"} width={'70%'} padding={5} borderColor={'white'}/>
       </View>
 
       <View style={styles.action}>
         <Text style={{fontWeight:'bold'}}>희망 가격:  </Text> 
-        <AuthInput {...salePriceInput} placeholder={"희망가격"} width={0.5} padding={5} borderColor={'white'}/>
+        <ShadowInput {...salePriceInput} placeholder={"희망가격"} width={'70%'} padding={5} borderColor={'white'}/>
       </View>
 
       <View style={styles.textContainer}>
         <Text style={styles.title}>업체 컨셉</Text>
       </View>
-      <BasicInput {...conceptInput} placeholder={`메뉴 설명, 식재료 원산지, 조리과정, 먹는 방법 등 \n대표 메뉴의 스토리를 작성해주세요`} keyboardType="default" editable={!loading}/>
+      <ShadowInput {...conceptInput} textAlign={'left'} textAlignVertical={'top'} placeholder={`메뉴 설명, 식재료 원산지, 조리과정, 먹는 방법 등 \n대표 메뉴의 스토리를 작성해주세요`} keyboardType="default" editable={!loading}/>
 
       <View style={styles.textContainer_last}>
        <Text style={styles.title}>경력</Text> 
       </View>
       <Text style={styles.warning}>선정 후 경력은 수정할 수 없고 모든 이용자가 볼 수 있습니다</Text> 
-      <BasicInput {...careerInput} placeholder={`요리 입문 년도, 수상 내역, 자격증, 관련 경험 등 `} keyboardType="default" editable={!loading}/>
+      <ShadowInput {...careerInput} textAlign={'left'} placeholder={`요리 입문 년도, 수상 내역, 자격증, 관련 경험 등 `} keyboardType="default" editable={!loading}/>
 
       <View style={styles.textContainer_last}>
         <Text style={styles.title}>연락처</Text>
       </View>
       <Text style={styles.warning}>선정 결과는 문자로 안내드립니다</Text> 
-      <BasicInput {...contactInput} placeholder={`( - ) 없이 번호만 입력해 주세요`} keyboardType="numeric" editable={!loading}/>
+      <ShadowInput {...contactInput} textAlign={'left'} placeholder={`( - ) 없이 번호만 입력해 주세요`} keyboardType="numeric" editable={!loading}/>
       
       <View style={{width:constants.width * .9}}>
-        <BasicButton text={'수정하기'} onPress={handleSubmit} loading={loading}/>
+        <BasicButton text={'수정하기'} onPress={handleSubmit} disabled={loading} loading={loading}/>
       </View>
-    </View>
-  </ScrollView>
+      </View>
+    </ScrollView>
   </SafeAreaView>
 )};
 
 const styles = StyleSheet.create({
   container:{
     flex:1,
-    alignItems:'center',
+    alignItems:"center"
   },
   imageInput:{
     width:constants.width * 0.25,

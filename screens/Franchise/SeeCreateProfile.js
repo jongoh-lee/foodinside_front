@@ -120,8 +120,10 @@ const styles = StyleSheet.create({
     fontSize:14,
     width:constants.width * .9,
     backgroundColor:'white',
-    borderRadius:20,
-    padding:15,
+    borderRadius:10,
+    padding:10,
+    borderWidth:1,
+    borderColor:"#e7e7e7",
     justifyContent:'flex-start'
   },
   action: {

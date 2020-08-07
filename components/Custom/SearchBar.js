@@ -75,7 +75,7 @@ export default () => {
           <Chip label="Filters" />
         </View> */}
 
-        <Text style={styles.title}>부천대 주변 공유 음식점</Text>
+        <Text style={styles.title}>경리단길 주변 공유 음식점</Text>
       </View>
   );
 };

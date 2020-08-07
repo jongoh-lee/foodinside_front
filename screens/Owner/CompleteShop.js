@@ -88,9 +88,12 @@ export default ({ navigation }) => {
         }
     }
     
-    const { data, error, loading : _loading, refetch } = useQuery(MY_SHOP);
+    const { data, error, loading : _loading, refetch } = useQuery(MY_SHOP,{
+        fetchPolicy:"network-only"
+    });
     if(_loading) return <Loader />
     if(error) return console.log(error);
+    console.log(data)
     return (
         <View style={styles.container}>
             {data && data.myShop &&
@@ -109,13 +112,13 @@ export default ({ navigation }) => {
                 </View>
 
                 <View style={styles.buttonShadow}>
-                    <TouchableOpacity onPress={() => navigation.navigate("설비 등록", {myShop: data.myShop})}>
+                    <TouchableOpacity onPress={() => navigation.navigate("설비 등록", {facility: data.myShop.facility})}>
                         <View style={styles.buttonRow}>
-                            <View style={[styles.buttonCircle, data.myShop.fire? {borderColor: 'rgba(5, 230, 244, .6)'} : null]}>
-                                <MaterialIcons name="kitchen" size={30} color={data.myShop.fire? "rgba(5, 230, 244, .6)" : "#E0E0E0"} />
+                            <View style={[styles.buttonCircle, data.myShop.facility? {borderColor: 'rgba(5, 230, 244, .6)'} : null]}>
+                                <MaterialIcons name="kitchen" size={30} color={data.myShop.facility? "rgba(5, 230, 244, .6)" : "#E0E0E0"} />
                             </View>
                             <View style={styles.buttonText}>
-                                <Text style={[styles.text, data.myShop.fire? {color: 'rgba(5, 230, 244, .6)'} : null]}>설비 등록</Text>
+                                <Text style={[styles.text, data.myShop.facility? {color: 'rgba(5, 230, 244, .6)'} : null]}>설비 등록</Text>
                             </View>
                         </View>
                     </TouchableOpacity>
@@ -197,7 +200,7 @@ export default ({ navigation }) => {
                 </View>
 
                 <View style={{width:WIDTH * .8}}>
-                    <BasicButton text={'내 음식점 보기'} onPress={handleMyShop} loading={loading} disabled={data.myShop.shopImages.length > 3 && data.myShop.fire && data.myShop.scale && data.myShop.description && data.myShop.address && data.myShop.checkIn && data.myShop.refundAgree ? loading : true}/>
+                    <BasicButton text={'내 음식점 보기'} onPress={handleMyShop} loading={loading} disabled={data.myShop.shopImages.length > 3 && data.myShop.facility && data.myShop.scale && data.myShop.description && data.myShop.address && data.myShop.checkIn && data.myShop.refundAgree ? loading : true}/>
                 </View>
             </ScrollView>}
         </View>

@@ -1,7 +1,7 @@
 export const myShopData = {
     id:"1",
     shopName: "조명으로 포인트를 준 음식점",
-    district:"부천 먹자 골목",
+    district:"경리단길 먹자 골목",
     picture: [require("../../assets/ShopImage/img_picture4.png"), require("../../assets/ShopImage/img_picture5.png"), require("../../assets/ShopImage/img_picture6.png"),require("../../assets/ShopImage/img_picture4.png"), require("../../assets/ShopImage/img_picture5.png"), require("../../assets/ShopImage/img_picture6.png"),require("../../assets/ShopImage/img_picture4.png"), require("../../assets/ShopImage/img_picture5.png"), require("../../assets/ShopImage/img_picture6.png")],
     sort: '일반',
     comments:231,
@@ -42,7 +42,7 @@ export const myShopData = {
     scale:45,
 
     //위치
-    address: "경기도 부천시 원미구 심곡동 부일로 121",
+    address: "경기도 경리단길시 원미구 심곡동 부일로 121",
     subway:[],
     
     //설명

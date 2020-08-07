@@ -6,7 +6,7 @@ import ShadowInput from "../../components/Custom/ShadowInput";
 import useInput from "../../hooks/useInput";
 import BasicButton from "../../components/Custom/BasicButton";
 import { useMutation } from "@apollo/react-hooks";
-import { COMPLETE_SHOP_FACILITY, MY_SHOP } from "./OwnerQueries";
+import { COMPLETE_SHOP_FACILITY } from "./OwnerQueries";
 
 const translate = {
     BoxFridge:{
@@ -62,11 +62,11 @@ const translate = {
     Cafe:{
         "에스프레소 머신": "espresso_machine",
         "원두 그라인더": "coffee_bean_grinder",
-        "온수기": "roasting_machine",
+        "로스팅 머신": "roasting_machine",
         "제빙기": "ice_maker",
         "빙삭기": "ice_shaver",
-        "블렌더": "water_heater",
-        "로스팅 머신": "blender",
+        "온수기": "water_heater",
+        "블렌더": "blender",
         "기타 기기": "cafe_ect",
     },
     Electronic:{
@@ -173,92 +173,52 @@ const translate = {
 export default ({ navigation, route}) => {
     const [loading, setLoading] = React.useState(false);
     //query data
-    const [boxFridge, setBoxFridge] = React.useState(route.params.myShop.boxFridge? route.params.myShop.boxFridge : {});
-    const [fridge, setFridge] = React.useState(route.params.myShop.fridge? route.params.myShop.fridge : {});
-    const [fire, setFire] = React.useState(route.params.myShop.fire? route.params.myShop.fire : {});
-    const [griller, setGriller] = React.useState(route.params.myShop.griller? route.params.myShop.griller : {});
-    const [griddle, setGriddle] = React.useState(route.params.myShop.griddle? route.params.myShop.griddle : {});
-    const [fryer, setFryer] = React.useState(route.params.myShop.fryer? route.params.myShop.fryer : {});
-    const [oven, setOven] = React.useState(route.params.myShop.oven? route.params.myShop.oven : {});
-    const [cafe, setCafe] = React.useState(route.params.myShop.cafe? route.params.myShop.cafe : {});
-    const [electronic, setElectronic] = React.useState(route.params.myShop.electronic? route.params.myShop.electronic : {});
-    const [tableware, setTableware] = React.useState(route.params.myShop.tableware? route.params.myShop.tableware : {});
-    const [container, setContainer] = React.useState(route.params.myShop.container? route.params.myShop.container : {});
-    const [glass, setGlass] = React.useState(route.params.myShop.glass? route.params.myShop.glass : {});
-    const [serving, setServing] = React.useState(route.params.myShop.serving? route.params.myShop.serving : {});
-    const [cleaner, setCleaner] = React.useState(route.params.myShop.cleaner? route.params.myShop.cleaner : {});
-    const [ect, setEct] = React.useState(route.params.myShop.ect? route.params.myShop.ect : {});
+    
+    const [facility, setFacility] = React.useState(route.params.facility? route.params.facility: {})
     //korean data
     const [korean, setKorean] = React.useState(translate);
     const {BoxFridge, Fridge, Fire, Griller, Griddle, Fryer, Oven, Cafe, Electronic, Tableware, Container, Glass, Serving, Cleaner, Ect } = korean;
     const [CompleteShopFacilityMutation] = useMutation(COMPLETE_SHOP_FACILITY);
 
     //cafe value
-    const espresso_machineInput = useInput(cafe? cafe["espresso_machine"] : '');
-    const coffee_bean_grinderInput = useInput(cafe? cafe["coffee_bean_grinder"] : '');
-    const roasting_machineInput = useInput(cafe? cafe["roasting_machine"] : '');
-    const ice_makerInput = useInput(cafe? cafe["ice_maker"] : '');
-    const ice_shaverInput = useInput(cafe? cafe["ice_shaver"] : '');
-    const water_heaterInput = useInput(cafe? cafe["water_heater"] : '');
-    const blenderInput = useInput(cafe? cafe["blender"] : '');
-    const cafe_ectInput = useInput(cafe? cafe["cafe_ect"] : '');
+    const espresso_machineInput = useInput(facility?.espresso_machine? facility?.espresso_machine : '');
+    const coffee_bean_grinderInput = useInput(facility?.coffee_bean_grinder? facility?.coffee_bean_grinder : '');
+    const roasting_machineInput = useInput(facility?.roasting_machine? facility?.roasting_machine : '');
+    const ice_makerInput = useInput(facility?.ice_maker? facility?.ice_maker : '');
+    const ice_shaverInput = useInput(facility?.ice_shaver? facility?.ice_shaver : '');
+    const water_heaterInput = useInput(facility?.water_heater? facility?.water_heater : '');
+    const blenderInput = useInput(facility?.blender? facility?.blender : '');
+    const cafe_ectInput = useInput(facility?.cafe_ect? facility?.cafe_ect : '');
     //changed data
-    const dataChanger = ( type , setType, en ) => {
-        if(type === null){
-            setType(type.push({ [en]: true }))
+    const dataChanger = ( en ) => {
+        if(facility === null){
+            Object.assign(facility, { [en]: true })
         } else {
-            let bool = type[en];
-            type[en] = !bool;
-            setType({...type});
+            let bool = facility[en];
+            facility[en] = !bool;
+            setFacility({...facility});
         }
     };
     const handleShopFacility = async () => {
-        ["__typename", "id"].forEach(el => delete boxFridge[el]);
-        ["__typename", "id"].forEach(el => delete fridge[el]);
-        ["__typename", "id"].forEach(el => delete fire[el]);
-        ["__typename", "id"].forEach(el => delete griller[el]);
-        ["__typename", "id"].forEach(el => delete griddle[el]);
-        ["__typename", "id"].forEach(el => delete fryer[el]);
-        ["__typename", "id"].forEach(el => delete oven[el]);
-        ["__typename", "id"].forEach(el => delete cafe[el]);
-        ["__typename", "id"].forEach(el => delete electronic[el]);
-        ["__typename", "id"].forEach(el => delete tableware[el]);
-        ["__typename", "id"].forEach(el => delete container[el]);
-        ["__typename", "id"].forEach(el => delete glass[el]);
-        ["__typename", "id"].forEach(el => delete serving[el]);
-        ["__typename", "id"].forEach(el => delete cleaner[el]);
-        ["__typename", "id"].forEach(el => delete ect[el]);
-        let _cafe = {
+        ["__typename", "id"].forEach(el => delete facility[el]);
+        let cafe = {
             espresso_machine: espresso_machineInput.value,
             coffee_bean_grinder: coffee_bean_grinderInput.value,
             roasting_machine: roasting_machineInput.value,
-            ice_maker: ice_makerInput.value,
+            ice_maker: ice_makerInput.value+'L',
             ice_shaver: ice_shaverInput.value,
-            water_heater: water_heaterInput.value,
+            water_heater: water_heaterInput.value+'L',
             blender: blenderInput.value,
             cafe_ect: cafe_ectInput.value,
         }
+        Object.assign(facility, cafe);
         try {
             setLoading(true);
             const {
                 data : { completeShopFacility }
             } = await CompleteShopFacilityMutation({
                 variables:{
-                    boxFridge: {...boxFridge},
-                    fridge: {...fridge},
-                    fire: {...fire},
-                    griller: {...griller},
-                    griddle: {...griddle},
-                    fryer: {...fryer},
-                    oven: {...oven},
-                    cafe: _cafe,
-                    electronic: {...electronic},
-                    tableware: {...tableware},
-                    container: {...container},
-                    glass: {...glass},
-                    serving: {...serving},
-                    cleaner: {...cleaner},
-                    ect: {...ect},
+                    facility: facility,
                 }
             });
             if(completeShopFacility){
@@ -286,8 +246,8 @@ export default ({ navigation, route}) => {
                     <View style={styles.listBox}>
                         {Object.entries(BoxFridge).map(([kor , en])=>{
                             return (
-                                <TouchableOpacity key={kor} onPress={() => dataChanger(boxFridge, setBoxFridge, en)} disabled={loading}>
-                                    <Text style={boxFridge? boxFridge[en]? styles.item_true : styles.item_false : styles.item_false}>{kor}</Text>
+                                <TouchableOpacity key={kor} onPress={() => dataChanger(en)} disabled={loading}>
+                                    <Text style={facility? facility[en]? styles.item_true : styles.item_false : styles.item_false}>{kor}</Text>
                                 </TouchableOpacity>
                             )
                         })}
@@ -301,8 +261,8 @@ export default ({ navigation, route}) => {
                     <View style={styles.listBox}>
                         {Object.entries(Fridge).map(([kor , en])=>{
                             return (
-                                <TouchableOpacity key={kor} onPress={() => dataChanger(fridge, setFridge, en)} disabled={loading}>
-                                    <Text style={fridge? fridge[en]? styles.item_true : styles.item_false : styles.item_false}>{kor}</Text>
+                                <TouchableOpacity key={kor} onPress={() => dataChanger(en)} disabled={loading}>
+                                    <Text style={facility? facility[en]? styles.item_true : styles.item_false : styles.item_false}>{kor}</Text>
                                 </TouchableOpacity>
                             )
                         })}
@@ -320,8 +280,8 @@ export default ({ navigation, route}) => {
                     <View style={styles.listBox}>
                         {Object.entries(Fire).map(([kor , en])=>{
                             return (
-                                <TouchableOpacity key={kor} onPress={() => dataChanger(fire, setFire, en)} disabled={loading}>
-                                    <Text style={fire? fire[en]? styles.item_true : styles.item_false : styles.item_false}>{kor}</Text>
+                                <TouchableOpacity key={kor} onPress={() => dataChanger(en)} disabled={loading}>
+                                    <Text style={facility? facility[en]? styles.item_true : styles.item_false : styles.item_false}>{kor}</Text>
                                 </TouchableOpacity>
                             )
                         })}
@@ -335,8 +295,8 @@ export default ({ navigation, route}) => {
                     <View style={styles.listBox}>
                         {Object.entries(Griller).map(([kor , en])=>{
                             return (
-                                <TouchableOpacity key={kor} onPress={() => dataChanger(griller, setGriller, en)} disabled={loading}>
-                                    <Text style={griller? griller[en]? styles.item_true : styles.item_false : styles.item_false}>{kor}</Text>
+                                <TouchableOpacity key={kor} onPress={() => dataChanger(en)} disabled={loading}>
+                                    <Text style={facility? facility[en]? styles.item_true : styles.item_false : styles.item_false}>{kor}</Text>
                                 </TouchableOpacity>
                             )
                         })}
@@ -350,8 +310,8 @@ export default ({ navigation, route}) => {
                     <View style={styles.listBox}>
                         {Object.entries(Griddle).map(([kor , en])=>{
                             return (
-                                <TouchableOpacity key={kor} onPress={() => dataChanger(griddle, setGriddle, en)} disabled={loading}>
-                                    <Text style={griddle? griddle[en]? styles.item_true : styles.item_false : styles.item_false}>{kor}</Text>
+                                <TouchableOpacity key={kor} onPress={() => dataChanger(en)} disabled={loading}>
+                                    <Text style={facility? facility[en]? styles.item_true : styles.item_false : styles.item_false}>{kor}</Text>
                                 </TouchableOpacity>
                             )
                         })}
@@ -365,8 +325,8 @@ export default ({ navigation, route}) => {
                     <View style={styles.listBox}>
                         {Object.entries(Fryer).map(([kor , en])=>{
                             return (
-                                <TouchableOpacity key={kor} onPress={() => dataChanger(fryer, setFryer, en)} disabled={loading}>
-                                    <Text style={fryer? fryer[en]? styles.item_true : styles.item_false : styles.item_false}>{kor}</Text>
+                                <TouchableOpacity key={kor} onPress={() => dataChanger(en)} disabled={loading}>
+                                    <Text style={facility? facility[en]? styles.item_true : styles.item_false : styles.item_false}>{kor}</Text>
                                 </TouchableOpacity>
                             )
                         })}
@@ -380,8 +340,8 @@ export default ({ navigation, route}) => {
                     <View style={styles.listBox}>
                         {Object.entries(Oven).map(([kor , en])=>{
                             return (
-                                <TouchableOpacity key={kor} onPress={() => dataChanger(oven, setOven, en)} disabled={loading}>
-                                    <Text style={oven? oven[en]? styles.item_true : styles.item_false : styles.item_false}>{kor}</Text>
+                                <TouchableOpacity key={kor} onPress={() => dataChanger(en)} disabled={loading}>
+                                    <Text style={facility? facility[en]? styles.item_true : styles.item_false : styles.item_false}>{kor}</Text>
                                 </TouchableOpacity>
                             )
                         })}
@@ -405,19 +365,19 @@ export default ({ navigation, route}) => {
 
                     <View style={{alignItems:"center", padding:10, flex:1}}>
                         <Text style={{color:'black', marginBottom:10, fontWeight:'bold'}}>온수기*</Text>
-                        <ShadowInput {...water_heaterInput} placeholder={'용량'}/>
+                        <ShadowInput {...water_heaterInput} placeholder={'용량(L)'}/>
                     </View>
                 </View>
 
                 <View style={styles.cafeBox}>
                     <View style={{alignItems:"center", padding:10, flex:1}}>
                         <Text style={{color:'black', marginBottom:10, fontWeight:'bold'}}>제빙기*</Text>
-                        <ShadowInput {...ice_makerInput} placeholder={'용량'}/>
+                        <ShadowInput {...ice_makerInput} placeholder={'용량(L)'}/>
                     </View>
 
                     <View style={{alignItems:"center", padding:10, flex:1}}>
                         <Text style={{color:'black', marginBottom:10, fontWeight:'bold'}}>빙삭기</Text>
-                        <ShadowInput {...ice_shaverInput} placeholder={'용량'}/>
+                        <ShadowInput {...ice_shaverInput} placeholder={'명칭'}/>
                     </View>
 
                     <View style={{alignItems:"center", padding:10, flex:1}}>
@@ -445,8 +405,8 @@ export default ({ navigation, route}) => {
                 <View style={styles.noTitleBox}>
                     {Object.entries(Electronic).map(([kor , en])=>{
                         return (
-                            <TouchableOpacity key={kor} onPress={() => dataChanger(electronic, setElectronic, en)} disabled={loading}>
-                                <Text style={electronic? electronic[en]? styles.item_true : styles.item_false : styles.item_false}>{kor}</Text>
+                            <TouchableOpacity key={kor} onPress={() => dataChanger(en)} disabled={loading}>
+                                <Text style={facility? facility[en]? styles.item_true : styles.item_false : styles.item_false}>{kor}</Text>
                             </TouchableOpacity>
                         )
                     })}
@@ -459,8 +419,8 @@ export default ({ navigation, route}) => {
                 <View style={styles.noTitleBox}>
                     {Object.entries(Container).map(([kor , en])=>{
                         return (
-                            <TouchableOpacity key={kor} onPress={() => dataChanger(container, setContainer, en)} disabled={loading}>
-                                <Text style={container? container[en]? styles.item_true : styles.item_false : styles.item_false}>{kor}</Text>
+                            <TouchableOpacity key={kor} onPress={() => dataChanger(en)} disabled={loading}>
+                                <Text style={facility? facility[en]? styles.item_true : styles.item_false : styles.item_false}>{kor}</Text>
                             </TouchableOpacity>
                         )
                     })}
@@ -473,8 +433,8 @@ export default ({ navigation, route}) => {
                 <View style={styles.noTitleBox}>
                     {Object.entries(Tableware).map(([kor , en])=>{
                         return (
-                            <TouchableOpacity key={kor} onPress={() => dataChanger(tableware, setTableware, en)} disabled={loading}>
-                                <Text style={tableware? tableware[en]? styles.item_true : styles.item_false : styles.item_false}>{kor}</Text>
+                            <TouchableOpacity key={kor} onPress={() => dataChanger(en)} disabled={loading}>
+                                <Text style={facility? facility[en]? styles.item_true : styles.item_false : styles.item_false}>{kor}</Text>
                             </TouchableOpacity>
                         )
                     })}
@@ -487,8 +447,8 @@ export default ({ navigation, route}) => {
                 <View style={styles.noTitleBox}>
                     {Object.entries(Glass).map(([kor , en])=>{
                         return (
-                            <TouchableOpacity key={kor} onPress={() => dataChanger(glass, setGlass, en)} disabled={loading}>
-                                <Text style={glass? glass[en]? styles.item_true : styles.item_false : styles.item_false}>{kor}</Text>
+                            <TouchableOpacity key={kor} onPress={() => dataChanger(en)} disabled={loading}>
+                                <Text style={facility? facility[en]? styles.item_true : styles.item_false : styles.item_false}>{kor}</Text>
                             </TouchableOpacity>
                         )
                     })}
@@ -501,8 +461,8 @@ export default ({ navigation, route}) => {
                 <View style={styles.noTitleBox}>
                     {Object.entries(Serving).map(([kor , en])=>{
                         return (
-                            <TouchableOpacity key={kor} onPress={() => dataChanger(serving, setServing, en)} disabled={loading}>
-                                <Text style={serving? serving[en]? styles.item_true : styles.item_false : styles.item_false}>{kor}</Text>
+                            <TouchableOpacity key={kor} onPress={() => dataChanger(en)} disabled={loading}>
+                                <Text style={facility? facility[en]? styles.item_true : styles.item_false : styles.item_false}>{kor}</Text>
                             </TouchableOpacity>
                         )
                     })}
@@ -515,8 +475,8 @@ export default ({ navigation, route}) => {
                 <View style={styles.noTitleBox}>
                     {Object.entries(Cleaner).map(([kor , en])=>{
                         return (
-                            <TouchableOpacity key={kor} onPress={() => dataChanger(cleaner, setCleaner, en)} disabled={loading}>
-                                <Text style={cleaner? cleaner[en]? styles.item_true : styles.item_false : styles.item_false}>{kor}</Text>
+                            <TouchableOpacity key={kor} onPress={() => dataChanger(en)} disabled={loading}>
+                                <Text style={facility? facility[en]? styles.item_true : styles.item_false : styles.item_false}>{kor}</Text>
                             </TouchableOpacity>
                         )
                     })}
@@ -529,8 +489,8 @@ export default ({ navigation, route}) => {
                 <View style={styles.noTitleBox}>
                     {Object.entries(Ect).map(([kor , en])=>{
                         return (
-                            <TouchableOpacity key={kor} onPress={() => dataChanger(ect, setEct, en)} disabled={loading}>
-                                <Text style={ect? ect[en]? styles.item_true : styles.item_false : styles.item_false}>{kor}</Text>
+                            <TouchableOpacity key={kor} onPress={() => dataChanger(en)} disabled={loading}>
+                                <Text style={facility? facility[en]? styles.item_true : styles.item_false : styles.item_false}>{kor}</Text>
                             </TouchableOpacity>
                         )
                     })}

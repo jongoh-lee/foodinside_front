@@ -29,17 +29,16 @@ export const MY_SHOP = gql`
                 id
                 type
                 url
+                createdAt
             }
-            boxFridge{
+            facility{
                 id
                 size_25
                 size_30
                 size_45
                 size_65
                 fridgeBox_ect
-            }
-            fridge{
-                id
+            #fridge
                 showcase
                 table 
                 vat 
@@ -48,47 +47,35 @@ export const MY_SHOP = gql`
                 wine 
                 ice_cream 
                 fridge_ect 
-            }
-            fire{
-                id
+            #fire
                 lower_stove 
                 chinese_stove 
                 gas_stove 
                 house_stove 
                 induction 
                 fire_ect 
-            }
-            griller{
-                id
+            #griller
                 fire_above 
                 fire_below 
                 charcoal 
                 griller_ect 
-            }
-            griddle{
-                id
+            #griddle
                 size_600 
                 size_900 
                 size_1200 
                 size_1500 
                 griddle_ect 
-            }
-            fryer{
-                id
+            #fryer
                 electric 
                 gas
                 fryer_ect
-            }
-            oven{
-                id
+            #oven
                 deck 
                 convection 
                 steam_convection 
                 combi_steamer 
                 oven_ect 
-            }
-            cafe{
-                id
+            #cafe
                 espresso_machine
                 coffee_bean_grinder
                 roasting_machine
@@ -97,9 +84,7 @@ export const MY_SHOP = gql`
                 water_heater
                 blender
                 cafe_ect
-            }
-            electronic{
-                id
+            #electronic
                 rice_cooker 
                 soup_heater 
                 dish_washer 
@@ -117,9 +102,7 @@ export const MY_SHOP = gql`
                 soda_dispenser 
                 soft_cone_machine 
                 beer_dispenser 
-            }
-            tableware{
-                id
+            #tableware
                 spoon_holder 
                 napkin_holder 
                 seasoning_container 
@@ -134,9 +117,7 @@ export const MY_SHOP = gql`
                 kettle 
                 portable_stove 
                 table_bell 
-            }
-            container{
-                id
+            #container
                 bowl_container 
                 stainless_vat 
                 soup_container 
@@ -145,9 +126,7 @@ export const MY_SHOP = gql`
                 side_dish_container 
                 wash_basin 
                 take_out_container 
-            }
-            glass{
-                id
+            #glass
                 beverage 
                 water 
                 mug 
@@ -164,9 +143,7 @@ export const MY_SHOP = gql`
                 pitcher_500cc 
                 pitcher_2000cc 
                 pitcher_3000cc 
-            }
-            serving{
-                id
+            #serving
                 rice_bowl 
                 dish 
                 earthenware 
@@ -179,9 +156,7 @@ export const MY_SHOP = gql`
                 bowl 
                 scissors 
                 ladle 
-            }
-            cleaner{
-                id
+            #cleaner
                 detergent 
                 clorox 
                 abstergent 
@@ -192,9 +167,7 @@ export const MY_SHOP = gql`
                 hose 
                 brush 
                 vacuum_cleaner
-            }
-            ect{
-                id
+            #ect
                 speaker 
                 tv 
                 projector 
@@ -252,16 +225,14 @@ export const CREATE_SHOP = gql`
                 type
                 url
             }
-            boxFridge{
+            facility{
                 id
                 size_25
                 size_30
                 size_45
                 size_65
                 fridgeBox_ect
-            }
-            fridge{
-                id
+            #fridge
                 showcase
                 table 
                 vat 
@@ -270,47 +241,35 @@ export const CREATE_SHOP = gql`
                 wine 
                 ice_cream 
                 fridge_ect 
-            }
-            fire{
-                id
+            #fire
                 lower_stove 
                 chinese_stove 
                 gas_stove 
                 house_stove 
                 induction 
                 fire_ect 
-            }
-            griller{
-                id
+            #griller
                 fire_above 
                 fire_below 
                 charcoal 
                 griller_ect 
-            }
-            griddle{
-                id
+            #griddle
                 size_600 
                 size_900 
                 size_1200 
                 size_1500 
                 griddle_ect 
-            }
-            fryer{
-                id
+            #fryer
                 electric 
                 gas
                 fryer_ect
-            }
-            oven{
-                id
+            #oven
                 deck 
                 convection 
                 steam_convection 
                 combi_steamer 
                 oven_ect 
-            }
-            cafe{
-                id
+            #cafe
                 espresso_machine
                 coffee_bean_grinder
                 roasting_machine
@@ -319,9 +278,7 @@ export const CREATE_SHOP = gql`
                 water_heater
                 blender
                 cafe_ect
-            }
-            electronic{
-                id
+            #electronic
                 rice_cooker 
                 soup_heater 
                 dish_washer 
@@ -339,9 +296,7 @@ export const CREATE_SHOP = gql`
                 soda_dispenser 
                 soft_cone_machine 
                 beer_dispenser 
-            }
-            tableware{
-                id
+            #tableware
                 spoon_holder 
                 napkin_holder 
                 seasoning_container 
@@ -356,9 +311,7 @@ export const CREATE_SHOP = gql`
                 kettle 
                 portable_stove 
                 table_bell 
-            }
-            container{
-                id
+            #container
                 bowl_container 
                 stainless_vat 
                 soup_container 
@@ -367,9 +320,7 @@ export const CREATE_SHOP = gql`
                 side_dish_container 
                 wash_basin 
                 take_out_container 
-            }
-            glass{
-                id
+            #glass
                 beverage 
                 water 
                 mug 
@@ -386,9 +337,7 @@ export const CREATE_SHOP = gql`
                 pitcher_500cc 
                 pitcher_2000cc 
                 pitcher_3000cc 
-            }
-            serving{
-                id
+            #serving
                 rice_bowl 
                 dish 
                 earthenware 
@@ -401,9 +350,7 @@ export const CREATE_SHOP = gql`
                 bowl 
                 scissors 
                 ladle 
-            }
-            cleaner{
-                id
+            #cleaner
                 detergent 
                 clorox 
                 abstergent 
@@ -414,9 +361,7 @@ export const CREATE_SHOP = gql`
                 hose 
                 brush 
                 vacuum_cleaner
-            }
-            ect{
-                id
+            #ect
                 speaker 
                 tv 
                 projector 
@@ -554,213 +499,157 @@ export const SEE_MYSHOP = gql`
 
 export const COMPLETE_SHOP_FACILITY = gql`
     mutation completeShopFacility(
-        $boxFridge: CompleteBoxFridge
-        $fridge: CompleteFridge
-        $fire: CompleteFire
-        $griller: CompleteGriller
-        $griddle: CompleteGriddle
-        $fryer: CompleteFryer
-        $oven: CompleteOven
-        $cafe: CompleteCafe
-        $electronic: CompleteElectronic
-        $tableware: CompleteTableware
-        $container: CompleteContainer
-        $glass: CompleteGlass
-        $serving: CompleteServing
-        $cleaner: CompleteCleaner
-        $ect: CompleteEct
+       $facility: CompleteFacility
     ){
         completeShopFacility(
-            boxFridge:$boxFridge
-            fridge:$fridge
-            fire:$fire
-            griller:$griller
-            griddle:$griddle
-            fryer:$fryer
-            oven:$oven
-            cafe:$cafe
-            electronic:$electronic
-            tableware:$tableware
-            container:$container
-            glass:$glass
-            serving:$serving
-            cleaner:$cleaner
-            ect:$ect
+            facility: $facility
         ){
             id
-            boxFridge{
+            facility{
                 id
                 size_25
-                size_30
-                size_45
-                size_65
-                fridgeBox_ect
-            }
-            fridge{
-                id
-                showcase
-                table 
-                vat 
-                kimchi 
-                tuna 
-                wine 
-                ice_cream 
-                fridge_ect 
-            }
-            fire{
-                id
-                lower_stove 
-                chinese_stove 
-                gas_stove 
-                house_stove 
-                induction 
-                fire_ect 
-            }
-            griller{
-                id
-                fire_above 
-                fire_below 
-                charcoal 
-                griller_ect 
-            }
-            griddle{
-                id
-                size_600 
-                size_900 
-                size_1200 
-                size_1500 
-                griddle_ect 
-            }
-            fryer{
-                id
-                electric 
-                gas
-                fryer_ect
-            }
-            oven{
-                id
-                deck 
-                convection 
-                steam_convection 
-                combi_steamer 
-                oven_ect 
-            }
-            cafe{
-                id
-                espresso_machine
-                coffee_bean_grinder
-                roasting_machine
-                ice_maker
-                ice_shaver
-                water_heater
-                blender
-                cafe_ect
-            }
-            electronic{
-                id
-                rice_cooker 
-                soup_heater 
-                dish_washer 
-                microwave 
-                take_out_packer 
-                induction_small 
-                blender_small 
-                food_warmer 
-                dough_machine 
-                fermenter 
-                noodle_cooker 
-                noodle_maker 
-                pasta_noodle_maker 
-                cold_noodle_maker 
-                soda_dispenser 
-                soft_cone_machine 
-                beer_dispenser 
-            }
-            tableware{
-                id
-                spoon_holder 
-                napkin_holder 
-                seasoning_container 
-                wet_wipe 
-                opener 
-                spoon 
-                chopsticks 
-                fork 
-                knife 
-                tray 
-                water_bottle 
-                kettle 
-                portable_stove 
-                table_bell 
-            }
-            container{
-                id
-                bowl_container 
-                stainless_vat 
-                soup_container 
-                plastic_vat 
-                glass_vat 
-                side_dish_container 
-                wash_basin 
-                take_out_container 
-            }
-            glass{
-                id
-                beverage 
-                water 
-                mug 
-                soju 
-                sake 
-                kaoliang 
-                shot 
-                wine_glass 
-                champagne 
-                cocktail 
-                on_the_rock 
-                highball 
-                glass 
-                pitcher_500cc 
-                pitcher_2000cc 
-                pitcher_3000cc 
-            }
-            serving{
-                id
-                rice_bowl 
-                dish 
-                earthenware 
-                pottery 
-                stone_pot 
-                pot 
-                frying_pan 
-                side_dish_bowl 
-                small_dish 
-                bowl 
-                scissors 
-                ladle 
-            }
-            cleaner{
-                id
-                detergent 
-                clorox 
-                abstergent 
-                bloom 
-                dustpan 
-                floorcloth 
-                bucket 
-                hose 
-                brush 
-                vacuum_cleaner
-            }
-            ect{
-                id
-                speaker 
-                tv 
-                projector 
-                air_conditioner 
-                wifi 
-                cctv 
-                kiosk 
-                umbrella_stand 
+            size_30
+            size_45
+            size_65
+            fridgeBox_ect
+        #fridge
+            showcase
+            table 
+            vat 
+            kimchi 
+            tuna 
+            wine 
+            ice_cream 
+            fridge_ect 
+        #fire
+            lower_stove 
+            chinese_stove 
+            gas_stove 
+            house_stove 
+            induction 
+            fire_ect 
+        #griller
+            fire_above 
+            fire_below 
+            charcoal 
+            griller_ect 
+        #griddle
+            size_600 
+            size_900 
+            size_1200 
+            size_1500 
+            griddle_ect 
+        #fryer
+            electric 
+            gas
+            fryer_ect
+        #oven
+            deck 
+            convection 
+            steam_convection 
+            combi_steamer 
+            oven_ect 
+        #cafe
+            espresso_machine
+            coffee_bean_grinder
+            roasting_machine
+            ice_maker
+            ice_shaver
+            water_heater
+            blender
+            cafe_ect
+        #electronic
+            rice_cooker 
+            soup_heater 
+            dish_washer 
+            microwave 
+            take_out_packer 
+            induction_small 
+            blender_small 
+            food_warmer 
+            dough_machine 
+            fermenter 
+            noodle_cooker 
+            noodle_maker 
+            pasta_noodle_maker 
+            cold_noodle_maker 
+            soda_dispenser 
+            soft_cone_machine 
+            beer_dispenser 
+        #tableware
+            spoon_holder 
+            napkin_holder 
+            seasoning_container 
+            wet_wipe 
+            opener 
+            spoon 
+            chopsticks 
+            fork 
+            knife 
+            tray 
+            water_bottle 
+            kettle 
+            portable_stove 
+            table_bell 
+        #container
+            bowl_container 
+            stainless_vat 
+            soup_container 
+            plastic_vat 
+            glass_vat 
+            side_dish_container 
+            wash_basin 
+            take_out_container 
+        #glass
+            beverage 
+            water 
+            mug 
+            soju 
+            sake 
+            kaoliang 
+            shot 
+            wine_glass 
+            champagne 
+            cocktail 
+            on_the_rock 
+            highball 
+            glass 
+            pitcher_500cc 
+            pitcher_2000cc 
+            pitcher_3000cc 
+        #serving
+            rice_bowl 
+            dish 
+            earthenware 
+            pottery 
+            stone_pot 
+            pot 
+            frying_pan 
+            side_dish_bowl 
+            small_dish 
+            bowl 
+            scissors 
+            ladle 
+        #cleaner
+            detergent 
+            clorox 
+            abstergent 
+            bloom 
+            dustpan 
+            floorcloth 
+            bucket 
+            hose 
+            brush 
+            vacuum_cleaner
+        #ect
+            speaker 
+            tv 
+            projector 
+            air_conditioner 
+            wifi 
+            cctv 
+            kiosk 
+            umbrella_stand 
             }
         }
     }
@@ -787,6 +676,7 @@ export const COMPLETE_SHOP_IMAGE = gql`
                 id
                 type
                 url
+                createdAt
             }
         }
     }

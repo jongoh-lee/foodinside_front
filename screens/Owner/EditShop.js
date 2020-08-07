@@ -9,6 +9,7 @@ import useInput from "../../hooks/strickInput";
 import numInput from "../../hooks/numInput";
 import { useMutation } from "@apollo/react-hooks";
 import { EDIT_SHOP } from "./OwnerQueries";
+import ShadowInput from "../../components/Custom/ShadowInput";
 
 export default ({ navigation, route }) => {
   const [loading, setLoading] = React.useState(false);
@@ -96,7 +97,7 @@ export default ({ navigation, route }) => {
       </View>
       <Text style={styles.warning}>주변 음식점과 함께 신청하면 선정 될 확률이 높습니다</Text> 
 
-      <BasicInput {...addressInput} placeholder={"사업장 위치"} keyboardType="default" editable={!loading}/>
+      <ShadowInput {...addressInput} placeholder={"사업장 위치"} keyboardType="default" editable={!loading} textAlign={'left'}/>
 
       <View style={styles.textContainer}>
        <Text style={styles.title}>사업자등록증을 확인합니다</Text> 
@@ -136,7 +137,7 @@ export default ({ navigation, route }) => {
     
       <Text style={styles.warning}>선정 결과는 문자로 안내해 드립니다</Text> 
       
-      <BasicInput {...contactInput} placeholder={"연락처"} keyboardType="numeric" editable={!loading}/>
+      <ShadowInput {...contactInput} placeholder={"연락처"} keyboardType="numeric" editable={!loading} textAlign={'left'}/>
     
       <BasicButton text={'제출하기'} onPress={handleEditShop} disabled={exterior && hall && kitchen && registration && addressInput.value && contactInput.value ? false : true} loading={loading} />
     </ScrollView>
@@ -148,6 +149,7 @@ const styles = StyleSheet.create({
   container:{
     flex:1,
     paddingHorizontal:20,
+    backgroundColor:"#ffffff"
   },
   imageBox:{
     flexDirection:"row",
@@ -162,12 +164,12 @@ const styles = StyleSheet.create({
     justifyContent:'center',
     alignItems:'center',
     shadowOffset: {
-      width: 1,
-      height: 2,
+      width: 0,
+      height: 1,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 3,
+    shadowOpacity: 0.20,
+    shadowRadius: 1.41,
+    elevation: 2,
   },
   image:{
     width:constants.width * 0.25,

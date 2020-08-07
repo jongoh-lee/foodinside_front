@@ -1,6 +1,6 @@
 import * as React from "react";
 import { StyleSheet, View, Text, ImageBackground, TouchableOpacity } from "react-native";
-import SquareInput from "../Custom/SquareInput";
+import ShadowInput from "../Custom/ShadowInput";
 import useInput from "../../hooks/useInput";
 import numInput from "../../hooks/numInput";
 import constants from "../../constants";
@@ -35,7 +35,7 @@ export default ({ id, menuName, menuImage, fullPrice, salePrice, subMenus, setEd
 
     return(
         <View style={styles.content}>
-        <SquareInput {...menuNameInput} placeholder={'메뉴 이름'} width={'80%'}/>
+        <ShadowInput {...menuNameInput} placeholder={'메뉴 이름'} width={'80%'}/>
 
           <TouchableOpacity onPress={() => (
             navigation.navigate('SelectPhoto', {
@@ -77,8 +77,8 @@ export default ({ id, menuName, menuImage, fullPrice, salePrice, subMenus, setEd
             </View>
           </TouchableOpacity>
         
-        <SquareInput {...fullPriceInput} placeholder={'정상가'} width={'80%'}/>
-        <SquareInput {...salePriceInput} placeholder={'할인가'} width={'80%'}/>
+        <ShadowInput {...fullPriceInput} placeholder={'정상가'} width={'80%'}/>
+        <ShadowInput {...salePriceInput} placeholder={'할인가'} width={'80%'}/>
 
         <TouchableOpacity onPress={() => (
           setEditMenuModal(false),

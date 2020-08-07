@@ -29,7 +29,7 @@ export default ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-    {data && data.myShop && 
+    {data?.myShop && 
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.textContainer}>
         <Text style={styles.title}>내 가게가 공유 음식점이 될 수 있나요?</Text>
@@ -37,7 +37,7 @@ export default ({ navigation }) => {
       <Text style={styles.warning}>가게 사진을 제출해주세요, 선정 결과는 이메일/문자로 알려드립니다</Text> 
     
       <View style={styles.imageBox}>
-        {data.myShop.shopImages.map(el => 
+        {data?.myShop?.shopImages?.map(el => 
           <Image key={el.id} style={styles.image} source={{uri: el.url}}/>  
         )}
       </View>
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
   textInput:{
     fontSize:14,
     width:constants.width * 0.9,
-    borderRadius:20,
+    borderRadius:10,
     padding:10,
     borderWidth:1,
     borderColor:"#e7e7e7",

@@ -26,12 +26,12 @@ const styles = StyleSheet.create({
 export default () => (
   <View style={styles.container}>
     <View style={styles.calendarContainer}>
-      <Calendar  dayComponent={({date, state=true, marking}) => console.log(marking, date) }/>
+      <Calendar />
     </View>
 
     <View style={styles.priceSet}>
       <TouchableOpacity>
-        <Text style={styles.priceText}>초기화</Text>
+        <Text style={styles.priceText}>예약 불가</Text>
       </TouchableOpacity>
 
       <TouchableOpacity>

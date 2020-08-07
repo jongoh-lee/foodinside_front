@@ -5,7 +5,7 @@ import constants from "../../constants";
 import { AntDesign } from '@expo/vector-icons'; 
 import useInput from "../../hooks/useInput";
 import numInput from "../../hooks/numInput";
-import AuthInput from "../../components/Custom/AuthInput";
+import ShadowInput from "../../components/Custom/ShadowInput";
 import BasicInput from "../../components/Custom/BasicInput";
 import { useMutation } from "@apollo/react-hooks";
 import BasicButton from "../../components/Custom/BasicButton";
@@ -51,7 +51,7 @@ export default ({ navigation, route }) => {
           menuName: menuNameInput.value,
           salePrice: Number(salePriceInput.value),
           sector: sector,
-          profileState: 1
+          profileState: 0
         }
       });
       if ( createProfile ) {
@@ -65,8 +65,8 @@ export default ({ navigation, route }) => {
   }
 
   return (
-  <ScrollView showsVerticalScrollIndicator={false}>
-    <View style={styles.container}>
+  <View style={styles.container}>
+    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{padding:15, alignItems:"center"}}>
 
       <View style={styles.textContainer}>
         <Text style={styles.title}>대표 메뉴</Text>
@@ -76,6 +76,16 @@ export default ({ navigation, route }) => {
         {image === null? <AntDesign name="plus" size={30} color="black" /> : <Image style={styles.image} source={{uri: image.photo.uri}}/>}
       </TouchableWithoutFeedback>
         
+      <View style={styles.action}>
+        <Text style={{fontWeight:'bold'}}>메뉴 이름:  </Text> 
+        <ShadowInput {...menuNameInput}  placeholder={"메뉴 이름"} width={'70%'} padding={5} borderColor={'white'}/>
+      </View>
+
+      <View style={styles.action}>
+        <Text style={{fontWeight:'bold'}}>희망 가격:  </Text> 
+        <ShadowInput {...salePriceInput}  placeholder={"희망가격"} width={'70%'} padding={5} borderColor={'white'} keyboardType="numeric"/>
+      </View>
+
       <View style={styles.action}>
         <Text style={{fontWeight:'bold'}}>업종:  </Text> 
         <RadioButton.Group onValueChange={sector => setSector(sector)} value={sector}>
@@ -90,38 +100,28 @@ export default ({ navigation, route }) => {
         </RadioButton.Group>
       </View>
 
-      <View style={styles.action}>
-        <Text style={{fontWeight:'bold'}}>메뉴 이름:  </Text> 
-        <AuthInput {...menuNameInput} placeholder={"메뉴 이름"} width={0.5} padding={5} borderColor={'white'}/>
-      </View>
-
-      <View style={styles.action}>
-        <Text style={{fontWeight:'bold'}}>희망 가격:  </Text> 
-        <AuthInput {...salePriceInput} placeholder={"희망가격"} width={0.5} padding={5} borderColor={'white'} keyboardType="numeric"/>
-      </View>
-
       <View style={styles.textContainer}>
         <Text style={styles.title}>업체 컨셉</Text>
       </View>
-      <BasicInput {...conceptInput} placeholder={`메뉴 설명, 식재료 원산지, 조리과정, 먹는 방법 등 \n대표 메뉴의 스토리를 작성해주세요`} keyboardType="default" editable={!loading}/>
+      <ShadowInput {...conceptInput} textAlign={'left'} textAlignVertical={'top'} placeholder={`메뉴 설명, 식재료 원산지, 조리과정, 먹는 방법 등 \n대표 메뉴의 스토리를 작성해주세요`} keyboardType="default" editable={!loading}/>
 
       <View style={styles.textContainer_last}>
        <Text style={styles.title}>경력</Text> 
       </View>
       <Text style={styles.warning}>선정 후 경력은 수정할 수 없고 모든 이용자가 볼 수 있습니다</Text> 
-      <BasicInput {...careerInput} placeholder={`요리 입문 년도, 수상 내역, 자격증, 관련 경험 등 `} keyboardType="default" editable={!loading}/>
+      <ShadowInput {...careerInput} textAlign={'left'} placeholder={`요리 입문 년도, 수상 내역, 자격증, 관련 경험 등 `} keyboardType="default" editable={!loading}/>
 
       <View style={styles.textContainer_last}>
         <Text style={styles.title}>연락처</Text>
       </View>
       <Text style={styles.warning}>선정 결과는 문자로 안내드립니다</Text> 
-      <BasicInput {...contactInput} placeholder={`( - ) 없이 번호만 입력해 주세요`} keyboardType="numeric" editable={!loading}/>
+      <ShadowInput {...contactInput} textAlign={'left'} placeholder={`( - ) 없이 번호만 입력해 주세요`} keyboardType="numeric" editable={!loading}/>
       
       <View style={{width:constants.width * .9}}>
-        <BasicButton text={'제출하기'} onPress={handleSubmit} disabled={image && menuNameInput.value && salePriceInput.value && conceptInput.value && contactInput.value && careerInput.value? false : true} loading={loading}/>
+        <BasicButton text={'제출하기'} onPress={handleSubmit} disabled={image && menuNameInput.value && salePriceInput.value && conceptInput.value && contactInput.value && careerInput.value? loading : true} loading={loading}/>
       </View>
-    </View>
-  </ScrollView>
+    </ScrollView>
+  </View>
 )};
 
 const styles = StyleSheet.create({
@@ -138,12 +138,12 @@ const styles = StyleSheet.create({
     justifyContent:'center',
     alignItems:'center',
     shadowOffset: {
-      width: 1,
-      height: 2,
+      width: 0,
+      height: 1,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 3,
+    shadowOpacity: 0.20,
+    shadowRadius: 1.41,
+    elevation: 2,
   },
   image:{
     width:constants.width * 0.25,

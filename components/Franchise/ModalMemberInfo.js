@@ -1,6 +1,6 @@
 import * as React from "react";
 import { StyleSheet, View, Text, ImageBackground, TouchableOpacity } from "react-native";
-import SquareInput from "../Custom/SquareInput";
+import ShadowInput from "../Custom/ShadowInput";
 import useInput from "../../hooks/useInput";
 import numInput from "../../hooks/numInput";
 import constants from "../../constants";
@@ -74,10 +74,10 @@ export default ({ id, name, image, position, career, members, setMembers, newMem
             </View>
           </TouchableOpacity>
         <View style={{flexDirection:"row", marginVertical:10}}>  
-            <SquareInput {...nameInput} placeholder={'성함'} width={'50%'}/>
-            <SquareInput {...positionInput} placeholder={'직위'} width={'50%'}/>
+            <ShadowInput {...nameInput} placeholder={'성함'} width={'50%'}/>
+            <ShadowInput {...positionInput} placeholder={'직위'} width={'50%'}/>
         </View>
-        <SquareInput {...careerInput} placeholder={'경력'} width={'100%'} multiline={true} returnKeyType={'none'} maxHeight={80}/>
+        <ShadowInput {...careerInput} placeholder={'경력'} width={'100%'} multiline={true} returnKeyType={'none'} maxHeight={80}/>
 
         <TouchableOpacity onPress={() => (
           setEditMemberModal(false),

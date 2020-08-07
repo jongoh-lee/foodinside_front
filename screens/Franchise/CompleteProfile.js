@@ -1,7 +1,7 @@
 import * as React from "react";
 import {StyleSheet, View, Text, Image, ImageBackground, TouchableOpacity, Alert} from "react-native";
 import { profile } from "../../components/Franchise/data";
-import SquareInput from "../../components/Custom/SquareInput";
+import ShadowInput from "../../components/Custom/ShadowInput";
 import useInput from "../../hooks/useInput";
 import numInput from "../../hooks/numInput";
 import { ScrollView, TouchableWithoutFeedback } from "react-native-gesture-handler";
@@ -101,20 +101,24 @@ export default ({ navigation, route }) => {
   <>
     <ScrollView>
       <View style={styles.container}>
-        
-        <Text style={[styles.title, {paddingVertical:10}]}>업체 정보 </Text>
+        <View style={{paddingBottom:15}}>
+          <Text style={[styles.title, {paddingVertical:10}]}>업체 정보 </Text>
 
-          <View style={styles.innerBox_border}>
-            <View style={{flexDirection:"row"}}>
-              <SquareInput {...profileNameInput} placeholder={'업체명'} width={'70%'}/>
-              <SquareInput {...sortInput} placeholder={'분류'} width={'30%'}/>
-            </View>
-            <View style={{flexDirection:"row"}}>
-              <Text style={[{ padding:9 ,paddingLeft:10, width:'70%', borderWidth:1}, {borderColor: pointInput.value? "rgb(5, 230, 244)" : "rgba(5, 230, 244, .3)"}]}>리뷰가 받는 좋아요 1개당 발행하는 포인트</Text>
-              <SquareInput {...pointInput} placeholder={'0'} width={'30%'}/>
-            </View>
-            <SquareInput {...regionInput} placeholder={'희망 영업 지역'} width={'100%'}/>
+          <View style={{flexDirection:"row", alignItems:"center"}}>
+            <Text style={styles.subTitle}>업체명: </Text>
+            <ShadowInput {...profileNameInput} placeholder={'업체명'} width={'80%'} padding={5} textAlign={'left'}/>
           </View>
+
+          <View style={{flexDirection:"row", alignItems:"center"}}>
+            <Text style={styles.subTitle}>세부 업종: </Text>
+            <ShadowInput {...sortInput} placeholder={'분류'} width={'30%'} padding={5} textAlign={'left'}/>
+          </View>
+          
+          <View style={{flexDirection:"row", alignItems:"center"}}>
+            <Text style={styles.subTitle}>리뷰가 받는 좋아요 1개당 발행하는 포인트: </Text>
+            <ShadowInput {...pointInput} placeholder={'0'} width={'20%'} padding={5} textAlign={'left'}/>
+          </View>
+        </View>
 
         <View style={{flexDirection:"row", justifyContent:"space-between", paddingVertical:10}}>
           <Text style={styles.title}>대표 이미지</Text>
@@ -209,10 +213,11 @@ export default ({ navigation, route }) => {
             ))}
           </ScrollView>
 
-          <View style={styles.innerBox_border}>
-            <SquareInput {...foodGuideInput} placeholder={'푸드 가이드'} width={'100%'} multiline={true} returnKeyType={'none'}/>
-            <SquareInput {...originInput} placeholder={'원산지'} width={'100%'} multiline={true} returnKeyType={'none'}/>
-            
+          <View style={{paddingBottom:15}}>
+            <Text style={[styles.subTitle,{padding:10}]}>푸드 가이드</Text>
+            <ShadowInput {...foodGuideInput} placeholder={'푸드 가이드'} width={'100%'} multiline={true} returnKeyType={'none'} textAlign={'left'} textAlignVertical={'top'}/>
+            <Text style={[styles.subTitle,{padding:10}]}>식재료 원산지</Text>
+            <ShadowInput {...originInput} placeholder={'원산지'} width={'100%'} multiline={true} returnKeyType={'none'} textAlign={'left'} textAlignVertical={'top'}/>
           </View>
 
         <View style={{flexDirection:"row", justifyContent:"space-between", paddingVertical:10}}>
@@ -404,11 +409,6 @@ const styles = StyleSheet.create({
   innerBox:{
     marginBottom:15
   },
-  innerBox_border:{
-    borderWidth:1,
-    borderColor:'rgba(5, 230, 244, .3)',
-    marginBottom:15
-  },
   save:{
     paddingHorizontal:5
   },
@@ -420,6 +420,10 @@ const styles = StyleSheet.create({
     fontSize:16,
     fontWeight:"bold"
   },
+  subTitle:{
+    fontWeight:'bold',
+    fontSize:14,
+},
 
   //메뉴 스크롤
   menuScroll:{

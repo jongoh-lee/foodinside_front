@@ -98,7 +98,8 @@ function MyShopStackScreen() {
       screenOptions={{ headerTitleStyle:{fontSize:20, fontWeight:'bold'},headerShown:true}}
       >
       <MyShopStack.Screen name="내 음식점" component={Owner} options={{
-        headerTitle:() => null
+        headerTitle:() => <Logo nav={'공유 음식점'}/>,
+        headerTitleAlign:'left'
       }}/>
       <MyShopStack.Screen name="음식점 예시" component={ShopExample} options={{
         headerRight:() => <Feather name="more-vertical" size={24}/>,

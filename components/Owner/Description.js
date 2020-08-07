@@ -112,44 +112,58 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-        elevation: 5,
+        elevation: 3,
         overflow: Platform.OS === 'android'? "hidden" : null
     }
 })
 
-export default ({ shopImages, tables, chairs, scale, description, precaution, address, checkIn, checkOut, minReserve, }) => {
-    const [tabName, setTabName] = React.useState('외부');
+export default ({ shopImages, facility, tables, chairs, scale, shopName, district, description, precaution, address, checkIn, checkOut, minReserve, }) => {
+    const [tabName, setTabName] = React.useState("EXTERIOR");
+    const [index, setIndex] = React.useState(0);
+    const exterior= React.useState(shopImages.filter(el => el["type"] === 'EXTERIOR').length)
+    const hall= React.useState(shopImages.filter(el => el["type"] === 'HALL').length)
+    const kitchen= React.useState(shopImages.filter(el => el["type"] === 'KITCHEN').length)
+    const tableware= React.useState(shopImages.filter(el => el["type"] === 'TABLEWARE').length)
+    const cleaner= React.useState(shopImages.filter(el => el["type"] === 'CLEANER').length)
+    const indexChanger = ( tab ) => {
+        setTabName(tab)
+        if(tab === 'EXTERIOR') return setIndex(0)
+        if(tab === 'HALL') return setIndex(exterior[0] + 1);
+        if(tab === 'KITCHEN') return setIndex(exterior[0] + hall[0] + 1);
+        if(tab === 'TABLEWARE') return setIndex(exterior[0] + hall[0] + kitchen[0] + 1);
+        if(tab === 'CLEANER') return setIndex(exterior[0] + hall[0] + kitchen[0] + tableware[0] + 1);
+        if(tab === 'ECT') return setIndex(exterior[0] + hall[0] + kitchen[0] + tableware[0] + cleaner[0] + 1);
+    }
     return (
         <View>
             <View style={styles.imageBox}>
-                <Swiper paginationStyle={{bottom:10}} >
-                  {shopImages.filter(el => el["type"] === "HALL").map(photo => <Image key={photo.id} style={styles.image} source={{uri:photo.url}}/>)}
-                  {shopImages.filter(el => el["type"] === "EXTERIOR").map(photo => <Image key={photo.id} style={styles.image} source={{uri:photo.url}}/>)}
+                <Swiper key={index} index={index} paginationStyle={{bottom:10}} dot={<View style={{backgroundColor: 'rgba(255,255,255,.3)', width: 6, height: 6, borderRadius: 3, marginLeft: 3, marginRight: 3}} />} activeDot={<View style={{backgroundColor: '#fff', width: 8, height: 8, borderRadius: 4, marginLeft: 4, marginRight: 4}} />}>
+                    {shopImages.map(photo => <Image key={photo.id} style={styles.image} source={{uri:photo.url}}/>)}
                 </Swiper>
             </View>
 
             <View style={styles.tabBar}>
-              <TouchableWithoutFeedback style={styles.tabBox} onPress={()=> setTabName('외부')}>
-                  <Text style={tabName=='외부'? styles.activeTab : styles.inactiveTab}>외부</Text>
+              <TouchableWithoutFeedback style={styles.tabBox} onPress={()=> indexChanger('EXTERIOR')}>
+                  <Text style={tabName === 'EXTERIOR'? styles.activeTab : styles.inactiveTab}>외부</Text>
               </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback style={styles.tabBox} onPress={()=> setTabName('홀')}>
-                  <Text style={tabName=='홀'? styles.activeTab : styles.inactiveTab}>홀</Text>
+              <TouchableWithoutFeedback style={styles.tabBox} onPress={()=> indexChanger('HALL')}>
+                  <Text style={tabName ==='HALL'? styles.activeTab : styles.inactiveTab}>홀</Text>
               </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback style={styles.tabBox} onPress={()=> setTabName('주방')}>
-                  <Text style={tabName=='주방'? styles.activeTab : styles.inactiveTab}>주방</Text>
+              <TouchableWithoutFeedback style={styles.tabBox} onPress={()=> indexChanger('KITCHEN')}>
+                  <Text style={tabName ==='KITCHEN'? styles.activeTab : styles.inactiveTab}>주방</Text>
               </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback style={styles.tabBox} onPress={()=> setTabName('식기')}>
-                  <Text style={tabName=='식기'? styles.activeTab : styles.inactiveTab}>식기</Text>
+              <TouchableWithoutFeedback style={styles.tabBox} onPress={()=> indexChanger('TABLEWARE')}>
+                  <Text style={tabName ==='TABLEWARE'? styles.activeTab : styles.inactiveTab}>식기</Text>
               </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback style={styles.tabBox} onPress={()=> setTabName('청소도구')}>
-                  <Text style={tabName=='청소도구'? styles.activeTab : styles.inactiveTab}>청소도구</Text>
+              <TouchableWithoutFeedback style={styles.tabBox} onPress={()=> indexChanger('CLEANER')}>
+                  <Text style={tabName ==='CLEANER'? styles.activeTab : styles.inactiveTab}>청소도구</Text>
               </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback style={styles.tabBox} onPress={()=> setTabName('기타')}>
-                  <Text style={tabName=='기타'? styles.activeTab : styles.inactiveTab}>기타</Text>
+              <TouchableWithoutFeedback style={styles.tabBox} onPress={()=> indexChanger('ECT')}>
+                  <Text style={tabName ==='ECT'? styles.activeTab : styles.inactiveTab}>기타</Text>
               </TouchableWithoutFeedback>
             </View>
         
-            <Facility />
+            <Facility {...facility}/>
 
             <View style={styles.box}>
                 <Text style={styles.title}>규모</Text>
@@ -184,6 +198,8 @@ export default ({ shopImages, tables, chairs, scale, description, precaution, ad
 
             <View style={styles.box}>
                 <Text style={styles.title}>음식점 소개</Text>
+                <Caption>음식점 이름</Caption>
+                <Text style={{fontSize:18, paddingBottom:20}}>{shopName} in {district}</Text>
                 <Text style={styles.text}>{description}</Text>
             </View>
 
