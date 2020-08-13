@@ -41,7 +41,7 @@ export default ({ avatar, user, profileName, timestamp }) => {
           <Text style={styles.profileName}>{profileName}</Text>
         </View>
       </View>
-      <Feather name="more-vertical" size={24} />
+      <Feather name="more-vertical" size={24} style={{paddingHorizontal:5}}/>
     </View>
   );
 };

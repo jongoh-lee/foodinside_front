@@ -4,8 +4,8 @@ export const profile = {
     region:"",
     isOpen: false,
     profileName: "큐슈 고쿠리",
-    sort: "일식",
-    signBoard:"https://pgnqdrjultom1827145.cdn.ntruss.com/img/51/ea/51ea7dca83ff797cfbd36c39957bfb6c0bf2f53f7065db799d18575d97d460b1_v1.jpg",
+    sector: "일식",
+    mainImage:"https://pgnqdrjultom1827145.cdn.ntruss.com/img/51/ea/51ea7dca83ff797cfbd36c39957bfb6c0bf2f53f7065db799d18575d97d460b1_v1.jpg",
     mainMenu:{
         id:"sdsd",
         menuName:"큐슈 라멘",
@@ -13,7 +13,7 @@ export const profile = {
         fullPrice: "8500",
         salePrice: "7000"
     },
-    Submenu:[
+    submenus:[
         {
             id:"b123",
             menuName:"큐슈 카라멘",
@@ -43,7 +43,7 @@ export const profile = {
             salePrice: "8000"
         },
     ],
-    point:10,
+    token:10,
     foodGuide:"큐슈 라멘: 초고압 증기 보일러로 한 번에 끓여내는 돈코츠(사골) 스프와 가늘고 곧은 면발이 특징이랍니다. 돈코츠 특유의 냄새가 없어 여성에게 특히 인기입니다. 토핑으로는 챠슈, 김, 아지타마고로 심플합니다. \n\n 큐슈 카라멘: 맵고 자극적인 라멘을 좋아하시는 분에게 적극 추천 합니다. 큐슈 카라멘은 매운맛이 전부가 아니랍니다. 한번 먹으면 입안이 어리할 정도로 맵지만 또한 맛도 있어, 중독자들이 속출할 정도로 인기 있는 먹거리랍니다. ",
     origin:"돼지고기: 독일산 쌀: 국내산 계란: 국내산 육수: 국내산/일본산 혼합",
     dangol:1930,
@@ -205,14 +205,14 @@ const Images = [
 export const markers = [
     {
       coordinate: {
-        latitude: 37.537712,
-        longitude: 126.988484,
+        latitude: 37.537203,
+        longitude: 126.987431,
       },
-      profileName: "Amazing Food Place",
-      description: "This is the best food place",
-      image: Images[0].image,
-      rating: 4,
-      reviews: 99,
+      profileName: "Third Amazing Food Place",
+      description: "This is the third best food place",
+      image: Images[2].image,
+      rating: 3,
+      reviews: 220,
     },
     {
       coordinate: {
@@ -226,28 +226,28 @@ export const markers = [
       reviews: 102,
     },
     {
-      coordinate: {
-        latitude: 37.537203,
-        longitude: 126.987431,
+        coordinate: {
+          latitude: 37.537712,
+          longitude: 126.988484,
+        },
+        profileName: "Amazing Food Place",
+        description: "This is the best food place",
+        image: Images[0].image,
+        rating: 4,
+        reviews: 99,
       },
-      profileName: "Third Amazing Food Place",
-      description: "This is the third best food place",
-      image: Images[2].image,
-      rating: 3,
-      reviews: 220,
-    },
-    {
-      coordinate: {
-        latitude: 37.538007,
-        longitude: 126.988546,
+      {
+        coordinate: {
+          latitude: 37.538007,
+          longitude: 126.988546,
+        },
+        profileName: "큐슈 고쿠리",
+        description: "10/12 - 10/19",
+        image: Images[3].image,
+        rating: 4,
+        reviews: 48,
       },
-      profileName: "큐슈 고쿠리",
-      description: "10/12 - 10/19",
-      image: Images[3].image,
-      rating: 4,
-      reviews: 48,
-    },
-    {
+     {
       coordinate: {
         latitude: 37.538383,
         longitude: 126.988548,

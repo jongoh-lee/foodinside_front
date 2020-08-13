@@ -110,7 +110,7 @@ export default ({ navigation, route }) => {
             {hasPermission ? (
             <>
               <Image
-                style={{ width: constants.width, height: constants.height / 2}}
+                style={{ width: constants.width, height: constants.height / 4}}
                 source={{ uri: selected.uri }}
               />
 

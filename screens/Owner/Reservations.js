@@ -33,7 +33,6 @@ const styles = StyleSheet.create({
 })
 
 export default () => {
-  const { mainImage, profileName, sort } = shopProfile;
   // 가게 예약 정보에서 가져오기
   //const { date, totalPrice, reserveState } = shopReserve;
   return(
@@ -50,7 +49,7 @@ export default () => {
     </View>
 
     <ScrollView style={{padding:5}}>
-        <ReserveList mainImage={mainImage} profileName={profileName} sort={sort}/>
+    <ReserveList mainImage={mainImage} profileName={profileName} sort={sort}/>
         <ReserveList mainImage={mainImage} profileName={profileName} sort={sort}/>
         <ReserveList mainImage={mainImage} profileName={profileName} sort={sort}/>
         <ReserveList mainImage={mainImage} profileName={profileName} sort={sort}/>

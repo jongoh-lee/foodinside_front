@@ -23,14 +23,13 @@ export default ({ navigation, route }) => {
 
     // 모든 이미지 파일을 배열에 담긴 각각의 객체로 받아 옵니다.
     const [allImages, setAllImages] = React.useState(route.params.shopImages);
-    
     // --------- data 관리 ---------------
     // 새로운 이미지 배열 > create
     const [newImages, setNewImages] = React.useState([]);
-
+    
     // 수정하는 이미지 배열 > edit
     const [editImages, setEditImages] = React.useState([]);
-
+    
     // 삭제하는 이미지 배열 > delete
     const [deleteImages, setDeleteImages] = React.useState([]);
 
@@ -44,14 +43,20 @@ export default ({ navigation, route }) => {
 
     // 이미지 수정 함수 front 바꾸고 edit list 추가
     const onEdit = ({ photo, data }) => {
+        let index = editImages.findIndex(image => image.id === data.id);
+        if(index > -1){
+            editImages[index] = {id: data.id, type: data.type, url: photo.uri };
+        }else{
+            setEditImages(editImages.concat({id: data.id, type: data.type, url: photo.uri }));
+        }
         setAllImages(allImages.map((el) => el.id === data.id ? {...el, url:photo.uri} : el))
-        setEditImages(editImages.concat({id:data.id,type:data.type, url:photo.uri}))
     };
 
     //이미지 삭제 > id 있으면 삭제 리스트 추가 없으면 삭제
     const deleteImage = ( image ) => {
         if(image.id) {
             setDeleteImages(deleteImages.concat({id:image.id})),
+            setEditImages(editImages.filter(el => el.id !== image.id))
             setAllImages(allImages.filter((el) => el.id !== image.id))
         } else {
             setNewImages(newImages.filter((el) => el !== image))
@@ -505,7 +510,7 @@ export default ({ navigation, route }) => {
                 <View style={styles.content}>
                     {chosenImage && chosenImage.id ? (
                     <TouchableOpacity style={styles.modalList} onPress={()=> (
-                        navigation.navigate('최근 항목', {
+                        navigation.navigate('SelectPhoto', {
                             onSelect : onEdit,
                             data: chosenImage
                         }

@@ -1,7 +1,8 @@
 import * as React from "react";
 import { StyleSheet, View, Image, Text,  } from "react-native";
 import constants from "../../constants";
-import { ScrollView, TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { ScrollView, TouchableWithoutFeedback, TouchableOpacity } from "react-native-gesture-handler";
+import { Caption } from "react-native-paper";
 
 const WIDTH = constants.width - 20;
 const styles = StyleSheet.create({
@@ -88,16 +89,16 @@ const styles = StyleSheet.create({
     barText:{
         fontSize:12,
         paddingLeft:5,
-        color:'rgba(0, 0, 0, .7)'
+        color:'rgba(0, 0, 0, .4)',
     },
     barNum:{
         fontSize:13,
         paddingLeft:5,
-        color:'rgba(0, 0, 0, .4)',
+        fontWeight:"600",
         marginTop:5
     },
 
-    //단골 버튼
+    //단골 버튼 분홍색
     dangolTextButton:{
         width:constants.width * .14,
         height:constants.width / 11,
@@ -124,12 +125,39 @@ const styles = StyleSheet.create({
         fontSize:15,
         color:"rgba(248, 109, 95, .9)",
     },
+    // 로고 + 단골
+    logoRow:{
+        flexDirection:"row",
+        alignItems:"center",
+        marginLeft:"auto",
+        marginRight:5
+      },
+      dangolLogo:{
+        width: 10,
+        resizeMode:"contain",
+        opacity: .9,
+      },
+      dangolLogo_checked:{
+        width: 10,
+        resizeMode:"contain",
+        opacity: .4,
+      },
+      logoText:{
+        fontSize:14,
+        color:"rgba(0, 0, 0, .9)",
+        paddingRight:10,
+      },
+      logoText_checked:{
+        fontSize:14,
+        color:"rgba(0, 0, 0, .4)",
+        paddingRight:10,
+      },
 })
 
 // 내 정보 중 단골 업체 정보와 해당 업체의 단골/ 포스팅 수 + 내 포스팅 수 + 좋아요 수 + 적립 포인트
 export default ({ signBoard, Submenu, profileName, sort, mainMenu }) => {
     const { menuName, menuImage, fullPrice, salePrice } = mainMenu;
-    const [btn, setBtn] = React.useState(false);
+    const [logoBtn, setLogoBtn] = React.useState(false);
     return (
         <View >
             <View style={styles.box}>
@@ -169,7 +197,7 @@ export default ({ signBoard, Submenu, profileName, sort, mainMenu }) => {
                 </ScrollView>
 
                   {/* 단골 바*/}
-                  <View style={styles.rowBox}>
+                <View style={styles.rowBox}>
                     <View style={styles.dangolBar}>
                         <Text style={styles.barText}>단골</Text>
                         <Text style={styles.barNum}>3,948</Text>
@@ -190,14 +218,16 @@ export default ({ signBoard, Submenu, profileName, sort, mainMenu }) => {
                         <Text style={styles.barNum}>134,300</Text>
                     </View>
 
-                    <View style={{flex:1}}>
-                        <TouchableWithoutFeedback 
-                        style={btn? styles.dangolTextButton_checked : styles.dangolTextButton } 
-                        onPress={() => setBtn(!btn)}
-                        >
-                            {btn? <Text style={styles.btnText_cheched}>단골 중</Text> : 
-                            <Text style={styles.btnText}>단골</Text>}
-                        </TouchableWithoutFeedback>
+                    <View style={{flex:1, alignSelf:"center",}}>
+                        <TouchableOpacity style={styles.logoRow} onPress={()=>setLogoBtn(!logoBtn)}>
+                          {logoBtn? <>
+                          <Text style={styles.logoText_checked}>단골 중</Text>
+                          <Image style={styles.dangolLogo_checked} source={require('../../assets/Icons/cloche.png')} />
+                          </> : <>
+                          <Text style={styles.logoText}>단골</Text>
+                          <Image style={styles.dangolLogo} source={require('../../assets/Icons/cloche.png')} />
+                          </>}
+                        </TouchableOpacity>
                     </View>
                 </View>
             

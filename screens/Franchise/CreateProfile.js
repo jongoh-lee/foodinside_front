@@ -25,7 +25,7 @@ export default ({ navigation, route }) => {
   const careerInput = useInput("");
   const menuNameInput = useInput("");
   const salePriceInput = numInput("");
-  const [sector, setSector] = React.useState('일반');
+  const [classification, setClassification] = React.useState('일반');
   const onSelect = (photo) => {
     setImage(photo)
   };
@@ -50,7 +50,7 @@ export default ({ navigation, route }) => {
           contact: String(contactInput.value),
           menuName: menuNameInput.value,
           salePrice: Number(salePriceInput.value),
-          sector: sector,
+          classification: classification,
           profileState: 0
         }
       });
@@ -88,7 +88,7 @@ export default ({ navigation, route }) => {
 
       <View style={styles.action}>
         <Text style={{fontWeight:'bold'}}>업종:  </Text> 
-        <RadioButton.Group onValueChange={sector => setSector(sector)} value={sector}>
+        <RadioButton.Group onValueChange={classification => setClassification(classification)} value={classification}>
           <View style={{flexDirection:"row", alignItems:"center"}}>
             <RadioButton value="일반" color={'#05e6f4'} uncheckedColor={'rgba(5, 230, 244, .3)'}/>
             <Text>일반 음식점</Text>
@@ -103,7 +103,7 @@ export default ({ navigation, route }) => {
       <View style={styles.textContainer}>
         <Text style={styles.title}>업체 컨셉</Text>
       </View>
-      <ShadowInput {...conceptInput} textAlign={'left'} textAlignVertical={'top'} placeholder={`메뉴 설명, 식재료 원산지, 조리과정, 먹는 방법 등 \n대표 메뉴의 스토리를 작성해주세요`} keyboardType="default" editable={!loading}/>
+      <ShadowInput {...conceptInput} multiline={true} textAlign={'left'} textAlignVertical={'top'} placeholder={`메뉴 설명, 식재료 원산지, 조리과정, 먹는 방법 등 \n대표 메뉴의 스토리를 작성해주세요`} keyboardType={Platform.OS === 'ios'? "default" : "none"} editable={!loading}/>
 
       <View style={styles.textContainer_last}>
        <Text style={styles.title}>경력</Text> 

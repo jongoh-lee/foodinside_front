@@ -1,4 +1,4 @@
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { TouchableWithoutFeedback, ScrollView } from "react-native-gesture-handler";
 import * as React from "react";
 import { StyleSheet, View, Text, Platform, Image } from "react-native";
 import MapView, {Marker} from "react-native-maps";
@@ -135,7 +135,7 @@ export default ({ shopImages, facility, tables, chairs, scale, shopName, distric
         if(tab === 'ECT') return setIndex(exterior[0] + hall[0] + kitchen[0] + tableware[0] + cleaner[0] + 1);
     }
     return (
-        <View>
+        <ScrollView showsVerticalScrollIndicator={false} scrollEventThrottle={1}>
             <View style={styles.imageBox}>
                 <Swiper key={index} index={index} paginationStyle={{bottom:10}} dot={<View style={{backgroundColor: 'rgba(255,255,255,.3)', width: 6, height: 6, borderRadius: 3, marginLeft: 3, marginRight: 3}} />} activeDot={<View style={{backgroundColor: '#fff', width: 8, height: 8, borderRadius: 4, marginLeft: 4, marginRight: 4}} />}>
                     {shopImages.map(photo => <Image key={photo.id} style={styles.image} source={{uri:photo.url}}/>)}
@@ -313,6 +313,6 @@ export default ({ shopImages, facility, tables, chairs, scale, shopName, distric
             <View style={styles.box}>
                 <Text style={styles.title}>후기(121개)</Text>
             </View>
-        </View>
+        </ScrollView>
     )
 }

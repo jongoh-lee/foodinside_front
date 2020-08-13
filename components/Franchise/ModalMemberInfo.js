@@ -1,14 +1,16 @@
 import * as React from "react";
-import { StyleSheet, View, Text, ImageBackground, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, ImageBackground, TouchableOpacity, KeyboardAvoidingView } from "react-native";
 import ShadowInput from "../Custom/ShadowInput";
 import useInput from "../../hooks/useInput";
 import numInput from "../../hooks/numInput";
 import constants from "../../constants";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import BasicButton from "../Custom/BasicButton";
+import DismissKeyboard from "../Custom/DismissKeyboard";
 
-export default ({ id, name, image, position, career, members, setMembers, newMembers, setNewMembers, setEditMemberModal }) => {
-    const navigation = useNavigation();
+export default ({ chosenMember, members, setMembers, newMembers, editMembers, setNewMembers, setEditMembers, setEditMemberModal, }) => {
+    const { id, image, name, position, career, index } = chosenMember
     const [memberImage, setMemberImage] = React.useState(image);
     const nameInput = useInput(name? name : "");
     const positionInput = useInput(position? position : "");
@@ -16,16 +18,19 @@ export default ({ id, name, image, position, career, members, setMembers, newMem
     const { value : _name } = nameInput;
     const { value : _position } = positionInput;
     const { value : _career } = careerInput;
+    const navigation = useNavigation();
     
     const handleMemberInfoSubmit = () => {
-      let _members = members;
-      let index = _members.findIndex(member => member.id === id);
-      let _newMembers = newMembers;
-      if(index > -1){
-        _members[index] = { id: id, name: _name, position:_position, career:_career, image:memberImage };
-        setMembers(_members);
+      if(id){
+        let _index = members.findIndex(member => member.id === id);
+        if(_index > -1){
+          members[_index] = { id: id, name: _name, position:_position, career:_career, image:memberImage };
+          setEditMembers(editMembers.concat({ id: id, name: _name, position:_position, career:_career, image:memberImage }))
+        } else {
+          setNewMembers(newMembers.concat({ name: _name, position:_position, career:_career, image:memberImage }));
+        }
       } else {
-        setNewMembers(_newMembers.concat({ id: id, name: _name, position:_position, career:_career, image:memberImage }));
+        newMembers[index] = { name: _name, position:_position, career:_career, image:memberImage }
       }
     };
 
@@ -34,58 +39,63 @@ export default ({ id, name, image, position, career, members, setMembers, newMem
     };
 
     return(
-        <View style={styles.content}>
-          <TouchableOpacity onPress={() => (
-            navigation.navigate('SelectPhoto', {
-              onSelect : onSelect
-            })
-            )}>
-            <View style={{
-                height: 150,
-                width: 120,
-                borderRadius: 15,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <ImageBackground
-                source={memberImage? {uri:memberImage} : null}
-                style={{height: 150, width: 120, backgroundColor:'#E0E0E0', borderRadius:15}}
-                imageStyle={{borderRadius: 15}}>
-                <View style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <MaterialCommunityIcons
-                    name="camera"
-                    size={35}
-                    color="#fff"
-                    style={{
-                      opacity: 0.7,
-                      alignItems: 'center',
+      <KeyboardAvoidingView 
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{flex:1, justifyContent:"center"}}
+      keyboardVerticalOffset={50}
+      enabled >
+          <View style={styles.content}>
+            <TouchableOpacity onPress={() => (
+              navigation.navigate('SelectPhoto', {
+                onSelect : onSelect
+              })
+              )}>
+              <View style={{
+                  height: 150,
+                  width: 120,
+                  borderRadius: 15,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <ImageBackground
+                  source={memberImage? {uri:memberImage} : null}
+                  style={{height: 150, width: 120, backgroundColor:'#E0E0E0', borderRadius:15}}
+                  imageStyle={{borderRadius: 15}}>
+                  <View style={{
+                      flex: 1,
                       justifyContent: 'center',
-                      borderWidth: 1,
-                      borderColor: '#fff',
-                      borderRadius: 10,
-                    }}
-                  />
-                </View>
-              </ImageBackground>
+                      alignItems: 'center',
+                    }}>
+                    <MaterialCommunityIcons
+                      name="camera"
+                      size={35}
+                      color="#fff"
+                      style={{
+                        opacity: 0.7,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderWidth: 1,
+                        borderColor: '#fff',
+                        borderRadius: 10,
+                      }}
+                      />
+                  </View>
+                </ImageBackground>
+              </View>
+            </TouchableOpacity>
+          <DismissKeyboard>
+            <View style={{flexDirection:"row", marginVertical:10}}>  
+                <ShadowInput {...nameInput} placeholder={'성함'} width={'50%'} padding={5} fontSize={12} returnKeyType={'done'}/>
+                <ShadowInput {...positionInput} placeholder={'직위'} width={'50%'} padding={5} fontSize={12} returnKeyType={'done'}/>
             </View>
-          </TouchableOpacity>
-        <View style={{flexDirection:"row", marginVertical:10}}>  
-            <ShadowInput {...nameInput} placeholder={'성함'} width={'50%'}/>
-            <ShadowInput {...positionInput} placeholder={'직위'} width={'50%'}/>
-        </View>
-        <ShadowInput {...careerInput} placeholder={'경력'} width={'100%'} multiline={true} returnKeyType={'none'} maxHeight={80}/>
+            <ShadowInput {...careerInput} placeholder={'경력'} width={'100%'} multiline={true} returnKeyType={'done'} maxHeight={80} padding={5} fontSize={12}/>
 
-        <TouchableOpacity onPress={() => (
-          setEditMemberModal(false),
-          handleMemberInfoSubmit()
-          )}>
-          <Text>확인</Text>
-        </TouchableOpacity>
-      </View>
+            <View style={{width: '100%'}}>
+              <BasicButton onPress={() => (setEditMemberModal(false), handleMemberInfoSubmit())} padding={10} text={'확인'} marginVertical={5} width={'100%'} disabled={_name && _position && _career && memberImage? false : true}/>
+            </View>
+          </DismissKeyboard>
+        </View>
+    </KeyboardAvoidingView>
     )
 }
 

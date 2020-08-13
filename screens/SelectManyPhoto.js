@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
     container:{
         flex:1,
         backgroundColor:'#ffffff',
+        paddingTop: StatusBar.currentHeight
     },
     header:{
         flexDirection:"row",
@@ -101,7 +102,7 @@ export default ({ navigation, route }) => {
     }, []);
 
     return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
     
         {loading ? (
           <Loader />
@@ -135,6 +136,6 @@ export default ({ navigation, route }) => {
             ) : null }
         </View>
         )}
-    </View>
+    </SafeAreaView>
     );
 };

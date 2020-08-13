@@ -18,13 +18,8 @@ export default ({ navigation, route }) => {
   if(data?.myShop?.ownerState === 3){
     navigation.setOptions({
       headerTitle:() => null,
-      headerLeft:() => <Text style={styles.headerTitle}>내 음식점 <Text style={styles.headerSort}>{data?.myShop?.classification}음식점</Text></Text>,
-      headerRight:() => <Feather name="more-vertical" size={24}/>,
-    });
-  }else{
-    navigation.setOptions({
-      headerTitle:() => <Logo nav={'공유 음식점'}/>,
-      headerTitleAlign:'left'
+      headerLeft:() => <Text style={styles.headerTitle}>내 음식점 <Text style={styles.headerClassification}>{data?.myShop?.classification}음식점</Text></Text>,
+      headerRight:() => <Feather name="more-vertical" size={24} style={{paddingHorizontal:5}}/>,
     });
   }
   return (
@@ -97,9 +92,7 @@ export default ({ navigation, route }) => {
     )}
 
     {data?.myShop?.ownerState === 3 && (
-      <ScrollView showsVerticalScrollIndicator={false} scrollEventThrottle={1}>
         <Description {...data?.myShop} />
-      </ScrollView>
     )}
 
     {data?.myShop === null &&  (
@@ -140,7 +133,7 @@ const styles = StyleSheet.create({
       alignSelf:"center",
       paddingLeft:10
     },
-    headerSort:{
+    headerClassification:{
       color:'#666',
       fontSize:10,
       marginLeft:12,

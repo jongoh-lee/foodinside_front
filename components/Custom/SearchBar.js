@@ -6,9 +6,8 @@ import constants from "../../constants";
 
 const styles = StyleSheet.create({
   container: {
-    width: constants.width,
+    width: '100%',
     marginTop:10,
-    padding: 10,
   },
   placeHolder:{
     color:"#c7c7c7",

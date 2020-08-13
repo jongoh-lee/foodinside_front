@@ -1,20 +1,37 @@
-import React from "react";
-import {StyleSheet, View, Text} from "react-native";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import * as React from "react";
+import {StyleSheet, View, Text, Image, TouchableOpacity} from "react-native";
+import { TouchableWithoutFeedback, } from "react-native-gesture-handler";
 import constants from "../../constants";
-import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'; 
+import { AntDesign, MaterialCommunityIcons, Feather } from '@expo/vector-icons'; 
 import { useQuery } from "@apollo/react-hooks";
 import Loader from "../../components/Custom/Loader";
 import { MY_PROFILE } from "./ProfileQueries";
+import MyProfile from "../../components/Franchise/MyProfile";
+import Modal from "react-native-modal";
 
 export default ({ navigation }) => {
+  const [visible, setVisible ] = React.useState(false);
   const { data, loading, error, refetch } = useQuery(MY_PROFILE,{
     fetchPolicy:"network-only"
   });
+
   if(loading) return <Loader />;
   if(error) return console.log(error);
 
+  if(data?.myProfile?.profileState === 3){
+    navigation.setOptions({
+      headerTitle:() => null,
+      headerLeft:() => <Text style={styles.headerTitle} numberOfLines={1} ellipsizeMode={"middle"}>{data?.myProfile?.profileName} <Text style={styles.headerSector}>{data?.myProfile?.sector}</Text></Text>,
+      headerRight:() => (
+        <TouchableOpacity onPress={() => setVisible(!visible)}>
+          <Feather name="more-vertical" size={24} style={{paddingHorizontal:5}}/>
+        </TouchableOpacity>
+      )
+    })
+  }
+
   return (
+    <>
     <View style={styles.container}>
     {data?.myProfile?.profileState === 0 &&  (
       <>
@@ -22,7 +39,7 @@ export default ({ navigation }) => {
         
         <View style={styles.buttonBox}>
 
-          <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 예시")}>
+          <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 보기")}>
             <View style={styles.button}>
                 <MaterialCommunityIcons name="silverware-clean" size={34} color="rgba(0,0,0, .3)" />
             </View>
@@ -45,7 +62,7 @@ export default ({ navigation }) => {
         
         <View style={styles.buttonBox}>
 
-          <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 예시")}>
+          <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 보기")}>
             <View style={styles.button}>
                 <MaterialCommunityIcons name="silverware-clean" size={34} color="rgba(0,0,0, .3)" />
             </View>
@@ -68,14 +85,14 @@ export default ({ navigation }) => {
         
         <View style={styles.buttonBox}>
 
-          <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 예시")}>
+          <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 보기")}>
             <View style={styles.button}>
                 <MaterialCommunityIcons name="silverware-clean" size={34} color="rgba(0,0,0, .3)" />
             </View>
             <Text style={styles.buttonText}>프로필 예시</Text>
           </TouchableWithoutFeedback>
 
-          <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 완성")}>
+          <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 완성", {myProfile: data?.myProfile})}>
             <View style={styles.button}>
                 <AntDesign name="form" size={34} color="rgba(0,0,0, .3)" />
             </View>
@@ -85,13 +102,17 @@ export default ({ navigation }) => {
       </>
     )}
 
-    {data.myProfile === null &&  (
+    {data?.myProfile?.profileState === 3 && (
+        <MyProfile {...data?.myProfile}/>
+    )}
+
+    {data?.myProfile === null &&  (
       <>
         <Text style={styles.title}><Text style={{color:"black"}}>프로필</Text> 생성 후 영업 가능합니다</Text>
         
         <View style={styles.buttonBox}>
 
-          <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 예시")}>
+          <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 보기")}>
             <View style={styles.button}>
                 <MaterialCommunityIcons name="silverware-clean" size={34} color="rgba(0,0,0, .3)" />
             </View>
@@ -108,6 +129,48 @@ export default ({ navigation }) => {
       </>
     )}
     </View>
+
+    <Modal
+    isVisible={visible}
+    onBackdropPress={() => setVisible(false)}
+    onSwipeComplete={() => setVisible(false)}
+    onBackButtonPress={() => setVisible(false)}
+    swipeDirection={'down'}
+    style={styles.modal}
+    backdropOpacity={.4}
+    >
+      <View style={styles.modalContent_top}>
+          <MaterialCommunityIcons name="chevron-down" size={26} color="#666" style={{alignSelf:"center"}} />
+          <TouchableOpacity style={styles.modalList} onPress={()=> (
+              navigation.navigate("프로필 완성", {
+                myProfile:data?.myProfile
+              }),
+              setVisible(false))}>
+              <MaterialCommunityIcons name="square-edit-outline" size={24} color="#666" /><Text style={styles.modalText}>정보수정</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.modalList} onPress={() => setVisible(false)}>
+              <AntDesign name="back" size={24} color="#666" /><Text style={styles.modalText}>취소</Text>
+          </TouchableOpacity>
+      </View>
+
+      <View style={styles.modalContent_bottom}>
+        <TouchableOpacity style={styles.modalList} onPress={() => Alert.alert('확인','프로필을 삭제 하시겠습니까?',
+          [
+            {
+              text: '취소',
+              style: 'cancel',
+            },
+            {text: '확인',
+            onPress: () => console.log("삭제"),
+          },
+          ],
+          {cancelable: true},
+          )}>
+            <MaterialCommunityIcons name="delete-empty-outline" size={25} color="#666"/><Text style={styles.modalText}>프로필 삭제</Text>
+        </TouchableOpacity>
+      </View>
+    </Modal>
+  </>
 )};
 
 
@@ -118,6 +181,20 @@ const styles = StyleSheet.create({
     alignItems:"center",
     justifyContent:"center"
   },
+  //프로필 완성
+  headerTitle:{
+    fontWeight:'bold',
+    fontSize:20,
+    alignSelf:"center",
+    paddingLeft:10
+  },
+  headerSector:{
+    color:'#666',
+    fontSize:10,
+    marginLeft:12,
+  },
+
+  //프로필 완성 전
   title:{
     fontSize:20,
     color:'#666',
@@ -149,5 +226,39 @@ const styles = StyleSheet.create({
       alignSelf:"center",
       paddingTop:10,
       color:'rgba(0,0,0, .6)'
-  }
+  },
+
+  //modal
+  
+  modal:{
+    justifyContent:"flex-end",
+    margin:0,
+    paddingHorizontal:5
+  },
+  modalContent_top:{
+      backgroundColor: 'white',
+      paddingHorizontal: 22,
+      borderRadius: 15,
+      borderColor: 'rgba(0, 0, 0, 0.1)',
+      paddingBottom:20,
+      marginBottom:10
+  },
+  modalContent_bottom:{
+    backgroundColor: 'white',
+    paddingHorizontal: 22,
+    borderRadius: 15,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+    paddingVertical:10,
+    marginBottom:10
+},
+  modalList:{
+      width:'100%',
+      paddingVertical:10,
+      flexDirection:'row',
+      alignItems:"center",
+  },
+  modalText:{
+      fontSize:14,
+      marginLeft:10
+  },
 })

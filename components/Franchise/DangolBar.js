@@ -6,59 +6,53 @@ import constants from "../../constants";;
 const styles = StyleSheet.create({
   //단골 바
   rowBox:{
-    flex:1,
     flexDirection:"row",
-    paddingTop:8,
-},
-dangolBar_s:{
-    flex:10,
-    justifyContent:"flex-start",
-    paddingLeft:5,
-},
-dangolBar_l:{
-  flex:15,
-  justifyContent:"flex-start",
-  paddingLeft:5,
-},
-barText:{
-    fontSize:12,
-    color:'rgba(0, 0, 0, .4)',
-    lineHeight:14
-},
-barNum:{
-    marginTop:2,
-    fontWeight:"600",
-    fontSize:14,
+    flex:1,
+    padding:5,
+  },
+  cardInfo:{
+    flex:1,
     justifyContent:"center",
-},
-
+  },
+  cardInfoText:{
+    fontSize:12,
+    color:"rgba(0, 0, 0, .9)",
+    paddingLeft:5,
+  },
+  cardInfoNum:{
+    color:"rgba(0, 0, 0, .4)",
+    fontSize:13,
+    paddingLeft:5,
+    marginTop:5
+  },
+  
 //단골 버튼
 logoRow:{
-    flexDirection:"row",
-    alignItems:"center",
-    marginLeft:"auto",
-    marginRight:5
-  },
-  dangolLogo:{
-    width:constants.width / 40,
-    resizeMode:"contain",
-    opacity: .9,
-  },
-  dangolLogo_checked:{
-    width:constants.width / 40,
-    resizeMode:"contain",
-    opacity: .4,
-  },
-  logoText:{
-    fontSize:15,
-    color:"rgba(0, 0, 0, .9)",
-    paddingLeft:10,
-  },
-  logoText_checked:{
-    fontSize:15,
-    color:"rgba(0, 0, 0, .4)",
-    paddingLeft:10,
-  },
+  flexDirection:"row",
+  alignItems:"center",
+  marginLeft:"auto",
+  marginRight:5,
+},
+dangolLogo:{
+  width:10,
+  resizeMode:"contain",
+  marginRight:8,
+  opacity: .9,
+},
+dangolLogo_checked:{
+  width:10,
+  resizeMode:"contain",
+  marginRight:8,
+  opacity: .4,
+},
+logoText:{
+  color:"rgba(0, 0, 0, .9)",
+  fontSize:14
+},
+logoText_checked:{
+  color:"rgba(0, 0, 0, .4)",
+  fontSize:14
+},
 
   
 });
@@ -67,27 +61,27 @@ export default ({ dangol, posts, comment }) => {
   const [logoBtn, setLogoBtn] = React.useState(false);
   return(
     <View style={styles.rowBox}>
-    <View style={styles.dangolBar_s}>
-        <Text style={styles.barText}>단골</Text>
-        <Text style={styles.barNum}>3,948</Text>
+    <View style={styles.cardInfo}>
+        <Text style={styles.cardInfoText}>단골</Text>
+        <Text style={styles.cardInfoNum} numberOfLines={1}>0</Text>
     </View>
 
-    <View style={styles.dangolBar_s}>
-        <Text style={styles.barText}>포스트</Text>
-        <Text style={styles.barNum}>417</Text>
+    <View style={styles.cardInfo}>
+        <Text style={styles.cardInfoText}>포스트</Text>
+        <Text style={styles.cardInfoNum} numberOfLines={1}>0</Text>
     </View>
 
-    <View style={styles.dangolBar_l}>
-        <Text style={styles.barText}>발행량</Text>
-        <Text style={styles.barNum}>10,000,000C</Text>
+    <View style={styles.cardInfo}>
+        <Text style={styles.cardInfoText}>발행량</Text>
+        <Text style={styles.cardInfoNum} numberOfLines={1}>0</Text>
     </View>
 
-    <View style={styles.dangolBar_l}>
-        <Text style={styles.barText}>회수량</Text>
-        <Text style={styles.barNum}>1,134,300C</Text>
+    <View style={styles.cardInfo}>
+        <Text style={styles.cardInfoText}>회수량</Text>
+        <Text style={styles.cardInfoNum} numberOfLines={1}>0</Text>
     </View>
 
-    <View style={{flex:15, alignSelf:"center"}}>
+    <View style={styles.cardInfo}>
         <TouchableWithoutFeedback style={styles.logoRow} onPress={()=>setLogoBtn(!logoBtn)}>
           {logoBtn? <>
           <Image style={styles.dangolLogo_checked} source={require('../../assets/Icons/cloche.png')} />

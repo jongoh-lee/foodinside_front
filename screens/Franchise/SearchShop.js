@@ -61,7 +61,7 @@ const listings = [
 
 export default () => (
     <View style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{padding:10}}>
       <SearchBar/>
       <View style={styles.container}>
         {listings.map((listing) => (

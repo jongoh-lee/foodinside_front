@@ -8,13 +8,6 @@ const styles = StyleSheet.create({
     container:{
         marginVertical: 10,
         margin:5,
-        shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-          elevation: 5,
     },
     box:{
         backgroundColor:"white",
@@ -98,6 +91,7 @@ const styles = StyleSheet.create({
     },
 
     //단골 버튼
+    
     logoRow:{
         flexDirection:"row",
         alignItems:"center",

@@ -102,7 +102,7 @@ function MyShopStackScreen() {
         headerTitleAlign:'left'
       }}/>
       <MyShopStack.Screen name="음식점 예시" component={ShopExample} options={{
-        headerRight:() => <Feather name="more-vertical" size={24}/>,
+        headerRight:() => <Feather name="more-vertical" size={24} style={{paddingHorizontal:5}}/>,
       }}/>
       <MyShopStack.Screen name="신청서 보기" component={SeeCreateShop} options={{
         headerTitle:"심사 중",

@@ -1,8 +1,7 @@
 import * as React from "react";
-import {StyleSheet, View} from "react-native";
+import {StyleSheet, View, Text} from "react-native";
 import { profile } from "../../components/Franchise/data";
-import MenuInfo from "../../components/Franchise/MenuInfo";
-import ShopHeader from "../../components/Franchise/ShopHeader";
+import MyProfile from "../../components/Franchise/MyProfile";
 
 
 const styles = StyleSheet.create({
@@ -10,19 +9,27 @@ const styles = StyleSheet.create({
     backgroundColor:"white",
     flex:1,
   },
+  headerTitle:{
+    fontWeight:'bold',
+    fontSize:20,
+  },
+  headerSector:{
+    color:'#666',
+    fontSize:12,
+  }
 });
 
-export default ({ navigation }) => {
-  const { profileName, sort } = profile;
-  React.useEffect(()=>{
-    if(profileName && sort) {
-      navigation.setOptions({
-        headerTitle: () => <ShopHeader profileName={profileName} sort={sort}/>
-        })
-      }
-    }, [])
+export default ({ navigation, router }) => {
+  const { profileName, sector } = profile;
+  if(profileName && sector) {
+    navigation.setOptions({
+      headerTitle: () => (
+          <Text style={styles.headerTitle} numberOfLines={1} ellipsizeMode={"middle"}>{profileName} <Text style={styles.headerSector}> {sector}</Text></Text>
+      )
+    })
+  }
   return (
       <View style={styles.container}>
-        <MenuInfo {...profile}/>
+        <MyProfile {...profile}/>
       </View>
 )};

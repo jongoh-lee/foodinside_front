@@ -50,7 +50,7 @@ export default ({ navigation }) => {
 
       <View style={styles.action}>
         <Text style={{fontWeight:'bold'}}>업종:  </Text> 
-        <Text style={styles.text}>{data.myProfile.sector} 음식점</Text>
+        <Text style={styles.text}>{data.myProfile.classification} 음식점</Text>
       </View>
 
       <View style={styles.textContainer}>

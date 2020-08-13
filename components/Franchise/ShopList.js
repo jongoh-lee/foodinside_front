@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 
 const styles = StyleSheet.create({
   container:{
-    padding:10
+    marginVertical:10
   },
   boxShop: {
     backgroundColor: "white",

@@ -6,13 +6,11 @@ import PropTypes from "prop-types";
 const styles=StyleSheet.create({
   container:{
     backgroundColor:"#05e6f4",
-    padding:15,
     borderRadius:6,
     width:'100%',
   },
   container_disabled:{
     backgroundColor:"rgba(5, 230, 244, .4)",
-    padding:15,
     borderRadius:6,
     width:'100%'
   },
@@ -23,9 +21,9 @@ const styles=StyleSheet.create({
   }
 });
 
-const BasicButton = ({ text, onPress, disabled = false, loading = false }) => (
-  <View style={{marginVertical:20}}>
-    <TouchableOpacity style={ disabled? styles.container_disabled : styles.container} onPress={onPress} disabled={disabled}>
+const BasicButton = ({ text, onPress, disabled = false, loading = false, marginVertical = 20 , padding = 15}) => (
+  <View style={{marginVertical:marginVertical}}>
+    <TouchableOpacity style={ disabled? [styles.container_disabled, {padding:padding}] : [styles.container,{padding:padding}]} onPress={onPress} disabled={disabled}>
      {loading ? <ActivityIndicator color={"white"} /> : <Text style={styles.text}>{text}</Text>}
     </TouchableOpacity>
   </View>
@@ -36,6 +34,8 @@ BasicButton.propTypes = {
   onPress: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
   loading: PropTypes.bool,
+  marginVertical: PropTypes.number,
+  padding: PropTypes.number
 };
 
 export default BasicButton;

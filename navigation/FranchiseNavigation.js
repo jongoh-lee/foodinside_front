@@ -17,18 +17,17 @@ import ProfileSample from "../screens/Franchise/ProfileSample";
 import SeeCreateProfile from "../screens/Franchise/SeeCreateProfile";
 import CompleteProfile from "../screens/Franchise/CompleteProfile";
 import EditProfile from "../screens/Franchise/EditProfile";
-import BeforeProfile from '../screens/Franchise/BeforeProfile';
+import MyProfile from '../screens/Franchise/MyProfile';
 
 import ChatListFranchise from "../screens/Franchise/ChatListFranchise";
 import ChatListShop from "../screens/Franchise/ChatListShop";
 import Chat from "../screens/Franchise/Chat";
 import SelectPhoto from "../screens/SelectPhoto";
+import SelectMainPhoto from "../screens/SelectMainPhoto";
 
 //button
 import NavIcon from '../components/Custom/NavIcon';
 import Logo from '../components/Custom/Logo';
-import FranchiseButton from '../components/Franchise/FranchiseButton';
-import ShopHeader from "../components/Franchise/ShopHeader";
 import BackArrow from '../components/Custom/BackArrow';
 import BackWarningArrow from '../components/Custom/BackWarningArrow';
 
@@ -50,7 +49,6 @@ function SearchStackScreen({navigation}) {
     <SearchStack.Navigator screenOptions={{headerShown:true, cardStyle:{backgroundColor:'#ffffff'}}}>
         <SearchStack.Screen name="Home" component={SearchShop} options={{
             headerTitle:() => <Logo nav={'공유 음식점'}/>,
-            headerRight: () => <FranchiseButton />,
             headerTitleAlign:'left'
         }}/>
     </SearchStack.Navigator>
@@ -103,18 +101,17 @@ function ProfileStackScreen() {
     return (
     <ProfileStack.Navigator 
     initialRouteName={"프로필 안내"} screenOptions={{ headerTitleStyle:{fontSize:20, fontWeight:'bold'}, headerShown:true}}>
-      <ProfileStack.Screen name="프로필 안내" component={BeforeProfile} options={{
+      <ProfileStack.Screen name="프로필 안내" component={MyProfile} options={{
         headerTitle:()=><Logo nav={'공유 음식점'}/>,
-        headerRight: () => <FranchiseButton/>,
       }} />
       <ProfileStack.Screen name="심사 중" component={SeeCreateProfile} options={{
         headerTitle:"심사 중",
         headerTitleAlign:"center",
         headerLeft:()=> <BackArrow />,
       }} />
-      <ProfileStack.Screen name="프로필 예시" component={ProfileSample} options={{
+      <ProfileStack.Screen name="프로필 보기" component={ProfileSample} options={{
         headerTitle:()=><Logo nav={'공유 음식점'}/>,
-        headerRight:() => <Feather name="more-vertical" size={24} />,
+        headerRight:() => <Feather name="more-vertical" size={24} style={{paddingHorizontal:5}}/>,
         headerLeft:()=> <BackArrow />,
         headerTitleAlign:"center"
       }} />
@@ -171,6 +168,7 @@ export default () => {
         title:route.params.shop.profileName
       })}/>
       <FranchiseStack.Screen name='SelectPhoto' component={SelectPhoto} />
+      <FranchiseStack.Screen name='SelectMainPhoto' component={SelectMainPhoto} />
       <FranchiseStack.Screen name="프로필 신청" component={CreateProfile} options={{
         headerShown:true,
         headerTitle:"프로필 신청",

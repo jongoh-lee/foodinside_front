@@ -22,13 +22,15 @@ const ShadowInput = ({
   textAlign="center",
   maxLength=300,
   textAlignVertical="center",
+  fontSize = 14,
+  blurOnSubmit=true
 }) => {
     return (
         <View style={{width:width, padding:3}}>
             <TextInput style={{
               padding: padding,
               backgroundColor: backgroundColor,
-              fontSize:14,
+              fontSize:fontSize,
               textAlign:textAlign,
               textAlignVertical:textAlignVertical,
               borderRadius:borderRadius,
@@ -39,6 +41,7 @@ const ShadowInput = ({
               shadowOpacity: 0.20,
               shadowRadius: 1.41,
               elevation: 2,
+              lineHeight: 25,
             }}
             onChangeText={onChange}
             keyboardType={keyboardType}
@@ -53,6 +56,7 @@ const ShadowInput = ({
             multiline={multiline}
             maxHeight={maxHeight}
             maxLength={maxLength}
+            textSty
             />
         </View>
     )
@@ -70,7 +74,7 @@ ShadowInput.propTypes = {
     "phone-pad"
   ]),
   autoCapitalize: PropTypes.oneOf(["none", "sentences", "words", "characters"]),
-  returnKeyType: PropTypes.oneOf(["done", "go", "next", "search", "send", "none"]),
+  returnKeyType: PropTypes.oneOf(["done", "go", "next", "search", "send", "none", "default"]),
   onChange: PropTypes.func.isRequired,
   size: PropTypes.number,
   editable: PropTypes.bool,
@@ -81,7 +85,9 @@ ShadowInput.propTypes = {
   backgroundColor: PropTypes.string,
   textAlign: PropTypes.oneOf(["center", "rignt", "left", "auto", "justify"]),
   maxLength: PropTypes.number,
-  textAlignVertical: PropTypes.oneOf(["center", "top"])
+  textAlignVertical: PropTypes.oneOf(["center", "top"]),
+  fontSize: PropTypes.number,
+  blurOnSubmit: PropTypes.bool
 };
 
 export default ShadowInput;

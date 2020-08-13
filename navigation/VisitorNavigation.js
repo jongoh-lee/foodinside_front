@@ -11,13 +11,16 @@ import {useTheme} from 'react-native-paper';
 //screens
 import Dangol from '../screens/Visitor/Dangol';
 import Feed from '../screens/Visitor/Feed';
-import Map2 from '../screens/Visitor/Map2';
+import Map from '../screens/Visitor/Map';
 import User from '../screens/Visitor/User';
 import EditUser from '../screens/Visitor/EditUser';
 import Around from '../screens/Visitor/Around';
 import Location from '../screens/Visitor/Location';
 import Search from '../screens/Visitor/Search';
 import SelectPhoto from '../screens/SelectPhoto';
+
+//franchise screen
+import Profile from "../screens/Visitor/Profile";
 
 //button
 import NavIcon from '../components/Custom/NavIcon';
@@ -65,7 +68,8 @@ const MapStack = createStackNavigator();
 function MapStackScreen() {
     return (
     <MapStack.Navigator screenOptions={{ cardStyle:{backgroundColor:'#ffffff'}, headerTitleStyle:{fontSize:20, fontWeight:'bold'}}}>
-      <MapStack.Screen name="랜덤 음식점" component={Map2} options={{headerShown:true}}/>
+      <MapStack.Screen name="랜덤 음식점" component={Map} options={{headerShown:true}}/>
+      <MapStack.Screen name="프로필 보기" component={Profile} options={{headerShown:true}} />
     </MapStack.Navigator>
   );
 }
@@ -97,6 +101,7 @@ function FavoriteStackScreen() {
     return (
     <FavoriteStack.Navigator screenOptions={{headerShown:true, headerTitleStyle:{fontSize:20, fontWeight:'bold'}}}>
       <FavoriteStack.Screen name="단골" component={Dangol} />
+      <FavoriteStack.Screen name="프로필 보기" component={Profile} options={{headerShown:true}} />
     </FavoriteStack.Navigator>
   );
 }

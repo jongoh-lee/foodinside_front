@@ -38,9 +38,27 @@ const styles = StyleSheet.create({
     }
 })
 
-export default ( { members } ) => {
+export default ( { members, founderImage, career, username } ) => {
     return (
         <View style={styles.container}>
+             <View style={styles.card}>
+                <View style={styles.member}>
+                    <Image style={styles.image} source={{uri:founderImage}} />
+
+                    <View style={styles.position}>
+                        <Text style={styles.text} numberOfLines={1}>{username}(사장님)</Text>
+                    </View>
+                </View>
+                
+                <View style={{flex:1}}>
+                    <Text style={{padding:10, fontWeight:"bold", color:"#666"}}>경력🍴</Text>
+                    <View style={styles.careerBox}>
+                        <ScrollView showsVerticalScrollIndicator={false}>
+                            <Text style={styles.careerText}>{career}</Text>
+                        </ScrollView>
+                    </View>
+                </View>
+            </View>
             {members && members.map((member) => 
             <View key={member.id} style={styles.card}>
                 <View style={styles.member}>

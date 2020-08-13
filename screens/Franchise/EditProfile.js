@@ -18,7 +18,7 @@ export default ({ navigation, route }) => {
   const contactInput = numInput(String(route.params.myProfile.contact));
   const menuNameInput = useInput(route.params.myProfile.menuName);
   const salePriceInput = numInput(String(route.params.myProfile.salePrice));
-  const [sector, setSector] = React.useState(route.params.myProfile.sector);
+  const [classification, setClassification] = React.useState(route.params.myProfile.classification);
   const onSelect = (photo) => {
     setImage(photo)
   };
@@ -36,7 +36,7 @@ export default ({ navigation, route }) => {
           contact: String(contactInput.value),
           menuName: menuNameInput.value,
           salePrice: Number(salePriceInput.value),
-          sector: sector,
+          classification: classification,
           profileState: 0
         }
       });
@@ -64,7 +64,7 @@ export default ({ navigation, route }) => {
 
       <View style={styles.action}>
         <Text style={{fontWeight:'bold'}}>업종:  </Text> 
-        <RadioButton.Group onValueChange={sector => setSector(sector)} value={sector}>
+        <RadioButton.Group onValueChange={classification => setClassification(classification)} value={classification}>
           <View style={{flexDirection:"row", alignItems:"center"}}>
             <RadioButton value="일반" color={'#05e6f4'} uncheckedColor={'rgba(5, 230, 244, .3)'}/>
             <Text>일반 음식점</Text>
