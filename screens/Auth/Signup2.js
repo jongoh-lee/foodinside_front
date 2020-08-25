@@ -38,7 +38,7 @@ export default ({ navigation, route }) => {
     } 
   }
   React.useEffect(()=>{
-    if(value.length > 1 && data && data.checkUsername){
+    if(value.length > 2 && data && data.checkUsername){
       setColor('pass')
       setAlert("사용 가능한 아이디 입니다")
     } else {

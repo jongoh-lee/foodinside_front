@@ -10,12 +10,9 @@ import Loader from "../../components/Custom/Loader";
 import { ME } from "./VisitorQueries";
 import { useLogOut } from "../../AuthContext";
 
-export default ({ route, navigation }) => {
+export default ({  }) => {
     const [visible, setVisible ] = React.useState(false);
-    const { data, loading, error, refetch } = useQuery(ME,{
-        fetchPolicy:"network-only"
-    });
-    const logOut = useLogOut();
+    
     navigation.setOptions({
         headerRight:() => (
             <TouchableOpacity style={{marginHorizontal:10}} onPress={() => setVisible(!visible)} >

@@ -86,6 +86,11 @@ export default () => {
     _scrollView.current.getNode().scrollTo({x: x , y: 0, animated: true});
   }
   
+  React.useEffect(()=>{
+    if(Platform.OS === 'ios'){
+      _scrollView.current.getNode().scrollTo({animated:false, x: - SPACING_FOR_CARD_INSET})
+    }
+  },[])
   return (
     <View style={styles.container}>
       <MapView

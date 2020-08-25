@@ -436,7 +436,7 @@ export default ({ navigation, route }) => {
         </ScrollView>
     </KeyboardAvoidingView>
   </View>    
-                
+  
     <Modal
       isVisible={menuModal}
       onBackdropPress={() => setMenuModal(false)}

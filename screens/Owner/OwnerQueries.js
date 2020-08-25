@@ -1,190 +1,20 @@
 import gql from "graphql-tag";
+import { OWNER_FRAGMENT } from "../../fragments";
 
 export const MY_SHOP = gql`
     query myShop {
         myShop{
-            id
-            registration
-            classification
-            address
-            ownerState
-            contact
-            #scale
-            chairs
-            tables
-            scale
-            #description
-            shopName
-            district
-            description
-            precaution
-            hashTag
-            #rule
-            checkIn
-            checkOut
-            minReserve
-            #refund
-            refundAgree
-            shopImages{
-                id
-                type
-                url
-                createdAt
-            }
-            facility{
-                id
-                size_25
-                size_30
-                size_45
-                size_65
-                fridgeBox_ect
-            #fridge
-                showcase
-                table 
-                vat 
-                kimchi 
-                tuna 
-                wine 
-                ice_cream 
-                fridge_ect 
-            #fire
-                lower_stove 
-                chinese_stove 
-                gas_stove 
-                house_stove 
-                induction 
-                fire_ect 
-            #griller
-                fire_above 
-                fire_below 
-                charcoal 
-                griller_ect 
-            #griddle
-                size_600 
-                size_900 
-                size_1200 
-                size_1500 
-                griddle_ect 
-            #fryer
-                electric 
-                gas
-                fryer_ect
-            #oven
-                deck 
-                convection 
-                steam_convection 
-                combi_steamer 
-                oven_ect 
-            #cafe
-                espresso_machine
-                coffee_bean_grinder
-                roasting_machine
-                ice_maker
-                ice_shaver
-                water_heater
-                blender
-                cafe_ect
-            #electronic
-                rice_cooker 
-                soup_heater 
-                dish_washer 
-                microwave 
-                take_out_packer 
-                induction_small 
-                blender_small 
-                food_warmer 
-                dough_machine 
-                fermenter 
-                noodle_cooker 
-                noodle_maker 
-                pasta_noodle_maker 
-                cold_noodle_maker 
-                soda_dispenser 
-                soft_cone_machine 
-                beer_dispenser 
-            #tableware
-                spoon_holder 
-                napkin_holder 
-                seasoning_container 
-                wet_wipe 
-                opener 
-                spoon 
-                chopsticks 
-                fork 
-                knife 
-                tray 
-                water_bottle 
-                kettle 
-                portable_stove 
-                table_bell 
-            #container
-                bowl_container 
-                stainless_vat 
-                soup_container 
-                plastic_vat 
-                glass_vat 
-                side_dish_container 
-                wash_basin 
-                take_out_container 
-            #glass
-                beverage 
-                water 
-                mug 
-                soju 
-                sake 
-                kaoliang 
-                shot 
-                wine_glass 
-                champagne 
-                cocktail 
-                on_the_rock 
-                highball 
-                glass 
-                pitcher_500cc 
-                pitcher_2000cc 
-                pitcher_3000cc 
-            #serving
-                rice_bowl 
-                dish 
-                earthenware 
-                pottery 
-                stone_pot 
-                pot 
-                frying_pan 
-                side_dish_bowl 
-                small_dish 
-                bowl 
-                scissors 
-                ladle 
-            #cleaner
-                detergent 
-                clorox 
-                abstergent 
-                bloom 
-                dustpan 
-                floorcloth 
-                bucket 
-                hose 
-                brush 
-                vacuum_cleaner
-            #ect
-                speaker 
-                tv 
-                projector 
-                air_conditioner 
-                wifi 
-                cctv 
-                kiosk 
-                umbrella_stand 
-            }
+        ...OwnerParts
         }
     }
+    ${OWNER_FRAGMENT}
 `;
 
 export const CREATE_SHOP = gql`
     mutation createShop(
         $shopImages: [CreateShopImage!]!
         $address: String!
+        $addressDetail: String!
         $registration: String!
         $classification: String!
         $contact: String!
@@ -193,192 +23,23 @@ export const CREATE_SHOP = gql`
         createShop(
             shopImages:$shopImages
             address:$address
+            addressDetail:$addressDetail
             registration:$registration
             classification:$classification
             contact:$contact
             ownerState:$ownerState
         ) {
-            id
-            registration
-            classification
-            address
-            ownerState
-            contact
-            #scale
-            chairs
-            tables
-            scale
-            #description
-            shopName
-            district
-            description
-            precaution
-            hashTag
-            #rule
-            checkIn
-            checkOut
-            minReserve
-            #refund
-            refundAgree
-            shopImages{
-                id
-                type
-                url
-            }
-            facility{
-                id
-                size_25
-                size_30
-                size_45
-                size_65
-                fridgeBox_ect
-            #fridge
-                showcase
-                table 
-                vat 
-                kimchi 
-                tuna 
-                wine 
-                ice_cream 
-                fridge_ect 
-            #fire
-                lower_stove 
-                chinese_stove 
-                gas_stove 
-                house_stove 
-                induction 
-                fire_ect 
-            #griller
-                fire_above 
-                fire_below 
-                charcoal 
-                griller_ect 
-            #griddle
-                size_600 
-                size_900 
-                size_1200 
-                size_1500 
-                griddle_ect 
-            #fryer
-                electric 
-                gas
-                fryer_ect
-            #oven
-                deck 
-                convection 
-                steam_convection 
-                combi_steamer 
-                oven_ect 
-            #cafe
-                espresso_machine
-                coffee_bean_grinder
-                roasting_machine
-                ice_maker
-                ice_shaver
-                water_heater
-                blender
-                cafe_ect
-            #electronic
-                rice_cooker 
-                soup_heater 
-                dish_washer 
-                microwave 
-                take_out_packer 
-                induction_small 
-                blender_small 
-                food_warmer 
-                dough_machine 
-                fermenter 
-                noodle_cooker 
-                noodle_maker 
-                pasta_noodle_maker 
-                cold_noodle_maker 
-                soda_dispenser 
-                soft_cone_machine 
-                beer_dispenser 
-            #tableware
-                spoon_holder 
-                napkin_holder 
-                seasoning_container 
-                wet_wipe 
-                opener 
-                spoon 
-                chopsticks 
-                fork 
-                knife 
-                tray 
-                water_bottle 
-                kettle 
-                portable_stove 
-                table_bell 
-            #container
-                bowl_container 
-                stainless_vat 
-                soup_container 
-                plastic_vat 
-                glass_vat 
-                side_dish_container 
-                wash_basin 
-                take_out_container 
-            #glass
-                beverage 
-                water 
-                mug 
-                soju 
-                sake 
-                kaoliang 
-                shot 
-                wine_glass 
-                champagne 
-                cocktail 
-                on_the_rock 
-                highball 
-                glass 
-                pitcher_500cc 
-                pitcher_2000cc 
-                pitcher_3000cc 
-            #serving
-                rice_bowl 
-                dish 
-                earthenware 
-                pottery 
-                stone_pot 
-                pot 
-                frying_pan 
-                side_dish_bowl 
-                small_dish 
-                bowl 
-                scissors 
-                ladle 
-            #cleaner
-                detergent 
-                clorox 
-                abstergent 
-                bloom 
-                dustpan 
-                floorcloth 
-                bucket 
-                hose 
-                brush 
-                vacuum_cleaner
-            #ect
-                speaker 
-                tv 
-                projector 
-                air_conditioner 
-                wifi 
-                cctv 
-                kiosk 
-                umbrella_stand 
-            }
+            ...OwnerParts
         }
     }
+    ${OWNER_FRAGMENT}
 `;
 
 export const EDIT_SHOP = gql`
     mutation editShop(
         $shopImages: [EditShopImage!]!
         $address: String!
+        $addressDetail: String!
         $registration: String!
         $classification: String!
         $contact: String!
@@ -387,21 +48,44 @@ export const EDIT_SHOP = gql`
         editShop(
             shopImages:$shopImages
             address:$address
+            addressDetail:$addressDetail
             registration:$registration
             classification:$classification
             contact:$contact
             ownerState:$ownerState
         ) {
+            ...OwnerParts
+        }
+    }
+    ${OWNER_FRAGMENT}
+`;
+export const MY_CALENDAR = gql`
+    query myCalendar{
+        myCalendar{
             id
-            address
-            registration
-            classification
-            contact
-            ownerState
-            shopImages{
+            price{
                 id
-                type
-                url
+                dateString
+                priceState
+            }
+        }
+    }
+`;
+
+export const EDIT_PRICE = gql`
+    mutation editCalendar(
+        $updatePrice: UpdatePrice!
+        $createPrice: CreatePrice!
+    ){
+        editCalendar(
+            updatePrice: $updatePrice
+            createPrice: $createPrice
+        ){
+            id
+            price{
+                id
+                dateString
+                priceState
             }
         }
     }
@@ -506,8 +190,8 @@ export const COMPLETE_SHOP_FACILITY = gql`
         ){
             id
             facility{
-                id
-                size_25
+            id
+            size_25
             size_30
             size_45
             size_65
@@ -676,7 +360,6 @@ export const COMPLETE_SHOP_IMAGE = gql`
                 id
                 type
                 url
-                createdAt
             }
         }
     }

@@ -1,12 +1,12 @@
 import * as React from "react";
-import { StyleSheet, View, Image, Text, ImageBackground, UIManager,  } from "react-native";
+import { StyleSheet, View, Image, Text, ImageBackground, } from "react-native";
 import constants from "../../constants";
-import { ScrollView, TouchableWithoutFeedback, TouchableOpacity } from "react-native-gesture-handler";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { Caption } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 
 const WIDTH = constants.width - 20;
-const CARD_WIDTH = constants.width * 0.8;
+const CARD_WIDTH = constants.width * 0.7;
 const styles = StyleSheet.create({
     cardImage: {
         width: "100%",
@@ -134,7 +134,8 @@ export default ({ id, mainImage, submenus, profileName, sector, mainMenu}) => {
                     onPress={()=> navigation.navigate("프로필 보기", {seeFullProfile : {
                         id: "ckdra85bd1gjw0a3557xq2hnc",
                         profileName: "큐슈 고쿠리",
-                        sector: "일식"
+                        sector: "일식",
+                        isSelf:false
                     }})}>
                     <Text style={styles.headerTitle} numberOfLines={1} ellipsizeMode={"middle"}>{profileName}<Text style={styles.sector}>  {sector}</Text></Text>
                 </TouchableOpacity>
@@ -143,41 +144,28 @@ export default ({ id, mainImage, submenus, profileName, sector, mainMenu}) => {
         
             {/* 메뉴 스크롤*/}
             <View style={{flex:3}}>
-                <ScrollView 
-                showsHorizontalScrollIndicator={false} 
-                style={{
-                    position: 'absolute',
-                    top: 0,
-                    bottom: 0,
-                    left: CARD_WIDTH - WIDTH / 8,
-                    right: 0,
-                    overflow:"visible",
-                }}
-                horizontal
-                >
-                    <View style={{flexDirection:"row"}}>
-                        {/* 메인 메뉴 */}
-                        <View style={styles.menuContainer}>
-                            <Text style={styles.menuName} numberOfLines={1}>{menuName}</Text>
-                                <Image style={styles.menuImage} source={{uri:menuImage}}/>
-                            <View style={styles.priceBox}>
-                                <Text style={styles.fullPrice}>{fullPrice}</Text>
-                                <Text style={styles.salePrice}>{salePrice}</Text>
-                            </View>
-                        </View>
-                        {/* 추가 메뉴 */}
-                        {submenus && submenus.map((menu) => (
-                            <View key={menu.id} style={styles.menuContainer}>
-                                <Text style={styles.menuName} numberOfLines={1}>{menu.menuName}</Text>
-                                <Image style={styles.menuImage} source={{uri:menu.menuImage}}/>
+                    <ScrollView contentContainerStyle={{paddingLeft:CARD_WIDTH}} horizontal showsHorizontalScrollIndicator={false} nestedScrollEnabled={true}>
+                            {/* 메인 메뉴 */}
+                            <View style={styles.menuContainer}>
+                                <Text style={styles.menuName} numberOfLines={1}>{menuName}</Text>
+                                    <Image style={styles.menuImage} source={{uri:menuImage}}/>
                                 <View style={styles.priceBox}>
-                                    <Text style={styles.fullPrice}>{menu.fullPrice}</Text>
-                                    <Text style={styles.salePrice}>{menu.salePrice}</Text>
+                                    <Text style={styles.fullPrice}>{fullPrice}</Text>
+                                    <Text style={styles.salePrice}>{salePrice}</Text>
                                 </View>
                             </View>
-                        ))}
-                    </View>
-                </ScrollView>
+                            {/* 추가 메뉴 */}
+                            {submenus && submenus.map((menu) => (
+                                <View key={menu.id} style={styles.menuContainer}>
+                                    <Text style={styles.menuName} numberOfLines={1}>{menu.menuName}</Text>
+                                    <Image style={styles.menuImage} source={{uri:menu.menuImage}}/>
+                                    <View style={styles.priceBox}>
+                                        <Text style={styles.fullPrice}>{menu.fullPrice}</Text>
+                                        <Text style={styles.salePrice}>{menu.salePrice}</Text>
+                                    </View>
+                                </View>
+                            ))}
+                    </ScrollView>
             </View>
             
             <View style={{flex:1}}>

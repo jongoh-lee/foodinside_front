@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { profile } from "../../components/Franchise/data";
-import Card2 from "../../components/Visitor/Card2";
+import DangolCard from "../../components/Visitor/DangolCard";
 import { ScrollView } from "react-native-gesture-handler";
 
 const styles = StyleSheet.create({
@@ -11,12 +11,14 @@ const styles = StyleSheet.create({
   }
 })
 
-export default () => (
+export default () => {
+  
+  return (
   <View style={styles.container}>
     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{padding:10}}>
-      <Card2 {...profile}/>
-      <Card2 {...profile}/>
-      <Card2 {...profile}/>
+      <DangolCard {...profile}/>
+      <DangolCard {...profile}/>
+      <DangolCard {...profile}/>
     </ScrollView>
   </View>
-);
+)};

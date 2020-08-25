@@ -2,6 +2,7 @@ import * as React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { EvilIcons } from '@expo/vector-icons'; 
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { Caption } from "react-native-paper";
 
 const styles = StyleSheet.create({
   container:{
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
     color:"rgba(0, 0, 0, .5)"
   },
   earningNum:{
-    fontSize:40,
+    fontSize:20,
     fontWeight:"bold",
   },
   accountText:{
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
     paddingTop:10
   },
   newsTitle:{
-    fontSize:16,
+    fontSize:14,
     fontWeight:"bold"
   },
   newsNum:{
@@ -86,20 +87,20 @@ export default () => {
       </View>
 
       <View style={styles.earningBox}>
-        <Text style={styles.earningTitle}>이번달 수익</Text>
+        <Text style={styles.earningTitle}>임대 수익</Text>
         <Text style={styles.earningNum}>4,735,000원</Text>
-        <Text style={styles.accountText}>계좌 등록하기</Text>
+        <Text style={styles.accountText}>계좌 등록</Text>
       </View>
 
       <View style={styles.newsBox}>
         <View style={styles.newsCol}>
           <Text style={styles.newsTitle}>새로운 댓글</Text>
-          <Text style={styles.newsNum}>12</Text>
+          <Caption style={styles.newsNum}>12</Caption>
         </View>
 
         <View style={styles.newsCol}>
           <Text style={styles.newsTitle}>새로운 예약</Text>
-          <Text style={styles.newsNum}>6</Text>
+          <Caption style={styles.newsNum}>6</Caption>
         </View>
       </View>
 

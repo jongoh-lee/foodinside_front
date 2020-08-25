@@ -106,14 +106,15 @@ const styles = StyleSheet.create({
     },
     calendar:{
         borderRadius:15,
+        padding:5,
         shadowOffset: {
             width: 0,
-            height: 2,
+            height: 1,
         },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 3,
-        overflow: Platform.OS === 'android'? "hidden" : null
+        shadowOpacity: 0.20,
+        shadowRadius: 1.41,
+        elevation: 2,
+        overflow: Platform.OS === 'android'? "hidden" : "hidden"
     }
 })
 
@@ -306,7 +307,6 @@ export default ({ shopImages, facility, tables, chairs, scale, shopName, distric
             <View style={styles.box}>
                 <Text style={styles.title}>입점 하기</Text>
                 <View style={styles.calendar}>
-                    <Calendar calendarWidth={constants.width - 40}/>
                 </View>
             </View>
 

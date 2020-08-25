@@ -49,12 +49,7 @@ export default () => {
     </View>
 
     <ScrollView style={{padding:5}}>
-    <ReserveList mainImage={mainImage} profileName={profileName} sort={sort}/>
-        <ReserveList mainImage={mainImage} profileName={profileName} sort={sort}/>
-        <ReserveList mainImage={mainImage} profileName={profileName} sort={sort}/>
-        <ReserveList mainImage={mainImage} profileName={profileName} sort={sort}/>
-        <ReserveList mainImage={mainImage} profileName={profileName} sort={sort}/>
-        <ReserveList mainImage={mainImage} profileName={profileName} sort={sort}/>
+      <ReserveList />
     </ScrollView>
 
     </View>

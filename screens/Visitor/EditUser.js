@@ -12,20 +12,29 @@ import DismissKeyboard from '../../components/Custom/DismissKeyboard';
 import BasicButton from '../../components/Custom/BasicButton';
 import { ScrollView } from 'react-native-gesture-handler';
 import strickInput from '../../hooks/strickInput';
-import useInput from '../../hooks/useInput';
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import { EDIT_USER, ME } from './VisitorQueries';
 import constants from '../../constants';
+import { CHECK_USERNAME } from '../Auth/AuthQueries';
 
 export default ({ navigation, route }) => {
     const [avatar, setAvatar] = React.useState(route.params.avatar? route.params.avatar : require('../../assets/Icons/avatarBasic.png'));
     const [loading, setLoading] = React.useState(false)
     const usernameInput = strickInput(route.params.username);
-    const { value: username } = usernameInput;    
+    const { value: username } = usernameInput;
+    const [alert, setAlert] = React.useState(false)
+
     const onSelect = (image) => {
       setAvatar(image.photo.uri)
     };
-    const [editUserMutation, {error}] = useMutation(EDIT_USER)
+
+    const { data, error } = useQuery(CHECK_USERNAME,{
+      variables:{
+        username: username
+      }
+    });
+
+    const [editUserMutation] = useMutation(EDIT_USER)
 
     const handleEdit = async () => {
       try {
@@ -48,6 +57,14 @@ export default ({ navigation, route }) => {
         setLoading(false)
       }
     }
+
+    React.useEffect(() => {
+      if(username.length > 2 && data.checkUsername){
+        setAlert(false)
+      }else{
+        setAlert(true)
+      }
+    },[username])
     return (
     <View style={styles.container}>
       <DismissKeyboard>
@@ -100,9 +117,9 @@ export default ({ navigation, route }) => {
         <View style={styles.action}>
           <FontAwesome name="user-o" size={20} />
           <View>
-          <BasicInput {...usernameInput} placeholder={'아이디'} keyboardType="default"/>
-          {error ? <Text style={{fontSize:10, color:"red", paddingLeft:10, marginTop:-15}}>사용할 수 없는 아이디 입니다</Text>: null}
+            <BasicInput {...usernameInput} placeholder={'아이디'} keyboardType="default"/>
           </View>
+            {alert ? <Text style={{fontSize:10, color:"red", position:"absolute", bottom:5 }}>사용할 수 없는 아이디 입니다</Text>: null}
         </View>
         
 
@@ -124,8 +141,9 @@ export default ({ navigation, route }) => {
                 }} 
               placeholder={route.params.email} editable={false}/>
         </View>
-
-        <BasicButton text={'수정하기'} disabled={(avatar === route.params.avatar || avatar === require('../../assets/Icons/avatarBasic.png')) && route.params.username === username} onPress={handleEdit} loading={loading}/>
+        <View style={{width:'100%'}}>
+          <BasicButton text={'수정하기'} disabled={alert} onPress={handleEdit} loading={loading}/>
+        </View>
 
         </ScrollView>
       </DismissKeyboard>
@@ -145,7 +163,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#f2f2f2',
     paddingBottom: 5,
-    alignItems:"center"
+    alignItems:"center",
   },
   actionError: {
     flexDirection: 'row',

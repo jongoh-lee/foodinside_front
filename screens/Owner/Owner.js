@@ -7,7 +7,7 @@ import { useQuery } from "@apollo/react-hooks";
 import Loader from "../../components/Custom/Loader";
 import { MY_SHOP } from "./OwnerQueries";
 import Logo from "../../components/Custom/Logo";
-import Description from "../../components/Owner/Description";
+import OwnerComponent from "../../components/Owner/OwnerComponent";
 
 export default ({ navigation, route }) => {
   const { data, loading, error } = useQuery(MY_SHOP,{
@@ -92,7 +92,7 @@ export default ({ navigation, route }) => {
     )}
 
     {data?.myShop?.ownerState === 3 && (
-        <Description {...data?.myShop} />
+        <OwnerComponent {...data?.myShop} />
     )}
 
     {data?.myShop === null &&  (

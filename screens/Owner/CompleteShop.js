@@ -67,6 +67,9 @@ const styles = StyleSheet.create({
 
 export default ({ navigation }) => {
     const [loading, setLoading] = React.useState(false);
+    const { data, error, loading : _loading, refetch } = useQuery(MY_SHOP,{
+        fetchPolicy:"network-only"
+    });
     const [seeMyShopMutation] = useMutation(SEE_MYSHOP);
     const handleMyShop = async () => {
         try {
@@ -88,12 +91,8 @@ export default ({ navigation }) => {
         }
     }
     
-    const { data, error, loading : _loading, refetch } = useQuery(MY_SHOP,{
-        fetchPolicy:"network-only"
-    });
     if(_loading) return <Loader />
     if(error) return console.log(error);
-    console.log(data)
     return (
         <View style={styles.container}>
             {data && data.myShop &&
@@ -157,7 +156,7 @@ export default ({ navigation }) => {
                 </View>
 
                 <View style={styles.buttonShadow}>
-                    <TouchableOpacity onPress={() => navigation.navigate("위치 등록", {address: data.myShop.address})}>
+                    <TouchableOpacity onPress={() => navigation.navigate("위치 등록", {address: data.myShop.address, addressDetail: data.myShop.addressDetail})}>
                         <View style={styles.buttonRow}>
                             <View style={[styles.buttonCircle, data.myShop.address? {borderColor: 'rgba(5, 230, 244, .6)'} : null]}>
                                 <MaterialIcons name="location-on" size={30} color={data.myShop.address? "rgba(5, 230, 244, .6)" : "#E0E0E0"} />

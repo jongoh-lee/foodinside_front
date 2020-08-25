@@ -2,11 +2,11 @@ import * as React from "react";
 import {StyleSheet, View, Text, Image, TouchableOpacity} from "react-native";
 import { TouchableWithoutFeedback, } from "react-native-gesture-handler";
 import constants from "../../constants";
-import { AntDesign, MaterialCommunityIcons, Feather } from '@expo/vector-icons'; 
+import { Entypo, AntDesign, MaterialCommunityIcons, Feather } from '@expo/vector-icons'; 
 import { useQuery } from "@apollo/react-hooks";
 import Loader from "../../components/Custom/Loader";
 import { MY_PROFILE } from "./ProfileQueries";
-import MyProfile from "../../components/Franchise/MyProfile";
+import FranchiseComponent from "../../components/Franchise/FranchiseComponent";
 import Modal from "react-native-modal";
 
 export default ({ navigation }) => {
@@ -14,7 +14,7 @@ export default ({ navigation }) => {
   const { data, loading, error, refetch } = useQuery(MY_PROFILE,{
     fetchPolicy:"network-only"
   });
-
+  
   if(loading) return <Loader />;
   if(error) return console.log(error);
 
@@ -39,7 +39,12 @@ export default ({ navigation }) => {
         
         <View style={styles.buttonBox}>
 
-          <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 보기")}>
+          <TouchableWithoutFeedback onPress={()=> navigation.navigate("프로필 보기", {seeFullProfile : {
+                        id: "ckdra85bd1gjw0a3557xq2hnc",
+                        profileName: "큐슈 고쿠리",
+                        sector: "일식",
+                        isSelf:false
+                    }})}>
             <View style={styles.button}>
                 <MaterialCommunityIcons name="silverware-clean" size={34} color="rgba(0,0,0, .3)" />
             </View>
@@ -62,7 +67,12 @@ export default ({ navigation }) => {
         
         <View style={styles.buttonBox}>
 
-          <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 보기")}>
+          <TouchableWithoutFeedback onPress={()=> navigation.navigate("프로필 보기", {seeFullProfile : {
+                        id: "ckdra85bd1gjw0a3557xq2hnc",
+                        profileName: "큐슈 고쿠리",
+                        sector: "일식",
+                        isSelf:false
+                    }})}>
             <View style={styles.button}>
                 <MaterialCommunityIcons name="silverware-clean" size={34} color="rgba(0,0,0, .3)" />
             </View>
@@ -85,7 +95,12 @@ export default ({ navigation }) => {
         
         <View style={styles.buttonBox}>
 
-          <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 보기")}>
+          <TouchableWithoutFeedback onPress={()=> navigation.navigate("프로필 보기", {seeFullProfile : {
+                        id: "ckdra85bd1gjw0a3557xq2hnc",
+                        profileName: "큐슈 고쿠리",
+                        sector: "일식",
+                        isSelf:false
+                    }})}>
             <View style={styles.button}>
                 <MaterialCommunityIcons name="silverware-clean" size={34} color="rgba(0,0,0, .3)" />
             </View>
@@ -103,7 +118,7 @@ export default ({ navigation }) => {
     )}
 
     {data?.myProfile?.profileState === 3 && (
-        <MyProfile {...data?.myProfile}/>
+        <FranchiseComponent {...data?.myProfile} visible={visible} setVisible={setVisible}/>
     )}
 
     {data?.myProfile === null &&  (
@@ -112,7 +127,12 @@ export default ({ navigation }) => {
         
         <View style={styles.buttonBox}>
 
-          <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 보기")}>
+          <TouchableWithoutFeedback onPress={()=> navigation.navigate("프로필 보기", {seeFullProfile : {
+                        id: "ckdra85bd1gjw0a3557xq2hnc",
+                        profileName: "큐슈 고쿠리",
+                        sector: "일식",
+                        isSelf:false
+                    }})}>
             <View style={styles.button}>
                 <MaterialCommunityIcons name="silverware-clean" size={34} color="rgba(0,0,0, .3)" />
             </View>
@@ -143,7 +163,7 @@ export default ({ navigation }) => {
           <MaterialCommunityIcons name="chevron-down" size={26} color="#666" style={{alignSelf:"center"}} />
           <TouchableOpacity style={styles.modalList} onPress={()=> (
               navigation.navigate("프로필 완성", {
-                myProfile:data?.myProfile
+                myProfile: { profileName, sector, token, mainImage, menuName, menuImage, fullPrice, salePrice, foodGuide, origin, submenus, founderImage, career, user, members}
               }),
               setVisible(false))}>
               <MaterialCommunityIcons name="square-edit-outline" size={24} color="#666" /><Text style={styles.modalText}>정보수정</Text>
@@ -170,6 +190,7 @@ export default ({ navigation }) => {
         </TouchableOpacity>
       </View>
     </Modal>
+    
   </>
 )};
 
@@ -229,7 +250,6 @@ const styles = StyleSheet.create({
   },
 
   //modal
-  
   modal:{
     justifyContent:"flex-end",
     margin:0,

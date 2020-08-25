@@ -4,43 +4,10 @@ import { PROFILE_FRAGMENT } from "../../fragments";
 export const CREATE_PROFILE = gql`
     mutation createProfile($menuImage:String!, $menuName:String!, $salePrice:Int!, $foodGuide:String!, $career:String!, $contact:String!, $profileState:Int!, $classification:String!) {
         createProfile(menuImage: $menuImage, menuName: $menuName, salePrice: $salePrice, foodGuide: $foodGuide, career: $career, contact: $contact, profileState:$profileState, classification:$classification) {
-            id
-            profileName
-            classification
-            contact
-            sector
-            token
-            mainImage
-            foodGuide
-            origin
-            fullPrice
-            founderImage
-            submenus{
-                id
-                menuName
-                menuImage
-                fullPrice
-                salePrice
-            }
-            members{
-                id
-                image
-                name
-                position
-                career
-            }
-            menuImage
-            menuName
-            salePrice
-            foodGuide
-            career
-            profileState
-            user{
-                id
-                username
-            }
+            ...ProfileParts
         }
     }
+    ${PROFILE_FRAGMENT}
 `;
 
 export const COMPLETE_PROFILE = gql`
@@ -115,17 +82,10 @@ export const COMPLETE_PROFILE = gql`
 export const EDIT_PROFILE = gql`
     mutation editProfile($menuImage:String!, $menuName:String!, $salePrice:Int!, $foodGuide:String!, $career:String!, $contact:String!, $classification:String!, $profileState: Int!) {
         editProfile(menuImage: $menuImage,  menuName: $menuName, salePrice: $salePrice, foodGuide: $foodGuide, career: $career, contact: $contact, classification:$classification, profileState:$profileState) {
-            id
-            menuImage
-            menuName
-            salePrice
-            classification
-            foodGuide
-            career
-            contact
-            profileState
+            ...ProfileParts
         }
     }
+    ${PROFILE_FRAGMENT}
 `;
 
 export const MY_PROFILE = gql`

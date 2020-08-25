@@ -4,7 +4,7 @@ import { ScrollView, TouchableWithoutFeedback } from "react-native-gesture-handl
 import { myShopData } from "../../components/Owner/data";
 
 //screen
-import Description from "../../components/Owner/Description";
+import OwnerComponent from "../../components/Owner/OwnerComponent";
 import BackArrow from "../../components/Custom/BackArrow";
 
 const styles = StyleSheet.create({
@@ -39,7 +39,7 @@ export default ({ navigation }) => {
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
 
-        <Description {...myShopData} />
+        <OwnerComponent {...myShopData} />
 
       </ScrollView>
     </View>

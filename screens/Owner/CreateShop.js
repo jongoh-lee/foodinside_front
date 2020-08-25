@@ -1,16 +1,14 @@
 import * as React from "react";
 import {StyleSheet, View, Text, Image} from "react-native";
-import { TextInput, ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import { TextInput, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from "react-native-gesture-handler";
 import constants from "../../constants";
 import BasicButton from "../../components/Custom/BasicButton";
 import { RadioButton, } from "react-native-paper";
-import BasicInput from "../../components/Custom/BasicInput";
 import { AntDesign } from '@expo/vector-icons'; 
-import useInput from "../../hooks/strickInput";
+import useInput from "../../hooks/useInput";
 import numInput from "../../hooks/numInput";
 import { useMutation } from "@apollo/react-hooks";
 import { CREATE_SHOP, MY_SHOP} from "./OwnerQueries";
-import AsyncStorage from "@react-native-community/async-storage";
 import ShadowInput from "../../components/Custom/ShadowInput";
 
 export default ({ navigation, route }) => {
@@ -18,10 +16,12 @@ export default ({ navigation, route }) => {
   const [ exterior, setExterior] = React.useState(null);
   const [ hall, setHall] = React.useState(null);
   const [ kitchen, setKitchen] = React.useState(null);
-  const addressInput = useInput('');
   const [registration, setRegistration] = React.useState(null);
   const [classification, setClassification] = React.useState("일반");
   const contactInput = numInput('');
+
+  const addressDetailInput = useInput('');
+  
   const onSelectExterior = ({ photo, data }) => {
     setExterior({ url: photo.uri, type: data});
   };
@@ -45,17 +45,18 @@ export default ({ navigation, route }) => {
       });
     }
   });
-  const [shopImages, setShopImages] = React.useState([]);
+  
   const handleCreateShop = async () => {
-    setShopImages(shopImages.push(exterior, hall, kitchen));
+    let _shopImages = [exterior, hall, kitchen];
     try {
       setLoading(true);
       const {
         data : { createShop }
       } = await createShopMutation({
         variables:{
-            shopImages: shopImages,
-            address: addressInput.value,
+            shopImages: _shopImages,
+            address: route.params?.address,
+            addressDetail: addressDetailInput.value,
             registration: registration,
             classification: classification,
             contact:String(contactInput.value),
@@ -105,7 +106,13 @@ export default ({ navigation, route }) => {
       </View>
       <Text style={styles.warning}>주변 음식점과 함께 신청하면 선정 될 확률이 높습니다</Text> 
 
-      <ShadowInput {...addressInput} placeholder={"음식점 위치"} keyboardType="default" editable={!loading} textAlign={"left"}/>
+      <TouchableWithoutFeedback onPress={() => navigation.navigate("주소 입력")}>
+        <View style={styles.addressButton}>
+          <Text style={ route.params?.address? {color:"black"} : {color:"#8e8e8e"}}>{route.params?.address? route.params?.address: "주소 입력"}</Text>
+        </View>
+      </TouchableWithoutFeedback>
+
+      <ShadowInput {...addressDetailInput} placeholder={"나머지 주소"} keyboardType="default" editable={!loading} textAlign={"left"}/>
 
       <View style={styles.textContainer}>
        <Text style={styles.title}>사업자등록증을 확인합니다</Text> 
@@ -147,7 +154,7 @@ export default ({ navigation, route }) => {
       
       <ShadowInput {...contactInput} placeholder={"연락처"} keyboardType="numeric" editable={!loading} textAlign={'left'}/>
     
-      <BasicButton text={'제출하기'} onPress={handleCreateShop} disabled={exterior && hall && kitchen && registration && addressInput.value && contactInput.value ? loading : true} loading={loading} />
+      <BasicButton text={'제출하기'} onPress={handleCreateShop} disabled={exterior && hall && kitchen && registration && route.params?.address && addressDetailInput.value && contactInput.value ? loading : true} loading={loading} />
     </ScrollView>
   </View>
 )};
@@ -215,6 +222,20 @@ const styles = StyleSheet.create({
     borderWidth:1,
     borderColor:"#e7e7e7",
     justifyContent:'flex-start'
+  },
+  addressButton:{
+    padding: 10,
+    backgroundColor:"#ffffff",
+    borderRadius:10,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.20,
+    shadowRadius: 1.41,
+    elevation: 2,
+    lineHeight: 25,
+    margin:3
   },
   action: {
     flexDirection: 'row',

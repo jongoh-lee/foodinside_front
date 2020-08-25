@@ -4,7 +4,6 @@ import { ScrollView } from "react-native-gesture-handler";
 import Post from "../../components/Visitor/Post";
 import { posts } from "../../components/Visitor/data";
 import { shopProfile } from "../../components/Franchise/data";
-import Card from "../../components/Visitor/Card";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -20,7 +19,6 @@ export default () => {
         pinchGestureEnabled={false}
         showsVerticalScrollIndicator={false} >
         {posts.map((post) => (<Post key={post.id} {...post} />))}
-        <Card {...shopProfile}/>
       </ScrollView>
     </View>
   );

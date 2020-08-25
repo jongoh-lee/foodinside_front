@@ -5,16 +5,18 @@ import PropTypes from "prop-types";
 import { useMutation } from "@apollo/react-hooks";
 import { TOGGLE_DANGOL, ME } from "../../screens/Visitor/VisitorQueries";
 
-const DangolButton = ({ id, isDangol, dangols, setDangols }) => {
-    const [ dangol, setDangol ] = React.useState(isDangol);
-    const [ toggleDangolMutation ] = useMutation(TOGGLE_DANGOL);
+const DangolButton = ({ id, isDangol : isDangolProps, dangolCount, setDangolCount }) => {
+    const [ isDangol, setIsDangol ] = React.useState(isDangolProps);
+    const [ toggleDangolMutation ] = useMutation(TOGGLE_DANGOL,{
+        refetchQueries:[`me`]
+    });
     const handleDangol = async () => {
-        if ( dangol === true) {
-            setDangols(dangols - 1);
+        if ( isDangol === true) {
+            setDangolCount(dangolCount - 1);
         } else {
-            setDangols(dangols + 1);
+            setDangolCount(dangolCount + 1);
         }
-        setDangol(!dangol);
+        setIsDangol(!isDangol);
         try {
             await toggleDangolMutation({
                 variables:{
@@ -27,7 +29,7 @@ const DangolButton = ({ id, isDangol, dangols, setDangols }) => {
     }
     return(
         <TouchableOpacity style={styles.logoRow} onPress={handleDangol}>
-            {dangol? <>
+            {isDangol? <>
                 <Image style={styles.dangolLogo_checked} source={require('../../assets/Icons/cloche.png')} />
                 <Text style={styles.logoText_checked}>단골 중</Text>
             </> : <>
@@ -72,8 +74,8 @@ const styles=StyleSheet.create({
 DangolButton.propTypes = {
     id: PropTypes.string.isRequired,
     isDangol: PropTypes.bool.isRequired,
-    dangols: PropTypes.number.isRequired,
-    setDangols: PropTypes.func.isRequired,
+    dangolCount: PropTypes.number.isRequired,
+    setDangolCount: PropTypes.func.isRequired,
 };
 
 export default DangolButton;

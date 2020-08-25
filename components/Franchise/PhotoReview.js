@@ -1,7 +1,8 @@
 import * as React from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
 import constants from "../../constants";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
 
 const styles = StyleSheet.create({
     container:{
@@ -21,14 +22,31 @@ const styles = StyleSheet.create({
     },
 })
 
-export default ( {photoReviews} ) => {
+export default ( { isSelf, posts} ) => {
+    const navigation = useNavigation()
     return (
     <View style={styles.container}>
-        <TouchableWithoutFeedback style={styles.grid}>
-            <View style={styles.upload}>
-                <Text>음식점 홍보하기</Text>
-            </View>
-        </TouchableWithoutFeedback>
-        {photoReviews && photoReviews.map((photo) => <Image key={photo.id} style={styles.grid} source={{uri:photo.image}}/>)}
+        {isSelf? (
+            <TouchableOpacity style={styles.grid}>
+                <View style={styles.upload}>
+                    <Text>음식점 홍보하기</Text>
+                </View>
+            </TouchableOpacity>
+        ):(
+            <TouchableOpacity style={styles.grid} onPress={() => navigation.navigate("SelectUpload", {id:id})}>
+                <View style={styles.upload}>
+                    <Text>리뷰 작성하기</Text>
+                </View>
+            </TouchableOpacity>
+        )}
+       
+        {posts && posts.map( (post, index) => (
+            <TouchableOpacity key={post.id} onPress={() => navigation.navigate("포토리뷰", {
+                posts: posts,
+                index: index
+            })} >
+                <Image style={styles.grid} source={{uri:post.files[0].url}}/>
+            </TouchableOpacity>
+        ))}
     </View>
 )}

@@ -15,12 +15,17 @@ import Map from '../screens/Visitor/Map';
 import User from '../screens/Visitor/User';
 import EditUser from '../screens/Visitor/EditUser';
 import Around from '../screens/Visitor/Around';
-import Location from '../screens/Visitor/Location';
 import Search from '../screens/Visitor/Search';
+
+//nested screen
+import FullProfile from '../screens/Visitor/FullProfile';
+import PhotoReview from '../screens/Visitor/PhotoReview';
+
+// 사진 선택
 import SelectPhoto from '../screens/SelectPhoto';
+import SelectUpload from '../screens/SelectUpload';
 
 //franchise screen
-import Profile from "../screens/Visitor/Profile";
 
 //button
 import NavIcon from '../components/Custom/NavIcon';
@@ -28,7 +33,7 @@ import Logo from '../components/Custom/Logo';
 import LocationButton from '../components/Visitor/LocationButton';
 import SearchButton from '../components/Visitor/SearchButton';
 import BackArrow from '../components/Custom/BackArrow';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import UploadPost from '../screens/Visitor/UploadPost';
 
     
 const FeedStack = createStackNavigator();
@@ -67,9 +72,10 @@ const MapStack = createStackNavigator();
 
 function MapStackScreen() {
     return (
-    <MapStack.Navigator screenOptions={{ cardStyle:{backgroundColor:'#ffffff'}, headerTitleStyle:{fontSize:20, fontWeight:'bold'}}}>
-      <MapStack.Screen name="랜덤 음식점" component={Map} options={{headerShown:true}}/>
-      <MapStack.Screen name="프로필 보기" component={Profile} options={{headerShown:true}} />
+    <MapStack.Navigator screenOptions={{ headerShown:true, cardStyle:{backgroundColor:'#ffffff'}, headerTitleStyle:{fontSize:20, fontWeight:'bold'}}}>
+      <MapStack.Screen name="랜덤 음식점" component={Map}/>
+      <MapStack.Screen name="프로필 보기" component={FullProfile} />
+      <MapStack.Screen name="포토리뷰" component={PhotoReview} options={{headerTitleAlign:"center"}} />
     </MapStack.Navigator>
   );
 }
@@ -101,7 +107,7 @@ function FavoriteStackScreen() {
     return (
     <FavoriteStack.Navigator screenOptions={{headerShown:true, headerTitleStyle:{fontSize:20, fontWeight:'bold'}}}>
       <FavoriteStack.Screen name="단골" component={Dangol} />
-      <FavoriteStack.Screen name="프로필 보기" component={Profile} options={{headerShown:true}} />
+      <FavoriteStack.Screen name="프로필 보기" component={FullProfile} options={{headerShown:true}} />
     </FavoriteStack.Navigator>
   );
 }
@@ -112,6 +118,7 @@ function UserStackScreen() {
     return (
     <UserStack.Navigator screenOptions={{headerShown:true, headerTitleStyle:{fontSize:20, fontWeight:'bold'}}}>
       <UserStack.Screen name="내 정보" component={User}/>  
+      <UserStack.Screen name="포토리뷰" component={PhotoReview} options={{headerTitleAlign:"center"}} />
     </UserStack.Navigator>
   );
 }
@@ -151,20 +158,28 @@ const VisitorStack = createStackNavigator();
 
 export default () => {
   return (
-    <VisitorStack.Navigator >
-      <VisitorStack.Screen name='Tabs' component={TabScreen}/>
+    <VisitorStack.Navigator screenOptions={{
+      headerShown:true,
+      headerTitleAlign:"center",
+      headerLeft:() => <BackArrow />,
+    }} >
+      <VisitorStack.Screen name='Tabs' component={TabScreen} options={{
+        headerShown:false,
+      }}/>
       <VisitorStack.Screen name='SelectPhoto' component={SelectPhoto} options={{
         headerShown:false,
-        }}/>
+      }}/>
+      <VisitorStack.Screen name='SelectUpload' component={SelectUpload} options={{
+        headerTitle:"최근 항목",
+      }}/>
+      <VisitorStack.Screen name='포스트' component={UploadPost}/>
       <VisitorStack.Screen name='정보수정' component={EditUser} options={{
-      headerShown:true,
       headerTitle:"정보수정",
-      headerTitleAlign:"center",
       headerTitleStyle:{
         fontSize:20,
         fontWeight:'bold'
       },
-      headerLeft:()=> <BackArrow />}}/>
+      }}/>
     </VisitorStack.Navigator>
   )
 }

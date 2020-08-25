@@ -23,6 +23,7 @@ const ShadowInput = ({
   maxLength=300,
   textAlignVertical="center",
   fontSize = 14,
+  height = null,
   blurOnSubmit=true
 }) => {
     return (
@@ -42,6 +43,7 @@ const ShadowInput = ({
               shadowRadius: 1.41,
               elevation: 2,
               lineHeight: 25,
+              height: height
             }}
             onChangeText={onChange}
             keyboardType={keyboardType}
@@ -56,7 +58,6 @@ const ShadowInput = ({
             multiline={multiline}
             maxHeight={maxHeight}
             maxLength={maxLength}
-            textSty
             />
         </View>
     )
@@ -87,7 +88,8 @@ ShadowInput.propTypes = {
   maxLength: PropTypes.number,
   textAlignVertical: PropTypes.oneOf(["center", "top"]),
   fontSize: PropTypes.number,
-  blurOnSubmit: PropTypes.bool
+  blurOnSubmit: PropTypes.bool,
+  height: PropTypes.number,
 };
 
 export default ShadowInput;

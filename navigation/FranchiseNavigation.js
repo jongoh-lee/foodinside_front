@@ -6,14 +6,14 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import {Feather, MaterialIcons, MaterialCommunityIcons} from '@expo/vector-icons';
 
-// screens
+// tab screens
 import SearchShop from '../screens/Franchise/SearchShop';
 import Favorite from '../screens/Franchise/Favorite';
 import CreateProfile from '../screens/Franchise/CreateProfile';
 import ShopDetail from "../screens/Franchise/ShopDetail";
 
-
-import ProfileSample from "../screens/Franchise/ProfileSample";
+// nested screens
+import FullProfile from "../screens/Visitor/FullProfile";
 import SeeCreateProfile from "../screens/Franchise/SeeCreateProfile";
 import CompleteProfile from "../screens/Franchise/CompleteProfile";
 import EditProfile from "../screens/Franchise/EditProfile";
@@ -109,12 +109,7 @@ function ProfileStackScreen() {
         headerTitleAlign:"center",
         headerLeft:()=> <BackArrow />,
       }} />
-      <ProfileStack.Screen name="프로필 보기" component={ProfileSample} options={{
-        headerTitle:()=><Logo nav={'공유 음식점'}/>,
-        headerRight:() => <Feather name="more-vertical" size={24} style={{paddingHorizontal:5}}/>,
-        headerLeft:()=> <BackArrow />,
-        headerTitleAlign:"center"
-      }} />
+      <ProfileStack.Screen name="프로필 보기" component={FullProfile}/>
     </ProfileStack.Navigator>
   );
 }

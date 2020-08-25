@@ -1,11 +1,11 @@
 import * as React from "react";
 import {StyleSheet, Text, View, KeyboardAvoidingView, Platform} from "react-native"
 import DismissKeyboard from "../../components/Custom/DismissKeyboard";
-import ShadowInput from "../../components/Custom/ShadowInput";
 import BasicButton from "../../components/Custom/BasicButton";
 import { ScrollView } from "react-native-gesture-handler";
 import { Caption } from "react-native-paper";
 import useInput from "../../hooks/useInput";
+import constants from "../../constants";
 
 const styles = StyleSheet.create({
     container:{
@@ -26,15 +26,18 @@ const styles = StyleSheet.create({
         paddingBottom:5,
         paddingTop:15
     },
-    text:{
-        fontSize:15,
-        textAlign:"center",
-        marginTop: 4
-    },
+    textInput:{
+        fontSize:14,
+        width:constants.width * 0.9,
+        borderRadius:10,
+        padding:10,
+        borderWidth:1,
+        borderColor:"#e7e7e7",
+        justifyContent:'flex-start'
+      },
 })
 
-export default ({ route }) => {
-    const addressInput = useInput(route.params.address);
+export default ({ navigation, route }) => {
     return (
         <View style={styles.container}>
             <KeyboardAvoidingView 
@@ -47,12 +50,12 @@ export default ({ route }) => {
                             <View style={[styles.box, {paddingTop:15}]}>
                                 <Text style={styles.title}>음식점 위치를 입력해 주세요</Text>
                                 <Caption style={styles.caption}>우편 번호</Caption>
-                                <ShadowInput {...addressInput} placeholder={'ex) 모던하고 깔끔한 분위기의 카페'}  textAlign={"left"} />
+                                <Text style={styles.textInput}>{route.params.address}</Text>
 
                                 <Caption style={styles.caption}>나머지 주소</Caption>
-                                <ShadowInput {...addressInput} placeholder={'ex) 모던하고 깔끔한 분위기의 카페'}  textAlign={"left"} />
+                                <Text style={styles.textInput}>{route.params.addressDetail}</Text>
                             </View>
-                            <BasicButton text={'제출 하기'} />
+                            <BasicButton text={'확인'} onPress={() => navigation.goBack()}/>
                         </ScrollView>
                 </DismissKeyboard>
             </KeyboardAvoidingView>

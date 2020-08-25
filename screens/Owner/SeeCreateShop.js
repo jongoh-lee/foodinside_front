@@ -26,6 +26,7 @@ export default ({ navigation }) => {
 
   if (loading) return <Loader />;
   if (error) return console.log(error);
+  console.log(data)
 
   return (
     <View style={styles.container}>
@@ -53,7 +54,7 @@ export default ({ navigation }) => {
       </View>
       <Text style={styles.warning}>주변 음식점과 함께 신청하면 선정 될 확률이 높습니다</Text> 
 
-        <Text style={styles.textInput}>{data.myShop.address}</Text>
+        <Text style={styles.textInput}>{data.myShop.address + " " + data.myShop.addressDetail}</Text>
 
       <View style={styles.textContainer}>
        <Text style={styles.title}>사업자등록증을 확인합니다</Text> 

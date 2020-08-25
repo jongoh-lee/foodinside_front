@@ -10,9 +10,9 @@ import ShadowInput from "../../components/Custom/ShadowInput";
 import BasicButton from "../../components/Custom/BasicButton";
 import Modal from "react-native-modal";
 import numInput from "../../hooks/numInput";
-import { useMutation } from "@apollo/react-hooks";
-import { EDIT_PRICE } from "./OwnerQueries";
-import { Caption } from "react-native-paper";
+import { useMutation, useQuery } from "@apollo/react-hooks";
+import { EDIT_PRICE, MY_CALENDAR } from "./OwnerQueries";
+import Loader from "../../components/Custom/Loader";
 
 LocaleConfig.locales['fr'] = {
   monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
@@ -23,68 +23,90 @@ LocaleConfig.locales['fr'] = {
 };
 LocaleConfig.defaultLocale = 'fr';
 
-const calendar = [
+const price = [
 {
   id: 'sodifj1',
   dateString: "2020-08-18",
-  priceState: "100000",
+  perDay: 100000,
+  isSelf: false,
+  off: false
 },
 {
   id: 'sodifj2',
   dateString: "2020-08-19",
-  priceState: "110000",
+  perDay: 110000,
+  isSelf: false,
+  off: false
 },
 {
   id: 'sodifj3',
   dateString: "2020-08-20",
-  priceState: "120000",
+  perDay: 120000,
+  isSelf: false,
+  off: false
 },
 {
   id: 'sodifj4',
   dateString: '2020-08-21',
-  priceState: "self",
+  perDay: null,
+  isSelf: true,
+  off: false
 },
 {
   id: 'sodifj5',
   dateString: '2020-08-22',
-  priceState: "self",
+  perDay: null,
+  isSelf: true,
+  off: false
 },
 {
   id: 'sodifj6',
   dateString: '2020-08-23',
-  priceState: "off",
+  perDay: null,
+  isSelf: true,
+  off: false
 },
 {
   id: 'sodifj7',
   dateString: '2020-08-24',
-  priceState: "off",
+  perDay: null,
+  isSelf: false,
+  off: true
 },]
 
 export default () => {
-  const [ priceProp, setPriceProp ] = React.useState([...calendar]);
+  const { data, loading: loadingProp, error } = useQuery(MY_CALENDAR,{
+    fetchPolicy: "network-only"
+  })
+  
+  if(loadingProp) return <Loader />
+  if(error) return console.log("달력 보이기 에러",error);
+  
+  const [loading, setLoading] = React.useState(loadingProp);
+  const [ priceProp, setPriceProp ] = React.useState([data?.myCalendar]);
+  
   // price modal
   const [priceModal, setPriceModal] = React.useState(false);
   const priceInput = numInput('');
-  // 선택된 날짜
+  const [editPriceMutation] = useMutation(EDIT_PRICE)
 
   // 가져온 데이터와 가곡된 데이터 구분
   let _markedDates = priceProp.reduce(
     (markedDates, date) => {
       var dateString = date.dateString;
-      markedDates[dateString] = {id: date.id, priceState: date.priceState, active: false };
+      markedDates[dateString] = {id: date.id, perDay: date.perDay, isSelf : date.isSelf, off: date.off, active: false };
       return markedDates
     }, {}
-  );
+  )
   
-  const [ markedDates, setMarkedDates ] = React.useState(_markedDates);
   //가공된 데이터
+  const [ markedDates, setMarkedDates ] = React.useState(_markedDates);
+
   //update list 
   const [updateList, setUpdateList] = React.useState([]);
 
   //create list 
   const [createList, setCreateList] = React.useState([]);
-
-  const [selected, setSelected] = React.useState([]);
 
   //오늘 today
   let now = new Date()
@@ -92,19 +114,61 @@ export default () => {
   let dd = now.getDate();
   const today = `${[now.getFullYear(), (mm>9 ? '' : '0') + mm, (dd>9 ? '' : '0') + dd].join('')}`
 
+
   // 이 함수는 받아온 리스트 전체를 바꿉니다. 때문에 크기를 비교함에 있어 어려움이 예상 됩니다.*/
   const onPressDate = ( day ) => {
-    if(selected.includes(day.dateString)){
-      setSelected(selected.filter(el => el !== day.dateString));
-
+    let _markedDates = {};
+    if(markedDates[day]){
+      Object.assign(_markedDates, { [day] : { id: markedDates[day].id, perDay: markedDates[day].perDay, isSelf : markedDates[day].isSelf, off: markedDates[day].off,  active: !markedDates[day].active }})
+      setUpdateList(updateList.concat({}))
+      setMarkedDates({...markedDates, ..._markedDates})
     }else{
-      setSelected([...selected, day.dateString]);
+      setMarkedDates({...markedDates, [day] : {active: true}})
     }
   }
-  console.log(selected)
-
+  
   const onPressOff = async () => {
-    setSelected([]);
+    setLoading(true);
+    let _createList = [];
+    let _updateList = [];
+    Object.entries(markedDates).map(
+      ([key, value]) => {
+        if(value.active){
+          if(value.id){
+            return _updateList.concat({
+              id: value.id,
+              dateString: key,
+              isSelf: false,
+              off:true,
+              operDay: null
+            });
+          }else{
+            return _createList.concat({
+              dateString: key,
+              isSelf: false,
+              off:true,
+              operDay: null
+            });
+          }
+        }
+      }
+    );
+    console.log(_updateList);
+    console.log(_createList);
+    try {
+      const {
+        data : { editPrice }
+      } = await editPriceMutation({
+        variables:{
+          updateList: _updateList,
+          createList: _createList
+        }
+      });
+      if ( editPrice )
+      setLoading(false);
+    }catch(e){
+      console.log("예약 불가 에러:",e);
+    }
   }
 
   const onPressSelf = () => {
@@ -173,11 +237,10 @@ export default () => {
     setMarkedDates({ ...markedDates, ..._markedDates });
   }
 
-
   return(
     <>
     <View style={styles.container}>
-
+      <View style={ loading? {width:'100%',height:'100%', position:'absolute', backgroundColor:"rgba(255, 255, 255, .5)", zIndex:100} : null}/>
       <CalendarList
         // 디자인
         monthFormat={`${'yyyy년'}  ${'MM월'}`}
@@ -191,17 +254,15 @@ export default () => {
         pagingEnabled={false}
         horizontal={false}
 
-        //함수
-        onDayPress={onPressDate}
-
         //달력 값
         minDate={() => today.dateString}
         pastScrollRange={1}
         futureScrollRange={1}
         markingType={'period'}
+
         markedDates={markedDates}
         //날짜 디자인
-        dayComponent={({date, marking, onPress}) => <DayComponent date={date} marking={marking} today={today} onPress={onPress}/>}
+        dayComponent={({date, marking}) => <DayComponent date={date} today={today} marking={marking} onPressDate={onPressDate} />}
       />
 
       <LinearGradient style={styles.priceSet} colors={['rgba(255, 255, 255, .2)','rgba(255, 255, 255, .7)', 'rgb(255, 255, 255)']}>
@@ -246,7 +307,6 @@ const styles = StyleSheet.create({
   container:{
     flex:1
   },
-  
   //가격 설정 바
   priceSet:{
     position:"absolute",
