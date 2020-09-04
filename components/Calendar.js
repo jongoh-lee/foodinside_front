@@ -11,7 +11,10 @@ LocaleConfig.locales['fr'] = {
 };
 LocaleConfig.defaultLocale = 'fr';
 
-export default ({ horizontal=false, calendarWidth=constants.width}) => {
+
+
+
+export default () => {
   return (
     <CalendarList 
     theme={{
@@ -24,11 +27,10 @@ export default ({ horizontal=false, calendarWidth=constants.width}) => {
     maxDate={'2020-12-31'} 
     pastScrollRange={4}
     futureScrollRange={5}
-    calendarWidth={calendarWidth}
-    horizontal={horizontal}
+    calendarWidth={constants.width}
+    horizontal={true}
     pagingEnabled={false}
     calendarHeight={400}
     onDayPress={(e) => console.log(e)}
-    dayComponent={ <dayComponent />}
     />
 )};

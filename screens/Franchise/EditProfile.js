@@ -2,6 +2,7 @@ import * as React from "react";
 import { TouchableWithoutFeedback, ScrollView } from "react-native-gesture-handler";
 import {StyleSheet, View, Text, Image, SafeAreaView} from "react-native";
 import constants from "../../constants";
+import axios from "axios";
 import useInput from "../../hooks/useInput";
 import numInput from "../../hooks/numInput";
 import ShadowInput from "../../components/Custom/ShadowInput";
@@ -19,18 +20,35 @@ export default ({ navigation, route }) => {
   const menuNameInput = useInput(route.params.myProfile.menuName);
   const salePriceInput = numInput(String(route.params.myProfile.salePrice));
   const [classification, setClassification] = React.useState(route.params.myProfile.classification);
-  const onSelect = (photo) => {
-    setImage(photo)
+  const onSelect = (image) => {
+    setImage(image.photo)
   };
   const [editProfileMutation] = useMutation(EDIT_PROFILE)
   const handleSubmit = async () => {
     try {
       setLoading(true);
+
+      const formData = new FormData();
+
+      formData.append('file',{
+        name: image.filename,
+        type: "image/jpeg",
+        uri: image.uri
+      });
+
+      const {
+        data: { location }
+      } = await axios.post("http://4de8c1e95ca3.ngrok.io/api/upload", formData, {
+        headers: {
+          "content-type": "multipart/form-data"
+        }
+      });
+
       const {
         data: { editProfile } 
       } = await editProfileMutation({
         variables:{
-          menuImage: image.photo? image.photo.uri : image, 
+          menuImage: location[0].url,
           foodGuide: conceptInput.value, 
           career: careerInput.value, 
           contact: String(contactInput.value),
@@ -59,7 +77,7 @@ export default ({ navigation, route }) => {
         <Text style={styles.title}>대표 메뉴</Text>
       </View>
       <TouchableWithoutFeedback style={styles.imageInput} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelect})}>
-        <Image style={styles.image} source={image.photo? {uri:image.photo.uri} : {uri: image}}/>
+        <Image style={styles.image} source={{uri:image.uri}}/>
       </TouchableWithoutFeedback>
 
       <View style={styles.action}>

@@ -30,6 +30,11 @@ export const OWNER_FRAGMENT = gql`
         type
         url
     }
+    calendar{
+      id
+      dateString
+      priceState
+    }
     facility{
         id
         size_25
@@ -219,27 +224,30 @@ export const PROFILE_FRAGMENT = gql`
         firstName
         lastName
     }
+    postsCount
+    myPosts
     posts{
+      id
+      tasting
+      isSelf
+      isLiked
+      likeCount
+      user{
         id
-        tasting
+        username
+        avatar
         isSelf
-        user{
-          id
-          username
-          avatar
-        }
-        profile{
-          id
-        }
-        #1장만 가져와야 함
-        files{
-          id
-          url
-        }
+      }
+      files{
+        id
+        url
+      }
+      profile{
+        id
+      }
     }
   }
 `;
-
 
 export const USER_FRAGMENT = gql`
   fragment UserParts on User {
@@ -253,14 +261,19 @@ export const USER_FRAGMENT = gql`
     followingCount
     postsCount
     followersCount
+    isSelf
+    isFollowing
     posts{
       id
       tasting
       isSelf
+      isLiked
+      likeCount
       user{
         id
         username
         avatar
+        isSelf
       }
       files{
         id
@@ -269,6 +282,29 @@ export const USER_FRAGMENT = gql`
       profile{
         id
       }
+    }
+  }
+`;
+
+export const POST_FRAGMENT = gql`
+  fragment PostParts on Post {
+    id
+    tasting
+    isSelf
+    isLiked
+    likeCount
+    user{
+      id
+      username
+      avatar
+      isSelf
+    }
+    files{
+      id
+      url
+    }
+    profile{
+      id
     }
   }
 `;

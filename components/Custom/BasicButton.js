@@ -1,6 +1,5 @@
-import { TouchableOpacity } from "react-native-gesture-handler";
 import * as React from "react";
-import {StyleSheet, Text, ActivityIndicator, View } from "react-native";
+import {StyleSheet, Text, ActivityIndicator, View, TouchableOpacity } from "react-native";
 import PropTypes from "prop-types";
 
 const styles=StyleSheet.create({

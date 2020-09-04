@@ -13,6 +13,6 @@ const styles = StyleSheet.create({
 
 export default () => (
   <View style={styles.constainer}>
-    <ActivityIndicator color="#666"/>
+    <ActivityIndicator color={"#05e6f4"} size={"large"}/>
   </View>
 );

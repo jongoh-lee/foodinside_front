@@ -1,5 +1,5 @@
 import gql from "graphql-tag";
-import { PROFILE_FRAGMENT } from "../../fragments";
+import { PROFILE_FRAGMENT, OWNER_FRAGMENT } from "../../fragments";
 
 export const CREATE_PROFILE = gql`
     mutation createProfile($menuImage:String!, $menuName:String!, $salePrice:Int!, $foodGuide:String!, $career:String!, $contact:String!, $profileState:Int!, $classification:String!) {
@@ -96,3 +96,12 @@ export const MY_PROFILE = gql`
     }
     ${PROFILE_FRAGMENT}
 `;
+
+export const SEE_FULL_SHOP = gql`
+    query seeFullShop($id: String!){
+        seeFullShop(id: $id){
+            ...OwnerParts
+        }
+    }
+    ${OWNER_FRAGMENT}
+`

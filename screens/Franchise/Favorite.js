@@ -1,6 +1,6 @@
 import React from "react";
 import {View, StyleSheet} from "react-native";
-import ShopList from "../../components/Franchise/ShopList";
+import ShopCard from "../../components/Franchise/ShopCard";
 import { ScrollView } from "react-native-gesture-handler";
 
 const styles = StyleSheet.create({
@@ -31,7 +31,7 @@ export default () => (
   <View style={styles.container}>
     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{padding:10}} >
       {listings.map((listing) => (
-        <ShopList key={listing.id} listing={listing} />
+        <ShopCard key={listing.id} listing={listing} />
       ))}
     </ScrollView>
   </View>

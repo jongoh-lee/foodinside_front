@@ -1,6 +1,7 @@
 import * as React from "react";
 import { TouchableWithoutFeedback, ScrollView } from "react-native-gesture-handler";
 import {StyleSheet, View, Text, Image,} from "react-native";
+import axios from "axios";
 import constants from "../../constants";
 import { AntDesign } from '@expo/vector-icons'; 
 import useInput from "../../hooks/useInput";
@@ -26,8 +27,8 @@ export default ({ navigation, route }) => {
   const menuNameInput = useInput("");
   const salePriceInput = numInput("");
   const [classification, setClassification] = React.useState('일반');
-  const onSelect = (photo) => {
-    setImage(photo)
+  const onSelect = (image) => {
+    setImage(image.photo)
   };
   const [createProfileMutation] = useMutation(CREATE_PROFILE, {
     update(cache, { data: { createProfile } }) {
@@ -40,11 +41,28 @@ export default ({ navigation, route }) => {
   const handleSubmit = async () => {
     try {
       setLoading(true);
+
+      const formData = new FormData();
+
+      formData.append('file',{
+        name: image.filename,
+        type: "image/jpeg",
+        uri: image.uri
+      });
+
+      const {
+        data: { location }
+      } = await axios.post("http://4de8c1e95ca3.ngrok.io/api/upload", formData, {
+        headers: {
+          "content-type": "multipart/form-data"
+        }
+      });
+
       const {
         data: { createProfile } 
       } = await createProfileMutation({
         variables:{
-          menuImage: image? image.photo.uri: null, 
+          menuImage: location[0].url, 
           foodGuide: conceptInput.value, 
           career: careerInput.value, 
           contact: String(contactInput.value),
@@ -73,7 +91,7 @@ export default ({ navigation, route }) => {
       </View>
 
       <TouchableWithoutFeedback style={styles.imageInput} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelect})}>
-        {image === null? <AntDesign name="plus" size={30} color="black" /> : <Image style={styles.image} source={{uri: image.photo.uri}}/>}
+        {image === null? <AntDesign name="plus" size={30} color="black" /> : <Image style={styles.image} source={{uri: image.uri}}/>}
       </TouchableWithoutFeedback>
         
       <View style={styles.action}>

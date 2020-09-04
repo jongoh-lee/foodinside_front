@@ -4,6 +4,7 @@ import constants from "../../constants";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { Caption } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import DangolBar from "../Custom/DangolBar";
 
 const WIDTH = constants.width - 20;
 const CARD_WIDTH = constants.width * 0.7;
@@ -117,9 +118,7 @@ const styles = StyleSheet.create({
 })
 
 // 내 정보 중 단골 업체 정보와 해당 업체의 단골/ 포스팅 수 + 내 포스팅 수 + 좋아요 수 + 적립 암호화폐
-export default ({ id, mainImage, submenus, profileName, sector, mainMenu}) => {
-    const { menuName, menuImage, fullPrice, salePrice } = mainMenu;
-    const [logoBtn, setLogoBtn] = React.useState(false);
+export default ({ id, profileName, sector, mainImage, menuName, menuImage, fullPrice, salePrice, isDangol, dangolCount, isSelf, postsCount, submenus }) => {
     const navigation = useNavigation();
     return (
         <ImageBackground 
@@ -132,10 +131,10 @@ export default ({ id, mainImage, submenus, profileName, sector, mainMenu}) => {
             <View style={styles.header}>
                 <TouchableOpacity 
                     onPress={()=> navigation.navigate("프로필 보기", {seeFullProfile : {
-                        id: "ckdra85bd1gjw0a3557xq2hnc",
-                        profileName: "큐슈 고쿠리",
-                        sector: "일식",
-                        isSelf:false
+                        id,
+                        profileName,
+                        sector,
+                        isSelf
                     }})}>
                     <Text style={styles.headerTitle} numberOfLines={1} ellipsizeMode={"middle"}>{profileName}<Text style={styles.sector}>  {sector}</Text></Text>
                 </TouchableOpacity>
@@ -169,35 +168,7 @@ export default ({ id, mainImage, submenus, profileName, sector, mainMenu}) => {
             </View>
             
             <View style={{flex:1}}>
-                <View style={styles.cardGrid}>
-                    <View style={styles.cardInfo}>
-                        <Text style={styles.cardInfoText}>단골 수</Text>
-                        <Text style={styles.cardInfoNum}>4,890</Text>
-                    </View>
-                    <View style={styles.cardInfo}>
-                        <Text style={styles.cardInfoText}>포스트</Text>
-                        <Text style={styles.cardInfoNum}>5,535</Text>
-                    </View>
-                    <View style={styles.cardInfo}>
-                        <Text style={styles.cardInfoText}>내 리뷰</Text>
-                        <Text style={styles.cardInfoNum}>13</Text>
-                    </View>
-                    <View style={styles.cardInfo}>
-                        <Text style={styles.cardInfoText}>암호화폐</Text>
-                        <Text style={styles.cardInfoNum}>1,400</Text>
-                    </View>
-                    <View style={styles.cardInfo}>
-                        <TouchableOpacity style={styles.logoRow} onPress={()=>setLogoBtn(!logoBtn)}>
-                          {logoBtn? <>
-                          <Image style={styles.dangolLogo_checked} source={require('../../assets/Icons/cloche.png')} />
-                          <Text style={styles.logoText_checked}>단골 중</Text>
-                          </> : <>
-                          <Image style={styles.dangolLogo} source={require('../../assets/Icons/cloche.png')} />
-                          <Text style={styles.logoText}>단골</Text>
-                          </>}
-                        </TouchableOpacity>
-                    </View>
-                </View>
+                <DangolBar id={id} isDangol={isDangol} dangolCount={dangolCount} isSelf={isSelf} postsCount={postsCount} />
             </View>
         </View>
     </ImageBackground>

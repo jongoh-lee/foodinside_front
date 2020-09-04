@@ -59,34 +59,50 @@ export const EDIT_SHOP = gql`
     }
     ${OWNER_FRAGMENT}
 `;
+
 export const MY_CALENDAR = gql`
     query myCalendar{
         myCalendar{
             id
-            price{
+            calendar{
                 id
                 dateString
                 priceState
-            }
+           }
         }
     }
 `;
 
-export const EDIT_PRICE = gql`
+export const EDIT_CALENDAR = gql`
     mutation editCalendar(
-        $updatePrice: UpdatePrice!
-        $createPrice: CreatePrice!
+        $updatePrice: [UpdatePrice]!
+        $createPrice: [CreatePrice]!
+        $deletePrice: [DeletePrice]!
     ){
         editCalendar(
             updatePrice: $updatePrice
             createPrice: $createPrice
+            deletePrice: $deletePrice
         ){
             id
-            price{
+            calendar{
                 id
                 dateString
                 priceState
-            }
+           }
+        }
+    }
+`;
+
+export const COMPLETE_SHOP = gql`
+    mutation completeShopShop(
+        $ownerState: Int!
+    ){
+        completeShop(
+            ownerState: $ownerState
+        ){
+            id
+            ownerState
         }
     }
 `;
@@ -148,7 +164,6 @@ export const COMPLETE_SHOP_REFUND = gql`
     }
 `;
 
-
 export const COMPLETE_SHOP_RULE = gql`
     mutation completeShopRule(
         $checkIn: Int!
@@ -164,19 +179,6 @@ export const COMPLETE_SHOP_RULE = gql`
             checkIn
             checkOut
             minReserve
-        }
-    }
-`;
-
-export const SEE_MYSHOP = gql`
-    mutation seeMyShop(
-        $ownerState: Int!
-    ){
-        seeMyShop(
-            ownerState: $ownerState
-        ){
-            id
-            ownerState
         }
     }
 `;

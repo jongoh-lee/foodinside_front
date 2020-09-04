@@ -1,21 +1,18 @@
 export const profile = {
-    id:"1234",
+    id:"ckdra85bd1gjw0a3557xq2hnc",
     username:"jongohLee",
     region:"",
     isOpen: false,
     profileName: "큐슈 고쿠리",
     sector: "일식",
     mainImage:"https://pgnqdrjultom1827145.cdn.ntruss.com/img/51/ea/51ea7dca83ff797cfbd36c39957bfb6c0bf2f53f7065db799d18575d97d460b1_v1.jpg",
-    mainMenu:{
-        id:"sdsd",
-        menuName:"큐슈 라멘",
-        menuImage: "https://t1.daumcdn.net/cfile/tistory/99E8504C5C0A665834",
-        fullPrice: "8500",
-        salePrice: "7000"
-    },
+    menuName:"큐슈 라멘",
+    menuImage: "https://t1.daumcdn.net/cfile/tistory/99E8504C5C0A665834",
+    fullPrice: "8500",
+    salePrice: "7000",
     submenus:[
         {
-            id:"b123",
+            id: "b123",
             menuName:"큐슈 카라멘",
             menuImage:"https://img.hankyung.com/photo/201903/BF.19132284.1.jpg",
             fullPrice:"8400",
@@ -46,8 +43,10 @@ export const profile = {
     token:10,
     foodGuide:"큐슈 라멘: 초고압 증기 보일러로 한 번에 끓여내는 돈코츠(사골) 스프와 가늘고 곧은 면발이 특징이랍니다. 돈코츠 특유의 냄새가 없어 여성에게 특히 인기입니다. 토핑으로는 챠슈, 김, 아지타마고로 심플합니다. \n\n 큐슈 카라멘: 맵고 자극적인 라멘을 좋아하시는 분에게 적극 추천 합니다. 큐슈 카라멘은 매운맛이 전부가 아니랍니다. 한번 먹으면 입안이 어리할 정도로 맵지만 또한 맛도 있어, 중독자들이 속출할 정도로 인기 있는 먹거리랍니다. ",
     origin:"돼지고기: 독일산 쌀: 국내산 계란: 국내산 육수: 국내산/일본산 혼합",
-    dangol:1930,
-    posts:283,
+    dangolCount:1930,
+    isDangol:true,
+    isSelf:true,
+    postsCount:283,
     comments:325,
     photoReviews:[
         {

@@ -4,6 +4,7 @@ import constants from "../../constants";
 import { ScrollView, TouchableWithoutFeedback, TouchableOpacity } from "react-native-gesture-handler";
 import { Caption } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import DangolBar from "../Custom/DangolBar";
 
 const WIDTH = constants.width - 20;
 const styles = StyleSheet.create({
@@ -139,8 +140,7 @@ const styles = StyleSheet.create({
 })
 
 // 내 정보 중 단골 업체 정보와 해당 업체의 단골/ 포스팅 수 + 내 포스팅 수 + 좋아요 수 + 적립 암호화폐
-export default ({ mainImage, submenus, profileName, sector, mainMenu}) => {
-    const { menuName, menuImage, fullPrice, salePrice } = mainMenu;
+export default ({ id, mainImage, profileName, sector,  menuName, menuImage, fullPrice, salePrice, submenus, members, origin, postsCount, myPosts, career, dangolCount, isDangol, isSelf, }) => {
     const [logoBtn, setLogoBtn] = React.useState(false);
     const navigation = useNavigation();
     return (
@@ -148,20 +148,21 @@ export default ({ mainImage, submenus, profileName, sector, mainMenu}) => {
             <View style={styles.box}>
                 <TouchableOpacity onPress={() => navigation.navigate("프로필 보기", {
                     seeFullProfile:{
-                        id: "ckdra85bd1gjw0a3557xq2hnc",
-                        profileName: "큐슈 고쿠리",
-                        sector: "일식"
+                        id,
+                        profileName,
+                        sector,
+                        isSelf
                     }
                 })}>
                     {/* 헤더 */}
                     <View style={styles.header}>
                         <View style={styles.headerLeft}>
-                            <Image style={styles.mainImage} source={{ uri: mainImage }} />
+                            <Image style={styles.mainImage} source={{ uri: mainImage }}/>
                                 <View>
                                     <View style={styles.titleAlign}>
                                         <Text style={styles.headerTitle} numberOfLines={1} ellipsizeMode={"middle"}>{profileName}<Text style={styles.headerSubtitle}>  {sector}</Text></Text>
                                     </View>
-                                    <Text style={styles.headerSubtitle}>7/15 - 7/21</Text>
+                                    {true? <Text style={styles.headerSubtitle}>7/15 - 7/21</Text> : null}
                                 </View>
                         </View>
 
@@ -195,36 +196,8 @@ export default ({ mainImage, submenus, profileName, sector, mainMenu}) => {
             ))}
             </ScrollView>
             
-                <View style={styles.cardGrid}>
-                    <View style={styles.cardInfo}>
-                        <Text style={styles.cardInfoText}>단골 수</Text>
-                        <Text style={styles.cardInfoNum}>4,890</Text>
-                    </View>
-                    <View style={styles.cardInfo}>
-                        <Text style={styles.cardInfoText}>포스트</Text>
-                        <Text style={styles.cardInfoNum}>5,535</Text>
-                    </View>
-                    <View style={styles.cardInfo}>
-                        <Text style={styles.cardInfoText}>내 리뷰</Text>
-                        <Text style={styles.cardInfoNum}>13</Text>
-                    </View>
-                    <View style={styles.cardInfo}>
-                        <Text style={styles.cardInfoText}>암호화폐</Text>
-                        <Text style={styles.cardInfoNum}>1,400</Text>
-                    </View>
-
-                    <View style={styles.cardInfo}>
-                        <TouchableOpacity style={styles.logoRow} onPress={()=>setLogoBtn(!logoBtn)}>
-                          {logoBtn? <>
-                          <Image style={styles.dangolLogo_checked} source={require('../../assets/Icons/cloche.png')} />
-                          <Text style={styles.logoText_checked}>단골 중</Text>
-                          </> : <>
-                          <Image style={styles.dangolLogo} source={require('../../assets/Icons/cloche.png')} />
-                          <Text style={styles.logoText}>단골</Text>
-                          </>}
-                        </TouchableOpacity>
-                    </View>
-                </View>
+            {/* 단골바 */}
+            <DangolBar id={id} isDangol={isDangol} dangolCount={dangolCount} isSelf={isSelf} postsCount={postsCount} myPosts={myPosts}/>
 
             </View>
         </View>

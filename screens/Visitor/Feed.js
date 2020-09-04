@@ -1,7 +1,7 @@
 import * as React from "react";
 import { StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import Post from "../../components/Visitor/Post";
+import PostComponent from "../../components/Visitor/PostComponent";
 import { posts } from "../../components/Visitor/data";
 import { shopProfile } from "../../components/Franchise/data";
 const styles = StyleSheet.create({
@@ -18,7 +18,7 @@ export default () => {
       <ScrollView
         pinchGestureEnabled={false}
         showsVerticalScrollIndicator={false} >
-        {posts.map((post) => (<Post key={post.id} {...post} />))}
+        {posts.map((post) => (<PostComponent key={post.id} {...post} />))}
       </ScrollView>
     </View>
   );

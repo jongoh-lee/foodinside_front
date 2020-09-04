@@ -10,7 +10,6 @@ import {Feather, MaterialIcons, MaterialCommunityIcons} from '@expo/vector-icons
 import SearchShop from '../screens/Franchise/SearchShop';
 import Favorite from '../screens/Franchise/Favorite';
 import CreateProfile from '../screens/Franchise/CreateProfile';
-import ShopDetail from "../screens/Franchise/ShopDetail";
 
 // nested screens
 import FullProfile from "../screens/Visitor/FullProfile";
@@ -18,6 +17,9 @@ import SeeCreateProfile from "../screens/Franchise/SeeCreateProfile";
 import CompleteProfile from "../screens/Franchise/CompleteProfile";
 import EditProfile from "../screens/Franchise/EditProfile";
 import MyProfile from '../screens/Franchise/MyProfile';
+
+//owner Screen
+import FullShop from "../screens/Franchise/FullShop";
 
 import ChatListFranchise from "../screens/Franchise/ChatListFranchise";
 import ChatListShop from "../screens/Franchise/ChatListShop";
@@ -51,6 +53,7 @@ function SearchStackScreen({navigation}) {
             headerTitle:() => <Logo nav={'공유 음식점'}/>,
             headerTitleAlign:'left'
         }}/>
+        <SearchStack.Screen name="음식점 보기" component={FullShop} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}}/>
     </SearchStack.Navigator>
     );
 }
@@ -91,6 +94,7 @@ function FavoriteStackScreen() {
     return (
     <FavoriteStack.Navigator screenOptions={{cardStyle:{backgroundColor:'#ffffff'}, headerTitleStyle:{fontSize:20, fontWeight:'bold'}, headerShown:true}}>
       <FavoriteStack.Screen name="즐겨찾기" component={Favorite} />
+      <FavoriteStack.Screen name="음식점 보기" component={FullShop} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}}/>
     </FavoriteStack.Navigator>
   );
 }
@@ -109,7 +113,7 @@ function ProfileStackScreen() {
         headerTitleAlign:"center",
         headerLeft:()=> <BackArrow />,
       }} />
-      <ProfileStack.Screen name="프로필 보기" component={FullProfile}/>
+      <ProfileStack.Screen name="프로필 보기" component={FullProfile} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}} />
     </ProfileStack.Navigator>
   );
 }
@@ -156,7 +160,6 @@ export default () => {
   return (
     <FranchiseStack.Navigator screenOptions={{headerShown:false}}>
       <FranchiseStack.Screen name='Tabs' component={TabsScreen}/>
-      <FranchiseStack.Screen name='ShopDetail' component={ShopDetail} options={{cardStyle:{backgroundColor:'transparent'}}}/>
       <FranchiseStack.Screen name='채팅 내용' component={Chat} options={
         ({route}) => ({
         headerShown:true,

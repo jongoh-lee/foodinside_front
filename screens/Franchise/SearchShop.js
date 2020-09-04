@@ -2,7 +2,7 @@ import React from "react";
 import Loader from "../../components/Custom/Loader";
 import {View, StyleSheet} from "react-native";
 
-import ShopList from "../../components/Franchise/ShopList";
+import ShopCard from "../../components/Franchise/ShopCard";
 import SearchBar from "../../components/Custom/SearchBar";
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -62,12 +62,12 @@ const listings = [
 export default () => (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{padding:10}}>
-      <SearchBar/>
-      <View style={styles.container}>
-        {listings.map((listing) => (
-          <ShopList key={listing.id} listing={ listing } />
-          ))}
-      </View>
+        <SearchBar/>
+        <View style={styles.container}>
+          {listings.map((listing) => (
+            <ShopCard key={listing.id} listing={ listing } />
+            ))}
+        </View>
       </ScrollView>
     </View>
 );

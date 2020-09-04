@@ -22,31 +22,23 @@ const styles = StyleSheet.create({
     },
 })
 
-export default ( { isSelf, posts} ) => {
+
+
+export default ({ id, posts }) => {
     const navigation = useNavigation()
     return (
-    <View style={styles.container}>
-        {isSelf? (
-            <TouchableOpacity style={styles.grid}>
-                <View style={styles.upload}>
-                    <Text>음식점 홍보하기</Text>
-                </View>
-            </TouchableOpacity>
-        ):(
-            <TouchableOpacity style={styles.grid} onPress={() => navigation.navigate("SelectUpload", {id:id})}>
-                <View style={styles.upload}>
-                    <Text>리뷰 작성하기</Text>
-                </View>
-            </TouchableOpacity>
-        )}
-       
-        {posts && posts.map( (post, index) => (
-            <TouchableOpacity key={post.id} onPress={() => navigation.navigate("포토리뷰", {
-                posts: posts,
-                index: index
+    <>
+        {posts.map((post, index) => (
+            <TouchableOpacity key={post.id} onPress={() => navigation.navigate("PostList", {
+                post:{
+                    profileId: id,
+                    postId: post.id,
+                    thumnail: posts,
+                    index: index
+                }
             })} >
                 <Image style={styles.grid} source={{uri:post.files[0].url}}/>
             </TouchableOpacity>
         ))}
-    </View>
+    </>
 )}

@@ -5,8 +5,8 @@ import Swiper from 'react-native-swiper';
 import { MaterialCommunityIcons, Feather, AntDesign } from '@expo/vector-icons'; 
 import { Caption } from "react-native-paper";
 import Modal from "react-native-modal";
-import { useMutation } from "@apollo/react-hooks";
-import { DELETE_POST } from "../../screens/Visitor/VisitorQueries";
+import { useMutation, useQuery } from "@apollo/react-hooks";
+import { EDIT_USER_POST, EDIT_PROFILE_POST, TOGGLE_LIKE, SEE_FULL_POST } from "../../screens/Visitor/VisitorQueries";
 import { useNavigation } from "@react-navigation/native";
 
 const styles = StyleSheet.create({
@@ -102,31 +102,101 @@ const styles = StyleSheet.create({
 },
 });
 
-export default ({ id, user, files, tasting, isSelf, profile,}) => {
-  const { username, avatar} = user;
+export default ({ id : postId, user, files, tasting, isSelf, isLiked:isLikedProp, likeCount:likeCountProp, profile, profileId}) => {
+  
+  
+  const { data, error, loading} = useQuery(SEE_FULL_POST,{
+    variables:{
+      id: postId
+    },
+  });
+  
+  const { username, avatar } = user;
+  const [isLiked, setIsLiked] = React.useState(data?.seeFullPost.isLiked);
+  const [likeCount, setLikeCount] = React.useState(data?.seeFullPost.likeCount);
   const [ images, setImages ] = React.useState(files);
   const [postModal, setPostModal] = React.useState(false);
-  const [deletePostMutation] = useMutation(DELETE_POST,{
+  
+  const [toggleLikeMutation] = useMutation(TOGGLE_LIKE,{
+    variables:{
+      postId: postId,
+      profileId: profile.id
+    },
+    refetchQueries:[`seeFullProfile`, `me`]
+    //update(cache, {data: { toggleLike }}) {
+    //  cache.writeQuery({
+    //    query: SEE_FULL_POST,
+    //    data: { seeFullPost: {
+    //      ...toggleLike
+    //    } },
+    //  });
+    //}
+  })
+
+  const onPressLike = async() =>{
+    if( isLiked === true){
+      setLikeCount(likeCount - 1)
+    }else{
+      setLikeCount(likeCount + 1)
+    }
+    setIsLiked(!isLiked)
+    try{
+      await toggleLikeMutation();
+    }catch(e){
+      console.log("좋아요 에러",e);
+    }
+  }
+
+  //모달
+  const [editProfilePostMutation] = useMutation(EDIT_PROFILE_POST,{
     refetchQueries: [`me`]
   });
+
+  const [editUserPostMutation] = useMutation(EDIT_USER_POST,{
+    refetchQueries: [`seeFullProfile`]
+  });
+
   const navigation = useNavigation();
 
-  const handleDeletePost = async () => {
+  const deleteProfilePost = async () => {
+    let DELETE = "DELETE";
     setPostModal(false);
     try {
       const { 
-        data : { deletePost } 
-      } = await deletePostMutation({
+        data : { editProfilePost } 
+      } = await editProfilePostMutation({
         variables:{
-          profileId: profile.id,
-          postId: id,
+          profileId: profileId,
+          postId: postId,
+          action: DELETE
         }
       })
-      if(deletePost){
+      if(editProfilePost){
         navigation.goBack();
       }
     } catch(e){
-      console.log("포스트 삭제 에러", e);
+      console.log("포스트 삭제 in 프로필 에러", e);
+    }
+  }
+
+  const deleteUserPost = async () => {
+    let DELETE = "DELETE";
+    setPostModal(false);
+    try {
+      const { 
+        data : { editUserPost } 
+      } = await editUserPostMutation({
+        variables:{
+          profileId: profileId,
+          postId: postId,
+          action: DELETE
+        }
+      })
+      if(editUserPost){
+        navigation.goBack();
+      }
+    } catch(e){
+      console.log("포스트 삭제 in 사용자 에러", e);
     }
   }
 
@@ -135,12 +205,16 @@ export default ({ id, user, files, tasting, isSelf, profile,}) => {
       
       {/* 헤더 */}
       <View style={styles.headerBar}>
-        <View style={styles.headerLeft}>
-          <Image style={styles.avatar} source={{ uri: avatar }} />
-          <View>
-            <Text style={styles.username}>{username}</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("SeeUser", {
+          user:{ username, isSelf }
+        })}>
+          <View style={styles.headerLeft}>
+            <Image style={styles.avatar} source={{ uri: avatar }} />
+            <View>
+              <Text style={styles.username}>{username}</Text>
+            </View>
           </View>
-        </View>
+        </TouchableOpacity>
 
         <TouchableOpacity onPress={() => setPostModal(true)}>
           <Feather name="more-vertical" size={20} style={{padding:5}} color={'rgba(0, 0, 0, .7)'}/>
@@ -158,8 +232,14 @@ export default ({ id, user, files, tasting, isSelf, profile,}) => {
       <View style={styles.postInfo}>
         <View style={styles.snsBar}>
           <View style={styles.snsButton}>
-            <MaterialCommunityIcons name="heart-outline" size={30} style={{color:'rgba(0, 0, 0, .7)'}} />
-            <Caption>{12}개</Caption>
+            <TouchableOpacity onPress={onPressLike}>
+              {isLiked? (
+                  <MaterialCommunityIcons name="heart" size={30} style={{color:'red'}} /> 
+              ):(
+                  <MaterialCommunityIcons name="heart-outline" size={30} style={{color:'rgba(0, 0, 0, .7)'}} /> 
+              )}
+            </TouchableOpacity>
+            <Caption>{likeCount}개</Caption>
           </View>
 
           <View style={styles.snsButton}>
@@ -198,7 +278,7 @@ export default ({ id, user, files, tasting, isSelf, profile,}) => {
                   style: 'cancel',
                 },
                 {text: '확인',
-                onPress: () => handleDeletePost(),
+                onPress: () => profileId? deleteProfilePost() : deleteUserPost()
               },
               ],
           {cancelable: true},

@@ -6,7 +6,6 @@ import constants from "../../constants";
 
 const textChanger = {
     self : "직접 영업",
-    off: "예약 불가",
     undefined: " "
 }
 
@@ -16,7 +15,6 @@ export default ({date, today, marking, onPress }) => {
     const { priceState, active } = marking;
     const dateColor = date.dateString.replace(/[^0-9]/g,'') - today;
     //배경색 설정
-    
     return (
         <TouchableOpacity onPress={() => onPress(date, marking)} disabled={dateColor < 0} >
           <View style={active? styles.active : styles.inactive}>

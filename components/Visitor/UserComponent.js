@@ -1,37 +1,59 @@
 import { ScrollView, TouchableWithoutFeedback } from "react-native-gesture-handler";
 import * as React from "react";
-import { Image, StyleSheet, Text, View, RefreshControl, TouchableOpacity, Alert } from "react-native";
+import { Image, StyleSheet, Text, View, RefreshControl, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
 import { Avatar, Title, Caption } from "react-native-paper";
 import constants from "../../constants";
 import { Feather, MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
-import Modal from "react-native-modal";
-import { useQuery } from "@apollo/react-hooks";
 import Loader from "../../components/Custom/Loader";
-import { ME } from "./VisitorQueries";
-import { useLogOut } from "../../AuthContext";
+import PostHorizontal from "../Franchise/PostHorizontal";
+import { useMutation } from "@apollo/react-hooks";
+import { FOLLOW, UNFOLLOW } from "../../screens/Visitor/VisitorQueries";
 
-export default ({  }) => {
-    const [visible, setVisible ] = React.useState(false);
-    
-    navigation.setOptions({
-        headerRight:() => (
-            <TouchableOpacity style={{marginHorizontal:10}} onPress={() => setVisible(!visible)} >
-            <Feather
-            name="more-vertical"
-            size={24}
-            color={'black'}
-            style={{paddingHorizontal:5}}
-            />
-          </TouchableOpacity>
-        )
+export default ({ id, avatar, username, email, isSelf ,dangolCount, followersCount, followingCount, postsCount, posts, isFollowing }) => {
+    const [toggleFollow, setToggleFollow] = React.useState(isFollowing);
+    const [followerNumber, setFollowerNumber] = React.useState(followersCount);
+    const [followMutation, {loading: followLoading}] = useMutation(FOLLOW, {
+        variables:{
+            id: id
+        },
+        refetchQueries:[`me`]
     });
-    if(loading) return <Loader/>;
-    if(error) return console.log(error);
-    console.log(data)
+    const [unfollowMutation,{loading: unfollowLoading}] = useMutation(UNFOLLOW, {
+        variables:{
+            id: id
+        },
+        refetchQueries:[`me`]
+    });
+    
+    const onPressFollow = async () => {
+        try{
+            const { data: { follow } } = await followMutation();
+            if(!follow){
+                console.log("팔로우 에러")
+            }
+        }catch(e){
+            console.log(e);
+        }finally{
+            setToggleFollow(!toggleFollow)
+            setFollowerNumber(followerNumber + 1);
+        }
+    }
+    
+    const onPressUnfollow = async () => {
+        try{
+            const { data: { unfollow } } = await unfollowMutation();
+            if(!unfollow){
+                console.log("언팔로우 에러")
+            }
+        }catch(e){
+            console.log(e);
+        }finally{
+            setToggleFollow(!toggleFollow)
+            setFollowerNumber(followerNumber - 1);
+        }
+    }
 
     return (
-    <View style={{backgroundColor:"#ffffff", flex:1}}>
-    {data?.me && 
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow:1}}>
             <View style={styles.container}>
 
@@ -39,15 +61,24 @@ export default ({  }) => {
                 <View style={styles.box}>
                     <View style={{flex:2, alignItems:"flex-end", paddingRight:30}}>
                         <Avatar.Image
-                        source={data.me.avatar? {uri:data.me.avatar} : require('../../assets/Icons/avatarBasic.png')}
+                        source={avatar? {uri:avatar} : require('../../assets/Icons/avatarBasic.png')}
                         size={60}
                         backgroundColor={'#ffffff'}
                         />
                     </View>
                     <View style={{flex:3}}>
                         <View style={{flex:1, justifyContent:"center"}}>
-                            <Title>{data.me.username}</Title>
-                            <Caption>팔로잉 : {data.me.followingCount}</Caption>
+                            <Text style={{fontSize:16, paddingBottom:5}}>{username}</Text>
+                            {isSelf? <Caption>팔로잉 : {followingCount}</Caption> : (
+                                toggleFollow? ( 
+                                <TouchableOpacity onPress={onPressUnfollow} style={{width:100, borderWidth:1, borderColor:"#05e6f4", alignItems:"center", padding:4, borderRadius:5}}>
+                                    {unfollowLoading? <ActivityIndicator color={"#05e6f4"} /> : <Text style={{color:"#05e6f4"}}>팔로잉</Text>}
+                                </TouchableOpacity> 
+                                ) : (
+                                <TouchableOpacity onPress={onPressFollow} loading={followLoading} style={{width:100, borderWidth:1, borderColor:"#ffffff", backgroundColor: "#05e6f4", alignItems:"center", padding:4, borderRadius:5}}>
+                                    {followLoading? <ActivityIndicator color={"white"} /> : <Text style={{color:"#ffffff"}}>팔로우</Text>}
+                                </TouchableOpacity>)
+                            )}
                         </View>
                     </View>
                 </View>
@@ -55,88 +86,34 @@ export default ({  }) => {
                 {/* 대쉬보드 */}
                 <View style={styles.dashBoard}>
                     <View style={styles.inner}>
-                        <Text style={styles.number}>{data.me.dangolCount}</Text>
+                        <Text style={styles.number}>{dangolCount}</Text>
                         <Text style={styles.title}>단골</Text>
                     </View>
                     <View style={styles.inner}>
-                        <Text style={styles.number}>{data.me.postsCount}</Text>
+                        <Text style={styles.number}>{postsCount}</Text>
                         <Text style={styles.title}>포스트</Text>
                     </View>
                     <View style={styles.inner}>
-                        <Text style={styles.number}>{'0'}</Text>
+                        <Text style={styles.number}>{0}</Text>
                         <Text style={styles.title}>암호화폐</Text>
                     </View>
                     <View style={styles.inner}>
-                        <Text style={styles.number}>{data.me.followersCount}</Text>
+                        <Text style={styles.number}>{followerNumber}</Text>
                         <Text style={styles.title}>팔로워</Text>
                     </View>
                 </View>
             </View>
 
             {/* 리뷰 리스트 */}
-                {data?.me?.posts? (
+                {posts.length > 0 ? (
                     <View style={{flex:1, backgroundColor:"#ffffff", flexDirection:"row", flexWrap:"wrap"}}>
-                        {data.me.posts.map( (post, index) => (
-                            <TouchableOpacity key={post.id} onPress={() => navigation.navigate("포토리뷰", {
-                                posts: data.me.posts,
-                                index: index
-                            })} >
-                                <Image style={styles.grid} source={{uri:post.files[0].url}}/>
-                            </TouchableOpacity>
-                        ))}
+                        <PostHorizontal id={null} posts={posts}/>
                     </View>
                 ) : (
                     <View style={{flex:1, backgroundColor:"#ffffff", justifyContent:"center", alignItems:"center"}}>
                         <Caption>포토 리뷰를 작성해 주세요</Caption>
                     </View>)}
-        </ScrollView>}
-
-        <Modal
-        isVisible={visible}
-        onBackdropPress={() => setVisible(false)}
-        onSwipeComplete={() => setVisible(false)}
-        onBackButtonPress={() => setVisible(false)}
-        swipeDirection={'down'}
-        style={styles.modal}
-        backdropOpacity={.4}
-        >
-            <View style={styles.modalContent_top}>
-                <MaterialCommunityIcons name="chevron-down" size={26} color="#666" style={{alignSelf:"center"}} />
-                <TouchableOpacity style={styles.modalList} onPress={()=> (
-                    navigation.navigate('정보수정', {
-                        username : data.me.username,
-                        avatar: data.me.avatar,
-                        email: data.me.email,
-                    }),
-                    setVisible(false))}>
-                    <MaterialCommunityIcons name="account-edit" size={24} color="#666" /><Text style={styles.modalText}>정보수정</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.modalList} onPress={() => Alert.alert('확인','로그아웃 하시겠습니까?',
-                      [
-                        {
-                          text: '취소',
-                          style: 'cancel',
-                        },
-                        {text: '확인',
-                        onPress: () => logOut(),
-                      },
-                      ],
-                      {cancelable: true},
-                      )}>
-                    <AntDesign name="logout" size={24} color="#666"/><Text style={styles.modalText}>로그아웃</Text>
-                </TouchableOpacity>
-                <TouchableWithoutFeedback style={styles.modalList}>
-                    <AntDesign name="deleteuser" size={24} color="red" /><Text style={styles.modalText_red}>탈퇴하기</Text>
-                </TouchableWithoutFeedback>
-            </View>
-
-            <View style={styles.modalContent_bottom}>
-                <TouchableOpacity style={styles.modalList} onPress={() => setVisible(false)}>
-                    <AntDesign name="back" size={24} color="#666" /><Text style={styles.modalText}>취소</Text>
-                </TouchableOpacity>
-            </View>
-        </Modal>
-    </View>
+        </ScrollView>
     );
   };
 
@@ -155,45 +132,6 @@ const styles = StyleSheet.create({
     },
 
       
-  //modal
-    modal:{
-        justifyContent:"flex-end",
-        margin:0,
-        paddingHorizontal:5
-    },
-    modalContent_top:{
-        backgroundColor: 'white',
-        paddingHorizontal: 22,
-        borderRadius: 15,
-        borderColor: 'rgba(0, 0, 0, 0.1)',
-        paddingBottom:20,
-        marginBottom:10
-    },
-    modalContent_bottom:{
-        backgroundColor: 'white',
-        paddingHorizontal: 22,
-        borderRadius: 15,
-        borderColor: 'rgba(0, 0, 0, 0.1)',
-        paddingVertical:10,
-        marginBottom:10
-    },
-    modalList:{
-        width:'100%',
-        paddingVertical:10,
-        flexDirection:'row',
-        alignItems:"center",
-    },
-    modalText:{
-        fontSize:14,
-        marginLeft:10
-    },
-    modalText_red:{
-        fontSize:14,
-        marginLeft:10,
-        color:'red'
-    },
-
-
     //user Info
     box: {
         flexDirection:'row',

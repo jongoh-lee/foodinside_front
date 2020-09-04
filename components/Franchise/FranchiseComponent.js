@@ -6,19 +6,17 @@ import { useNavigation } from "@react-navigation/native";
 import { Entypo, Feather, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'; 
 
 // screens
-import PhotoReview from "./PhotoReview";
+import PostHorizontal from "./PostHorizontal";
 import OpenInfo from "./OpenInfo";
 import Members from "./Members";
-import DangolButton from "../Custom/DangolButton";
+import DangolBar from "../Custom/DangolBar";
 
 const WIDTH = constants.width - 20;
 
-export default ({ id, isSelf, profileName, sector, token, mainImage, menuName, menuImage, fullPrice, salePrice, foodGuide, origin, submenus, isDangol, dangolCount: dangolCountProps, posts, comments, openInfo, founderImage, career, user, members}) => {
+export default ({ id, isSelf, profileName, sector, token, mainImage, menuName, menuImage, fullPrice, salePrice, foodGuide, origin, submenus, isDangol, dangolCount, postsCount ,posts, myPosts, comments, openInfo, founderImage, career, user, members}) => {
   const [showGuide, setShowGuide] = React.useState(false);
   const [tabName, setTabName] = React.useState('포토리뷰');
-  const [dangolCount, setDangolCount ] = React.useState(dangolCountProps);
   const navigation = useNavigation();
-
   return (
     <>
     <ScrollView 
@@ -81,60 +79,7 @@ export default ({ id, isSelf, profileName, sector, token, mainImage, menuName, m
         </View>
         {/* 단골, 포스트 수, 영업 횟수, 가맹점 수 */}
 
-        {isSelf === true? (
-            <View style={styles.cardGrid}>
-                <View style={styles.cardInfo}>
-                    <Text style={styles.cardInfoText}>단골</Text>
-                    <Text style={styles.cardInfoNum} numberOfLines={1}>{dangolCount}</Text>
-                </View>
-            
-                <View style={styles.cardInfo}>
-                    <Text style={styles.cardInfoText}>포스트</Text>
-                    <Text style={styles.cardInfoNum} numberOfLines={1}>0</Text>
-                </View>
-            
-                <View style={styles.cardInfo}>
-                    <Text style={styles.cardInfoText}>발행량</Text>
-                    <Text style={styles.cardInfoNum} numberOfLines={1}>0</Text>
-                </View>
-            
-                <View style={styles.cardInfo}>
-                    <Text style={styles.cardInfoText}>회수량</Text>
-                    <Text style={styles.cardInfoNum} numberOfLines={1}>0</Text>
-                </View>
-            
-                <View style={styles.cardInfo}>
-                <DangolButton id={id} isDangol={isDangol} dangolCount={dangolCount} setDangolCount={setDangolCount} />
-                </View>
-            </View>
-        ) : (
-            <View style={styles.cardGrid}>
-                <View style={styles.cardInfo}>
-                    <Text style={styles.cardInfoText}>단골</Text>
-                    <Text style={styles.cardInfoNum} numberOfLines={1}>{dangolCount}</Text>
-                </View>
-            
-                <View style={styles.cardInfo}>
-                    <Text style={styles.cardInfoText}>포스트</Text>
-                    <Text style={styles.cardInfoNum} numberOfLines={1}>0</Text>
-                </View>
-            
-                <View style={styles.cardInfo}>
-                    <Text style={styles.cardInfoText}>내 리뷰</Text>
-                    <Text style={styles.cardInfoNum} numberOfLines={1}>0</Text>
-                </View>
-            
-                <View style={styles.cardInfo}>
-                    <Text style={styles.cardInfoText}>암호화폐</Text>
-                    <Text style={styles.cardInfoNum} numberOfLines={1}>0</Text>
-                </View>
-            
-                <View style={styles.cardInfo}>
-                  <DangolButton id={id} isDangol={isDangol} dangolCount={dangolCount} setDangolCount={setDangolCount} />
-                </View>
-            </View>
-        )
-        }
+        <DangolBar id={id} isDangol={isDangol} dangolCount={dangolCount} isSelf={isSelf} postsCount={postsCount} myPosts={myPosts}/>
         
 
       </View>
@@ -153,7 +98,26 @@ export default ({ id, isSelf, profileName, sector, token, mainImage, menuName, m
         </View>
       </>
 
-      {tabName=='포토리뷰'? <PhotoReview isSelf={isSelf} id={id} posts={posts}/> : null}
+      {tabName=='포토리뷰'? (
+        <View style={styles.imageBox}>
+        {isSelf? (
+            <TouchableOpacity style={styles.grid}>
+                <View style={styles.upload}>
+                    <Text>음식점 홍보하기</Text>
+                </View>
+            </TouchableOpacity>
+        ):(
+            <TouchableOpacity style={styles.grid} onPress={() => navigation.navigate("SelectUpload", {id:id})}>
+                <View style={styles.upload}>
+                    <Text>리뷰 작성하기</Text>
+                </View>
+            </TouchableOpacity>
+          )}
+          <PostHorizontal id={id} posts={posts}/>
+        </View> 
+      ):( 
+        null
+      )}
       {tabName=='영업정보'? <OpenInfo openInfo={openInfo} /> : null}
       {tabName=='팀원소개'? <Members members={members} founderImage={founderImage} career={career} username={user.firstName} /> : null}
       
@@ -276,5 +240,22 @@ const styles = StyleSheet.create({
     fontWeight:"bold",
     color:"#666",
     marginVertical:12,
+  },
+
+  //사진들
+  imageBox:{
+    flexDirection:"row",
+    flexWrap:"wrap"
+  },
+  grid:{
+      width: constants.width / 3 - 2 ,
+      height: constants.width / 3 - 2,
+      margin:1,
+      justifyContent:"center",
+      alignItems:"center",
+  },
+  upload:{
+      borderBottomColor:"#50caef",
+      borderBottomWidth:2
   },
 });

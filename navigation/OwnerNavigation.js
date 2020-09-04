@@ -24,7 +24,7 @@ import SelectPhoto from '../screens/SelectPhoto';
 import SelectManyPhoto from '../screens/SelectManyPhoto';
 import BackArrow from '../components/Custom/BackArrow';
 import Logo from '../components/Custom/Logo';
-import Owner from '../screens/Owner/Owner';
+import MyShop from '../screens/Owner/MyShop';
 
 //음식점 등록
 import CompleteShop from '../screens/Owner/CompleteShop';
@@ -97,7 +97,7 @@ function MyShopStackScreen() {
       initialRouteName={"내 음식점"} 
       screenOptions={{ headerTitleStyle:{fontSize:20, fontWeight:'bold'},headerShown:true}}
       >
-      <MyShopStack.Screen name="내 음식점" component={Owner} options={{
+      <MyShopStack.Screen name="내 음식점" component={MyShop} options={{
         headerTitle:() => <Logo nav={'공유 음식점'}/>,
         headerTitleAlign:'left'
       }}/>

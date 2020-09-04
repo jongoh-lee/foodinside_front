@@ -101,23 +101,15 @@ const styles = StyleSheet.create({
 
 export default ({ listing }) => {
   const [opacity, setOpacity] = React.useState(1);
-  const { navigate, isFocused } = useNavigation();
-  const hasFocus = isFocused();
-  // sharedElement 적용 하면 활성화
-  // useEffect(() => {
-  //   if (hasFocus) {
-  //     setOpacity(1);
-  //   }
-  // }, [hasFocus]);
+  const navigation = useNavigation();
   return (
     <View key={listing.id} style={styles.container}>
       <View style={styles.boxShop}>
-        <TouchableWithoutFeedback
-          onPress={() => {
-            setOpacity(1);
-            navigate("ShopDetail", {listing})
-          }}
-        >  
+        <TouchableWithoutFeedback onPress={() => navigation.navigate("음식점 보기", { 
+          id: "ckdevctimaq1r0a50sjprj1jj",
+          shopName: "조명으로 포인트를 준 음식점 in 경리단길",
+          classification: "일반"
+          })}>  
           <Text style={styles.title} numberOfLines={1}>{listing.shopName}</Text>
           <View style={styles.imageGallery}>
             <View style={styles.imageGalleryRow}>

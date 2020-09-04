@@ -6,6 +6,7 @@ import {
   ImageBackground,
   StyleSheet,
 } from 'react-native';
+import axios from "axios";
 import { Feather, MaterialCommunityIcons, FontAwesome } from "@expo/vector-icons";
 import BasicInput from '../../components/Custom/BasicInput';
 import DismissKeyboard from '../../components/Custom/DismissKeyboard';
@@ -13,7 +14,7 @@ import BasicButton from '../../components/Custom/BasicButton';
 import { ScrollView } from 'react-native-gesture-handler';
 import strickInput from '../../hooks/strickInput';
 import { useQuery, useMutation } from "@apollo/react-hooks";
-import { EDIT_USER, ME } from './VisitorQueries';
+import { EDIT_ME, ME } from './VisitorQueries';
 import constants from '../../constants';
 import { CHECK_USERNAME } from '../Auth/AuthQueries';
 
@@ -22,33 +23,50 @@ export default ({ navigation, route }) => {
     const [loading, setLoading] = React.useState(false)
     const usernameInput = strickInput(route.params.username);
     const { value: username } = usernameInput;
-    const [alert, setAlert] = React.useState(false)
-
+    const [alert, setAlert] = React.useState(false);
+    
     const onSelect = (image) => {
-      setAvatar(image.photo.uri)
+      setAvatar(image.photo)
     };
 
     const { data, error } = useQuery(CHECK_USERNAME,{
       variables:{
         username: username
-      }
+      },
+      fetchPolicy:"network-only"
     });
 
-    const [editUserMutation] = useMutation(EDIT_USER)
+    const [editMeMutation] = useMutation(EDIT_ME)
 
     const handleEdit = async () => {
       try {
         setLoading(true);
+        const formData = new FormData();
+
+        formData.append('file',{
+          name: avatar.filename,
+          type: "image/jpeg",
+          uri: avatar.uri
+        });
+
         const {
-          data: { editUser }
-        } = await editUserMutation({
+          data: { location }
+        } = await axios.post("http://4de8c1e95ca3.ngrok.io/api/upload", formData, {
+          headers: {
+            "content-type": "multipart/form-data"
+          }
+        });
+        
+        const {
+          data: { editMe }
+        } = await editMeMutation({
           variables: {
             username: username,
-            avatar: avatar,
+            avatar: location[0].url,
             email: route.params.email
           }
         });
-      if( editUser ){
+      if( editMe ){
         navigation.goBack();
         }
       } catch(e){
@@ -59,12 +77,16 @@ export default ({ navigation, route }) => {
     }
 
     React.useEffect(() => {
-      if(username.length > 2 && data.checkUsername){
-        setAlert(false)
+      if(route.params.username !== username){
+        if(username.length > 2 && data?.checkUsername){
+          setAlert(false)
+        } else {
+          setAlert(true)
+        }
       }else{
-        setAlert(true)
+        setAlert(false)
       }
-    },[username])
+    },[data?.checkUsername, username])
     return (
     <View style={styles.container}>
       <DismissKeyboard>

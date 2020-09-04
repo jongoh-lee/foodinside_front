@@ -2,10 +2,95 @@ import * as React from "react";
 import { StyleSheet, View, Image, Text, TouchableOpacity, ScrollView, ImageBackground } from "react-native";
 import constants from "../../constants";
 import ShadowInput from "../../components/Custom/ShadowInput";
-import DismissKeyboard from "../../components/Custom/DismissKeyboard";
+import axios from "axios";
 import useInput from "../../hooks/useInput";
 import { useMutation } from "@apollo/react-hooks";
 import { UPLOAD } from "./VisitorQueries";
+
+export default ({ navigation, route }) => {
+    const [images, setImages] = React.useState(route.params.images);
+    const tastingInput = useInput("");
+    const [loading, setLoading] = React.useState(false);
+    
+    const scrollViewRef1 = React.useRef();
+    const [uploadMutation] = useMutation(UPLOAD,{
+        refetchQueries:[`me`]
+    });
+
+    const handleUpload = async () => {
+        const formData = new FormData();
+
+        for (var i = 0; i < images.length; i++) {
+            formData.append('file', {
+                name: images[i].filename,
+                type: "image/jpeg",
+                uri: images[i].uri
+            });
+        }
+
+        try {
+        setLoading(true);
+        const {
+            data: { location }
+        } = await axios.post("http://4de8c1e95ca3.ngrok.io/api/upload", formData, {
+            headers: {
+              "content-type": "multipart/form-data"
+            }
+        });
+        
+        const {
+                data: { upload }
+            } = await uploadMutation({
+                variables: {
+                    id: route.params.id,
+                    tasting: tastingInput.value,
+                    createFiles: location
+                }
+            });
+            if (upload.id) {
+                navigation.pop(2)
+            }
+        } catch (e) {
+            console.log("리뷰 업로드 에러:",e)
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    navigation.setOptions({
+        headerRight:() => (
+            <TouchableOpacity style={loading? styles.button_disabled : styles.button} onPress={handleUpload} disabled={loading}>
+                <Text style={styles.buttonText}>업로드</Text>
+           </TouchableOpacity>
+        ),
+    });
+
+    return (
+        
+    <ScrollView style={styles.container}>
+        <View style={styles.imageRoll}>
+            <ScrollView 
+                ref={scrollViewRef1}
+                onContentSizeChange={()=>{        
+                    scrollViewRef1.current.scrollToEnd({ animated: true });
+                }}
+                scrollEventThrottle={1} 
+                contentContainerStyle={{paddingLeft:10, flexGrow:1}} 
+                showsHorizontalScrollIndicator={false} 
+                horizontal
+            >   
+                {images.map(
+                    (image, index) => (
+                        <Image key={index} style={styles.image} source={{uri:image.uri}} />
+                    )
+                )}
+            </ScrollView>
+        </View>
+            
+        <ShadowInput {...tastingInput} editable={!loading} textAlign={"left"} textAlignVertical={"top"} height={100} multiline={true} placeholder={"내용을 입력해 주세요..."} returnKeyType={"default"}/>
+    </ScrollView>
+    );
+};
 
 const WIDTH = constants.width - 20
 const styles = StyleSheet.create({
@@ -53,74 +138,3 @@ const styles = StyleSheet.create({
     },
 
 });
-
-export default ({ navigation, route }) => {
-    const [images, setImages] = React.useState(route.params.images);
-    const tastingInput = useInput("");
-    const [loading, setLoading] = React.useState(false);
-    const scrollViewRef1 = React.useRef();
-    const [uploadMutation] = useMutation(UPLOAD,{
-        refetchQueries:[`me`]
-    });
-
-    const handleUpload = async () => {
-        let files = images.map(el => (
-            {
-                url: el.uri
-            }
-        ));
-        try {
-            setLoading(true);
-            const { 
-                data : { upload } 
-            } = await uploadMutation({
-                variables:{
-                    id: route.params.id,
-                    tasting: tastingInput.value,
-                    createFiles: files
-                }
-            });
-            if( upload ){
-                navigation.pop(2)
-            }
-        } catch(e){
-            console.log("리뷰 업로드 에러:",e)
-        }finally {
-            setLoading(false);
-        }
-    }
-
-    navigation.setOptions({
-        headerRight:() => (
-            <TouchableOpacity style={loading? styles.button_disabled : styles.button} onPress={handleUpload} disabled={loading}>
-                <Text style={styles.buttonText}>업로드</Text>
-           </TouchableOpacity>
-        ),
-    });
-
-    return (
-        
-    <ScrollView style={styles.container}>
-        <View style={styles.imageRoll}>
-            <ScrollView 
-                ref={scrollViewRef1}
-                onContentSizeChange={()=>{        
-                    scrollViewRef1.current.scrollToEnd({ animated: true });
-                }}
-                scrollEventThrottle={1} 
-                contentContainerStyle={{paddingLeft:10, flexGrow:1}} 
-                showsHorizontalScrollIndicator={false} 
-                horizontal
-            >   
-                {images.map(
-                    (image, index) => (
-                        <Image key={index} style={styles.image} source={{uri:image.uri}} />
-                    )
-                )}
-            </ScrollView>
-        </View>
-            
-        <ShadowInput {...tastingInput} editable={!loading} textAlign={"left"} textAlignVertical={"top"} height={100} multiline={true} placeholder={"내용을 입력해 주세요..."} returnKeyType={"default"}/>
-    </ScrollView>
-    );
-};

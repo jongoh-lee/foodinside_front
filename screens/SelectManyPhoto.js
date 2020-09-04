@@ -63,6 +63,7 @@ export default ({ navigation, route }) => {
     const getPhotos = async () => {
         try{
             const { assets } = await MediaLibrary.getAssetsAsync();
+            console.log()
             let _assets = assets.sort((a,b)=>a.creationTime-b.creationTime) 
             setAllPhotos(_assets);
         } catch (e) {

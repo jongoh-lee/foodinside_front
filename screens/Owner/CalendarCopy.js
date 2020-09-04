@@ -75,15 +75,15 @@ const price = [
 },]
 
 export default () => {
-  const { data, loading: loadingProp, error } = useQuery(MY_CALENDAR,{
-    fetchPolicy: "network-only"
-  })
+  //const { data, loading: loadingProp, error } = useQuery(MY_CALENDAR,{
+  //  fetchPolicy: "network-only"
+  //})
+  //
+  //if(loadingProp) return <Loader />
+  //if(error) return console.log("달력 보이기 에러",error);
   
-  if(loadingProp) return <Loader />
-  if(error) return console.log("달력 보이기 에러",error);
-  
-  const [loading, setLoading] = React.useState(loadingProp);
-  const [ priceProp, setPriceProp ] = React.useState([data?.myCalendar]);
+  //const [loading, setLoading] = React.useState(loadingProp);
+  const [ priceProp, setPriceProp ] = React.useState(price);
   
   // price modal
   const [priceModal, setPriceModal] = React.useState(false);
@@ -240,7 +240,7 @@ export default () => {
   return(
     <>
     <View style={styles.container}>
-      <View style={ loading? {width:'100%',height:'100%', position:'absolute', backgroundColor:"rgba(255, 255, 255, .5)", zIndex:100} : null}/>
+      {/*<View style={{width:'100%',height:'100%', position:'absolute', backgroundColor:"rgba(255, 255, 255, .5)", zIndex:100}}/>*/}
       <CalendarList
         // 디자인
         monthFormat={`${'yyyy년'}  ${'MM월'}`}

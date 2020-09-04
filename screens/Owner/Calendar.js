@@ -1,6 +1,5 @@
 import * as React from "react";
-import { StyleSheet, View, Text, Platform } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { StyleSheet, View, Text, Platform, ActivityIndicator, TouchableOpacity } from "react-native";
 import { LocaleConfig, CalendarList } from "react-native-calendars";
 import constants from "../../constants";
 import { LinearGradient } from "expo-linear-gradient";
@@ -10,9 +9,9 @@ import ShadowInput from "../../components/Custom/ShadowInput";
 import BasicButton from "../../components/Custom/BasicButton";
 import Modal from "react-native-modal";
 import numInput from "../../hooks/numInput";
-import { useMutation } from "@apollo/react-hooks";
-import { EDIT_PRICE } from "./OwnerQueries";
-import { Caption } from "react-native-paper";
+import { useMutation, useQuery } from "@apollo/react-hooks";
+import { MY_CALENDAR, EDIT_CALENDAR } from "./OwnerQueries";
+import ScreenLoader from "../../components/Custom/ScreenLoader";
 
 LocaleConfig.locales['fr'] = {
   monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
@@ -23,68 +22,21 @@ LocaleConfig.locales['fr'] = {
 };
 LocaleConfig.defaultLocale = 'fr';
 
-const calendar = [
-{
-  id: 'sodifj1',
-  dateString: "2020-08-18",
-  priceState: "100000",
-},
-{
-  id: 'sodifj2',
-  dateString: "2020-08-19",
-  priceState: "110000",
-},
-{
-  id: 'sodifj3',
-  dateString: "2020-08-20",
-  priceState: "120000",
-},
-{
-  id: 'sodifj4',
-  dateString: '2020-08-21',
-  priceState: "self",
-},
-{
-  id: 'sodifj5',
-  dateString: '2020-08-22',
-  priceState: "self",
-},
-{
-  id: 'sodifj6',
-  dateString: '2020-08-23',
-  priceState: "off",
-},
-{
-  id: 'sodifj7',
-  dateString: '2020-08-24',
-  priceState: "off",
-},]
-
 export default () => {
-  const [ priceProp, setPriceProp ] = React.useState([...calendar]);
+  const { data, error, loading } = useQuery(MY_CALENDAR,{
+    fetchPolicy:"network-only"
+  });
+
+  const [loader, setLoader] = React.useState(false);
+  const [editCalendarMutation] = useMutation(EDIT_CALENDAR);
+  const [markedDates, setMarkedDates] = React.useState();
+
   // price modal
-  const [priceModal, setPriceModal] = React.useState(false);
+  const [priceInputModal, setPriceInputModal] = React.useState(false);
   const priceInput = numInput('');
-  // 선택된 날짜
 
-  // 가져온 데이터와 가곡된 데이터 구분
-  let _markedDates = priceProp.reduce(
-    (markedDates, date) => {
-      var dateString = date.dateString;
-      markedDates[dateString] = {id: date.id, priceState: date.priceState, active: false };
-      return markedDates
-    }, {}
-  );
-  
-  const [ markedDates, setMarkedDates ] = React.useState(_markedDates);
-  //가공된 데이터
-  //update list 
-  const [updateList, setUpdateList] = React.useState([]);
-
-  //create list 
-  const [createList, setCreateList] = React.useState([]);
-
-  const [selected, setSelected] = React.useState([]);
+  // Mutation
+  const [updateList, setUpdateList] = React.useState({});
 
   //오늘 today
   let now = new Date()
@@ -92,92 +44,102 @@ export default () => {
   let dd = now.getDate();
   const today = `${[now.getFullYear(), (mm>9 ? '' : '0') + mm, (dd>9 ? '' : '0') + dd].join('')}`
 
-  // 이 함수는 받아온 리스트 전체를 바꿉니다. 때문에 크기를 비교함에 있어 어려움이 예상 됩니다.*/
-  const onPressDate = ( day ) => {
-    if(selected.includes(day.dateString)){
-      setSelected(selected.filter(el => el !== day.dateString));
-
+  const onPressDate = (date, marking) => {
+    if(data?.myCalendar === null) {
+      return null
     }else{
-      setSelected([...selected, day.dateString]);
+      if(updateList[date.dateString]){
+        setUpdateList(Object.keys(updateList)
+        .filter(key => key !== date.dateString)
+        .reduce((obj, key) => {
+          obj[key] = updateList[key];
+          return obj;
+        }, {}))
+      }else{
+        setUpdateList({...updateList, [date.dateString] : {id: marking.id, priceState:marking.priceState, active:true}});
+      }
     }
   }
-  console.log(selected)
 
-  const onPressOff = async () => {
-    setSelected([]);
-  }
-
-  const onPressSelf = () => {
-    let _markedDates = {};
-    Object.entries(markedDates).map(
-      ([key, value]) => {
-        if(value.active){
-          // 바로 뮤테이션 진행 > 아이디 부여
-          if(value.id){
-            setUpdateList(updateList.concat({
-              id: value.id,
-              dateString: key,
-              isSelf: true,
-              off:false,
-              operDay: null
-            }));
-          }else{
-            setCreateList(createList.concat({
-              dateString: key,
-              isSelf: true,
-              off:false,
-              operDay: null
-            }));
+  const onPressErase = async () => {
+    setLoader(true);
+    let deleteList = Object.values(updateList).filter(el => el.id).map(el => el.id? {id: el.id} : null);
+    try{
+      if(deleteList.length > 0){
+        await editCalendarMutation({
+          variables:{
+            createPrice: [],
+            deletePrice: deleteList,
+            updatePrice: []
           }
-
-          try {
-
-          }catch{
-
-          }
-          
-          Object.assign(_markedDates,  { [key] : {isSelf: true, off: false, perDay: null, active: false} });
-        }
+        });
       }
-    );
-    setMarkedDates({ ...markedDates, ..._markedDates });
+    }catch(e){
+      console.log("가격 초기화 에러", e);
+    }finally{
+      setUpdateList({})
+      setLoader(false);
+    }
   }
 
-  const onPressPrice = ( price ) => {
-    let _markedDates = {};
-    Object.entries(markedDates).map(
-      ([key, value]) => {
-        if(value.active){
-          // 바로 뮤테이션 진행
-          if(value.id){
-            setUpdateList(updateList.concat({
-              id: value.id,
-              dateString: key,
-              isSelf: false,
-              off:false,
-              operDay: price
-            }));
-          }else{
-            setCreateList(createList.concat({
-              dateString: key,
-              isSelf: false,
-              off:false,
-              operDay: price
-            }));
-          }
-          
-          Object.assign(_markedDates,  { [key] : {isSelf: true, off: false, perDay: price, active: false} });
+  const onPressSelf = async () => {
+    setLoader(true);
+    let _updateList = []
+    let _createList = []
+    Object.entries(updateList).map( ([key, value]) => value.id ? _updateList.push({ id: value.id, dateString: key, priceState:"self"}) : _createList.push({dateString: key, priceState:"self"}));
+    try{
+      await editCalendarMutation({
+        variables:{
+          createPrice: _createList,
+          deletePrice: [],
+          updatePrice: _updateList
         }
-      }
-    );
-    setMarkedDates({ ...markedDates, ..._markedDates });
+      });
+    }catch(e){
+      console.log("직접 영업 에러", e);
+    }finally{
+      setUpdateList({})
+      setLoader(false);
+    }
   }
 
+  const onPressPrice = async ( price ) => {
+    setLoader(true);
+    let _updateList = []
+    let _createList = []
+    Object.entries(updateList).map( ([key, value]) => value.id ? _updateList.push({ id: value.id, dateString: key, priceState:String(price) }) : _createList.push({dateString: key, priceState:String(price)}));
+    try{
+      await editCalendarMutation({
+        variables:{
+          createPrice: _createList,
+          deletePrice: [],
+          updatePrice: _updateList
+        }
+      });
+    }catch(e){
+      console.log("가격 설정 에러", e);
+    }finally{
+      setUpdateList({})
+      setLoader(false);
+    }
+  }
 
+  if(error) return console.log(error);
+
+  React.useEffect(() => {
+    let markedDates = data?.myCalendar?.calendar.reduce(
+      (markedDates, date) => {
+        var dateString = date.dateString;
+        markedDates[dateString] = {id: date.id, priceState: date.priceState };
+        return markedDates
+      }, {}
+      );
+    setMarkedDates(markedDates)
+  },[data])
   return(
     <>
     <View style={styles.container}>
-
+      {loading || loader ? <ScreenLoader /> : null}
       <CalendarList
         // 디자인
         monthFormat={`${'yyyy년'}  ${'MM월'}`}
@@ -190,32 +152,30 @@ export default () => {
         calendarHeight={Platform.OS === 'ios'? 450 : 500}
         pagingEnabled={false}
         horizontal={false}
-
-        //함수
-        onDayPress={onPressDate}
-
+        
         //달력 값
         minDate={() => today.dateString}
         pastScrollRange={1}
         futureScrollRange={1}
         markingType={'period'}
-        markedDates={markedDates}
+        markedDates={{...markedDates, ...updateList}}
+
         //날짜 디자인
-        dayComponent={({date, marking, onPress}) => <DayComponent date={date} marking={marking} today={today} onPress={onPress}/>}
+        dayComponent={({date, marking}) => <DayComponent date={date} marking={marking} today={today} onPress={onPressDate}/>}
       />
 
       <LinearGradient style={styles.priceSet} colors={['rgba(255, 255, 255, .2)','rgba(255, 255, 255, .7)', 'rgb(255, 255, 255)']}>
-        <TouchableOpacity onPress={onPressOff} style={{flexDirection:"row", alignItems:"center"}}>
-          <MaterialCommunityIcons name="close-circle-outline" size={20} color='#ED4956' />
-          <Text style={styles.closed}> 예약 불가</Text>
+        <TouchableOpacity onPress={onPressErase} style={{flexDirection:"row", alignItems:"center"}} disabled={Object.keys(updateList).length === 0? true: false}>
+          <MaterialCommunityIcons name="eraser" size={20} color='#ED4956' />
+          <Text style={styles.closed}> 지우기</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={onPressSelf} style={{flexDirection:"row", justifyContent:"center"}}>
+        <TouchableOpacity onPress={onPressSelf} style={{flexDirection:"row", justifyContent:"center"}} disabled={Object.keys(updateList).length === 0? true: false}>
           <MaterialCommunityIcons name="silverware" size={20} color="black" />
           <Text style={styles.self}> 직접 영업</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => setPriceModal(true)} style={{flexDirection:"row", alignItems:"center"}}>
+        <TouchableOpacity onPress={() => setPriceInputModal(true)} style={{flexDirection:"row", alignItems:"center"}} disabled={Object.keys(updateList).length === 0? true: false}>
           <FontAwesome name="won" size={16} color="#64C723" />
           <Text style={styles.setPrice}> 가격 설정</Text>
         </TouchableOpacity>
@@ -223,8 +183,8 @@ export default () => {
     </View>
 
     <Modal
-    isVisible={priceModal}
-    onBackdropPress={() => setPriceModal(false)}
+    isVisible={priceInputModal}
+    onBackdropPress={() => setPriceInputModal(false)}
     backdropColor={'#ffffff'}
     backdropOpacity={.5}
     animationIn="slideInLeft"
@@ -232,9 +192,9 @@ export default () => {
     style={{justifyContent:"center", alignItems:"center", flex:1}}
     coverScreen={false}
     >
-      <ShadowInput  {...priceInput} keyboardType={'number-pad'} autoFocus={true} width={'70%'} placeholder={'가격'}/>
+      <ShadowInput  {...priceInput} keyboardType={'number-pad'} autoFocus={true} width={'70%'} placeholder={'가격'} editable={!loading}/>
       <View style={{width:'70%'}}>
-        <BasicButton onPress={() => [onPressPrice( priceInput.value ), setPriceModal(false)]} disabled={priceInput.value? false : true} padding={10} text={'확인'} marginVertical={10} width={'100%'}/>
+        <BasicButton onPress={() => [setPriceInputModal(false), onPressPrice( priceInput.value )]} disabled={priceInput.value? false : true} padding={10} text={'확인'} marginVertical={10} width={'100%'}/>
       </View>
     </Modal>
 

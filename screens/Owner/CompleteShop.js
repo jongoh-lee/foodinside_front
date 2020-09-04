@@ -5,7 +5,7 @@ import constants from "../../constants";
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons'; 
 import BasicButton from "../../components/Custom/BasicButton";
 import { useQuery, useMutation } from "@apollo/react-hooks";
-import { MY_SHOP, SEE_MYSHOP } from "./OwnerQueries";
+import { MY_SHOP, COMPLETE_SHOP } from "./OwnerQueries";
 import Loader from "../../components/Custom/Loader";
 
 
@@ -70,18 +70,18 @@ export default ({ navigation }) => {
     const { data, error, loading : _loading, refetch } = useQuery(MY_SHOP,{
         fetchPolicy:"network-only"
     });
-    const [seeMyShopMutation] = useMutation(SEE_MYSHOP);
+    const [completeShopMutation] = useMutation(COMPLETE_SHOP);
     const handleMyShop = async () => {
         try {
             setLoading(true);
             const {
-                data : { seeMyShop }
-            } = await seeMyShopMutation({
+                data : { completeShopShop }
+            } = await completeShopMutation({
                 variables:{
                   ownerState:3
                 }
             });
-            if(seeMyShop){
+            if(completeShopShop){
                 navigation.navigate("내 음식점");
             }
         } catch(e){

@@ -12,14 +12,15 @@ import {useTheme} from 'react-native-paper';
 import Dangol from '../screens/Visitor/Dangol';
 import Feed from '../screens/Visitor/Feed';
 import Map from '../screens/Visitor/Map';
-import User from '../screens/Visitor/User';
+import Me from '../screens/Visitor/Me';
 import EditUser from '../screens/Visitor/EditUser';
 import Around from '../screens/Visitor/Around';
 import Search from '../screens/Visitor/Search';
 
 //nested screen
 import FullProfile from '../screens/Visitor/FullProfile';
-import PhotoReview from '../screens/Visitor/PhotoReview';
+import FullUser from '../screens/Visitor/FullUser';
+import PostList from '../screens/Visitor/PostList';
 
 // 사진 선택
 import SelectPhoto from '../screens/SelectPhoto';
@@ -72,10 +73,11 @@ const MapStack = createStackNavigator();
 
 function MapStackScreen() {
     return (
-    <MapStack.Navigator screenOptions={{ headerShown:true, cardStyle:{backgroundColor:'#ffffff'}, headerTitleStyle:{fontSize:20, fontWeight:'bold'}}}>
+    <MapStack.Navigator headerMode={"screen"} screenOptions={{ headerShown:true, cardStyle:{backgroundColor:'#ffffff'}, headerTitleStyle:{fontSize:20, fontWeight:'bold'}}}>
       <MapStack.Screen name="랜덤 음식점" component={Map}/>
-      <MapStack.Screen name="프로필 보기" component={FullProfile} />
-      <MapStack.Screen name="포토리뷰" component={PhotoReview} options={{headerTitleAlign:"center"}} />
+      <MapStack.Screen name="프로필 보기" component={FullProfile} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}} />
+      <MapStack.Screen name="SeeUser" component={FullUser} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}} />
+      <MapStack.Screen name="PostList" component={PostList} options={{headerTitleAlign:"center", headerTitle:"포토리뷰", headerLeft:() => <BackArrow />}} />
     </MapStack.Navigator>
   );
 }
@@ -105,9 +107,10 @@ const FavoriteStack = createStackNavigator();
 
 function FavoriteStackScreen() {
     return (
-    <FavoriteStack.Navigator screenOptions={{headerShown:true, headerTitleStyle:{fontSize:20, fontWeight:'bold'}}}>
+    <FavoriteStack.Navigator headerMode={"screen"} screenOptions={{headerShown:true, headerTitleStyle:{fontSize:20, fontWeight:'bold'}}}>
       <FavoriteStack.Screen name="단골" component={Dangol} />
-      <FavoriteStack.Screen name="프로필 보기" component={FullProfile} options={{headerShown:true}} />
+      <FavoriteStack.Screen name="프로필 보기" component={FullProfile} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}} />
+      <FavoriteStack.Screen name="PostList" component={PostList} options={{headerTitleAlign:"center", headerTitle:"포토리뷰", headerLeft:() => <BackArrow />}} />
     </FavoriteStack.Navigator>
   );
 }
@@ -116,9 +119,10 @@ const UserStack = createStackNavigator();
 
 function UserStackScreen() {
     return (
-    <UserStack.Navigator screenOptions={{headerShown:true, headerTitleStyle:{fontSize:20, fontWeight:'bold'}}}>
-      <UserStack.Screen name="내 정보" component={User}/>  
-      <UserStack.Screen name="포토리뷰" component={PhotoReview} options={{headerTitleAlign:"center"}} />
+    <UserStack.Navigator headerMode={"screen"} screenOptions={{headerShown:true, headerTitleStyle:{fontSize:20, fontWeight:'bold'}}}>
+      <UserStack.Screen name="내 정보" component={Me}/>  
+      <UserStack.Screen name="SeeUser" component={FullUser} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}} />
+      <UserStack.Screen name="PostList" component={PostList} options={{headerTitleAlign:"center", headerTitle:"포토리뷰", headerLeft:() => <BackArrow />}} />
     </UserStack.Navigator>
   );
 }

@@ -106,14 +106,14 @@ const styles = StyleSheet.create({
     },
     calendar:{
         borderRadius:15,
-        padding:5,
+        margin:5,
         shadowOffset: {
             width: 0,
             height: 1,
         },
         shadowOpacity: 0.20,
         shadowRadius: 1.41,
-        elevation: 2,
+        elevation: 3,
         overflow: Platform.OS === 'android'? "hidden" : "hidden"
     }
 })
@@ -307,6 +307,15 @@ export default ({ shopImages, facility, tables, chairs, scale, shopName, distric
             <View style={styles.box}>
                 <Text style={styles.title}>입점 하기</Text>
                 <View style={styles.calendar}>
+                    <Calendar />
+
+                    <View style={{position:"absolute", bottom:10, left:10, padding:10}}>
+                        <Text style={{color:"black", fontWeight:"bold", fontSize:16}}>합계: 210,000</Text>
+                    </View>
+
+                    <View style={{position:"absolute", bottom:10, right:10, padding:10, borderRadius:10, backgroundColor:"#05e6f4"}}>
+                        <Text style={{color:"#ffffff"}}>예약하기</Text>
+                    </View>
                 </View>
             </View>
 

@@ -13,7 +13,6 @@ export default ({ navigation, route }) => {
     const [seeFullProfile, setSeeFullProfile] = React.useState(route.params.seeFullProfile? route.params.seeFullProfile : { id: "ckdra85bd1gjw0a3557xq2hnc"})
     navigation.setOptions({
         headerTitle:() => <Text style={styles.headerTitle} numberOfLines={1} ellipsizeMode={"middle"}>{seeFullProfile.profileName} <Text style={styles.headerSector}>{seeFullProfile.sector}</Text></Text>,
-        headerLeft:() => <BackArrow />,
         headerRight:() => (
           route.params.seeFullProfile.isSelf? <Feather name="more-vertical" size={24} style={{paddingHorizontal:5}} color={'white'}/> : (
             <TouchableOpacity onPress={() => setVisible(!visible)}>
@@ -23,12 +22,11 @@ export default ({ navigation, route }) => {
         )
     });
     const { data, loading, error, refetch } = useQuery(SEE_FULL_PROFILE,{
-      fetchPolicy:"network-only",
         variables: {
             id: seeFullProfile.id
-        }
+        },
+        fetchPolicy:"network-only"
     });
-    if(loading) return <Loader />
     if(error) return console.log(error);
 
   return (

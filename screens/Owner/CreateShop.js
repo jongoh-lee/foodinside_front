@@ -1,6 +1,7 @@
 import * as React from "react";
 import {StyleSheet, View, Text, Image} from "react-native";
 import { TextInput, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from "react-native-gesture-handler";
+import axios from "axios";
 import constants from "../../constants";
 import BasicButton from "../../components/Custom/BasicButton";
 import { RadioButton, } from "react-native-paper";
@@ -23,16 +24,16 @@ export default ({ navigation, route }) => {
   const addressDetailInput = useInput('');
   
   const onSelectExterior = ({ photo, data }) => {
-    setExterior({ url: photo.uri, type: data});
+    setExterior({ type: data, ...photo});
   };
   const onSelectHall = ({ photo, data }) => {
-    setHall({ url: photo.uri, type: data});
+    setHall({ type: data, ...photo});
   };
   const onSelectKitchen = ({ photo, data }) => {
-    setKitchen({ url: photo.uri, type: data});
+    setKitchen({ type: data, ...photo});
   };
   const onSelectRegistration = ({ photo }) => {
-    setRegistration(photo.uri);
+    setRegistration(photo);
   };
 
   const [createShopMutation] = useMutation(CREATE_SHOP,{
@@ -45,11 +46,34 @@ export default ({ navigation, route }) => {
       });
     }
   });
+
+  //console.log([exterior, hall, kitchen], registration);
   
   const handleCreateShop = async () => {
     let _shopImages = [exterior, hall, kitchen];
+    const formData = new FormData();
+
+      for (var i = 0; i < _shopImages.length; i++) {
+          formData.append('file', {
+              name: _shopImages[i].filename,
+              type: "image/jpeg",
+              uri: _shopImages[i].uri
+          });
+      }
+
     try {
       setLoading(true);
+
+      const {
+        data: { location }
+      } = await axios.post("http://172.30.1.13:4000/api/upload", formData, {
+          headers: {
+            "content-type": "multipart/form-data"
+          }
+      });
+
+      console.log(location);
+
       const {
         data : { createShop }
       } = await createShopMutation({
@@ -57,7 +81,7 @@ export default ({ navigation, route }) => {
             shopImages: _shopImages,
             address: route.params?.address,
             addressDetail: addressDetailInput.value,
-            registration: registration,
+            registration: registration.url,
             classification: classification,
             contact:String(contactInput.value),
             ownerState:0
@@ -83,15 +107,15 @@ export default ({ navigation, route }) => {
     
       <View style={styles.imageBox}>
         <TouchableOpacity style={styles.imageInput} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelectExterior, data: "EXTERIOR"})}>
-          {exterior === null? <AntDesign name="plus" size={30} color="black" /> : <Image style={styles.image} source={{uri: exterior.url}}/>}
+          {exterior === null? <AntDesign name="plus" size={30} color="black" /> : <Image style={styles.image} source={{uri: exterior.uri}}/>}
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.imageInput} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelectHall, data: "HALL"})}>
-          {hall === null? <AntDesign name="plus" size={30} color="black" /> : <Image style={styles.image} source={{uri: hall.url}}/>}
+          {hall === null? <AntDesign name="plus" size={30} color="black" /> : <Image style={styles.image} source={{uri: hall.uri}}/>}
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.imageInput} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelectKitchen, data: "KITCHEN"})}>
-          {kitchen === null? <AntDesign name="plus" size={30} color="black" /> : <Image style={styles.image} source={{uri: kitchen.url}}/>}
+          {kitchen === null? <AntDesign name="plus" size={30} color="black" /> : <Image style={styles.image} source={{uri: kitchen.uri}}/>}
         </TouchableOpacity>
       </View>
 
@@ -122,7 +146,7 @@ export default ({ navigation, route }) => {
       
       <View style={{flexDirection:"row"}}>
         <TouchableOpacity style={styles.imageInput} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelectRegistration})}>
-          {registration === null? <AntDesign name="plus" size={30} color="black" /> : <Image style={styles.image} source={{uri: registration}}/>}
+          {registration === null? <AntDesign name="plus" size={30} color="black" /> : <Image style={styles.image} source={{uri: registration.uri}}/>}
         </TouchableOpacity>
       </View>
 
