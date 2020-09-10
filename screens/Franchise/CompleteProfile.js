@@ -3,6 +3,7 @@ import {StyleSheet, KeyboardAvoidingView, View, Platform, Text, Image, ImageBack
 import ShadowInput from "../../components/Custom/ShadowInput";
 import useInput from "../../hooks/useInput";
 import numInput from "../../hooks/numInput";
+import axios from "axios";
 import { ScrollView, TouchableWithoutFeedback, TextInput, } from "react-native-gesture-handler";
 import { MaterialCommunityIcons, } from "@expo/vector-icons";
 import constants from "../../constants";
@@ -10,15 +11,15 @@ import BasicButton from "../../components/Custom/BasicButton";
 import Modal from "react-native-modal";
 import ModalSubmenu from "../../components/Franchise/ModalSubmenu";
 import ModalMemberInfo from "../../components/Franchise/ModalMemberInfo";
-import DismissKeyboard from "../../components/Custom/DismissKeyboard";
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useMutation } from "@apollo/react-hooks";
 import { COMPLETE_PROFILE } from "./ProfileQueries";
+import { Caption } from "react-native-paper";
 
 export default ({ navigation, route }) => {
   const [loading, setLoading] = React.useState(false);
   //myProfile data
-  const profileNameInput = useInput(route.params.myProfile.profileName?route.params.myProfile.profileName : "");
+  const profileNameInput = useInput(route.params.myProfile.profileName? route.params.myProfile.profileName : "");
   const [sector, setSector] = React.useState(route.params.myProfile.sector? route.params.myProfile.sector : "");
   const tokenInput = numInput(route.params.myProfile.token? String(route.params.myProfile.token) : "0");
   
@@ -98,40 +99,164 @@ export default ({ navigation, route }) => {
 
   // changImage hook
   const onSelectMainImage = (image) => {
-    setMainImage(image.photo.uri)
+    setMainImage(image.photo)
   };
 
   const onSelectFounderImage = (image) => {
-    setFounderImage(image.photo.uri)
+    setFounderImage(image.photo)
   };
 
-
   const [ completeProfileMutation ] = useMutation(COMPLETE_PROFILE);
-
+  
   const handleCompleteProfile = async () => {
-    try{
-      setLoading(true);
-      const {
-        data : { completeProfile }
-      } = await completeProfileMutation({
-        variables:{
-          profileName: profileNameInput.value,
-          sector: sector,
-          token: Number(tokenInput.value),
-          mainImage: mainImage,
-          foodGuide: foodGuideInput.value,
-          origin: originInput.value,
-          fullPrice: Number(fullPriceInput.value),
-          createMenus: [...newMenus],
-          editMenus: [...editMenus],
-          deleteMenus: [...deleteMenus],
-          founderImage: founderImage,
-          createMembers: [...newMembers],
-          editMembers: [...editMembers],
-          deleteMembers: [...deleteMembers],
-          profileState: 3
+    let _mainImage = [];
+    let _founderImage = [];
+    setLoading(true); 
+      // 메인 이미지 수정
+      if(mainImage.uri){
+        const formMainImage = new FormData();
+        formMainImage.append('file',{
+          name: mainImage.filename,
+          type: "image/jpeg",
+          uri: mainImage.uri
+        })
+        const { 
+          data : { location : locationMainImage } 
+        } = await axios.post("http://192.168.50.19:4000/api/upload", formMainImage, {
+          headers: {
+            "content-type": "multipart/form-data"
+          }
+        });
+        _mainImage.push(locationMainImage[0])
+      }
+
+      // 새 메뉴 만들기
+      if(newMenus.length > 0){
+        const formNewMenus = new FormData();
+        for (var i = 0; i < newMenus.length; i++) {
+          formNewMenus.append('file', {
+              name: newMenus[i].menuImage.filename,
+              type: "image/jpeg",
+              uri: newMenus[i].menuImage.uri
+          });
         }
-      });
+        const { 
+          data : { location : locationNewMenuImages } 
+        } = await axios.post("http://192.168.50.19:4000/api/upload", formNewMenus, {
+          headers: {
+            "content-type": "multipart/form-data"
+          }
+        });
+        for (var i = 0; i < locationNewMenuImages.length; i++) {
+          newMenus[i].menuImage = locationNewMenuImages[i].url
+        }
+      }
+      
+      //메뉴 수정
+      if(editMenus.length > 0){
+        const formEditMenus = new FormData();
+        for (var i = 0; i < editMenus.length; i++) {
+          formEditMenus.append('file', {
+              name: editMenus[i].menuImage.filename,
+              type: "image/jpeg",
+              uri: editMenus[i].menuImage.uri
+          });
+        }
+        const { 
+          data : { location : locationEditMenuImages } 
+        } = await axios.post("http://192.168.50.19:4000/api/upload", formEditMenus, {
+          headers: {
+            "content-type": "multipart/form-data"
+          }
+        });
+        for (var i = 0; i < locationEditMenuImages.length; i++) {
+          editMenus[i].menuImage = locationEditMenuImages[i].url
+        }
+      }
+
+      //사장님 사진
+      if(founderImage.uri){
+        const formFounder = new FormData();
+        formFounder.append('file',{
+          name: founderImage.filename,
+          type: "image/jpeg",
+          uri: founderImage.uri
+        });
+        const { 
+          data : { location : locationFounder } 
+        } = await axios.post("http://192.168.50.19:4000/api/upload", formFounder, {
+          headers: {
+            "content-type": "multipart/form-data"
+          }
+        });
+        _founderImage.push(locationFounder[0]);
+      }
+      
+      //새 팀원
+      if(newMembers.length > 0){
+        const formNewMembers = new FormData();
+        for (var i = 0; i < newMembers.length; i++) {
+          formNewMembers.append('file', {
+            name: newMembers[i].image.filename,
+            type: "image/jpeg",
+            uri: newMembers[i].image.uri
+          });
+        }
+        const { 
+          data : { location : locationNewMembers } 
+        } = await axios.post("http://192.168.50.19:4000/api/upload", formNewMembers, {
+          headers: {
+            "content-type": "multipart/form-data"
+          }
+        });
+        for (var i = 0; i < locationNewMembers.length; i++) {
+          newMembers[i].image = locationNewMembers[i].url
+        }
+      }
+      
+      //팀원 수정
+      if(editMembers.length > 0){
+        const formEditMembers = new FormData();
+        for (var i = 0; i < editMembers.length; i++) {
+          formEditMembers.append('file', {
+              name: editMembers[i].image.filename,
+              type: "image/jpeg",
+              uri: editMembers[i].image.uri
+            });
+        }
+        const { 
+          data : { location : locationEditMembers } 
+        } = await axios.post("http://192.168.50.19:4000/api/upload", formEditMembers, {
+          headers: {
+            "content-type": "multipart/form-data"
+          }
+        });
+        for (var i = 0; i < locationEditMembers.length; i++) {
+          editMembers[i].image = locationEditMembers[i].url
+        }
+      }
+      try{
+        const {
+          data : { completeProfile }
+        } = await completeProfileMutation({
+          variables:{
+            profileName: profileNameInput.value,
+            sector: sector,
+            token: Number(tokenInput.value),
+            mainImage: mainImage?.uri ? _mainImage[0].url : mainImage,
+            foodGuide: foodGuideInput.value,
+            origin: originInput.value,
+            fullPrice: Number(fullPriceInput.value),
+            createMenus: [...newMenus],
+            editMenus: [...editMenus],
+            deleteMenus: [...deleteMenus],
+            founderImage: founderImage?.uri ? _founderImage[0].url : founderImage,
+            createMembers: [...newMembers],
+            editMembers: [...editMembers],
+            deleteMembers: [...deleteMembers],
+            profileState: 3
+          }
+        });
       if(completeProfile){
         navigation.goBack()
       }
@@ -230,7 +355,7 @@ export default ({ navigation, route }) => {
         </View>
 
           <View style={styles.innerBox}>
-            <ImageBackground style={{width:'100%', height:constants.height / 4, alignItems:"center", justifyContent:"center", backgroundColor:'#e0e0e0'}} source={{uri:mainImage}}>
+            <ImageBackground style={{width:'100%', height:constants.height / 4, alignItems:"center", justifyContent:"center", backgroundColor:'#e0e0e0'}} source={mainImage?.uri? {uri:mainImage.uri} : {uri: mainImage}}>
               {mainImage === null? <Text style={{color:'rgba(255,255,255, .6)', fontSize:24}}>이미지가 없습니다</Text> : null }
             </ImageBackground>
           </View>
@@ -300,7 +425,7 @@ export default ({ navigation, route }) => {
               )}>
               <View style={styles.menuContainer}>
                 <Text style={styles.menuName} numberOfLines={1}><Text style={{fontSize:10, color:'red'}}>New </Text>{menu.menuName}</Text>
-                <Image style={styles.menuImage} source={{uri:menu.menuImage}}/>
+                <Image style={styles.menuImage} source={menu?.menuImage?.uri? {uri:menu.menuImage.uri} : {uri:menu.menuImage}}/>
                 <View style={styles.priceBox}>
                   <Text style={styles.fullPrice}>{menu.fullPrice}</Text>
                   <Text style={styles.salePrice}>{menu.salePrice}</Text>
@@ -313,9 +438,9 @@ export default ({ navigation, route }) => {
 
           <View style={{paddingBottom:15}}>
             <Text style={[styles.subTitle,{padding:10}]}>푸드 가이드</Text>
-            <ShadowInput {...foodGuideInput} placeholder={'푸드 가이드'} editable={!loading} blurOnSubmit={false} width={'100%'} multiline={true} returnKeyType={'done'} textAlign={'left'} textAlignVertical={'top'}/>
+            <ShadowInput {...foodGuideInput} placeholder={'푸드 가이드'} editable={!loading} blurOnSubmit={false} width={'100%'} multiline={true} returnKeyType={'none'} textAlign={'left'} textAlignVertical={'top'}/>
             <Text style={[styles.subTitle,{padding:10}]}>식재료 원산지</Text>
-            <ShadowInput {...originInput} placeholder={'원산지'} editable={!loading} blurOnSubmit={false} width={'100%'} multiline={true} returnKeyType={'done'} textAlign={'left'} textAlignVertical={'top'}/>
+            <ShadowInput {...originInput} placeholder={'원산지'} editable={!loading} blurOnSubmit={false} width={'100%'} multiline={true} returnKeyType={'none'} textAlign={'left'} textAlignVertical={'top'}/>
           </View>
 
         <View style={{flexDirection:"row", justifyContent:"space-between", paddingVertical:10}}>
@@ -349,7 +474,8 @@ export default ({ navigation, route }) => {
                           onSelect : onSelectFounderImage
                         })
                       )} disabled={loading}>
-                        {founderImage? (<Image style={styles.image} source={{uri: founderImage}} />
+                        {founderImage? (
+                          <Image style={styles.image} source={founderImage?.uri? {uri: founderImage.uri} : {uri: founderImage}} />
                         ) : (
                           <View style={[styles.image, {backgroundColor:'#e0e0e0', justifyContent:"center", alignItems:"center"}]}>
                             <MaterialCommunityIcons
@@ -366,7 +492,7 @@ export default ({ navigation, route }) => {
                           </View>)}
                       </TouchableOpacity>
                         <View style={styles.position}>
-                            <Text style={styles.text} numberOfLines={1}>{route.params.myProfile.user.username}(사장님)</Text>
+                            <Text style={styles.text} numberOfLines={1}>{route.params.myProfile.user.lastName+' '+route.params.myProfile.user.firstName} <Caption>사장님</Caption></Text>
                         </View>
                     </View>
 
@@ -390,7 +516,7 @@ export default ({ navigation, route }) => {
                         <Image style={styles.image} source={{uri:member.image}} />
 
                         <View style={styles.position}>
-                            <Text style={styles.text} numberOfLines={1}>{member.name}({member.position})</Text>
+                            <Text style={styles.text} numberOfLines={1}>{member.name} <Caption>{member.position}</Caption></Text>
                         </View>
                     </View>
 
@@ -412,10 +538,10 @@ export default ({ navigation, route }) => {
                 )}>
                 <View style={styles.card}>
                     <View style={styles.member}>
-                        <Image style={styles.image} source={{uri:member.image}} />
+                        <Image style={styles.image} source={member?.image?.uri? {uri:member.image.uri}:{uri:member.image}} />
 
                         <View style={styles.position}>
-                            <Text style={styles.text} numberOfLines={1}>{member.name}({member.position})</Text>
+                            <Text style={styles.text} numberOfLines={1}>{member.name} <Caption>{member.position}</Caption></Text>
                         </View>
                     </View>
 
@@ -432,7 +558,7 @@ export default ({ navigation, route }) => {
             </View>
           </View>
 
-          <BasicButton text={'제출하기'} onPress={handleCompleteProfile} marginVertical={10} loading={loading} disabled={loading}/>
+          <BasicButton text={'제출하기'} onPress={handleCompleteProfile} marginVertical={10} loading={loading} disabled={profileNameInput.value && sector && tokenInput.value && mainImage && foodGuideInput.value && originInput.value && fullPriceInput.value && founderImage? loading : true}/>
         </ScrollView>
     </KeyboardAvoidingView>
   </View>    
@@ -633,6 +759,7 @@ const styles = StyleSheet.create({
   position:{
     flexDirection:"row",
     marginVertical:5,
+    alignItems:"baseline"
   },
   text:{
     fontSize:14

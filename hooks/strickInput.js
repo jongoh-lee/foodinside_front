@@ -1,6 +1,6 @@
 import * as React from "react";
 
-const useInput = intialValue => {
+const strickInput = intialValue => {
   const [value, setValue] = React.useState(intialValue);
   const exp = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+$/
   const onChange = text => {
@@ -11,4 +11,4 @@ const useInput = intialValue => {
   return { value, onChange };
 };
 
-export default useInput;
+export default strickInput;

@@ -28,6 +28,12 @@ import SelectUpload from '../screens/SelectUpload';
 
 //franchise screen
 
+
+//팔로워 팔로잉
+import MyFollowers from '../screens/Visitor/MyFollowers';
+import MyFollowings from '../screens/Visitor/MyFollowings';
+import UserFollowers from '../screens/Visitor/UserFollowers';
+
 //button
 import NavIcon from '../components/Custom/NavIcon';
 import Logo from '../components/Custom/Logo';
@@ -78,6 +84,8 @@ function MapStackScreen() {
       <MapStack.Screen name="프로필 보기" component={FullProfile} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}} />
       <MapStack.Screen name="SeeUser" component={FullUser} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}} />
       <MapStack.Screen name="PostList" component={PostList} options={{headerTitleAlign:"center", headerTitle:"포토리뷰", headerLeft:() => <BackArrow />}} />
+      <MapStack.Screen name="FollowList" component={FollowTabScreen} options={{headerTitleAlign:"center", headerTitle:"팔로우", headerLeft:() => <BackArrow />}} />
+      <MapStack.Screen name="UserFollowers" component={UserFollowers} options={{headerTitleAlign:"center", headerTitle:"팔로워", headerLeft:() => <BackArrow />}} />
     </MapStack.Navigator>
   );
 }
@@ -115,6 +123,27 @@ function FavoriteStackScreen() {
   );
 }
 
+const FollowTabStack = createMaterialTopTabNavigator();
+
+function FollowTabScreen({ route }){
+  return (
+    <FollowTabStack.Navigator 
+      initialRouteName={route.params.tabname}
+      tabBarOptions={{
+      indicatorStyle:{ backgroundColor: 'transparent'}, 
+      style:{ 
+        elevation: 0, //remove shadow on Android
+        shadowOpacity: 0, //remove shadow on IOS
+        borderWidth:1,
+        borderColor:'transparent',
+      }, 
+      labelStyle:{fontSize:14, fontWeight:"bold"}}}>
+      <FollowTabStack.Screen name='팔로잉' component={MyFollowings}/>
+      <FollowTabStack.Screen name='팔로워' component={MyFollowers}/>
+    </FollowTabStack.Navigator>
+  )
+}
+
 const UserStack = createStackNavigator();
 
 function UserStackScreen() {
@@ -123,6 +152,7 @@ function UserStackScreen() {
       <UserStack.Screen name="내 정보" component={Me}/>  
       <UserStack.Screen name="SeeUser" component={FullUser} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}} />
       <UserStack.Screen name="PostList" component={PostList} options={{headerTitleAlign:"center", headerTitle:"포토리뷰", headerLeft:() => <BackArrow />}} />
+      <UserStack.Screen name="FollowList" component={FollowTabScreen} options={{headerTitleAlign:"center", headerTitle:"팔로우", headerLeft:() => <BackArrow />}} />
     </UserStack.Navigator>
   );
 }

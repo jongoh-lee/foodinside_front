@@ -5,10 +5,10 @@ const numInput = intialValue => {
   const exp = /^[/0-9|]+$/
   const onChange = text => {
     if(text === '' || exp.test(text)){
-    setValue(text);
+      setValue(text);
     }
   };
-  return { value,  onChange };
+  return { value, setValue, onChange };
 };
 
 export default numInput;

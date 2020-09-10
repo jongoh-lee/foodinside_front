@@ -97,6 +97,31 @@ export const MY_PROFILE = gql`
     ${PROFILE_FRAGMENT}
 `;
 
+export const MY_FAVORITE = gql`
+    query myFavorite{
+        myFavorite{
+            id
+            owner{
+                id
+                classification
+                address
+                addressDetail
+                scale
+                #description
+                shopName
+                district
+                description
+                hashTag
+                shopImages{
+                    id
+                    type
+                    url
+                }
+
+            }
+        }
+    }
+`;
 export const SEE_FULL_SHOP = gql`
     query seeFullShop($id: String!){
         seeFullShop(id: $id){

@@ -134,7 +134,7 @@ export default ({ id, profileName, sector, mainImage, menuName, menuImage, fullP
                         id,
                         profileName,
                         sector,
-                        isSelf
+                        isSelf:true
                     }})}>
                     <Text style={styles.headerTitle} numberOfLines={1} ellipsizeMode={"middle"}>{profileName}<Text style={styles.sector}>  {sector}</Text></Text>
                 </TouchableOpacity>

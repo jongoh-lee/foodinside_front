@@ -8,6 +8,8 @@ import Modal from "react-native-modal";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import { EDIT_USER_POST, EDIT_PROFILE_POST, TOGGLE_LIKE, SEE_FULL_POST } from "../../screens/Visitor/VisitorQueries";
 import { useNavigation } from "@react-navigation/native";
+import ShadowInput from "../Custom/ShadowInput";
+import useInput from "../../hooks/useInput";
 
 const styles = StyleSheet.create({
   headerBar: {
@@ -49,10 +51,12 @@ const styles = StyleSheet.create({
   },
   snsBar: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent:"flex-end",
+    alignItems:"flex-start"
   },
   snsButton: {
-    alignItems:"center"
+    alignItems:"center",
+    paddingHorizontal:5
   },
   tasting: {
     marginLeft: 5,
@@ -102,7 +106,7 @@ const styles = StyleSheet.create({
 },
 });
 
-export default ({ id : postId, user, files, tasting, isSelf, isLiked:isLikedProp, likeCount:likeCountProp, profile, profileId}) => {
+export default ({ id : postId, user, files, tasting, isSelf, isLiked:isLikedProp, likeCount:likeCountProp, profile, profileId, postComments}) => {
   
   
   const { data, error, loading} = useQuery(SEE_FULL_POST,{
@@ -113,8 +117,11 @@ export default ({ id : postId, user, files, tasting, isSelf, isLiked:isLikedProp
   
   const { username, avatar } = user;
   const [isLiked, setIsLiked] = React.useState(data?.seeFullPost.isLiked);
-  const [likeCount, setLikeCount] = React.useState(data?.seeFullPost.likeCount);
+  const [likeCount, setLikeCount] = React.useState(data?.seeFullPost?.likeCount? data?.seeFullPost?.likeCount : 0);
   const [ images, setImages ] = React.useState(files);
+  const commentInput = useInput("");
+  const { value : text } = commentInput;
+  
   const [postModal, setPostModal] = React.useState(false);
   
   const [toggleLikeMutation] = useMutation(TOGGLE_LIKE,{
@@ -217,7 +224,7 @@ export default ({ id : postId, user, files, tasting, isSelf, isLiked:isLikedProp
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => setPostModal(true)}>
-          <Feather name="more-vertical" size={20} style={{padding:5}} color={'rgba(0, 0, 0, .7)'}/>
+          <Feather name="more-vertical" size={20} style={{paddingHorizontal:5}} color={'rgba(0, 0, 0, .7)'}/>
         </TouchableOpacity>
       </View>
 
@@ -231,24 +238,34 @@ export default ({ id : postId, user, files, tasting, isSelf, isLiked:isLikedProp
       {/* 포스트 현황 */}
       <View style={styles.postInfo}>
         <View style={styles.snsBar}>
+          <View style={{flexGrow:1}}>
+            <ShadowInput {...commentInput} placeholder={"댓글을 입력해 주세요"} blurOnSubmit={true} textAlign={"left"} returnKeyType={'done'} />
+          </View>
+          <View style={styles.snsButton}>
+            <TouchableOpacity>
+              {text.length > 0 ? (
+                <MaterialCommunityIcons name={"comment-plus-outline"} size={30} style={{color:'black'}} />
+              ) : (
+                <MaterialCommunityIcons name={"comment-text-outline"} size={30} style={{color:'#9e9b9d'}} />
+              )}
+            </TouchableOpacity>
+            <Caption>{12}개</Caption>
+          </View>
+
           <View style={styles.snsButton}>
             <TouchableOpacity onPress={onPressLike}>
               {isLiked? (
                   <MaterialCommunityIcons name="heart" size={30} style={{color:'red'}} /> 
               ):(
-                  <MaterialCommunityIcons name="heart-outline" size={30} style={{color:'rgba(0, 0, 0, .7)'}} /> 
+                  <MaterialCommunityIcons name="heart-outline" size={30} style={{color:'#9e9b9d'}} /> 
               )}
             </TouchableOpacity>
             <Caption>{likeCount}개</Caption>
           </View>
-
-          <View style={styles.snsButton}>
-            <Feather name="message-circle" size={30} style={{color:'rgba(0, 0, 0, .7)'}} />
-            <Caption>{12}개</Caption>
-          </View>
         </View>
 
         {tasting.length > 0? <Text style={styles.tasting} >{tasting}</Text> : null}
+
         <Caption style={styles.postingTime}>12분 전</Caption>
       </View>
 
@@ -270,26 +287,25 @@ export default ({ id : postId, user, files, tasting, isSelf, isLiked:isLikedProp
             <TouchableOpacity style={styles.modalList} onPress={() => navigation.navigate("") }>
               <MaterialCommunityIcons name="square-edit-outline" size={24} color="#666" /><Text style={styles.modalText}>리뷰 수정</Text>
             </TouchableOpacity>
-
-            <TouchableOpacity style={styles.modalList} onPress={() => Alert.alert('확인','리뷰를 삭제 하시겠습니까?',
-              [
-                {
-                  text: '취소',
-                  style: 'cancel',
-                },
-                {text: '확인',
-                onPress: () => profileId? deleteProfilePost() : deleteUserPost()
-              },
-              ],
-          {cancelable: true},
-          )}>
-              <MaterialCommunityIcons name="delete-empty-outline" size={25} color="red"/><Text style={styles.modalText_red}>리뷰 삭제</Text>
+            <TouchableOpacity style={styles.modalList} onPress={() => setPostModal(false)}>
+              <AntDesign name="back" size={24} color="#666" /><Text style={styles.modalText}>취소</Text>
             </TouchableOpacity>
           </View>
 
           <View style={styles.modalContent_bottom}>
-            <TouchableOpacity style={styles.modalList} onPress={() => setPostModal(false)}>
-              <AntDesign name="back" size={24} color="#666" /><Text style={styles.modalText}>취소</Text>
+            <TouchableOpacity style={styles.modalList} onPress={() => Alert.alert('확인','리뷰를 삭제 하시겠습니까?',
+                [
+                  {
+                    text: '취소',
+                    style: 'cancel',
+                  },
+                  {text: '확인',
+                  onPress: () => profileId? deleteProfilePost() : deleteUserPost()
+                },
+                ],
+            {cancelable: true},
+            )}>
+              <MaterialCommunityIcons name="delete-empty-outline" size={25} color="red"/><Text style={styles.modalText_red}>리뷰 삭제</Text>
             </TouchableOpacity>
           </View>
         </>
@@ -297,15 +313,15 @@ export default ({ id : postId, user, files, tasting, isSelf, isLiked:isLikedProp
         <>
           <View style={styles.modalContent_top}>
             <MaterialCommunityIcons name="chevron-down" size={26} color="#666" style={{alignSelf:"center"}} />
-
-            <TouchableOpacity style={styles.modalList}>
-              <MaterialCommunityIcons name="alarm-light-outline" size={25} color="red"/><Text style={styles.modalText_red}>신고 하기</Text>
-            </TouchableOpacity>
+              <TouchableOpacity style={styles.modalList} onPress={() => setPostModal(false)}>
+                <AntDesign name="back" size={24} color="#666" /><Text style={styles.modalText}>취소</Text>
+              </TouchableOpacity>
+           
           </View>
 
           <View style={styles.modalContent_bottom}>
-            <TouchableOpacity style={styles.modalList} onPress={() => setPostModal(false)}>
-              <AntDesign name="back" size={24} color="#666" /><Text style={styles.modalText}>취소</Text>
+            <TouchableOpacity style={styles.modalList}>
+              <MaterialCommunityIcons name="alarm-light-outline" size={25} color="red"/><Text style={styles.modalText_red}>신고 하기</Text>
             </TouchableOpacity>
           </View>
         </>

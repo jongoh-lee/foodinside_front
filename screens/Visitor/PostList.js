@@ -1,6 +1,5 @@
 import * as React from "react";
 import { View, StyleSheet, Text } from "react-native";
-import BackArrow from "../../components/Custom/BackArrow";
 import PostComponent from "../../components/Visitor/PostComponent";
 import { FlatList } from "react-native-gesture-handler";
 

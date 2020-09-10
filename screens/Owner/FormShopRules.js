@@ -78,7 +78,7 @@ export default ({ route, navigation }) => {
                             <View style={styles.rowBox}>
                                 <Text style={styles.title}>첫날 입점 시간</Text>
                                 <View style={{flexDirection:"row", alignItems:"center"}}>
-                                    <ShadowInput {...checkInInput} padding={5} editable={!loading} width={'25%'} keyboardType={"numeric"} placeholder={'9'}/>
+                                    <ShadowInput {...checkInInput} padding={5} editable={!loading} width={'25%'} keyboardType={"numeric"} placeholder={'9'} returnKeyType={'done'}/>
                                     <Text style={{color: '#666'}}> 시</Text>
                                 </View>
                             </View>
@@ -86,7 +86,7 @@ export default ({ route, navigation }) => {
                             <View style={styles.rowBox}>
                                 <Text style={styles.title}>마지막날 퇴점 시간</Text>
                                 <View style={{flexDirection:"row", alignItems:"center"}}>
-                                    <ShadowInput {...checkOutInput} padding={5} editable={!loading} width={'25%'} keyboardType={"numeric"} placeholder={'23'}/>
+                                    <ShadowInput {...checkOutInput} padding={5} editable={!loading} width={'25%'} keyboardType={"numeric"} placeholder={'23'} returnKeyType={'done'}/>
                                     <Text style={{color: '#666'}}> 시</Text>
                                 </View>
                             </View>
@@ -94,7 +94,7 @@ export default ({ route, navigation }) => {
                             <View style={styles.rowBox}>
                                 <Text style={styles.title}>최소 예약일</Text>
                                 <View style={{flexDirection:"row", alignItems:"center"}}>
-                                    <ShadowInput {...minReserveInput} padding={5} editable={!loading} width={'25%'} keyboardType={"numeric"} placeholder={'2'}/>
+                                    <ShadowInput {...minReserveInput} padding={5} editable={!loading} width={'25%'} keyboardType={"numeric"} placeholder={'2'} returnKeyType={'done'}/>
                                     <Text style={{color: '#666'}}> 일</Text>
                                 </View>
                             </View>
@@ -102,7 +102,7 @@ export default ({ route, navigation }) => {
                             <View style={styles.rowBox}>
                                 <Text style={styles.title}>최대 예약일</Text>
                                 <View style={{flexDirection:"row", alignItems:"center"}}>
-                                    <ShadowInput value={"7"} editable={false} padding={5} width={'25%'} />
+                                    <ShadowInput value={"7"} editable={false} padding={5} width={'25%'}  returnKeyType={'done'}/>
                                     <Text style={{color: '#666'}}> 일</Text>
                                 </View>
                             </View>

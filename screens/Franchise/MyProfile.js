@@ -1,5 +1,5 @@
 import * as React from "react";
-import {StyleSheet, View, Text, Image, TouchableOpacity} from "react-native";
+import {StyleSheet, View, Text, Image, TouchableOpacity, Alert} from "react-native";
 import { TouchableWithoutFeedback, } from "react-native-gesture-handler";
 import constants from "../../constants";
 import { Entypo, AntDesign, MaterialCommunityIcons, Feather } from '@expo/vector-icons'; 
@@ -8,6 +8,7 @@ import Loader from "../../components/Custom/Loader";
 import { MY_PROFILE } from "./ProfileQueries";
 import FranchiseComponent from "../../components/Franchise/FranchiseComponent";
 import Modal from "react-native-modal";
+import Logo from "../../components/Custom/Logo";
 
 export default ({ navigation }) => {
   const [visible, setVisible ] = React.useState(false);
@@ -27,6 +28,11 @@ export default ({ navigation }) => {
           <Feather name="more-vertical" size={24} style={{paddingHorizontal:5}}/>
         </TouchableOpacity>
       )
+    })
+  }else{
+    navigation.setOptions({
+      headerTitle:() => <Logo/>,
+      headerTitleAlign:'left'
     })
   }
 
@@ -163,7 +169,7 @@ export default ({ navigation }) => {
           <MaterialCommunityIcons name="chevron-down" size={26} color="#666" style={{alignSelf:"center"}} />
           <TouchableOpacity style={styles.modalList} onPress={()=> (
               navigation.navigate("프로필 완성", {
-                myProfile: { profileName, sector, token, mainImage, menuName, menuImage, fullPrice, salePrice, foodGuide, origin, submenus, founderImage, career, user, members}
+                myProfile: { ...data?.myProfile }
               }),
               setVisible(false))}>
               <MaterialCommunityIcons name="square-edit-outline" size={24} color="#666" /><Text style={styles.modalText}>정보수정</Text>

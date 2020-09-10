@@ -64,6 +64,8 @@ export const MY_CALENDAR = gql`
     query myCalendar{
         myCalendar{
             id
+            ownerState
+            isSelf
             calendar{
                 id
                 dateString
@@ -85,6 +87,7 @@ export const EDIT_CALENDAR = gql`
             deletePrice: $deletePrice
         ){
             id
+            isSelf
             calendar{
                 id
                 dateString

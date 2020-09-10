@@ -2,6 +2,8 @@ import React from "react";
 import {View, StyleSheet} from "react-native";
 import ShopCard from "../../components/Franchise/ShopCard";
 import { ScrollView } from "react-native-gesture-handler";
+import { useQuery } from "@apollo/react-hooks";
+import { MY_FAVORITE } from "./ProfileQueries";
 
 const styles = StyleSheet.create({
   container:{
@@ -27,12 +29,17 @@ const listings = [
   }
 ]
 
-export default () => (
+export default () => {
+  const { data, error, loading } = useQuery(MY_FAVORITE,{
+    fetchPolicy:"network-only"
+  });
+  console.log(data)
+  return(
   <View style={styles.container}>
     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{padding:10}} >
       {listings.map((listing) => (
-        <ShopCard key={listing.id} listing={listing} />
+        <ShopCard key={listing.id} listing={listing}/>
       ))}
     </ScrollView>
   </View>
-);
+)};

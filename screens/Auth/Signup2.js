@@ -11,16 +11,17 @@ import { CHECK_USERNAME } from "./AuthQueries";
 
 
 export default ({ navigation, route }) => {
-  const [alert, setAlert] = React.useState("");
-  const [color, setColor] = React.useState('warn');
   const [edit, setEdit] = React.useState(true)
+  const [alert, setAlert] = React.useState(false);
   const idInput = strickInput("");
   const { value } = idInput;
-  const { data, error } = useQuery(CHECK_USERNAME, {
+  const { data, error, loading } = useQuery(CHECK_USERNAME, {
     variables:{
       username: value
-    }
+    },
+    fetchPolicy:"network-only"
   });
+  console.log(data)
   const handlecheckUsername = () => {
     setEdit(false)
     try {
@@ -38,12 +39,8 @@ export default ({ navigation, route }) => {
     } 
   }
   React.useEffect(()=>{
-    if(value.length > 2 && data && data.checkUsername){
-      setColor('pass')
-      setAlert("사용 가능한 아이디 입니다")
+    if(value.length > 2){
     } else {
-      setColor('warn')
-      setAlert("사용할 수 없는 아이디 입니다")
     }
     if(value === ""){
       setAlert("")
@@ -69,10 +66,10 @@ export default ({ navigation, route }) => {
         <Text style={styles.title}>아이디를 입력하세요</Text>
         <Text style={styles.text}>2자 이상 한글, 영문, 숫자 조합만 사용 가능합니다</Text>
 
-        <AuthInput {...idInput} placeholder="아이디를 입력하세요" keyboardType="default" autoFocus={true} editable={edit}/>
-        <Text style={color === 'warn'? {fontSize:10, color:"red", paddingLeft:5} : {fontSize:10, color:"green", paddingLeft:5}}>{alert}</Text>
+        <AuthInput {...idInput} placeholder="아이디를 입력하세요" keyboardType="default" autoFocus={true} editable={edit}/> 
+        {value.length < 3? <Text  style={{fontSize:10}} /> : data?.checkUsername ? <Text style={{fontSize:10, color:"green", paddingLeft:5}}>{"사용 가능한 아이디 입니다"}</Text> : <Text style={{fontSize:10, color:"red", paddingLeft:5}}>{"사용할 수 없는 아이디 입니다"}</Text>}
 
-        <AuthButton text="다음(2/4단계)" disabled={color === 'warn'? true : false} onPress={handlecheckUsername}/>
+        <AuthButton text="다음(2/4단계)" disabled={value.length > 2 && data?.checkUsername? loading : true} onPress={handlecheckUsername}/>
       </View>
       </DismissKeyboard>
       </KeyboardAvoidingView>

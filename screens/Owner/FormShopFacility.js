@@ -205,9 +205,9 @@ export default ({ navigation, route}) => {
             espresso_machine: espresso_machineInput.value,
             coffee_bean_grinder: coffee_bean_grinderInput.value,
             roasting_machine: roasting_machineInput.value,
-            ice_maker: ice_makerInput.value+'L',
+            ice_maker: ice_makerInput.value,
             ice_shaver: ice_shaverInput.value,
-            water_heater: water_heaterInput.value+'L',
+            water_heater: water_heaterInput.value,
             blender: blenderInput.value,
             cafe_ect: cafe_ectInput.value,
         }
@@ -355,46 +355,46 @@ export default ({ navigation, route}) => {
                 <View style={[styles.cafeBox, {paddingTop:10}]}>
                     <View style={{alignItems:"center", padding:10, flex:1}}>
                         <Text style={{color:'black', marginBottom:10, fontWeight:'bold'}}>에스프레소 머신*</Text>
-                        <ShadowInput {...espresso_machineInput} placeholder={'명칭'}/>
+                        <ShadowInput {...espresso_machineInput} placeholder={'명칭'} returnKeyType={"done"} />
                     </View>
 
                     <View style={{alignItems:"center", padding:10, flex:1}}>
                         <Text style={{color:'black', marginBottom:10, fontWeight:'bold'}}>원두 그라인더*</Text>
-                        <ShadowInput {...coffee_bean_grinderInput} placeholder={'명칭'}/>
+                        <ShadowInput {...coffee_bean_grinderInput} placeholder={'명칭'} returnKeyType={"done"} />
                     </View>
 
                     <View style={{alignItems:"center", padding:10, flex:1}}>
                         <Text style={{color:'black', marginBottom:10, fontWeight:'bold'}}>온수기*</Text>
-                        <ShadowInput {...water_heaterInput} placeholder={'용량(L)'}/>
+                        <ShadowInput {...water_heaterInput} placeholder={'용량(L)'} returnKeyType={"done"} />
                     </View>
                 </View>
 
                 <View style={styles.cafeBox}>
                     <View style={{alignItems:"center", padding:10, flex:1}}>
                         <Text style={{color:'black', marginBottom:10, fontWeight:'bold'}}>제빙기*</Text>
-                        <ShadowInput {...ice_makerInput} placeholder={'용량(L)'}/>
+                        <ShadowInput {...ice_makerInput} placeholder={'용량(L)'} returnKeyType={"done"} />
                     </View>
 
                     <View style={{alignItems:"center", padding:10, flex:1}}>
                         <Text style={{color:'black', marginBottom:10, fontWeight:'bold'}}>빙삭기</Text>
-                        <ShadowInput {...ice_shaverInput} placeholder={'명칭'}/>
+                        <ShadowInput {...ice_shaverInput} placeholder={'명칭'} returnKeyType={"done"} />
                     </View>
 
                     <View style={{alignItems:"center", padding:10, flex:1}}>
                         <Text style={{color:'black', marginBottom:10, fontWeight:'bold'}}>블렌더</Text>
-                        <ShadowInput {...blenderInput} placeholder={'명칭'} />
+                        <ShadowInput {...blenderInput} placeholder={'명칭'}  returnKeyType={"done"} />
                     </View>
                 </View>
 
                 <View style={[styles.cafeBox, {paddingBottom:20}]}>
                     <View style={{alignItems:"center", padding:10, flex:1}}>
                         <Text style={{color:'black', marginBottom:10, fontWeight:'bold'}}>로스팅 머신</Text>
-                        <ShadowInput {...roasting_machineInput} placeholder={'명칭'} />
+                        <ShadowInput {...roasting_machineInput} placeholder={'명칭'}  returnKeyType={"done"} />
                     </View>
 
                     <View style={{alignItems:"center", padding:10, flex:1}}>
                         <Text style={{color:'black', marginBottom:10, fontWeight:'bold'}}>기타</Text>
-                        <ShadowInput {...cafe_ectInput} placeholder={'기타 기기'} />
+                        <ShadowInput {...cafe_ectInput} placeholder={'기타 기기'}  returnKeyType={"done"} />
                     </View>
                 </View>
             </View>

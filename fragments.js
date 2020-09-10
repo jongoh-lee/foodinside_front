@@ -7,7 +7,11 @@ export const OWNER_FRAGMENT = gql`
     classification
     address
     addressDetail
+    latitude
+    longitude
     ownerState
+    isSelf
+    profileState
     contact
     #scale
     chairs
@@ -252,6 +256,7 @@ export const PROFILE_FRAGMENT = gql`
 export const USER_FRAGMENT = gql`
   fragment UserParts on User {
     id
+    isSelf
     avatar
     username
     email
@@ -259,10 +264,9 @@ export const USER_FRAGMENT = gql`
     lastName
     dangolCount
     followingCount
-    postsCount
     followersCount
-    isSelf
     isFollowing
+    postsCount
     posts{
       id
       tasting

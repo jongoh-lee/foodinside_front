@@ -168,3 +168,48 @@ export const MY_DANGOL = gql`
         }
     }
 `;
+
+export const MY_FOLLOWER = gql`
+    query me{
+        me{
+            id
+            followers{
+              id
+              username
+              avatar
+              isSelf
+              isFollowing
+            }
+        }
+    }
+`;
+
+export const MY_FOLLOWING = gql`
+    query me{
+        me{
+            id
+            following{
+              id
+              username
+              avatar
+              isSelf
+              isFollowing
+            }
+        }
+    }
+`;
+
+export const USER_FOLLOWER = gql`
+    query seeUser($username: String!){
+        seeUser(username: $username){
+            id
+            followers{
+                id
+                username
+                avatar
+                isSelf
+                isFollowing
+            }
+        }
+    }
+`;

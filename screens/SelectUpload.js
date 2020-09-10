@@ -58,11 +58,12 @@ export default ({ navigation, route }) => {
     
     const getPhotos = async () => {
         try{
-            const { assets } = await MediaLibrary.getAssetsAsync();
-            let _assets = await assets.sort((a,b)=>a.creationTime-b.creationTime) 
-            const [firstPhoto] = _assets;
+            const { assets } = await MediaLibrary.getAssetsAsync({
+                first:100,
+            });
+            const [firstPhoto] = assets;
             setBigImage(firstPhoto);
-            setAllPhotos(_assets);
+            setAllPhotos(assets);
         } catch (e) {
             console.log('사진 선택 에러:',e);
         } finally {

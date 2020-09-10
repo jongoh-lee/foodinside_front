@@ -25,7 +25,6 @@ export default ({ navigation }) => {
     </TouchableWithoutFeedback>
     )
   })
-  
   if (loading) return <Loader />;
   if (error) return console.log(error);
   return (

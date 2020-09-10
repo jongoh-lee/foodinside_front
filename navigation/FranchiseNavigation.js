@@ -107,6 +107,7 @@ function ProfileStackScreen() {
     initialRouteName={"프로필 안내"} screenOptions={{ headerTitleStyle:{fontSize:20, fontWeight:'bold'}, headerShown:true}}>
       <ProfileStack.Screen name="프로필 안내" component={MyProfile} options={{
         headerTitle:()=><Logo nav={'공유 음식점'}/>,
+        headerTitleAlign:"left",
       }} />
       <ProfileStack.Screen name="심사 중" component={SeeCreateProfile} options={{
         headerTitle:"심사 중",

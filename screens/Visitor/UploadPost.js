@@ -24,7 +24,7 @@ export default ({ navigation, route }) => {
             formData.append('file', {
                 name: images[i].filename,
                 type: "image/jpeg",
-                uri: images[i].uri
+                uri: images[i].uri,
             });
         }
 
@@ -32,7 +32,7 @@ export default ({ navigation, route }) => {
         setLoading(true);
         const {
             data: { location }
-        } = await axios.post("http://4de8c1e95ca3.ngrok.io/api/upload", formData, {
+        } = await axios.post("http://192.168.50.19:4000/api/upload", formData, {
             headers: {
               "content-type": "multipart/form-data"
             }
@@ -87,7 +87,7 @@ export default ({ navigation, route }) => {
             </ScrollView>
         </View>
             
-        <ShadowInput {...tastingInput} editable={!loading} textAlign={"left"} textAlignVertical={"top"} height={100} multiline={true} placeholder={"내용을 입력해 주세요..."} returnKeyType={"default"}/>
+        <ShadowInput {...tastingInput} editable={!loading} blurOnSubmit={false} textAlign={"left"} textAlignVertical={"top"} height={100} multiline={true} placeholder={"내용을 입력해 주세요..."} returnKeyType={"default"}/>
     </ScrollView>
     );
 };

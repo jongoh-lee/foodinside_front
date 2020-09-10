@@ -1,9 +1,9 @@
 import { TouchableWithoutFeedback, ScrollView } from "react-native-gesture-handler";
 import * as React from "react";
-import { StyleSheet, View, Text, Platform, Image } from "react-native";
+import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import MapView, {Marker} from "react-native-maps";
 import constants from "../../constants";
-import Calendar from "../Calendar";
+import BookingCalendar from "./BookingCalendar";
 import { MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
 import Facility from "./Facility";
 import Swiper from 'react-native-swiper';
@@ -106,7 +106,6 @@ const styles = StyleSheet.create({
     },
     calendar:{
         borderRadius:15,
-        margin:5,
         shadowOffset: {
             width: 0,
             height: 1,
@@ -114,11 +113,11 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.20,
         shadowRadius: 1.41,
         elevation: 3,
-        overflow: Platform.OS === 'android'? "hidden" : "hidden"
+        overflow: Platform.OS === 'android' ? "hidden" : null
     }
 })
 
-export default ({ shopImages, facility, tables, chairs, scale, shopName, district, description, precaution, address, checkIn, checkOut, minReserve, }) => {
+export default ({ shopImages, facility, tables, chairs, scale, shopName, district, description, precaution, address, checkIn, checkOut, minReserve, calendar, isSelf, profileState}) => {
     const [tabName, setTabName] = React.useState("EXTERIOR");
     const [index, setIndex] = React.useState(0);
     const exterior= React.useState(shopImages.filter(el => el["type"] === 'EXTERIOR').length)
@@ -135,6 +134,7 @@ export default ({ shopImages, facility, tables, chairs, scale, shopName, distric
         if(tab === 'CLEANER') return setIndex(exterior[0] + hall[0] + kitchen[0] + tableware[0] + 1);
         if(tab === 'ECT') return setIndex(exterior[0] + hall[0] + kitchen[0] + tableware[0] + cleaner[0] + 1);
     }
+    
     return (
         <ScrollView showsVerticalScrollIndicator={false} scrollEventThrottle={1}>
             <View style={styles.imageBox}>
@@ -307,15 +307,7 @@ export default ({ shopImages, facility, tables, chairs, scale, shopName, distric
             <View style={styles.box}>
                 <Text style={styles.title}>입점 하기</Text>
                 <View style={styles.calendar}>
-                    <Calendar />
-
-                    <View style={{position:"absolute", bottom:10, left:10, padding:10}}>
-                        <Text style={{color:"black", fontWeight:"bold", fontSize:16}}>합계: 210,000</Text>
-                    </View>
-
-                    <View style={{position:"absolute", bottom:10, right:10, padding:10, borderRadius:10, backgroundColor:"#05e6f4"}}>
-                        <Text style={{color:"#ffffff"}}>예약하기</Text>
-                    </View>
+                    <BookingCalendar calendar={calendar} isSelf={isSelf} calendarHeight={isSelf? (Platform.OS === 'ios'? 450 : 500 ) : (Platform.OS === 'ios'? 500 : 550)} profileState={profileState}/>
                 </View>
             </View>
 

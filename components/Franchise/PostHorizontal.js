@@ -34,7 +34,7 @@ export default ({ id, posts }) => {
                     profileId: id,
                     postId: post.id,
                     thumnail: posts,
-                    index: index
+                    index
                 }
             })} >
                 <Image style={styles.grid} source={{uri:post.files[0].url}}/>

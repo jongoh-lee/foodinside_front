@@ -4,6 +4,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Caption } from "react-native-paper";
 import constants from "../../constants";
+import axios from "axios";
 import Modal from "react-native-modal";
 import { useMutation } from "@apollo/react-hooks";
 import BasicButton from "../../components/Custom/BasicButton";
@@ -38,16 +39,16 @@ export default ({ navigation, route }) => {
 
     //이미지 추가 함수 front: list 바꾸고 back_end: data 추가
     const onSelect = ({ photo, data }) => {
-        setNewImages(newImages.concat(photo.map( el => ({ type: data, url: el.uri}))))
+        setNewImages(newImages.concat(photo.map( el => ({ type: data, url: el.uri, filename: el.filename}))))
     };
 
     // 이미지 수정 함수 front 바꾸고 edit list 추가
     const onEdit = ({ photo, data }) => {
         let index = editImages.findIndex(image => image.id === data.id);
         if(index > -1){
-            editImages[index] = {id: data.id, type: data.type, url: photo.uri };
+            editImages[index] = {id: data.id, type: data.type, url: photo.uri, filename: photo.filename };
         }else{
-            setEditImages(editImages.concat({id: data.id, type: data.type, url: photo.uri }));
+            setEditImages(editImages.concat({id: data.id, type: data.type, url: photo.uri, filename: photo.filename }));
         }
         setAllImages(allImages.map((el) => el.id === data.id ? {...el, url:photo.uri} : el))
     };
@@ -65,10 +66,60 @@ export default ({ navigation, route }) => {
     };
 
     const [ completeShopImageMutation ] = useMutation(COMPLETE_SHOP_IMAGE);
-
+    
     const handleSubmit = async () => {
+        setLoading(true);
         try {
-            setLoading(true);
+            if(newImages.length > 0){
+                const formNewImages = new FormData();
+                for (var i = 0; i < newImages.length; i++) {
+                    formNewImages.append('file', {
+                        name: newImages[i].filename,
+                        type: "image/jpeg",
+                        uri: newImages[i].url,
+                    });
+                }
+                const {
+                    data: { location : newImageUrls }
+                } = await axios.post("http://192.168.50.19:4000/api/upload", formNewImages, {
+                    headers: {
+                      "content-type": "multipart/form-data"
+                    }
+                });
+                for (var i = 0; i < newImages.length; i++) {
+                    newImages[i] = {
+                        type: newImages[i].type,
+                        url: newImageUrls[i].url
+                    }
+                }
+            }
+
+            if(editImages.length > 0){
+                const formEditImages = new FormData();
+                for (var i = 0; i < editImages.length; i++) {
+                    formEditImages.append('file', {
+                        name: editImages[i].filename,
+                        type: "image/jpeg",
+                        uri: editImages[i].url,
+                    });
+                }
+                const {
+                    data: { location : editImageUrls }
+                } = await axios.post("http://192.168.50.19:4000/api/upload", formEditImages, {
+                    headers: {
+                      "content-type": "multipart/form-data"
+                    }
+                });
+                for (var i = 0; i < editImages.length; i++) {
+                    editImages[i] = {
+                        id:editImages[i].id,
+                        type: editImages[i].type,
+                        url: editImageUrls[i].url
+                    }
+                }
+            }
+
+            console.log(newImages);
             const {
                 data : { completeShopImage }
             } = await completeShopImageMutation({
@@ -128,7 +179,7 @@ export default ({ navigation, route }) => {
                             >   
                                 {allImages.filter((image) => image.type === "EXTERIOR").map(
                                     (image, index) => (
-                                            <TouchableOpacity key={index} onPress={()=> (
+                                            <TouchableOpacity key={index} disabled={loading} onPress={()=> (
                                                 setEditImageModal(true),
                                                 setChosenImage(image)
                                             )}>
@@ -140,21 +191,18 @@ export default ({ navigation, route }) => {
 
                                 {newImages.filter((image) => image.type === "EXTERIOR").map(
                                     (image, index) => (
-                                        <TouchableOpacity key={index} onPress={()=> (
+                                        <TouchableOpacity key={index} disabled={loading} onPress={()=> (
                                             setEditImageModal(true),
                                             setChosenImage(image)
                                         )}>
                                             <Image style={styles.image} source={{uri:image.url}} />
                                         </TouchableOpacity>
                                     )
-                                )
-                                }
+                                )}
 
                                 {allImages.filter((image) => image.type === "EXTERIOR").length + newImages.filter((image) => image.type === "EXTERIOR").length === 0 && (
                                     <View style={styles.imageNull}/>
-                                ) 
-
-                                }
+                                )}
 
                             </ScrollView>
                         </View>
@@ -195,7 +243,7 @@ export default ({ navigation, route }) => {
                             >   
                                 {allImages.filter((image) => image.type === "HALL").map(
                                     (image, index) => (
-                                            <TouchableOpacity key={index} onPress={()=> (
+                                            <TouchableOpacity key={index} disabled={loading} onPress={()=> (
                                                 setEditImageModal(true),
                                                 setChosenImage(image)
                                             )}>
@@ -207,7 +255,7 @@ export default ({ navigation, route }) => {
 
                                 {newImages.filter((image) => image.type === "HALL").map(
                                     (image, index) => (
-                                        <TouchableOpacity key={index} onPress={()=> (
+                                        <TouchableOpacity key={index} disabled={loading} onPress={()=> (
                                             setEditImageModal(true),
                                             setChosenImage(image)
                                         )}>
@@ -262,7 +310,7 @@ export default ({ navigation, route }) => {
                             >   
                                 {allImages.filter((image) => image.type === "KITCHEN").map(
                                     (image, index) => (
-                                            <TouchableOpacity key={index} onPress={()=> (
+                                            <TouchableOpacity key={index} disabled={loading} onPress={()=> (
                                                 setEditImageModal(true),
                                                 setChosenImage(image)
                                             )}>
@@ -274,7 +322,7 @@ export default ({ navigation, route }) => {
 
                                 {newImages.filter((image) => image.type === "KITCHEN").map(
                                     (image, index) => (
-                                        <TouchableOpacity key={index} onPress={()=> (
+                                        <TouchableOpacity key={index} disabled={loading} onPress={()=> (
                                             setEditImageModal(true),
                                             setChosenImage(image)
                                         )}>
@@ -329,7 +377,7 @@ export default ({ navigation, route }) => {
                             >   
                                 {allImages.filter((image) => image.type === "TABLEWARE").map(
                                     (image, index) => (
-                                            <TouchableOpacity key={index} onPress={()=> (
+                                            <TouchableOpacity key={index} disabled={loading} onPress={()=> (
                                                 setEditImageModal(true),
                                                 setChosenImage(image)
                                             )}>
@@ -341,7 +389,7 @@ export default ({ navigation, route }) => {
 
                                 {newImages.filter((image) => image.type === "TABLEWARE").map(
                                     (image, index) => (
-                                        <TouchableOpacity key={index} onPress={()=> (
+                                        <TouchableOpacity key={index} disabled={loading} onPress={()=> (
                                             setEditImageModal(true),
                                             setChosenImage(image)
                                         )}>
@@ -396,7 +444,7 @@ export default ({ navigation, route }) => {
                             >   
                                 {allImages.filter((image) => image.type === "CLEANER").map(
                                     (image, index) => (
-                                            <TouchableOpacity key={index} onPress={()=> (
+                                            <TouchableOpacity key={index} disabled={loading} onPress={()=> (
                                                 setEditImageModal(true),
                                                 setChosenImage(image)
                                             )}>
@@ -408,7 +456,7 @@ export default ({ navigation, route }) => {
 
                                 {newImages.filter((image) => image.type === "CLEANER").map(
                                     (image, index) => (
-                                        <TouchableOpacity key={index} onPress={()=> (
+                                        <TouchableOpacity key={index} disabled={loading} onPress={()=> (
                                             setEditImageModal(true),
                                             setChosenImage(image)
                                         )}>
@@ -463,7 +511,7 @@ export default ({ navigation, route }) => {
                             >   
                                 {allImages.filter((image) => image.type === "ECT").map(
                                     (image, index) => (
-                                            <TouchableOpacity key={index} onPress={()=> (
+                                            <TouchableOpacity key={index} disabled={loading} onPress={()=> (
                                                 setEditImageModal(true),
                                                 setChosenImage(image)
                                             )}>
@@ -475,7 +523,7 @@ export default ({ navigation, route }) => {
 
                                 {newImages.filter((image) => image.type === "ECT").map(
                                     (image, index) => (
-                                        <TouchableOpacity key={index} onPress={()=> (
+                                        <TouchableOpacity key={index} disabled={loading} onPress={()=> (
                                             setEditImageModal(true),
                                             setChosenImage(image)
                                         )}>

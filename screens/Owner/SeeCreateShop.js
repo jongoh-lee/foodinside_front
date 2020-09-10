@@ -26,7 +26,6 @@ export default ({ navigation }) => {
 
   if (loading) return <Loader />;
   if (error) return console.log(error);
-  console.log(data)
 
   return (
     <View style={styles.container}>

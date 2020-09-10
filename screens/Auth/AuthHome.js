@@ -60,7 +60,7 @@ export default ({ navigation }) => {
 
               <Text style={{fontSize:10, color:"red", paddingLeft:5}}>{alert}</Text>
 
-              <AuthButton text="로그인 키 요청하기" onPress={handleLogin} disabled={emailInput.value === ""? true : touchableActive} loading={loading}/>
+              <AuthButton text="로그인 키 요청하기" onPress={handleLogin} disabled={emailInput.value.length > 0 ? loading : true} loading={loading}/>
             </View>
 
             <TouchableWithoutFeedback onPress={() => navigation.navigate("FindAccount")}>

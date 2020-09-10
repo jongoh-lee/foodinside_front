@@ -8,8 +8,10 @@ import Loader from "../../components/Custom/Loader";
 import PostHorizontal from "../Franchise/PostHorizontal";
 import { useMutation } from "@apollo/react-hooks";
 import { FOLLOW, UNFOLLOW } from "../../screens/Visitor/VisitorQueries";
+import { useNavigation } from "@react-navigation/native";
 
 export default ({ id, avatar, username, email, isSelf ,dangolCount, followersCount, followingCount, postsCount, posts, isFollowing }) => {
+    const navigation = useNavigation()
     const [toggleFollow, setToggleFollow] = React.useState(isFollowing);
     const [followerNumber, setFollowerNumber] = React.useState(followersCount);
     const [followMutation, {loading: followLoading}] = useMutation(FOLLOW, {
@@ -69,15 +71,22 @@ export default ({ id, avatar, username, email, isSelf ,dangolCount, followersCou
                     <View style={{flex:3}}>
                         <View style={{flex:1, justifyContent:"center"}}>
                             <Text style={{fontSize:16, paddingBottom:5}}>{username}</Text>
-                            {isSelf? <Caption>팔로잉 : {followingCount}</Caption> : (
-                                toggleFollow? ( 
-                                <TouchableOpacity onPress={onPressUnfollow} style={{width:100, borderWidth:1, borderColor:"#05e6f4", alignItems:"center", padding:4, borderRadius:5}}>
-                                    {unfollowLoading? <ActivityIndicator color={"#05e6f4"} /> : <Text style={{color:"#05e6f4"}}>팔로잉</Text>}
+                            {isSelf? ( 
+                                <TouchableOpacity onPress={() => navigation.navigate("FollowList",{
+                                    tabname:"팔로잉"
+                                })}>
+                                    <Caption>팔로잉 : {followingCount}</Caption>
                                 </TouchableOpacity> 
                                 ) : (
-                                <TouchableOpacity onPress={onPressFollow} loading={followLoading} style={{width:100, borderWidth:1, borderColor:"#ffffff", backgroundColor: "#05e6f4", alignItems:"center", padding:4, borderRadius:5}}>
-                                    {followLoading? <ActivityIndicator color={"white"} /> : <Text style={{color:"#ffffff"}}>팔로우</Text>}
-                                </TouchableOpacity>)
+                                    toggleFollow? ( 
+                                    <TouchableOpacity disabled={unfollowLoading} onPress={onPressUnfollow} style={{width:100, borderWidth:1, borderColor:"#05e6f4", alignItems:"center", padding:4, borderRadius:5}}>
+                                        {unfollowLoading? <ActivityIndicator size={"small"} color={"#05e6f4"} /> : <Text style={{color:"#05e6f4"}}>팔로잉</Text>}
+                                    </TouchableOpacity> 
+                                    ) : (
+                                    <TouchableOpacity disabled={followLoading} onPress={onPressFollow} style={{width:100, borderWidth:1, borderColor:"#ffffff", backgroundColor: "#05e6f4", alignItems:"center", padding:4, borderRadius:5}}>
+                                        {followLoading? <ActivityIndicator size={"small"} color={"white"} /> : <Text style={{color:"#ffffff"}}>팔로우</Text>}
+                                    </TouchableOpacity>
+                                    )
                             )}
                         </View>
                     </View>
@@ -97,10 +106,14 @@ export default ({ id, avatar, username, email, isSelf ,dangolCount, followersCou
                         <Text style={styles.number}>{0}</Text>
                         <Text style={styles.title}>암호화폐</Text>
                     </View>
-                    <View style={styles.inner}>
+                    <TouchableOpacity style={styles.inner} onPress={() => isSelf? navigation.navigate("FollowList",{
+                        tabname:"팔로워"
+                    }) : navigation.navigate("UserFollowers",{
+                        username
+                    })}>
                         <Text style={styles.number}>{followerNumber}</Text>
                         <Text style={styles.title}>팔로워</Text>
-                    </View>
+                    </TouchableOpacity>
                 </View>
             </View>
 

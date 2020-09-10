@@ -24,7 +24,8 @@ const ShadowInput = ({
   textAlignVertical="center",
   fontSize = 14,
   height = null,
-  blurOnSubmit=true
+  blurOnSubmit=true,
+  numberOfLines=1
 }) => {
     return (
         <View style={{width:width, padding:3}}>
@@ -42,7 +43,8 @@ const ShadowInput = ({
               shadowOpacity: 0.20,
               shadowRadius: 1.41,
               elevation: 2,
-              height: height
+              height: height,
+              paddingTop: padding
             }}
             onChangeText={onChange}
             keyboardType={keyboardType}
@@ -50,13 +52,14 @@ const ShadowInput = ({
             placeholder={placeholder}
             autoCapitalize={autoCapitalize}
             value={value}
-            numberOfLines={1}
+            numberOfLines={numberOfLines}
             autoFocus={autoFocus}
             editable={editable}
-            blurOnSubmit={true}
+            blurOnSubmit={blurOnSubmit}
             multiline={multiline}
             maxHeight={maxHeight}
             maxLength={maxLength}
+            enablesReturnKeyAutomatically={true}
             />
         </View>
     )
@@ -89,6 +92,7 @@ ShadowInput.propTypes = {
   fontSize: PropTypes.number,
   blurOnSubmit: PropTypes.bool,
   height: PropTypes.number,
+  numberOfLines: PropTypes.number
 };
 
 export default ShadowInput;

@@ -1,11 +1,5 @@
 import * as React from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ImageBackground,
-  StyleSheet,
-} from 'react-native';
+import {View, Text, TouchableOpacity, ImageBackground, StyleSheet,} from 'react-native';
 import axios from "axios";
 import { Feather, MaterialCommunityIcons, FontAwesome } from "@expo/vector-icons";
 import BasicInput from '../../components/Custom/BasicInput';
@@ -14,55 +8,56 @@ import BasicButton from '../../components/Custom/BasicButton';
 import { ScrollView } from 'react-native-gesture-handler';
 import strickInput from '../../hooks/strickInput';
 import { useQuery, useMutation } from "@apollo/react-hooks";
-import { EDIT_ME, ME } from './VisitorQueries';
+import { EDIT_ME, ME, EDIT_USERNAME } from './VisitorQueries';
 import constants from '../../constants';
-import { CHECK_USERNAME } from '../Auth/AuthQueries';
 
 export default ({ navigation, route }) => {
-    const [avatar, setAvatar] = React.useState(route.params.avatar? route.params.avatar : require('../../assets/Icons/avatarBasic.png'));
+    const [avatar, setAvatar] = React.useState(route.params.avatar? route.params.avatar : null);
     const [loading, setLoading] = React.useState(false)
     const usernameInput = strickInput(route.params.username);
     const { value: username } = usernameInput;
-    const [alert, setAlert] = React.useState(false);
+    const [alert, setAlert] = React.useState();
     
     const onSelect = (image) => {
       setAvatar(image.photo)
     };
-
-    const { data, error } = useQuery(CHECK_USERNAME,{
+    
+    const { data, error } = useQuery(EDIT_USERNAME,{
       variables:{
         username: username
       },
       fetchPolicy:"network-only"
     });
-
+    
     const [editMeMutation] = useMutation(EDIT_ME)
 
     const handleEdit = async () => {
       try {
         setLoading(true);
-        const formData = new FormData();
-
+        let _avartar = [];
+        if(avatar.uri){
+          const formData = new FormData();
         formData.append('file',{
           name: avatar.filename,
           type: "image/jpeg",
           uri: avatar.uri
         });
-
         const {
           data: { location }
-        } = await axios.post("http://4de8c1e95ca3.ngrok.io/api/upload", formData, {
+        } = await axios.post("http://192.168.50.19:4000/api/upload", formData, {
           headers: {
             "content-type": "multipart/form-data"
           }
         });
+        _avatar.push(location[0])
+        }
         
         const {
           data: { editMe }
         } = await editMeMutation({
           variables: {
             username: username,
-            avatar: location[0].url,
+            avatar: avatar.uri? _avartar[0].url : avatar,
             email: route.params.email
           }
         });
@@ -70,23 +65,19 @@ export default ({ navigation, route }) => {
         navigation.goBack();
         }
       } catch(e){
-      console.log(error);
+      console.log("내정보 수정 에러",error);
       } finally {
         setLoading(false)
       }
     }
-
     React.useEffect(() => {
-      if(route.params.username !== username){
-        if(username.length > 2 && data?.checkUsername){
-          setAlert(false)
-        } else {
-          setAlert(true)
-        }
+      if(username.length < 3){
+        setAlert(true)
       }else{
         setAlert(false)
       }
-    },[data?.checkUsername, username])
+    },[usernameInput.value])
+
     return (
     <View style={styles.container}>
       <DismissKeyboard>
@@ -105,7 +96,7 @@ export default ({ navigation, route }) => {
                 alignItems: 'center',
               }}>
               <ImageBackground
-                source={avatar === require('../../assets/Icons/avatarBasic.png')? require('../../assets/Icons/avatarBasic.png') : {uri:avatar}}
+                source={avatar? avatar.uri? {uri: avatar.uri} : {uri: avatar} : require('../../assets/Icons/avatarBasic.png') }
                 style={{height: 100, width: 100}}
                 imageStyle={{borderRadius: 15}}>
                 <View style={{
@@ -141,7 +132,7 @@ export default ({ navigation, route }) => {
           <View>
             <BasicInput {...usernameInput} placeholder={'아이디'} keyboardType="default"/>
           </View>
-            {alert ? <Text style={{fontSize:10, color:"red", position:"absolute", bottom:5 }}>사용할 수 없는 아이디 입니다</Text>: null}
+            {data?.editUsername || alert? <Text style={{fontSize:10, color:"red", position:"absolute", bottom:5 }}>사용할 수 없는 아이디 입니다</Text>: null}
         </View>
         
 
@@ -164,7 +155,7 @@ export default ({ navigation, route }) => {
               placeholder={route.params.email} editable={false}/>
         </View>
         <View style={{width:'100%'}}>
-          <BasicButton text={'수정하기'} disabled={alert} onPress={handleEdit} loading={loading}/>
+          <BasicButton text={'수정하기'} disabled={alert? true : loading} onPress={handleEdit} loading={loading}/>
         </View>
 
         </ScrollView>

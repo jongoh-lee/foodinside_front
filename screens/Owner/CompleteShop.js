@@ -75,14 +75,14 @@ export default ({ navigation }) => {
         try {
             setLoading(true);
             const {
-                data : { completeShopShop }
+                data : { completeShop }
             } = await completeShopMutation({
                 variables:{
                   ownerState:3
                 }
             });
-            if(completeShopShop){
-                navigation.navigate("내 음식점");
+            if(completeShop){
+                navigation.goBack();
             }
         } catch(e){
             console.log("내 가게 보기 에러:",e)
@@ -98,7 +98,7 @@ export default ({ navigation }) => {
             {data && data.myShop &&
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{alignItems:"center", padding:20,}}>
                 <View style={styles.buttonShadow}>
-                    <TouchableOpacity onPress={() => navigation.navigate("사진 올리기", {shopImages:data.myShop.shopImages})}>
+                    <TouchableOpacity onPress={() => navigation.navigate("사진 올리기", {shopImages:data.myShop.shopImages})} disabled={loading}>
                         <View style={styles.buttonRow}>
                             <View style={[styles.buttonCircle, data.myShop.shopImages.length > 3 ? {borderColor: 'rgba(5, 230, 244, .6)'} : null]}>
                                 <MaterialCommunityIcons name="camera-wireless-outline" size={30} color={data.myShop.shopImages.length > 3 ? "rgba(5, 230, 244, .6)" : "#E0E0E0"} />
@@ -111,7 +111,7 @@ export default ({ navigation }) => {
                 </View>
 
                 <View style={styles.buttonShadow}>
-                    <TouchableOpacity onPress={() => navigation.navigate("설비 등록", {facility: data.myShop.facility})}>
+                    <TouchableOpacity onPress={() => navigation.navigate("설비 등록", {facility: data.myShop.facility})} disabled={loading}>
                         <View style={styles.buttonRow}>
                             <View style={[styles.buttonCircle, data.myShop.facility? {borderColor: 'rgba(5, 230, 244, .6)'} : null]}>
                                 <MaterialIcons name="kitchen" size={30} color={data.myShop.facility? "rgba(5, 230, 244, .6)" : "#E0E0E0"} />
@@ -124,7 +124,7 @@ export default ({ navigation }) => {
                 </View>
 
                 <View style={styles.buttonShadow}>
-                    <TouchableOpacity onPress={() => navigation.navigate("규모 안내", {chairs: data.myShop.chairs, tables:data.myShop.tables, scale:data.myShop.scale})}>
+                    <TouchableOpacity onPress={() => navigation.navigate("규모 안내", {chairs: data.myShop.chairs, tables:data.myShop.tables, scale:data.myShop.scale})} disabled={loading}>
                         <View style={styles.buttonRow}>
                             <View style={[styles.buttonCircle, data.myShop.scale? {borderColor: 'rgba(5, 230, 244, .6)'} : null]}>
                                 <MaterialIcons name="group" size={30} color={data.myShop.scale? "rgba(5, 230, 244, .6)" : "#E0E0E0"} />
@@ -143,7 +143,8 @@ export default ({ navigation }) => {
                         description : data.myShop.description,
                         precaution : data.myShop.precaution,
                         hashTag : data.myShop.hashTag,
-                    })}>
+                    })}
+                    disabled={loading}>
                         <View style={styles.buttonRow}>
                             <View style={[styles.buttonCircle, data.myShop.description? {borderColor: 'rgba(5, 230, 244, .6)'} : null]}>
                                 <MaterialIcons name="description" size={30} color={data.myShop.description? "rgba(5, 230, 244, .6)" : "#E0E0E0"} />
@@ -156,7 +157,7 @@ export default ({ navigation }) => {
                 </View>
 
                 <View style={styles.buttonShadow}>
-                    <TouchableOpacity onPress={() => navigation.navigate("위치 등록", {address: data.myShop.address, addressDetail: data.myShop.addressDetail})}>
+                    <TouchableOpacity onPress={() => navigation.navigate("위치 등록", {address: data.myShop.address, addressDetail: data.myShop.addressDetail})} disabled={loading}>
                         <View style={styles.buttonRow}>
                             <View style={[styles.buttonCircle, data.myShop.address? {borderColor: 'rgba(5, 230, 244, .6)'} : null]}>
                                 <MaterialIcons name="location-on" size={30} color={data.myShop.address? "rgba(5, 230, 244, .6)" : "#E0E0E0"} />
@@ -173,7 +174,8 @@ export default ({ navigation }) => {
                         checkIn: data.myShop.checkIn,
                         checkOut: data.myShop.checkOut,
                         minReserve: data.myShop.minReserve,
-                    })}>
+                    })}
+                    disabled={loading}>
                         <View style={styles.buttonRow}>
                             <View style={[styles.buttonCircle, data.myShop.checkIn? {borderColor: 'rgba(5, 230, 244, .6)'} : null]}>
                                 <MaterialCommunityIcons name="check-circle-outline" size={30} color={data.myShop.checkIn? "rgba(5, 230, 244, .6)" : "#E0E0E0"} />
@@ -186,7 +188,7 @@ export default ({ navigation }) => {
                 </View>
 
                 <View style={styles.buttonShadow}>
-                    <TouchableOpacity onPress={() => navigation.navigate("환불 정책",{refundAgree: data.myShop.refundAgree})}>
+                    <TouchableOpacity onPress={() => navigation.navigate("환불 정책",{refundAgree: data.myShop.refundAgree})} disabled={loading}>
                         <View style={styles.buttonRow}>
                             <View style={[styles.buttonCircle, data.myShop.refundAgree? {borderColor: 'rgba(5, 230, 244, .6)'} : null]}>
                                 <MaterialCommunityIcons name="credit-card-refund-outline" size={34} color={data.myShop.refundAgree? "rgba(5, 230, 244, .6)" : "#E0E0E0"} />

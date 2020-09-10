@@ -25,30 +25,31 @@ export default ({ navigation, route }) => {
   };
   const [editProfileMutation] = useMutation(EDIT_PROFILE)
   const handleSubmit = async () => {
+    let _image = [];
     try {
       setLoading(true);
-
-      const formData = new FormData();
-
-      formData.append('file',{
-        name: image.filename,
-        type: "image/jpeg",
-        uri: image.uri
-      });
-
-      const {
-        data: { location }
-      } = await axios.post("http://4de8c1e95ca3.ngrok.io/api/upload", formData, {
-        headers: {
-          "content-type": "multipart/form-data"
-        }
-      });
-
+      if(image.uri){
+        const formData = new FormData();
+        formData.append('file',{
+          name: image.filename,
+          type: "image/jpeg",
+          uri: image.uri
+        });
+        const {
+          data: { location }
+        } = await axios.post("http://192.168.50.19:4000/api/upload", formData, {
+          headers: {
+            "content-type": "multipart/form-data"
+          }
+        });
+        _image.push(location[0].url)
+      }
+  
       const {
         data: { editProfile } 
       } = await editProfileMutation({
         variables:{
-          menuImage: location[0].url,
+          menuImage: image.uri? _image[0] : image,
           foodGuide: conceptInput.value, 
           career: careerInput.value, 
           contact: String(contactInput.value),
@@ -77,7 +78,7 @@ export default ({ navigation, route }) => {
         <Text style={styles.title}>대표 메뉴</Text>
       </View>
       <TouchableWithoutFeedback style={styles.imageInput} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelect})}>
-        <Image style={styles.image} source={{uri:image.uri}}/>
+        <Image style={styles.image} source={image.uri? {uri:image.uri} : {uri: image}}/>
       </TouchableWithoutFeedback>
 
       <View style={styles.action}>

@@ -1,6 +1,6 @@
 import { ScrollView, TouchableWithoutFeedback } from "react-native-gesture-handler";
 import * as React from "react";
-import { Image, StyleSheet, Text, View, RefreshControl, TouchableOpacity, Alert } from "react-native";
+import { Image, StyleSheet, Text, View, RefreshControl, TouchableOpacity, Alert, TouchableHighlight } from "react-native";
 import { Avatar, Title, Caption } from "react-native-paper";
 import constants from "../../constants";
 import { Feather, MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
@@ -19,7 +19,7 @@ export default ({ navigation }) => {
     const logOut = useLogOut();
     navigation.setOptions({
         headerRight:() => (
-            <TouchableOpacity style={{marginHorizontal:10}} onPress={() => setVisible(!visible)} >
+            <TouchableOpacity onPress={() => setVisible(!visible)} >
             <Feather
             name="more-vertical"
             size={24}
@@ -33,7 +33,7 @@ export default ({ navigation }) => {
     if(error) return console.log(error);
 
     return (
-    <View style={{backgroundColor:"#ffffff", flex:1}}>
+    <View style={{flex:1, backgroundColor:'#ffffff'}}>
 
         <UserComponent {...data?.me} />
 
@@ -71,14 +71,15 @@ export default ({ navigation }) => {
                       )}>
                     <AntDesign name="logout" size={24} color="#666"/><Text style={styles.modalText}>로그아웃</Text>
                 </TouchableOpacity>
-                <TouchableWithoutFeedback style={styles.modalList}>
-                    <AntDesign name="deleteuser" size={24} color="red" /><Text style={styles.modalText_red}>탈퇴하기</Text>
-                </TouchableWithoutFeedback>
+                <TouchableOpacity style={styles.modalList} onPress={() => setVisible(false)}>
+                    <AntDesign name="back" size={24} color="#666" /><Text style={styles.modalText}>취소</Text>
+                </TouchableOpacity>
+               
             </View>
 
             <View style={styles.modalContent_bottom}>
-                <TouchableOpacity style={styles.modalList} onPress={() => setVisible(false)}>
-                    <AntDesign name="back" size={24} color="#666" /><Text style={styles.modalText}>취소</Text>
+                <TouchableOpacity style={styles.modalList}>
+                    <AntDesign name="deleteuser" size={24} color="red" /><Text style={styles.modalText_red}>탈퇴하기</Text>
                 </TouchableOpacity>
             </View>
         </Modal>
@@ -88,11 +89,6 @@ export default ({ navigation }) => {
 
   
 const styles = StyleSheet.create({
-    container:{
-        backgroundColor:"#ffffff",
-        padding:15,
-    },
-      
   //modal
     modal:{
         justifyContent:"flex-end",

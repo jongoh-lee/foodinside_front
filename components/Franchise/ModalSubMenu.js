@@ -23,7 +23,7 @@ export default ({ chosenMenu, submenus, setSubmenus, setCompleteMenuModal, newMe
       if(id){
         let _index = submenus.findIndex(menu => menu.id === id);
         if(_index > -1){
-          submenus[_index] = { id: id, menuName: _menuName, fullPrice: Number(_fullPrice), salePrice: Number(_salePrice), menuImage:image };
+          submenus[_index] = { id: id, menuName: _menuName, fullPrice: Number(_fullPrice), salePrice: Number(_salePrice), menuImage:image.uri };
           setEditMenus(editMenus.concat({ id: id, menuName: _menuName, fullPrice: Number(_fullPrice), salePrice:Number(_salePrice), menuImage:image }))
         } else {
           setNewMenus(newMenus.concat({ menuName: _menuName, fullPrice:Number(_fullPrice), salePrice:Number(_salePrice), menuImage:image }));
@@ -33,7 +33,7 @@ export default ({ chosenMenu, submenus, setSubmenus, setCompleteMenuModal, newMe
       }
     };
     const onSelect = (menuImage) => {
-      setImage(menuImage.photo.uri)
+      setImage(menuImage.photo)
     };
 
     return(
@@ -59,7 +59,7 @@ export default ({ chosenMenu, submenus, setSubmenus, setCompleteMenuModal, newMe
                   marginVertical:10
                 }}>
                 <ImageBackground
-                  source={image? {uri:image} : null}
+                  source={image?.uri? {uri:image.uri} : {uri:image}}
                   style={{height: 100, width: 100, backgroundColor:'#E0E0E0', borderRadius:15}}
                   imageStyle={{borderRadius: 15}}>
                   <View style={{

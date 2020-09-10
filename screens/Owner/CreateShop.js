@@ -23,17 +23,17 @@ export default ({ navigation, route }) => {
 
   const addressDetailInput = useInput('');
   
-  const onSelectExterior = ({ photo, data }) => {
-    setExterior({ type: data, ...photo});
+  const onSelectExterior = ( image ) => {
+    setExterior(image.photo);
   };
-  const onSelectHall = ({ photo, data }) => {
-    setHall({ type: data, ...photo});
+  const onSelectHall = ( image ) => {
+    setHall(image.photo);
   };
-  const onSelectKitchen = ({ photo, data }) => {
-    setKitchen({ type: data, ...photo});
+  const onSelectKitchen = ( image ) => {
+    setKitchen(image.photo);
   };
-  const onSelectRegistration = ({ photo }) => {
-    setRegistration(photo);
+  const onSelectRegistration = ( image ) => {
+    setRegistration(image.photo);
   };
 
   const [createShopMutation] = useMutation(CREATE_SHOP,{
@@ -47,32 +47,62 @@ export default ({ navigation, route }) => {
     }
   });
 
-  //console.log([exterior, hall, kitchen], registration);
-  
   const handleCreateShop = async () => {
-    let _shopImages = [exterior, hall, kitchen];
-    const formData = new FormData();
-
+    setLoading(true);
+    try {
+      let _shopImages = [exterior, hall, kitchen]
+      let _registration = [];
+      const formShopImages = new FormData();
+      const formRegistration = new FormData();
+      
       for (var i = 0; i < _shopImages.length; i++) {
-          formData.append('file', {
-              name: _shopImages[i].filename,
-              type: "image/jpeg",
-              uri: _shopImages[i].uri
-          });
+        formShopImages.append('file', {
+            name: _shopImages[i].filename,
+            type: "image/jpeg",
+            uri: _shopImages[i].uri
+        });
       }
 
-    try {
-      setLoading(true);
-
       const {
-        data: { location }
-      } = await axios.post("http://172.30.1.13:4000/api/upload", formData, {
+        data: { location : shopImagesUrl }
+      } = await axios.post("http://192.168.50.19:4000/api/upload", formShopImages, {
           headers: {
             "content-type": "multipart/form-data"
           }
       });
 
-      console.log(location);
+      _shopImages[0]={
+        url: shopImagesUrl[0].url,
+        type: "EXTERIOR"
+      }
+
+      _shopImages[1]={
+        url: shopImagesUrl[1].url,
+        type: "HALL"
+      }
+
+      _shopImages[2]={
+        url: shopImagesUrl[2].url,
+        type: "KITCHEN"
+      }
+
+
+      formRegistration.append('file', {
+        name: registration.filename,
+        type: "image/jpeg",
+        uri: registration.uri
+      });
+      
+      const {
+        data: { location }
+      } = await axios.post("http://192.168.50.19:4000/api/upload", formRegistration, {
+          headers: {
+            "content-type": "multipart/form-data"
+          }
+      });
+
+      _registration.push(location[0]);
+
 
       const {
         data : { createShop }
@@ -81,7 +111,7 @@ export default ({ navigation, route }) => {
             shopImages: _shopImages,
             address: route.params?.address,
             addressDetail: addressDetailInput.value,
-            registration: registration.url,
+            registration: _registration[0].url,
             classification: classification,
             contact:String(contactInput.value),
             ownerState:0

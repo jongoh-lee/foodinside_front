@@ -23,7 +23,7 @@ export default ({ navigation, route }) => {
             (
                 <Feather name="more-vertical" size={24} color={'#ffffff'} style={{paddingHorizontal:5}} />
                 ) :  (
-                <TouchableOpacity style={{marginHorizontal:10}} onPress={() => setVisible(!visible)} > 
+                <TouchableOpacity onPress={() => setVisible(!visible)} > 
                     <Feather name="more-vertical" size={24} color={'black'} style={{paddingHorizontal:5}} />
                 </TouchableOpacity>
             )
@@ -49,14 +49,14 @@ export default ({ navigation, route }) => {
         >
             <View style={styles.modalContent_top}>
                 <MaterialCommunityIcons name="chevron-down" size={26} color="#666" style={{alignSelf:"center"}} />
-                <TouchableWithoutFeedback style={styles.modalList}>
-                    <MaterialCommunityIcons name="alarm-light-outline" size={25} color="red"/><Text style={styles.modalText_red}>신고 하기</Text>
-                </TouchableWithoutFeedback>
+                <TouchableOpacity style={styles.modalList} onPress={() => setVisible(false)}>
+                    <AntDesign name="back" size={24} color="#666" /><Text style={styles.modalText}>취소</Text>
+                </TouchableOpacity>
             </View>
 
             <View style={styles.modalContent_bottom}>
-                <TouchableOpacity style={styles.modalList} onPress={() => setVisible(false)}>
-                    <AntDesign name="back" size={24} color="#666" /><Text style={styles.modalText}>취소</Text>
+                <TouchableOpacity style={styles.modalList}>
+                    <MaterialCommunityIcons name="alarm-light-outline" size={25} color="red"/><Text style={styles.modalText_red}>신고 하기</Text>
                 </TouchableOpacity>
             </View>
         </Modal>

@@ -11,7 +11,7 @@ import DismissKeyboard from "../Custom/DismissKeyboard";
 
 export default ({ chosenMember, members, setMembers, newMembers, editMembers, setNewMembers, setEditMembers, setEditMemberModal, }) => {
     const { id, image, name, position, career, index } = chosenMember
-    const [memberImage, setMemberImage] = React.useState(image);
+    const [memberImage, setMemberImage] = React.useState( image? image : null );
     const nameInput = useInput(name? name : "");
     const positionInput = useInput(position? position : "");
     const careerInput = useInput(career? career : "");
@@ -24,7 +24,7 @@ export default ({ chosenMember, members, setMembers, newMembers, editMembers, se
       if(id){
         let _index = members.findIndex(member => member.id === id);
         if(_index > -1){
-          members[_index] = { id: id, name: _name, position:_position, career:_career, image:memberImage };
+          members[_index] = { id: id, name: _name, position:_position, career:_career, image:memberImage.uri };
           setEditMembers(editMembers.concat({ id: id, name: _name, position:_position, career:_career, image:memberImage }))
         } else {
           setNewMembers(newMembers.concat({ name: _name, position:_position, career:_career, image:memberImage }));
@@ -35,7 +35,7 @@ export default ({ chosenMember, members, setMembers, newMembers, editMembers, se
     };
 
     const onSelect = (image) => {
-      setMemberImage(image.photo.uri)
+      setMemberImage(image.photo)
     };
 
     return(
@@ -58,7 +58,7 @@ export default ({ chosenMember, members, setMembers, newMembers, editMembers, se
                   alignItems: 'center',
                 }}>
                 <ImageBackground
-                  source={memberImage? {uri:memberImage} : null}
+                  source={memberImage?.uri? {uri:memberImage.uri} : {uri:memberImage}}
                   style={{height: 150, width: 120, backgroundColor:'#E0E0E0', borderRadius:15}}
                   imageStyle={{borderRadius: 15}}>
                   <View style={{
@@ -88,10 +88,10 @@ export default ({ chosenMember, members, setMembers, newMembers, editMembers, se
                 <ShadowInput {...nameInput} placeholder={'성함'} width={'50%'} padding={5} fontSize={12} returnKeyType={'done'}/>
                 <ShadowInput {...positionInput} placeholder={'직위'} width={'50%'} padding={5} fontSize={12} returnKeyType={'done'}/>
             </View>
-            <ShadowInput {...careerInput} placeholder={'경력'} width={'100%'} multiline={true} returnKeyType={'done'} maxHeight={80} padding={5} fontSize={12}/>
+            <ShadowInput {...careerInput} placeholder={'경력'} width={'100%'} multiline={true} returnKeyType={'none'} blurOnSubmit={false} maxHeight={80} padding={5} fontSize={12}/>
 
             <View style={{width: '100%'}}>
-              <BasicButton onPress={() => (setEditMemberModal(false), handleMemberInfoSubmit())} padding={10} text={'확인'} marginVertical={5} width={'100%'} disabled={_name && _position && _career && memberImage? false : true}/>
+              <BasicButton onPress={() => (setEditMemberModal(false), handleMemberInfoSubmit())} padding={10} text={'확인'} marginVertical={5} disabled={_name && _position && _career && memberImage? false : true}/>
             </View>
           </DismissKeyboard>
         </View>

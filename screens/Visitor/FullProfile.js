@@ -1,5 +1,5 @@
 import * as React from "react";
-import {StyleSheet, View, Text, TouchableOpacity, Image} from "react-native";
+import {StyleSheet, View, Text, TouchableOpacity, Image, Alert} from "react-native";
 import { useQuery } from "@apollo/react-hooks";
 import { MaterialCommunityIcons, FontAwesome, Entypo, AntDesign, Feather } from '@expo/vector-icons'; 
 import Loader from "../../components/Custom/Loader";
@@ -7,6 +7,7 @@ import { SEE_FULL_PROFILE } from "./VisitorQueries";
 import BackArrow from "../../components/Custom/BackArrow";
 import FranchiseComponent from "../../components/Franchise/FranchiseComponent";
 import Modal from "react-native-modal";
+import ScreenLoader from "../../components/Custom/ScreenLoader";
 
 export default ({ navigation, route }) => {
     const [visible, setVisible ] = React.useState(false);
@@ -31,6 +32,7 @@ export default ({ navigation, route }) => {
 
   return (
     <>
+    {loading?<ScreenLoader /> : null}
         <View style={styles.container}>
             {data?.seeFullProfile && (
                 <FranchiseComponent {...data?.seeFullProfile}/>
@@ -48,17 +50,22 @@ export default ({ navigation, route }) => {
             >
             <View style={styles.modalContent_top}>
                 <MaterialCommunityIcons name="chevron-down" size={26} color="#666" style={{alignSelf:"center"}} />
-                <TouchableOpacity style={styles.modalList}>
+                <TouchableOpacity style={styles.modalList} onPress={()=> Alert.alert('안내','정식 버전을 기대해 주세요',
+                    [{
+                        text: '확인',
+                        onPress: () => setVisible(false),
+                    }]
+                )}>
                     <MaterialCommunityIcons name="message-text-outline" color="#666" size={22}/><Text style={styles.modalText}>프랜차이즈 문의</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.modalList}>
-                    <MaterialCommunityIcons name="alarm-light-outline" size={25} color="red"/><Text style={styles.modalText_red}>신고 하기</Text>
+                <TouchableOpacity style={styles.modalList} onPress={() => setVisible(false)}>
+                    <AntDesign name="back" size={24} color="#666" /><Text style={styles.modalText}>취소</Text>
                 </TouchableOpacity>
             </View>
                   
             <View style={styles.modalContent_bottom}>
-                <TouchableOpacity style={styles.modalList} onPress={() => setVisible(false)}>
-                    <AntDesign name="back" size={24} color="#666" /><Text style={styles.modalText}>취소</Text>
+                <TouchableOpacity style={styles.modalList}>
+                    <MaterialCommunityIcons name="alarm-light-outline" size={25} color="red"/><Text style={styles.modalText_red}>위생 신고 하기</Text>
                 </TouchableOpacity>
             </View>
         </Modal>

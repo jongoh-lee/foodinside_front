@@ -17,6 +17,7 @@ export default ({ id, isSelf, profileName, sector, token, mainImage, menuName, m
   const [showGuide, setShowGuide] = React.useState(false);
   const [tabName, setTabName] = React.useState('포토리뷰');
   const navigation = useNavigation();
+  
   return (
     <>
     <ScrollView 

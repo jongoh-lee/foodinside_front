@@ -52,7 +52,7 @@ export default ({ navigation, route }) => {
 
       const {
         data: { location }
-      } = await axios.post("http://4de8c1e95ca3.ngrok.io/api/upload", formData, {
+      } = await axios.post("http://192.168.50.19:4000/api/upload", formData, {
         headers: {
           "content-type": "multipart/form-data"
         }
