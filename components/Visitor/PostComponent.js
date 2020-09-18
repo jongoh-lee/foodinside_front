@@ -118,7 +118,6 @@ export default ({ id : postId, user, files, tasting, isSelf, isLiked:isLikedProp
   const { username, avatar } = user;
   const [isLiked, setIsLiked] = React.useState(data?.seeFullPost.isLiked);
   const [likeCount, setLikeCount] = React.useState(data?.seeFullPost?.likeCount? data?.seeFullPost?.likeCount : 0);
-  const [ images, setImages ] = React.useState(files);
   const commentInput = useInput("");
   const { value : text } = commentInput;
   
@@ -231,7 +230,7 @@ export default ({ id : postId, user, files, tasting, isSelf, isLiked:isLikedProp
       {/* 이미지 */}
       <View style={styles.imageBox}>
         <Swiper paginationStyle={{bottom:10}} dot={<View style={{backgroundColor: 'rgba(255,255,255,.3)', width: 6, height: 6, borderRadius: 3, marginLeft: 3, marginRight: 3}} />} activeDot={<View style={{backgroundColor: '#fff', width: 8, height: 8, borderRadius: 4, marginLeft: 4, marginRight: 4}} />}>
-          {images.map(image => <Image key={image.id} style={styles.image} source={{uri: image.url}}/>)}
+          {files.map((image, i) => <Image key={i} style={styles.image} source={{uri: image.url}}/>)}
         </Swiper>
       </View>
 

@@ -32,7 +32,7 @@ export default ({ navigation, route }) => {
         data: { createAccount }
       } = await createAccountMutation();
       if (createAccount) {
-        navigation.replace("AuthHome2", { email: route.params.userEmail});
+        navigation.navigate("AuthHome",{email: route.params.userEmail});
       }
     } catch (e) {
       console.log(e);

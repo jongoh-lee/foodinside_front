@@ -59,7 +59,7 @@ export default ({ navigation, route }) => {
       });
       const {
         data: { location : exteriorUrl }
-      } = await axios.post("http://192.168.50.19:4000/api/upload", formExterior, {
+      } = await axios.post("http://172.30.1.21:4000/api/upload", formExterior, {
           headers: {
             "content-type": "multipart/form-data"
           }
@@ -75,7 +75,7 @@ export default ({ navigation, route }) => {
       });
       const {
         data: { location : hallUrl }
-      } = await axios.post("http://192.168.50.19:4000/api/upload", formHall, {
+      } = await axios.post("http://172.30.1.21:4000/api/upload", formHall, {
           headers: {
             "content-type": "multipart/form-data"
           }
@@ -91,7 +91,7 @@ export default ({ navigation, route }) => {
       });
       const {
         data: { location : kitchenUrl }
-      } = await axios.post("http://192.168.50.19:4000/api/upload", formKitchen, {
+      } = await axios.post("http://172.30.1.21:4000/api/upload", formKitchen, {
           headers: {
             "content-type": "multipart/form-data"
           }
@@ -107,7 +107,7 @@ export default ({ navigation, route }) => {
       });
       const {
         data: { location : registrationUrl }
-      } = await axios.post("http://192.168.50.19:4000/api/upload", formRegistration, {
+      } = await axios.post("http://172.30.1.21:4000/api/upload", formRegistration, {
           headers: {
             "content-type": "multipart/form-data"
           }

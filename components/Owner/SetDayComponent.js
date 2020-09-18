@@ -12,7 +12,7 @@ const textChanger = {
 
 export default ({date, today, marking, onPress}) => {
     //날짜 색 설정
-    const { priceState, active } = marking;
+    const { priceState, active, isBooked } = marking;
     const dateColor = date.dateString.replace(/[^0-9]/g,'') - today;
     
     //배경색 설정

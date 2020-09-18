@@ -39,9 +39,6 @@ export default ({ navigation, route }) => {
     } 
   }
   React.useEffect(()=>{
-    if(value.length > 2){
-    } else {
-    }
     if(value === ""){
       setAlert("")
     }

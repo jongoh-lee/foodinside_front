@@ -8,10 +8,13 @@ import Loader from "../../components/Custom/Loader";
 import { MY_SHOP } from "./OwnerQueries";
 import OwnerComponent from "../../components/Owner/OwnerComponent";
 import Modal from "react-native-modal";
+import Logo from "../../components/Custom/Logo";
 
 export default ({ navigation, route }) => {
   const [visible, setVisible ] = React.useState(false);
-  const { data, loading, error } = useQuery(MY_SHOP);
+  const { data, loading, error } = useQuery(MY_SHOP,{
+    fetchPolicy:"network-only"
+  });
   if(loading) return <Loader />
   if(error) return console.log("Owner Error",error);
   if(data?.myShop?.ownerState === 3){
@@ -24,6 +27,12 @@ export default ({ navigation, route }) => {
         </TouchableOpacity>
       )
     });
+  }else{
+    navigation.setOptions({
+      headerLeft:() => null,
+      headerRight:() => null,
+      headerTitle:() => <Logo />
+    })
   }
   return (
     <>

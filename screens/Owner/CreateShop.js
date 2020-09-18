@@ -1,5 +1,5 @@
 import * as React from "react";
-import {StyleSheet, View, Text, Image} from "react-native";
+import {StyleSheet, View, Text, Image, Platform} from "react-native";
 import { TextInput, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from "react-native-gesture-handler";
 import axios from "axios";
 import constants from "../../constants";
@@ -11,6 +11,7 @@ import numInput from "../../hooks/numInput";
 import { useMutation } from "@apollo/react-hooks";
 import { CREATE_SHOP, MY_SHOP} from "./OwnerQueries";
 import ShadowInput from "../../components/Custom/ShadowInput";
+import { KeyboardAvoidingView } from "react-native";
 
 export default ({ navigation, route }) => {
   const [loading, setLoading] = React.useState(false);
@@ -65,7 +66,7 @@ export default ({ navigation, route }) => {
 
       const {
         data: { location : shopImagesUrl }
-      } = await axios.post("http://192.168.50.19:4000/api/upload", formShopImages, {
+      } = await axios.post("http://172.30.1.21:4000/api/upload", formShopImages, {
           headers: {
             "content-type": "multipart/form-data"
           }
@@ -95,7 +96,7 @@ export default ({ navigation, route }) => {
       
       const {
         data: { location }
-      } = await axios.post("http://192.168.50.19:4000/api/upload", formRegistration, {
+      } = await axios.post("http://172.30.1.21:4000/api/upload", formRegistration, {
           headers: {
             "content-type": "multipart/form-data"
           }
@@ -128,6 +129,12 @@ export default ({ navigation, route }) => {
   }
   return (
   <View style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "position" : "height"}
+      style={{flex:1, justifyContent:"center"}}
+      keyboardVerticalOffset={50}
+      enabled
+    >
     <ScrollView showsVerticalScrollIndicator={false}>
 
       <View style={styles.textContainer}>
@@ -206,10 +213,11 @@ export default ({ navigation, route }) => {
     
       <Text style={styles.warning}>선정 결과는 문자로 안내해 드립니다</Text> 
       
-      <ShadowInput {...contactInput} placeholder={"연락처"} keyboardType="numeric" editable={!loading} textAlign={'left'}/>
+      <ShadowInput {...contactInput} placeholder={"연락처"} keyboardType="numeric" editable={!loading} textAlign={'left'} blurOnSubmit={true}/>
     
       <BasicButton text={'제출하기'} onPress={handleCreateShop} disabled={exterior && hall && kitchen && registration && route.params?.address && addressDetailInput.value && contactInput.value ? loading : true} loading={loading} />
     </ScrollView>
+    </KeyboardAvoidingView>
   </View>
 )};
 

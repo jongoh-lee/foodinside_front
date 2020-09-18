@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     },
 })
 
-// 내 정보 중 단골 업체 정보와 해당 업체의 단골/ 포스팅 수 + 내 포스팅 수 + 좋아요 수 + 적립 암호화폐
+// 내 정보 중 단골 업체 정보와 해당 업체의 단골/ 포스팅 수 + 내 포스팅 수 + 좋아요 수 + 적립 포인트
 export default ({ id, profileName, sector, mainImage, menuName, menuImage, fullPrice, salePrice, isDangol, dangolCount, isSelf, postsCount, submenus }) => {
     const navigation = useNavigation();
     return (

@@ -1,5 +1,5 @@
 import * as React from "react";
-import {StyleSheet, Text, View, KeyboardAvoidingView, Platform} from "react-native"
+import {StyleSheet, Text, View, KeyboardAvoidingView, Platform, ScrollView} from "react-native"
 import { MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
 import numInput from "../../hooks/numInput"
 import DismissKeyboard from "../../components/Custom/DismissKeyboard";
@@ -40,11 +40,11 @@ export default ({ navigation, route }) => {
         <View style={styles.container}>
             <KeyboardAvoidingView 
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
-                style={{flex:1}}
+                style={{flex:1, justifyContent:"center"}}
                 keyboardVerticalOffset={50}
                 enabled >
                 <DismissKeyboard>
-                    <View style={{height:'100%', justifyContent:"center"}}>
+                    <ScrollView>
                         <View style={styles.rowBox}>
                             <View style={styles.scaleBox}>
                                 <Text style={styles.scaleTitle}>의자 수</Text>
@@ -62,8 +62,8 @@ export default ({ navigation, route }) => {
                                 <ShadowInput {...scaleInput} editable={!loading} width={'50%'} placeholder={'명'} keyboardType={"numeric"}/>
                             </View>
                         </View>
-                        <BasicButton disabled={chairInput.value && tableInput.value && scaleInput.value ? loading : true} text={'제출 하기'} onPress={handleScale} loading={loading}/>
-                    </View>
+                        <BasicButton text={'제출 하기'} onPress={handleScale} loading={loading} disabled={chairInput.value.length > 0 && tableInput.value.length > 0 && scaleInput.value.length > 0 ? loading : true}/>
+                    </ScrollView>
                 </DismissKeyboard>
             </KeyboardAvoidingView>
         </View>    

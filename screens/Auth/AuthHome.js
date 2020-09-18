@@ -8,42 +8,39 @@ import DismissKeyboard from "../../components/Custom/DismissKeyboard";
 import { useMutation } from "@apollo/react-hooks";
 import { LOG_IN } from "./AuthQueries";
 
-export default ({ navigation }) => {
-  const emailInput = useInput("");
-  const [loading, setLoading] = React.useState(false);
+export default ({ navigation, route }) => {
+  const [email, setEmail] = React.useState(route.params? route.params?.email : "");
+  const onChange = text => {
+    setEmail(text);
+  };
+
   const [alert, setAlert] = React.useState("")
-  const [touchableActive, setTouchableActive] = React.useState(false)
-  const [requestSecretMutation] = useMutation(LOG_IN, {
+  const [requestSecretMutation ,{error, loading}] = useMutation(LOG_IN, {
     variables: {
-      email: emailInput.value
+      email: email
     }
   });
+  
   const handleLogin = async () => {
-    setTouchableActive(true)
-    const { value } = emailInput;
     try {
-      setLoading(true);
       const { data: { requestSecret } } = await requestSecretMutation();
-      console.log(requestSecret)
       if(requestSecret) {
-        navigation.navigate("Confirm", { email: value });
-        return;
+        navigation.navigate("Confirm", { email: email });
       } else {
         setAlert("존재하지 않는 계정입니다.")
       } 
     } catch (e) {
       console.log(e)
       setAlert("현재 서버에 접속할 수 없습니다.")
-    } finally {
-      setLoading(false);
-      setTouchableActive(false)
     }
   }
+  
   React.useEffect(()=>{
-    if(emailInput.value === ""){
+    if(email === ""){
       setAlert("")
     }
-  }, [emailInput.value])
+    setEmail(route?.params?.email)
+  }, [route])
     return (
     <View style={{flex:1, backgroundColor:"white"}}>
       <KeyboardAvoidingView 
@@ -56,11 +53,11 @@ export default ({ navigation }) => {
             <Image style={styles.logoImage} source={require('../../assets/Logo.png')} />
 
             <View>
-              <AuthInput {...emailInput} placeholder="이메일, 아이디 또는 전화번호( - 생략)를 입력하세요" keyboardType="email-address" editable={!loading}/>
+              <AuthInput value={email} onChange={onChange} placeholder="이메일, 아이디 또는 전화번호( - 생략)를 입력하세요" keyboardType="email-address" editable={!loading}/>
 
               <Text style={{fontSize:10, color:"red", paddingLeft:5}}>{alert}</Text>
 
-              <AuthButton text="로그인 키 요청하기" onPress={handleLogin} disabled={emailInput.value.length > 0 ? loading : true} loading={loading}/>
+              <AuthButton text="로그인 키 요청하기" onPress={handleLogin} disabled={email ? loading : true} loading={loading}/>
             </View>
 
             <TouchableWithoutFeedback onPress={() => navigation.navigate("FindAccount")}>
@@ -72,7 +69,7 @@ export default ({ navigation }) => {
         </DismissKeyboard>
       </KeyboardAvoidingView>
 
-      <TouchableOpacity style={{ borderTopWidth:1, borderTopColor:"rgba(0,0,0, .1)"}} onPress={() => navigation.navigate("Signup1", { email: emailInput.value})} disabled={loading}>
+      <TouchableOpacity style={{ borderTopWidth:1, borderTopColor:"rgba(0,0,0, .1)"}} onPress={() => navigation.navigate("Signup1", { email: email})} disabled={loading}>
         <View style={styles.signup}>
           <Text style={styles.signupText}>푸드인사이드 <Text style={{fontWeight:"bold"}}>가입하기</Text></Text>
         </View>

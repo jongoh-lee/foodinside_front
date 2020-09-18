@@ -22,7 +22,7 @@ export default ({ navigation, route }) => {
                 data={route.params.post.thumnail}
                 renderItem={renderItem}
                 keyExtractor={item => item.id}
-                showsVerticalScrollIndicator={false}
+                showsVerticalScrollIndicator={true}
                 contentContainerStyle={{paddingVertical:10}}
                 initialScrollIndex={route.params.post.index}
             />

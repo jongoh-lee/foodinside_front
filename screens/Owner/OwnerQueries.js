@@ -66,10 +66,12 @@ export const MY_CALENDAR = gql`
             id
             ownerState
             isSelf
+            franchiseState
             calendar{
                 id
                 dateString
                 priceState
+                isBooked
            }
         }
     }
@@ -88,10 +90,12 @@ export const EDIT_CALENDAR = gql`
         ){
             id
             isSelf
+            ownerState
             calendar{
                 id
                 dateString
                 priceState
+                isBooked
            }
         }
     }

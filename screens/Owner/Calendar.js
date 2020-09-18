@@ -22,10 +22,11 @@ export default () => {
   const markedDates = data?.myCalendar?.calendar.reduce(
     (emptyObject, date) => {
       var dateString = date.dateString;
-      emptyObject[dateString] = {id: date.id, priceState: date.priceState };
+      emptyObject[dateString] = {id: date.id, priceState: date.priceState, isBooked: date.isBooked };
       return emptyObject
     }, {}
   );
+
     
   if(error) return console.log(error);
   
@@ -33,7 +34,7 @@ export default () => {
     <View style={styles.container}>
       {loading ? <ScreenLoader /> : null}
 
-      <SetCalendar markedDates={markedDates} ownerState={data?.myCalendar?.ownerState}/>
+      <SetCalendar markedDates={markedDates} ownerState={data?.myCalendar?.ownerState} franchiseState={data?.myCalendar?.franchiseState}/>
 
     </View>
 )};

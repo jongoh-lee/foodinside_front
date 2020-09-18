@@ -1,6 +1,6 @@
 import React from "react";
 import {View, StyleSheet} from "react-native";
-import ShopCard from "../../components/Franchise/ShopCard";
+import ShopCard from "../../components/Owner/ShopCard";
 import { ScrollView } from "react-native-gesture-handler";
 import { useQuery } from "@apollo/react-hooks";
 import { MY_FAVORITE } from "./ProfileQueries";
@@ -33,7 +33,6 @@ export default () => {
   const { data, error, loading } = useQuery(MY_FAVORITE,{
     fetchPolicy:"network-only"
   });
-  console.log(data)
   return(
   <View style={styles.container}>
     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{padding:10}} >

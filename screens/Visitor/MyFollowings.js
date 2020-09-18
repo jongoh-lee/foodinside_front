@@ -23,6 +23,7 @@ export default () => {
     const renderItem = ({ item }) => (
         <UserSummary {...item}/>
     );
+    
     return (
         <View style={styles.container}>
             {loading? <ScreenLoader /> : data?.me.following.length > 0 ? (

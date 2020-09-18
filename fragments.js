@@ -11,7 +11,7 @@ export const OWNER_FRAGMENT = gql`
     longitude
     ownerState
     isSelf
-    profileState
+    franchiseState
     contact
     #scale
     chairs

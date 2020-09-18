@@ -27,11 +27,11 @@ LocaleConfig.defaultLocale = 'fr';
 const SetCalendar = ({ 
   ownerState,
   markedDates,
-  
+  franchiseState
   }) => {
     const [editCalendarMutation] = useMutation(EDIT_CALENDAR);
     const [loading, setLoading] = React.useState(false)
-
+    
     // today
     let now = new Date()
     let mm = now.getMonth() + 1;
@@ -130,7 +130,7 @@ const SetCalendar = ({
   }
 
   React.useEffect(() => {
-
+    
   },[price.value])
 
   return (
@@ -166,7 +166,7 @@ const SetCalendar = ({
                 <Text style={styles.closed}> 지우기</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={onPressSelf} style={{flexDirection:"row", justifyContent:"center"}} disabled={Object.keys(updateList).length === 0? true: loading}>
+            <TouchableOpacity onPress={onPressSelf} style={{flexDirection:"row", justifyContent:"center"}} disabled={Object.keys(updateList).length === 0 || franchiseState === 0 ? true: loading}>
                 <MaterialCommunityIcons name="silverware" size={20} color="black" />
                 <Text style={styles.self}> 직접 영업</Text>
             </TouchableOpacity>
