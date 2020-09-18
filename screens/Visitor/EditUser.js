@@ -34,17 +34,17 @@ export default ({ navigation, route }) => {
     const handleEdit = async () => {
       try {
         setLoading(true);
-        let _avartar = [];
+        let _avatar = [];
         if(avatar.uri){
           const formData = new FormData();
-        formData.append('file',{
-          name: avatar.filename,
-          type: "image/jpeg",
-          uri: avatar.uri
-        });
+          formData.append('file',{
+            name: avatar.filename,
+            type: "image/jpeg",
+            uri: avatar.uri
+          });
         const {
           data: { location }
-        } = await axios.post("http://192.168.50.19:4000/api/upload", formData, {
+        } = await axios.post("http://172.30.1.21:4000/api/upload", formData, {
           headers: {
             "content-type": "multipart/form-data"
           }
@@ -57,7 +57,7 @@ export default ({ navigation, route }) => {
         } = await editMeMutation({
           variables: {
             username: username,
-            avatar: avatar.uri? _avartar[0].url : avatar,
+            avatar: avatar.uri? _avatar[0].url : avatar,
             email: route.params.email
           }
         });

@@ -129,7 +129,7 @@ export default ({ navigation }) => {
 
     {data?.myProfile === null &&  (
       <>
-        <Text style={styles.title}><Text style={{color:"black"}}>프로필</Text> 생성 후 영업 가능합니다</Text>
+        <Text style={styles.title}><Text style={{color:"black"}}>프로필</Text> 생성 후 입점 가능합니다</Text>
         
         <View style={styles.buttonBox}>
 

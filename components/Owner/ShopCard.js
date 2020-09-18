@@ -2,6 +2,7 @@ import * as React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
+import { Caption } from "react-native-paper";
 
 const styles = StyleSheet.create({
   container:{
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
-    marginLeft: 8,
+    marginLeft: 5,
     marginTop: 5,
     marginBottom:5,
     fontWeight: 'bold',
@@ -76,89 +77,98 @@ const styles = StyleSheet.create({
     color:'#c7c7c7'
   },
   shopBasic: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent:"flex-start",
-    fontSize:14
+    padding:4
   },
-  shopSort: {
-    marginLeft: 4,
-    color:'#c7c7c7'
+  caption:{
+    flexDirection:"row",
+    flexWrap:"wrap"
+  },
+  captionText: {
+    marginRight:4
   },
   shopScale: {
     marginLeft: 8,
   },
-  shopReview:{
-    marginLeft: 8,
-    borderBottomColor:'black',
-    borderBottomWidth: 1,
-  },
   shopPrice:{
-    marginLeft:'auto',
-    fontWeight:'bold'
+    fontWeight:'bold',
+    fontSize:14,
   }
 });
 
-export default ({ listing }) => {
+export default ({ id, classification, address, addressDetail, isSelf, scale, shopName, district, hashTag, minReserve, shopImages, calendar }) => {
   const [opacity, setOpacity] = React.useState(1);
   const navigation = useNavigation();
+  const exterior = shopImages.filter(el => el["type"] === 'EXTERIOR');
+  const hall = shopImages.filter(el => el["type"] === 'HALL');
+  const kitchen = shopImages.filter(el => el["type"] === 'KITCHEN');
+  let hashTags = "#오픈키친 #20평 #몽환적 분위기 #Pub 가능"
+  const priceList = calendar.filter(el => typeof(parseInt(el.priceState)) === "number");
+  const priceSum = priceList.map(el => parseInt(el.priceState)).reduce((a, b) => a + b, 0);
+  const priceAve = (priceSum/ priceList.length).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
   return (
-    <View key={listing.id} style={styles.container}>
+    <View key={id} style={styles.container}>
       <View style={styles.boxShop}>
         <TouchableWithoutFeedback onPress={() => navigation.navigate("음식점 보기", { 
-          id: "ckdevctimaq1r0a50sjprj1jj",
-          shopName: "조명으로 포인트를 준 음식점 in 경리단길",
-          classification: "일반"
+          id,
+          shopName,
+          classification,
+          address, 
+          addressDetail, 
+          isSelf, 
+          scale, 
+          district, 
+          hashTag, 
+          minReserve, 
+          shopImages
           })}>  
-          <Text style={styles.title} numberOfLines={1}>{listing.shopName}</Text>
+          <Text style={styles.title}>{shopName} in {district}</Text>
           <View style={styles.imageGallery}>
             <View style={styles.imageGalleryRow}>
                 <Image
                   style={[styles.imageMain, { opacity }]}
                   resizeMode="cover"
-                  source={listing.picture[0]}
+                  source={{uri: exterior[0].url}}
                 />
               <View style={styles.imageGalleryColumn}>
                 <Image
                   style={[styles.imageHall, { opacity }]}
                   resizeMode="cover"
-                  source={listing.picture[1]}
+                  source={{uri: hall[0].url}}
                 />
                 <Image
                   style={[styles.imageKitchen, { opacity }]}
                   resizeMode="cover"
-                  source={listing.picture[2]}
+                  source={{uri: kitchen[0].url}}
                 />
               </View>
             </View>
           </View>
 
         <View style={styles.inner}>
-          <Text style={styles.address}>{listing.address}</Text>
+        <Text style={styles.address}>{address} in {addressDetail}</Text>
         
           <View style={styles.hashTags}>
-            <Text style={styles.hashTag}>{listing.hashTags}</Text>
+            <Text style={styles.hashTag}>{hashTags}</Text>
           </View>
         </View>
         </TouchableWithoutFeedback>
-
+        
         <View style={styles.shopBasic}>
-          <Text style={styles.shopSort}>
-            {`${listing.sort} 음식점`}
-          </Text>
-          <Text style={styles.shopScale}>
-            {`1회전: ${listing.scale}명`}
-          </Text>
-          <View style={styles.shopReview}>
-            <Text>
-              {`후기: ${listing.comments}개`}
+          <Caption style={styles.captionText}>
+            {classification} 음식점
+          </Caption>
+          <View style={styles.caption}>
+            <Text style={styles.shopPrice}>
+              최소 예약: {minReserve}일<Text style={{fontWeight:"300", color:"#666"}}> | </Text>
+            </Text>
+            <Text style={styles.shopPrice}>
+              1회전 규모: {scale}명<Text style={{fontWeight:"300", color:"#666"}}> | </Text>
+            </Text>
+            <Text style={styles.shopPrice}>
+              평균 {priceAve === "NaN" ? "100,000" : priceAve}원/Day
             </Text>
           </View>
-          <Text style={styles.shopPrice}>
-            {`평균 ${listing.price}/Day`}
-          </Text>
         </View>
-
       </View>
     </View>
   );

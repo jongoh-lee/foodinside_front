@@ -6,7 +6,7 @@ import AuthInput from '../../components/Custom/AuthInput';
 import AuthButton from '../../components/Custom/AuthButton';
 import useInput from "../../hooks/useInput";
 import DismissKeyboard from "../../components/Custom/DismissKeyboard";
-import { useMutation } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/react-hooks";
 import { CHECK_EMAIL } from "./AuthQueries";
 
 
@@ -15,21 +15,17 @@ export default ({ route, navigation }) => {
   const [alert, setAlert] = React.useState("");
   const emailInput = useInput(route.params? route.params.email : "");
   const { value } = emailInput;
-  const [checkEmailMutation] = useMutation(CHECK_EMAIL, {
+  const { data, error, loading: loadingProp} = useQuery(CHECK_EMAIL, {
     variables:{
       email: value
-    }
+    },
+    fetchPolicy:"network-only"
   });
   const handlecheckEmail = async () => {
     try {
       setLoading(true);
-      const { data: { checkEmail } } = await checkEmailMutation();
-      if(checkEmail) {
-        navigation.navigate("Signup2", { userEmail: value });
-        return;
-      } else {
+      navigation.navigate("Signup2", { userEmail: value });
         setAlert("이미 존재하는 계정 입니다.")
-      } 
     } catch (e) {
       console.log(e)
       setAlert("현재 서버에 접속할 수 없습니다.")
@@ -63,9 +59,9 @@ export default ({ route, navigation }) => {
           <Text style={styles.text}>자주 사용하는 이메일을 입력해 주세요</Text>
     
           <AuthInput {...emailInput} placeholder="이메일을 입력하세요" keyboardType="email-address" autoFocus={true} editable={!loading}/>
-          <Text style={{fontSize:10, color:"red", paddingLeft:5}}>{alert}</Text>
+          {value.length < 3? <Text  style={{fontSize:10}} /> : data?.checkEmail ? <Text style={{fontSize:10, color:"green", paddingLeft:5}}>{"사용 가능한 이메일 입니다"}</Text> : <Text style={{fontSize:10, color:"red", paddingLeft:5}}>{"사용할 수 없는 이메일 입니다"}</Text>}
 
-          <AuthButton text="다음(1/4단계)" onPress={handlecheckEmail} disabled={value === "" ? true : loading} loading={loading}/>
+          <AuthButton text="다음(1/4단계)" onPress={handlecheckEmail} disabled={value.length > 0 && data?.checkEmail ? loadingProp : true} loading={loading}/>
         </View>
       </DismissKeyboard>
       </KeyboardAvoidingView>

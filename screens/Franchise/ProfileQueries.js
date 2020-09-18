@@ -122,6 +122,7 @@ export const MY_FAVORITE = gql`
         }
     }
 `;
+
 export const SEE_FULL_SHOP = gql`
     query seeFullShop($id: String!){
         seeFullShop(id: $id){
@@ -130,3 +131,34 @@ export const SEE_FULL_SHOP = gql`
     }
     ${OWNER_FRAGMENT}
 `
+
+export const SEARCH_SHOP_LIST =gql`
+    query searchShopList{
+        searchShopList{
+            id
+            classification
+            address
+            addressDetail
+            isSelf
+            franchiseState
+            #scale
+            scale
+            #description
+            shopName
+            district
+            hashTag
+            #rule
+            minReserve
+            shopImages{
+                id
+                type
+                url
+            }
+            calendar{
+                id
+                dateString
+                priceState
+            }
+        }
+    }
+`;

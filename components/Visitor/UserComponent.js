@@ -104,7 +104,7 @@ export default ({ id, avatar, username, email, isSelf ,dangolCount, followersCou
                     </View>
                     <View style={styles.inner}>
                         <Text style={styles.number}>{0}</Text>
-                        <Text style={styles.title}>암호화폐</Text>
+                        <Text style={styles.title}>포인트</Text>
                     </View>
                     <TouchableOpacity style={styles.inner} onPress={() => isSelf? navigation.navigate("FollowList",{
                         tabname:"팔로워"

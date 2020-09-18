@@ -22,7 +22,6 @@ export default () => {
         <UserSummary {...item}/>
     );
     
-    console.log(data?.me)
     return (
         <View style={styles.container}>
             {loading? <ScreenLoader /> : data?.me.followers.length > 0 ? (

@@ -30,7 +30,7 @@ export const CONFIRM_SECRET = gql`
 
 
 export const CHECK_EMAIL = gql`
-  mutation checkEmail($email: String!) {
+  query checkEmail($email: String!) {
     checkEmail(email: $email)
   }
 `;

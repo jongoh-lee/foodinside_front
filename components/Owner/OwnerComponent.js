@@ -117,54 +117,77 @@ const styles = StyleSheet.create({
     }
 })
 
-export default ({ shopImages, facility, tables, chairs, scale, shopName, district, description, precaution, address, checkIn, checkOut, minReserve, calendar, isSelf, profileState}) => {
+export default ({ shopImages, facility, tables, chairs, scale, shopName, district, description, precaution, address, checkIn, checkOut, minReserve, calendar, isSelf, franchiseState}) => {
     const [tabName, setTabName] = React.useState("EXTERIOR");
     const [index, setIndex] = React.useState(0);
-    const exterior= React.useState(shopImages.filter(el => el["type"] === 'EXTERIOR').length)
-    const hall= React.useState(shopImages.filter(el => el["type"] === 'HALL').length)
-    const kitchen= React.useState(shopImages.filter(el => el["type"] === 'KITCHEN').length)
-    const tableware= React.useState(shopImages.filter(el => el["type"] === 'TABLEWARE').length)
-    const cleaner= React.useState(shopImages.filter(el => el["type"] === 'CLEANER').length)
-    const indexChanger = ( tab ) => {
-        setTabName(tab)
-        if(tab === 'EXTERIOR') return setIndex(0)
-        if(tab === 'HALL') return setIndex(exterior[0] + 1);
-        if(tab === 'KITCHEN') return setIndex(exterior[0] + hall[0] + 1);
-        if(tab === 'TABLEWARE') return setIndex(exterior[0] + hall[0] + kitchen[0] + 1);
-        if(tab === 'CLEANER') return setIndex(exterior[0] + hall[0] + kitchen[0] + tableware[0] + 1);
-        if(tab === 'ECT') return setIndex(exterior[0] + hall[0] + kitchen[0] + tableware[0] + cleaner[0] + 1);
+    const exterior = shopImages.filter(el => el["type"] === 'EXTERIOR');
+    const hall = shopImages.filter(el => el["type"] === 'HALL');
+    const kitchen = shopImages.filter(el => el["type"] === 'KITCHEN');
+    const tableware = shopImages.filter(el => el["type"] === 'TABLEWARE');
+    const cleaner = shopImages.filter(el => el["type"] === 'CLEANER');
+    const ect = shopImages.filter(el => el["type"] === 'ECT');
+    const allImages = [...exterior, ...hall, ...kitchen, ...tableware, ...cleaner, ...ect];
+
+    const exteriorLength = exterior.length;
+    const hallLength = hall.length;
+    const kitchenLength = kitchen.length;
+    const tablewareLength = tableware.length;
+    const cleanerLength = cleaner.length;
+    const ectLength = ect.length;
+
+    const onIndexChanged = ( index ) => {
+        if(index >= 0 && index < exteriorLength){
+            setTabName('EXTERIOR')
+        } else if(index >= exteriorLength && index < exteriorLength + hallLength){
+            setTabName('HALL')
+        } else if(index >= exteriorLength + hallLength && index < exteriorLength + hallLength + kitchenLength){
+            setTabName('KITCHEN')
+        } else if(index >= exteriorLength + hallLength + kitchenLength && index < exteriorLength + hallLength + kitchenLength + tablewareLength) {
+            setTabName('TABLEWARE')
+        } else if(index >= exteriorLength + hallLength + kitchenLength + tablewareLength && index < exteriorLength + hallLength + kitchenLength + tablewareLength + cleanerLength){
+            setTabName('CLEANER')
+        } else if(index >= exteriorLength + hallLength + kitchenLength + tablewareLength + cleanerLength && index < exteriorLength + hallLength + kitchenLength + tablewareLength + cleanerLength + ectLength){
+            setTabName('ECT')
+        }
+        setIndex(index)
     }
-    
     return (
         <ScrollView showsVerticalScrollIndicator={false} scrollEventThrottle={1}>
             <View style={styles.imageBox}>
                 <Swiper key={index} index={index} paginationStyle={{bottom:10}} dot={<View style={{backgroundColor: 'rgba(255,255,255,.3)', width: 6, height: 6, borderRadius: 3, marginLeft: 3, marginRight: 3}} />} activeDot={<View style={{backgroundColor: '#fff', width: 8, height: 8, borderRadius: 4, marginLeft: 4, marginRight: 4}} />}>
-                    {shopImages.map(photo => <Image key={photo.id} style={styles.image} source={{uri:photo.url}}/>)}
+                    {allImages.map((photo, index) => <Image key={index} style={styles.image} source={{uri:photo.url}}/>)}
                 </Swiper>
             </View>
 
             <View style={styles.tabBar}>
-              <TouchableWithoutFeedback style={styles.tabBox} onPress={()=> indexChanger('EXTERIOR')}>
+              <TouchableWithoutFeedback style={styles.tabBox} onPress={()=> onIndexChanged(0)}>
                   <Text style={tabName === 'EXTERIOR'? styles.activeTab : styles.inactiveTab}>외부</Text>
               </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback style={styles.tabBox} onPress={()=> indexChanger('HALL')}>
+              <TouchableWithoutFeedback style={styles.tabBox} onPress={()=> onIndexChanged(exteriorLength)}>
                   <Text style={tabName ==='HALL'? styles.activeTab : styles.inactiveTab}>홀</Text>
               </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback style={styles.tabBox} onPress={()=> indexChanger('KITCHEN')}>
+              <TouchableWithoutFeedback style={styles.tabBox} onPress={()=> onIndexChanged(exteriorLength + hallLength)}>
                   <Text style={tabName ==='KITCHEN'? styles.activeTab : styles.inactiveTab}>주방</Text>
               </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback style={styles.tabBox} onPress={()=> indexChanger('TABLEWARE')}>
+              <TouchableWithoutFeedback style={styles.tabBox} onPress={()=> onIndexChanged(exteriorLength + hallLength + kitchenLength)}>
                   <Text style={tabName ==='TABLEWARE'? styles.activeTab : styles.inactiveTab}>식기</Text>
               </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback style={styles.tabBox} onPress={()=> indexChanger('CLEANER')}>
+              <TouchableWithoutFeedback style={styles.tabBox} onPress={()=> onIndexChanged(exteriorLength + hallLength + kitchenLength + tablewareLength)}>
                   <Text style={tabName ==='CLEANER'? styles.activeTab : styles.inactiveTab}>청소도구</Text>
               </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback style={styles.tabBox} onPress={()=> indexChanger('ECT')}>
+              <TouchableWithoutFeedback style={styles.tabBox} onPress={()=> onIndexChanged(exteriorLength + hallLength + kitchenLength + tablewareLength + cleanerLength)}>
                   <Text style={tabName ==='ECT'? styles.activeTab : styles.inactiveTab}>기타</Text>
               </TouchableWithoutFeedback>
             </View>
         
             <Facility {...facility}/>
+
+            <View style={styles.box}>
+                <Text style={styles.title}>음식점 소개</Text>
+                <Caption>음식점 이름</Caption>
+                <Text style={{fontSize:18, paddingBottom:20, fontWeight:"bold"}}>{shopName} in {district}</Text>
+                <Text style={styles.text}>{description}</Text>
+            </View>
 
             <View style={styles.box}>
                 <Text style={styles.title}>규모</Text>
@@ -195,13 +218,6 @@ export default ({ shopImages, facility, tables, chairs, scale, shopName, distric
                     </View>
                 </View>
 
-            </View>
-
-            <View style={styles.box}>
-                <Text style={styles.title}>음식점 소개</Text>
-                <Caption>음식점 이름</Caption>
-                <Text style={{fontSize:18, paddingBottom:20}}>{shopName} in {district}</Text>
-                <Text style={styles.text}>{description}</Text>
             </View>
 
             <View style={styles.box}>
@@ -307,13 +323,14 @@ export default ({ shopImages, facility, tables, chairs, scale, shopName, distric
             <View style={styles.box}>
                 <Text style={styles.title}>입점 하기</Text>
                 <View style={styles.calendar}>
-                    <BookingCalendar calendar={calendar} isSelf={isSelf} calendarHeight={isSelf? (Platform.OS === 'ios'? 450 : 500 ) : (Platform.OS === 'ios'? 500 : 550)} profileState={profileState}/>
+                    <BookingCalendar calendar={calendar} isSelf={isSelf} calendarHeight={isSelf? (Platform.OS === 'ios'? 450 : 500 ) : (Platform.OS === 'ios'? 480 : 500)} franchiseState={franchiseState} mainImage={exterior[0].url} shopName={shopName} district={district}/>
                 </View>
             </View>
-
+            {/*
             <View style={styles.box}>
                 <Text style={styles.title}>후기(121개)</Text>
             </View>
+            */}
         </ScrollView>
     )
 }

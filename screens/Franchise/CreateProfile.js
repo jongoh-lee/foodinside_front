@@ -1,6 +1,6 @@
 import * as React from "react";
 import { TouchableWithoutFeedback, ScrollView } from "react-native-gesture-handler";
-import {StyleSheet, View, Text, Image,} from "react-native";
+import {StyleSheet, View, Text, Image, KeyboardAvoidingView} from "react-native";
 import axios from "axios";
 import constants from "../../constants";
 import { AntDesign } from '@expo/vector-icons'; 
@@ -52,7 +52,7 @@ export default ({ navigation, route }) => {
 
       const {
         data: { location }
-      } = await axios.post("http://192.168.50.19:4000/api/upload", formData, {
+      } = await axios.post("http://172.30.1.21:4000/api/upload", formData, {
         headers: {
           "content-type": "multipart/form-data"
         }
@@ -84,61 +84,67 @@ export default ({ navigation, route }) => {
 
   return (
   <View style={styles.container}>
-    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{padding:15, alignItems:"center"}}>
+     <KeyboardAvoidingView 
+      behavior={Platform.OS === "ios" ? "position" : "height"}
+      style={{flex:1, justifyContent:"center"}}
+      keyboardVerticalOffset={50}
+      enabled >
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{padding:15, alignItems:"center"}}>
 
-      <View style={styles.textContainer}>
-        <Text style={styles.title}>대표 메뉴</Text>
-      </View>
+        <View style={styles.textContainer}>
+          <Text style={styles.title}>대표 메뉴</Text>
+        </View>
 
-      <TouchableWithoutFeedback style={styles.imageInput} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelect})}>
-        {image === null? <AntDesign name="plus" size={30} color="black" /> : <Image style={styles.image} source={{uri: image.uri}}/>}
-      </TouchableWithoutFeedback>
-        
-      <View style={styles.action}>
-        <Text style={{fontWeight:'bold'}}>메뉴 이름:  </Text> 
-        <ShadowInput {...menuNameInput}  placeholder={"메뉴 이름"} width={'70%'} padding={5} borderColor={'white'}/>
-      </View>
+        <TouchableWithoutFeedback style={styles.imageInput} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelect})}>
+          {image === null? <AntDesign name="plus" size={30} color="black" /> : <Image style={styles.image} source={{uri: image.uri}}/>}
+        </TouchableWithoutFeedback>
 
-      <View style={styles.action}>
-        <Text style={{fontWeight:'bold'}}>희망 가격:  </Text> 
-        <ShadowInput {...salePriceInput}  placeholder={"희망가격"} width={'70%'} padding={5} borderColor={'white'} keyboardType="numeric"/>
-      </View>
+        <View style={styles.action}>
+          <Text style={{fontWeight:'bold'}}>메뉴 이름:  </Text> 
+          <ShadowInput {...menuNameInput}  placeholder={"메뉴 이름"} width={'70%'} padding={5} borderColor={'white'}/>
+        </View>
 
-      <View style={styles.action}>
-        <Text style={{fontWeight:'bold'}}>업종:  </Text> 
-        <RadioButton.Group onValueChange={classification => setClassification(classification)} value={classification}>
-          <View style={{flexDirection:"row", alignItems:"center"}}>
-            <RadioButton value="일반" color={'#05e6f4'} uncheckedColor={'rgba(5, 230, 244, .3)'}/>
-            <Text>일반 음식점</Text>
-          </View>
-          <View style={{flexDirection:"row", alignItems:"center"}}>
-            <RadioButton value="휴게" color={'#05e6f4'} uncheckedColor={'rgba(5, 230, 244, .3)'}/>
-            <Text>휴게 음식점</Text>
-          </View>
-        </RadioButton.Group>
-      </View>
+        <View style={styles.action}>
+          <Text style={{fontWeight:'bold'}}>희망 가격:  </Text> 
+          <ShadowInput {...salePriceInput}  placeholder={"희망가격"} width={'70%'} padding={5} borderColor={'white'} keyboardType="numeric"/>
+        </View>
 
-      <View style={styles.textContainer}>
-        <Text style={styles.title}>업체 컨셉</Text>
-      </View>
-      <ShadowInput {...conceptInput} multiline={true} textAlign={'left'} textAlignVertical={'top'} placeholder={`메뉴 설명, 식재료 원산지, 조리과정, 먹는 방법 등 \n대표 메뉴의 스토리를 작성해주세요`} keyboardType={"default"} editable={!loading}/>
+        <View style={styles.action}>
+          <Text style={{fontWeight:'bold'}}>업종:  </Text> 
+          <RadioButton.Group onValueChange={classification => setClassification(classification)} value={classification}>
+            <View style={{flexDirection:"row", alignItems:"center"}}>
+              <RadioButton value="일반" color={'#05e6f4'} uncheckedColor={'rgba(5, 230, 244, .3)'}/>
+              <Text>일반 음식점</Text>
+            </View>
+            <View style={{flexDirection:"row", alignItems:"center"}}>
+              <RadioButton value="휴게" color={'#05e6f4'} uncheckedColor={'rgba(5, 230, 244, .3)'}/>
+              <Text>휴게 음식점</Text>
+            </View>
+          </RadioButton.Group>
+        </View>
 
-      <View style={styles.textContainer_last}>
-       <Text style={styles.title}>경력</Text> 
-      </View>
-      <Text style={styles.warning}>선정 후 경력은 수정할 수 없고 모든 이용자가 볼 수 있습니다</Text> 
-      <ShadowInput {...careerInput} textAlign={'left'} placeholder={`요리 입문 년도, 수상 내역, 자격증, 관련 경험 등 `} keyboardType={"default"} editable={!loading}/>
+        <View style={styles.textContainer}>
+          <Text style={styles.title}>업체 컨셉</Text>
+        </View>
+        <ShadowInput {...conceptInput} multiline={true} textAlign={'left'} blurOnSubmit={false} returnKeyType={'none'} textAlignVertical={'top'} placeholder={`메뉴 설명, 식재료 원산지, 조리과정, 먹는 방법 등 \n\n대표 메뉴의 스토리를 작성해주세요`} keyboardType={"default"} editable={!loading}/>
 
-      <View style={styles.textContainer_last}>
-        <Text style={styles.title}>연락처</Text>
-      </View>
-      <Text style={styles.warning}>선정 결과는 문자로 안내드립니다</Text> 
-      <ShadowInput {...contactInput} textAlign={'left'} placeholder={`( - ) 없이 번호만 입력해 주세요`} keyboardType="numeric" editable={!loading}/>
-      
-      <View style={{width:constants.width * .9}}>
-        <BasicButton text={'제출하기'} onPress={handleSubmit} disabled={image && menuNameInput.value && salePriceInput.value && conceptInput.value && contactInput.value && careerInput.value? loading : true} loading={loading}/>
-      </View>
-    </ScrollView>
+        <View style={styles.textContainer_last}>
+         <Text style={styles.title}>경력</Text> 
+        </View>
+        <Text style={styles.warning}>선정 후 경력은 수정할 수 없고 모든 이용자가 볼 수 있습니다</Text> 
+        <ShadowInput {...careerInput}  multiline={true} textAlign={'left'} placeholder={`요리 입문 년도, 수상 내역, 자격증, 관련 경험 등 `} blurOnSubmit={false} returnKeyType={'none'} editable={!loading}/>
+
+        <View style={styles.textContainer_last}>
+          <Text style={styles.title}>연락처</Text>
+        </View>
+        <Text style={styles.warning}>선정 결과는 문자로 안내드립니다</Text> 
+        <ShadowInput {...contactInput} textAlign={'left'} placeholder={`( - ) 없이 번호만 입력해 주세요`} keyboardType="numeric" editable={!loading}/>
+
+        <View style={{width:constants.width * .9}}>
+          <BasicButton text={'제출하기'} onPress={handleSubmit} disabled={image && menuNameInput.value && salePriceInput.value && conceptInput.value && contactInput.value && careerInput.value? loading : true} loading={loading}/>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   </View>
 )};
 

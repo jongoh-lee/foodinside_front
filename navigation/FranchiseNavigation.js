@@ -32,6 +32,7 @@ import NavIcon from '../components/Custom/NavIcon';
 import Logo from '../components/Custom/Logo';
 import BackArrow from '../components/Custom/BackArrow';
 import BackWarningArrow from '../components/Custom/BackWarningArrow';
+import BookingShop from '../screens/Franchise/BookingShop';
 
 
 const SearchStack = createStackNavigator();
@@ -183,6 +184,12 @@ export default () => {
       <FranchiseStack.Screen name="프로필 완성" component={CompleteProfile} options={{
         headerShown:true,
         headerTitle:"프로필 완성",
+        headerTitleAlign:"center",
+        headerLeft:()=> <BackArrow />,
+      }} />
+      <FranchiseStack.Screen name="결제하기" component={BookingShop} options={{
+        headerShown:true,
+        headerTitle:"결제하기",
         headerTitleAlign:"center",
         headerLeft:()=> <BackArrow />,
       }} />

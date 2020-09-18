@@ -81,7 +81,7 @@ export default ({ navigation, route }) => {
                 }
                 const {
                     data: { location : newImageUrls }
-                } = await axios.post("http://192.168.50.19:4000/api/upload", formNewImages, {
+                } = await axios.post("http://172.30.1.21:4000/api/upload", formNewImages, {
                     headers: {
                       "content-type": "multipart/form-data"
                     }
@@ -105,7 +105,7 @@ export default ({ navigation, route }) => {
                 }
                 const {
                     data: { location : editImageUrls }
-                } = await axios.post("http://192.168.50.19:4000/api/upload", formEditImages, {
+                } = await axios.post("http://172.30.1.21:4000/api/upload", formEditImages, {
                     headers: {
                       "content-type": "multipart/form-data"
                     }

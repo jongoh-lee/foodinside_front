@@ -60,7 +60,7 @@ const DangolBar = ({ id, isDangol : isDangolProps, dangolCount : dangolCountProp
                 </View>
                 ) : (
                 <View style={styles.cardInfo}>
-                    <Text style={styles.cardInfoText}>암호화폐</Text>
+                    <Text style={styles.cardInfoText}>포인트</Text>
                     <Text style={styles.cardInfoNum} numberOfLines={1}>0</Text>
                 </View>
                 )}

@@ -122,7 +122,7 @@ export default ({ navigation, route }) => {
         })
         const { 
           data : { location : locationMainImage } 
-        } = await axios.post("http://192.168.50.19:4000/api/upload", formMainImage, {
+        } = await axios.post("http://172.30.1.21:4000/api/upload", formMainImage, {
           headers: {
             "content-type": "multipart/form-data"
           }
@@ -142,7 +142,7 @@ export default ({ navigation, route }) => {
         }
         const { 
           data : { location : locationNewMenuImages } 
-        } = await axios.post("http://192.168.50.19:4000/api/upload", formNewMenus, {
+        } = await axios.post("http://172.30.1.21:4000/api/upload", formNewMenus, {
           headers: {
             "content-type": "multipart/form-data"
           }
@@ -164,7 +164,7 @@ export default ({ navigation, route }) => {
         }
         const { 
           data : { location : locationEditMenuImages } 
-        } = await axios.post("http://192.168.50.19:4000/api/upload", formEditMenus, {
+        } = await axios.post("http://172.30.1.21:4000/api/upload", formEditMenus, {
           headers: {
             "content-type": "multipart/form-data"
           }
@@ -184,7 +184,7 @@ export default ({ navigation, route }) => {
         });
         const { 
           data : { location : locationFounder } 
-        } = await axios.post("http://192.168.50.19:4000/api/upload", formFounder, {
+        } = await axios.post("http://172.30.1.21:4000/api/upload", formFounder, {
           headers: {
             "content-type": "multipart/form-data"
           }
@@ -204,7 +204,7 @@ export default ({ navigation, route }) => {
         }
         const { 
           data : { location : locationNewMembers } 
-        } = await axios.post("http://192.168.50.19:4000/api/upload", formNewMembers, {
+        } = await axios.post("http://172.30.1.21:4000/api/upload", formNewMembers, {
           headers: {
             "content-type": "multipart/form-data"
           }
@@ -226,7 +226,7 @@ export default ({ navigation, route }) => {
         }
         const { 
           data : { location : locationEditMembers } 
-        } = await axios.post("http://192.168.50.19:4000/api/upload", formEditMembers, {
+        } = await axios.post("http://172.30.1.21:4000/api/upload", formEditMembers, {
           headers: {
             "content-type": "multipart/form-data"
           }
