@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, View, Text} from "react-native";
+import { StyleSheet, View, Text, SafeAreaView} from "react-native";
 import { MaterialCommunityIcons, Entypo, FontAwesome5, Ionicons, Feather } from "@expo/vector-icons"
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import ShadowInput from "../../components/Custom/ShadowInput";
@@ -231,7 +231,7 @@ export default ({ navigation, route}) => {
         }
     }
     return (
-    <View style={styles.container}> 
+    <SafeAreaView style={styles.container}> 
         <ScrollView>
             <View style={styles.inner}>
 
@@ -501,7 +501,7 @@ export default ({ navigation, route}) => {
 
             </View>
         </ScrollView>
-    </View>    
+    </SafeAreaView>    
     )
 };
 

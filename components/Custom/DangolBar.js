@@ -43,7 +43,7 @@ const DangolBar = ({ id, isDangol : isDangolProps, dangolCount : dangolCountProp
             
                 {isSelf ? (
                 <View style={styles.cardInfo}>
-                    <Text style={styles.cardInfoText}>발행량</Text>
+                    <Text style={styles.cardInfoText} numberOfLines={1}>발행 포인트</Text>
                     <Text style={styles.cardInfoNum} numberOfLines={1}>0</Text>
                 </View>
                 ) : (
@@ -55,7 +55,7 @@ const DangolBar = ({ id, isDangol : isDangolProps, dangolCount : dangolCountProp
             
                 {isSelf ? (
                 <View style={styles.cardInfo}>
-                    <Text style={styles.cardInfoText}>회수량</Text>
+                    <Text style={styles.cardInfoText} numberOfLines={1}>회수 포인트</Text>
                     <Text style={styles.cardInfoNum} numberOfLines={1}>0</Text>
                 </View>
                 ) : (

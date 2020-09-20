@@ -192,7 +192,7 @@ export default ({ navigation }) => {
           ],
           {cancelable: true},
           )}>
-            <MaterialCommunityIcons name="delete-empty-outline" size={25} color="#666"/><Text style={styles.modalText}>프로필 삭제</Text>
+            <MaterialCommunityIcons name="delete-empty-outline" size={25} color="red"/><Text style={styles.modalText_red}>프로필 삭제</Text>
         </TouchableOpacity>
       </View>
     </Modal>
@@ -287,4 +287,9 @@ const styles = StyleSheet.create({
       fontSize:14,
       marginLeft:10
   },
+  modalText_red:{
+    fontSize:14,
+    marginLeft:10,
+    color:'red'
+  }
 })

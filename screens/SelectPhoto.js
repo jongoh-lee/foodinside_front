@@ -111,7 +111,7 @@ export default ({ navigation, route }) => {
             <>
               <Image
                 style={{ width: constants.width, height: constants.height / 2}}
-                source={{ uri: selected.uri }}
+                source={selected? { uri: selected.uri } : null}
               />
 
               <ScrollView contentContainerStyle={{flexGrow:1}}>

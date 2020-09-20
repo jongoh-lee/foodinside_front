@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, View, Text, TouchableOpacity, Alert, Image} from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, Alert, Image, SafeAreaView} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Caption } from "react-native-paper";
@@ -81,7 +81,7 @@ export default ({ navigation, route }) => {
                 }
                 const {
                     data: { location : newImageUrls }
-                } = await axios.post("http://172.30.1.21:4000/api/upload", formNewImages, {
+                } = await axios.post("http://172.30.1.11:4000/api/upload", formNewImages, {
                     headers: {
                       "content-type": "multipart/form-data"
                     }
@@ -105,7 +105,7 @@ export default ({ navigation, route }) => {
                 }
                 const {
                     data: { location : editImageUrls }
-                } = await axios.post("http://172.30.1.21:4000/api/upload", formEditImages, {
+                } = await axios.post("http://172.30.1.11:4000/api/upload", formEditImages, {
                     headers: {
                       "content-type": "multipart/form-data"
                     }
@@ -140,7 +140,7 @@ export default ({ navigation, route }) => {
     }
     
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <ScrollView>
                 <View style={styles.inner}>
 
@@ -587,7 +587,7 @@ export default ({ navigation, route }) => {
                 
             
             </Modal>
-        </View>
+        </SafeAreaView>
     )
 };
 

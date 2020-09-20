@@ -14,7 +14,7 @@ const authLink = setContext(async (_, { headers }) => {
 });
 
 const link = new HttpLink({
-  uri: "http://172.30.1.21:4000"
+  uri: "http://172.30.1.11:4000"
 });
 
 const options = {

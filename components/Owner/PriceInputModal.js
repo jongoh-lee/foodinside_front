@@ -11,7 +11,7 @@ export default ({ onPressPrice, loading }) => {
         <View style={{width:constants.width, alignItems:"center"}}>
             <ShadowInput value={price.value.replace(/\B(?=(\d{3})+(?!\d))/g, ",")} onChange={price.onChange} keyboardType={'number-pad'} autoFocus={true} width={'70%'} placeholder={'가격'} editable={!loading}/>
             <View style={{width:'70%'}}>
-                <BasicButton onPress={() => onPressPrice(price.value)} disabled={price.value.length > 0 ? loading : true} padding={10} text={'확인'} marginVertical={10}/>
+                <BasicButton onPress={() => onPressPrice(price.value)} disabled={price.value?.length > 0 ? loading : true} padding={10} text={'확인'} marginVertical={10}/>
             </View>
         </View>
     )

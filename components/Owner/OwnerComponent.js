@@ -323,7 +323,7 @@ export default ({ shopImages, facility, tables, chairs, scale, shopName, distric
             <View style={styles.box}>
                 <Text style={styles.title}>입점 하기</Text>
                 <View style={styles.calendar}>
-                    <BookingCalendar calendar={calendar} isSelf={isSelf} calendarHeight={isSelf? (Platform.OS === 'ios'? 450 : 500 ) : (Platform.OS === 'ios'? 480 : 500)} franchiseState={franchiseState} mainImage={exterior[0].url} shopName={shopName} district={district}/>
+                    <BookingCalendar calendar={calendar} isSelf={isSelf} calendarHeight={isSelf? (Platform.OS === 'ios'? 450 : 500 ) : (Platform.OS === 'ios'? 480 : 500)} franchiseState={franchiseState} mainImage={exterior[0].url} shopName={shopName} district={district} minReserve={minReserve}/>
                 </View>
             </View>
             {/*

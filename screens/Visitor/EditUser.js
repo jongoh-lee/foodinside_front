@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {View, Text, TouchableOpacity, ImageBackground, StyleSheet,} from 'react-native';
+import {View, Text, TouchableOpacity, ImageBackground, StyleSheet, SafeAreaView} from 'react-native';
 import axios from "axios";
 import { Feather, MaterialCommunityIcons, FontAwesome } from "@expo/vector-icons";
 import BasicInput from '../../components/Custom/BasicInput';
@@ -44,7 +44,7 @@ export default ({ navigation, route }) => {
           });
         const {
           data: { location }
-        } = await axios.post("http://172.30.1.21:4000/api/upload", formData, {
+        } = await axios.post("http://172.30.1.11:4000/api/upload", formData, {
           headers: {
             "content-type": "multipart/form-data"
           }
@@ -79,7 +79,7 @@ export default ({ navigation, route }) => {
     },[usernameInput.value])
 
     return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <DismissKeyboard>
       <ScrollView contentContainerStyle={{ alignItems:"center", padding:15}}>
         <View style={{alignItems: 'center'}}>
@@ -160,7 +160,7 @@ export default ({ navigation, route }) => {
 
         </ScrollView>
       </DismissKeyboard>
-    </View>
+    </SafeAreaView>
   );
 };
 

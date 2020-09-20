@@ -16,14 +16,14 @@ LocaleConfig.locales['fr'] = {
 LocaleConfig.defaultLocale = 'fr';
 
 
-const Calendar = ({ calendarHeight,  franchiseState, isSelf, calendar, mainImage, shopName, district}) => {
+const Calendar = ({ calendarHeight,  franchiseState, isSelf, calendar, mainImage, shopName, district, minReserve}) => {
     const [selectedList, setSelectedList] = React.useState({});
     const [firstDate, setFirstDate] = React.useState(null);
     const [lastDate, setLastDate] = React.useState(null);
     const [totalPrice, setTotalPrice] = React.useState(0);
     const navigation = useNavigation();
     const [alert, setAlert] = React.useState('');
-
+    
     const markedDates = calendar.reduce(
       (emptyObject, date) => {
         var dateString = date.dateString;
@@ -56,31 +56,42 @@ const Calendar = ({ calendarHeight,  franchiseState, isSelf, calendar, mainImage
     }
 
     const onFranchisePress = (date, marking) => {
+      //유저가 음식점 주인 또는 프로필이 없는 경우 아무것도 하지 않습니다.
       if(franchiseState !== 3 || isSelf) {
           return null
       }else{
+        //리스트에 아무것도 없을 경우 그 날짜를 추가 합니다.
         if(Object.keys(selectedList).length == 0){
           setSelectedList({[date.dateString] : {id: marking.id, priceState:marking.priceState, active:true}});
           setFirstDate(date.dateString)
           setLastDate(null);
           setTotalPrice(marking.priceState.replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+          setAlert("")
+        //리스트에 날짝 담긴 경우
         }else if(Object.keys(selectedList).length == 1){
           let firstNumber = Object.keys(selectedList)[0]
+          //두 번째 날짜가 첫 날짜 보다 적은 경우 날짜를 바꿉니다.
             if(date.dateString < firstNumber){
               setSelectedList({[date.dateString] : {id: marking.id, priceState:marking.priceState, active:true}});
               setFirstDate(date.dateString)
               setLastDate(null);
               setTotalPrice(marking.priceState.replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+              setAlert("")
+          //첫번째 날짜를 또 누른경우 초기화 됩니다.
             }else if(date.dateString == firstNumber){
               setSelectedList({});
               setFirstDate(null);
               setLastDate(null);
               setTotalPrice(0);
+              setAlert("")
+          //두번째 날짜가 정상적으로 눌린경우
             }else{
+                //첫번째 날짜와 두번째 날짜를 리스트에 담습니다.
                 let _firstDate = new Date( firstNumber );
                 let _lastDate = new Date( date.dateString );
                 let datelist = getDates(_firstDate, _lastDate);
-                if(datelist.length < 8){
+                //리스트가 8보다 작은 경우
+                if(datelist.length < 8 && datelist.length >= minReserve){
                   let selected = datelist.map(el => el.toISOString().substring(0, 10));
                   const updateList = selected.reduce(
                     (emptyObject, date) => {
@@ -97,12 +108,19 @@ const Calendar = ({ calendarHeight,  franchiseState, isSelf, calendar, mainImage
                   setLastDate(selected[selected.length -1]);
                   setTotalPrice(totalPrice);
                   setSelectedList(updateList);
-                }else{
+                  setAlert("")
+                }else if(datelist.length > 7){
                   setSelectedList({});
                   setFirstDate(null);
                   setLastDate(null);
                   setTotalPrice(0);
                   setAlert("최대 7일까지 영업 가능 합니다")
+                }else if(atelist.length < minReserve){
+                  setSelectedList({});
+                  setFirstDate(null);
+                  setLastDate(null);
+                  setTotalPrice(0);
+                  setAlert(`최소 ${minReserve}일부터 영업 가능 합니다`)
                 }
             }
         }else{
@@ -149,7 +167,7 @@ const Calendar = ({ calendarHeight,  franchiseState, isSelf, calendar, mainImage
               <Caption>{alert? alert : firstDate && firstDate.replace(/-/gi, '/')}{lastDate && ' - ' + lastDate.replace(/-/gi, '/')}</Caption>
               <Text style={{color:"black", fontWeight:"bold", fontSize:16}}>합계: {totalPrice}</Text>
           </View>
-          <TouchableOpacity disabled={franchiseState === 3 && totalPrice !== 0? false : true} onPress={() => navigation.navigate("결제하기",{
+          <TouchableOpacity disabled={franchiseState === 3 && totalPrice !== 0 && Object.keys(selectedList).length >= minReserve? false : true} onPress={() => navigation.navigate("결제하기",{
             mainImage,
             shopName,
             firstDate,

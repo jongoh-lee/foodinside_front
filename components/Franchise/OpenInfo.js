@@ -5,7 +5,8 @@ import constants from "../../constants";
 
 const styles = StyleSheet.create({
   container:{
-    height: constants.height / 3,
+    minHeight: constants.height / 3,
+    maxHeight: constants.height / 2
   },
   map:{
     

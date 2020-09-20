@@ -14,8 +14,7 @@ import Earnings from '../screens/Owner/Earnings';
 //shop Info
 import CreateShop from '../screens/Owner/CreateShop';
 import EditShop from '../screens/Owner/EditShop';
-import ShopExample from '../screens/Owner/ShopExample';
-
+import FullShop from "../screens/Franchise/FullShop";
 //button
 import NavIcon from '../components/Custom/NavIcon';
 import {MaterialIcons} from '@expo/vector-icons'
@@ -101,9 +100,7 @@ function MyShopStackScreen() {
         headerTitle:() => <Logo />,
         headerTitleAlign:'left'
       }}/>
-      <MyShopStack.Screen name="음식점 예시" component={ShopExample} options={{
-        headerRight:() => <Feather name="more-vertical" size={24} style={{paddingHorizontal:5}}/>,
-      }}/>
+      <MyShopStack.Screen name="음식점 보기" component={FullShop} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}}/>
       <MyShopStack.Screen name="신청서 보기" component={SeeCreateShop} options={{
         headerTitle:"심사 중",
         headerTitleAlign:"center",

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, View, Text} from "react-native";
+import { StyleSheet, View, Text, SafeAreaView} from "react-native";
 import BasicButton from "../../components/Custom/BasicButton";
 import { ScrollView } from "react-native-gesture-handler";
 import { RadioButton, } from "react-native-paper";
@@ -72,7 +72,7 @@ export default ({ route, navigation }) => {
         }
     }
     return(
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={{justifyContent:"center", padding:15}}>
             <Text style={styles.title}>예약 취소 시 환불 금액</Text>
 
@@ -154,5 +154,5 @@ export default ({ route, navigation }) => {
             </View>
             <BasicButton text={'제출 하기'} onPress={handleRefund} loading={loading} disabled={refundAgree? loading : true}/>
         </ScrollView>
-    </View>    
+    </SafeAreaView>    
 )};

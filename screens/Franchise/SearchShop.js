@@ -8,6 +8,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useQuery } from "@apollo/react-hooks";
 import { SEARCH_SHOP_LIST } from "./ProfileQueries";
 import ScreenLoader from "../../components/Custom/ScreenLoader";
+import ShopCardLoading from "../../components/Loading/ShopCardLoading";
 
 const styles = StyleSheet.create({
   container:{
@@ -25,6 +26,12 @@ export default () => {
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{padding:10}}>
         <SearchBar/>
         <View style={styles.container}>
+          {loading? (
+          <>
+          <ShopCardLoading/>
+          <ShopCardLoading/>
+          <ShopCardLoading/>
+          </>) : null}
           {data?.searchShopList.map((shop, index) => (
             <ShopCard key={index} {...shop} />
             ))}

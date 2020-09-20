@@ -1,9 +1,13 @@
 import React from "react";
-import { StyleSheet, View, Text, TouchableOpacity, Image} from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, Image, SafeAreaView} from "react-native";
 import { chats } from "../../components/Visitor/data";
 import { ScrollView } from "react-native-gesture-handler";
 import { Caption } from "react-native-paper";
 import constants from "../../constants";
+import { useQuery } from "@apollo/react-hooks";
+import { MY_PROFILE, PROFILE_CONTACT } from "./ProfileQueries";
+import numInput from "../../hooks/numInput";
+import BasicInput from "../../components/Custom/BasicInput";
 
 const styles = StyleSheet.create({
   container:{
@@ -19,6 +23,10 @@ const styles = StyleSheet.create({
     fontSize:20,
     fontWeight:"bold",
     paddingBottom:20
+  },
+  reserveBox:{
+    padding:5,
+    marginLeft:10
   },
   rowBox:{
     flexDirection:"row",
@@ -46,22 +54,47 @@ const styles = StyleSheet.create({
 
 export default ({ route }) => {
   const { mainImage, shopName, firstDate, lastDate, totalPrice, selectedList, district } = route.params;
+  const { data, loading} = useQuery(PROFILE_CONTACT,{
+    fetchPolicy:"network-only"
+  });
+  const [contact, setContact] = React.useState();
+  const contactInput = numInput(data?.myProfile?.contact);
+  //console.log(selectedList);
   return (
-  <View style={styles.container}>
+  <SafeAreaView style={styles.container}>
     <ScrollView contentContainerStyle={{paddingHorizontal:15, paddingBottom:40}} showsVerticalScrollIndicator={false}>
       <View style={styles.box}>
         <Text style={styles.title}>{shopName} in {district}</Text>
         <View style={{flexDirection:"row", alignItems:"center"}}>
           <Image 
-            style={{borderWidth:1, width: constants.width / 2, height:constants.width / 2.3, borderRadius:10}}
+            style={{width: constants.width / 2, height:constants.width / 2.3, borderRadius:10}}
             resizeMode={"cover"}
             source={{uri:mainImage}}
           />
-          <View style={{flex:1, borderWidth:1, justifyContent:"center", alignItems:"center"}}>
-            <Text>{firstDate && firstDate.replace(/-/gi, '/')} {lastDate && '-'} {lastDate && lastDate.replace(/-/gi, '/')}</Text>
-            <Text>금액: {totalPrice}</Text>
+          <View style={{flex:1, height:constants.width / 2.3, justifyContent:"flex-end",}}>
+
+            <View style={styles.reserveBox}>
+              <Caption>시작일</Caption>
+              <Text>{firstDate.replace(/-/gi, '/')}</Text>
+            </View>
+
+            <View style={styles.reserveBox}>
+              <Caption>종료일</Caption>
+              <Text>{lastDate? lastDate.replace(/-/gi, '/') : firstDate?.replace(/-/gi, '/')}</Text>
+            </View>
+
+            <View style={styles.reserveBox}>
+              <Caption>결제 금액</Caption>
+              <Text style={{fontSize:16, fontWeight:"bold"}}>{totalPrice}</Text>
+            </View>
+
           </View>
         </View>
+      </View>
+
+      <View style={styles.box}>
+        <Text style={styles.title}>결제 정보</Text>
+        <BasicInput {...contactInput}/>
       </View>
 
       <View style={styles.box}>
@@ -118,8 +151,8 @@ export default ({ route }) => {
 
     </ScrollView>
       
-    <TouchableOpacity style={{position:"absolute", bottom:0, left:0, right:0, justifyContent:"center", alignItems:"center", padding:15, backgroundColor:"rgb(5, 230, 244)"}}>
-      <Text style={{color:"#ffffff", fontWeight:"bold"}}>약관 동의 및 결제하기</Text>
+    <TouchableOpacity style={{position:"absolute", bottom:0, left:0, right:0, justifyContent:"center", alignItems:"center", padding:20, backgroundColor:"rgb(5, 230, 244)"}}>
+      <Text style={{color:"#ffffff", fontWeight:"bold"}}>약관 동의 및 예약하기</Text>
     </TouchableOpacity>
-  </View>
+  </SafeAreaView>
 )};

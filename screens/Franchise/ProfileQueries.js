@@ -106,16 +106,25 @@ export const MY_FAVORITE = gql`
                 classification
                 address
                 addressDetail
+                isSelf
+                franchiseState
+                #scale
                 scale
                 #description
                 shopName
                 district
-                description
                 hashTag
+                #rule
+                minReserve
                 shopImages{
                     id
                     type
                     url
+                }
+                calendar{
+                    id
+                    dateString
+                    priceState
                 }
 
             }
@@ -159,6 +168,21 @@ export const SEARCH_SHOP_LIST =gql`
                 dateString
                 priceState
             }
+        }
+    }
+`;
+
+export const TOGGLE_FAVORITE = gql`
+    mutation toggleFavorite($id: String!){
+        toggleFavorite(id:$id)
+    }
+`;
+
+export const PROFILE_CONTACT = gql`
+    query myProfile{
+        myProfile{
+            id
+            contact
         }
     }
 `;

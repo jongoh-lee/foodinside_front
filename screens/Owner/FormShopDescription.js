@@ -1,5 +1,5 @@
 import * as React from "react";
-import {StyleSheet, Text, View, KeyboardAvoidingView, Platform} from "react-native"
+import {StyleSheet, Text, View, KeyboardAvoidingView, Platform, SafeAreaView} from "react-native"
 import DismissKeyboard from "../../components/Custom/DismissKeyboard";
 import ShadowInput from "../../components/Custom/ShadowInput";
 import BasicButton from "../../components/Custom/BasicButton";
@@ -71,7 +71,7 @@ export default ({ route, navigation }) => {
         }
     }
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <KeyboardAvoidingView 
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={{flex:1, paddingBottom:5,}}
@@ -105,6 +105,6 @@ export default ({ route, navigation }) => {
                     </ScrollView>
                 </DismissKeyboard>
             </KeyboardAvoidingView>
-        </View>    
+        </SafeAreaView>    
     )
 };

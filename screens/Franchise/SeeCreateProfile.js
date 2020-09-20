@@ -28,10 +28,10 @@ export default ({ navigation }) => {
   if (loading) return <Loader />;
   if (error) return console.log(error);
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-    {data && data.myProfile &&
     <View style={styles.container}>
-
+    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{alignItems:"center"}}>
+    {data && data.myProfile &&
+      <>
       <View style={styles.textContainer}>
         <Text style={styles.title}>대표 메뉴</Text>
       </View>
@@ -72,14 +72,15 @@ export default ({ navigation }) => {
       <View style={{width:constants.width * .9}}>
         <BasicButton text={'확인'} onPress={() => navigation.goBack()} />
       </View>
-    </View>}
-  </ScrollView>
+      </>}
+    </ScrollView>
+  </View>
 )};
 
 const styles = StyleSheet.create({
   container:{
     flex:1,
-    alignItems:'center',
+    backgroundColor:"#ffffff"
   },
   edit:{
     paddingHorizontal:10

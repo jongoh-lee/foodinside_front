@@ -37,7 +37,7 @@ export default ({ navigation, route }) => {
         });
         const {
           data: { location }
-        } = await axios.post("http://172.30.1.21:4000/api/upload", formData, {
+        } = await axios.post("http://172.30.1.11:4000/api/upload", formData, {
           headers: {
             "content-type": "multipart/form-data"
           }
@@ -70,9 +70,8 @@ export default ({ navigation, route }) => {
   }
 
   return (
-  <SafeAreaView>
-  <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{padding:15}}>
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{padding:15, alignItems:"center"}}>
 
       <View style={styles.textContainer}>
         <Text style={styles.title}>대표 메뉴</Text>
@@ -125,15 +124,14 @@ export default ({ navigation, route }) => {
       <View style={{width:constants.width * .9}}>
         <BasicButton text={'수정하기'} onPress={handleSubmit} disabled={loading} loading={loading}/>
       </View>
-      </View>
-    </ScrollView>
-  </SafeAreaView>
+      </ScrollView>
+    </SafeAreaView>
 )};
 
 const styles = StyleSheet.create({
   container:{
     flex:1,
-    alignItems:"center"
+    backgroundColor:"#ffffff"
   },
   imageInput:{
     width:constants.width * 0.25,
@@ -159,14 +157,14 @@ const styles = StyleSheet.create({
     margin:5,
   },
   textContainer:{
+    marginVertical:20,
     borderBottomWidth:2,
     borderBottomColor:'#05e6f4',
-    marginVertical:20
   },
   textContainer_last:{
+    marginTop:20,
     borderBottomWidth:2,
     borderBottomColor:'#05e6f4',
-    marginTop:20
   },
   title:{
     fontWeight:'bold',

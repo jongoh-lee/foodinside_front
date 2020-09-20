@@ -1,5 +1,5 @@
 import * as React from "react";
-import {StyleSheet, Text, View, KeyboardAvoidingView, Platform, ScrollView} from "react-native"
+import {StyleSheet, Text, View, KeyboardAvoidingView, Platform, ScrollView, SafeAreaView} from "react-native"
 import { MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
 import numInput from "../../hooks/numInput"
 import DismissKeyboard from "../../components/Custom/DismissKeyboard";
@@ -37,7 +37,7 @@ export default ({ navigation, route }) => {
         }
     }
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <KeyboardAvoidingView 
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
                 style={{flex:1, justifyContent:"center"}}
@@ -62,11 +62,11 @@ export default ({ navigation, route }) => {
                                 <ShadowInput {...scaleInput} editable={!loading} width={'50%'} placeholder={'명'} keyboardType={"numeric"}/>
                             </View>
                         </View>
-                        <BasicButton text={'제출 하기'} onPress={handleScale} loading={loading} disabled={chairInput.value.length > 0 && tableInput.value.length > 0 && scaleInput.value.length > 0 ? loading : true}/>
+                        <BasicButton text={'제출 하기'} onPress={handleScale} loading={loading} disabled={chairInput.value?.length > 0 && tableInput.value?.length > 0 && scaleInput.value?.length > 0 ? loading : true}/>
                     </ScrollView>
                 </DismissKeyboard>
             </KeyboardAvoidingView>
-        </View>    
+        </SafeAreaView>    
     )
 };
 

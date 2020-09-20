@@ -32,7 +32,7 @@ export default ({ navigation, route }) => {
         setLoading(true);
         const {
             data: { location }
-        } = await axios.post("http://172.30.1.21:4000/api/upload", formData, {
+        } = await axios.post("http://172.30.1.11:4000/api/upload", formData, {
             headers: {
               "content-type": "multipart/form-data"
             }

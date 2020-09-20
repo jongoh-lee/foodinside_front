@@ -165,7 +165,7 @@ export default ({ id, classification, address, addressDetail, isSelf, scale, sho
               1회전 규모: {scale}명<Text style={{fontWeight:"300", color:"#666"}}> | </Text>
             </Text>
             <Text style={styles.shopPrice}>
-              평균 {priceAve === "NaN" ? "100,000" : priceAve}원/Day
+              일 평균 {priceAve === "NaN" ? "100,000" : priceAve}원
             </Text>
           </View>
         </View>

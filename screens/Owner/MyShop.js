@@ -42,7 +42,12 @@ export default ({ navigation, route }) => {
         <Text style={styles.title}><Text style={{color:"black"}}>심사 중</Text> 입니다</Text>
         
         <View style={styles.buttonBox}>
-          <TouchableWithoutFeedback style={{alignItems:"center"}} onPress={() => navigation.navigate("음식점 예시")}>
+          <TouchableWithoutFeedback style={{alignItems:"center"}} onPress={() => navigation.navigate("음식점 보기",{
+            id: "ckf23cjy16zop0a3581hz4o16",
+            shopName:"내 가게",
+            classification:"일반",
+            isSelf:false, 
+          })}>
             <View style={styles.button}>
                 <MaterialCommunityIcons name="store" size={34} color="rgba(0,0,0, .3)" />
             </View>
@@ -64,7 +69,12 @@ export default ({ navigation, route }) => {
         <Text style={styles.title}>죄송합니다. {`\n`}아쉽게도 사장님의 음식점은 <Text style={{color:"black"}}>{`\n`}푸드인사이드</Text>에 등록할 수 없습니다.</Text>
         <View style={styles.buttonBox}>
 
-          <TouchableWithoutFeedback style={{alignItems:"center"}} onPress={() => navigation.navigate("음식점 예시")}>
+          <TouchableWithoutFeedback style={{alignItems:"center"}} onPress={() => navigation.navigate("음식점 보기",{
+            id: "ckf23cjy16zop0a3581hz4o16",
+            shopName:"내 가게",
+            classification:"일반",
+            isSelf:false, 
+          })}>
             <View style={styles.button}>
                 <MaterialCommunityIcons name="store" size={34} color="rgba(0,0,0, .3)" />
             </View>
@@ -87,7 +97,12 @@ export default ({ navigation, route }) => {
         
         <View style={styles.buttonBox}>
 
-          <TouchableWithoutFeedback style={{alignItems:"center"}} onPress={() => navigation.navigate("음식점 예시")}>
+          <TouchableWithoutFeedback style={{alignItems:"center"}} onPress={() => navigation.navigate("음식점 보기",{
+            id: "ckf23cjy16zop0a3581hz4o16",
+            shopName:"내 가게",
+            classification:"일반",
+            isSelf:false, 
+          })}>
             <View style={styles.button}>
                 <MaterialCommunityIcons name="store" size={34} color="rgba(0,0,0, .3)" />
             </View>
@@ -113,7 +128,12 @@ export default ({ navigation, route }) => {
         <Text style={styles.title}>내 음식점도 <Text style={{color:"black"}}>공유 음식점</Text>이 될 수 있나요?</Text>
         <View style={styles.buttonBox}>
 
-          <TouchableWithoutFeedback style={{alignItems:"center"}} onPress={() => navigation.navigate("음식점 예시")}>
+          <TouchableWithoutFeedback style={{alignItems:"center"}} onPress={() => navigation.navigate("음식점 보기",{
+            id: "ckf23cjy16zop0a3581hz4o16",
+            shopName:"내 가게",
+            classification:"일반",
+            isSelf:false, 
+          })}>
             <View style={styles.button}>
                 <MaterialCommunityIcons name="store" size={34} color="rgba(0,0,0, .3)" />
             </View>
@@ -165,7 +185,7 @@ export default ({ navigation, route }) => {
           ],
           {cancelable: true},
           )}>
-            <MaterialCommunityIcons name="delete-empty-outline" size={25} color="#666"/><Text style={styles.modalText}>공유 음식점 삭제</Text>
+            <MaterialCommunityIcons name="delete-empty-outline" size={25} color="red"/><Text style={styles.modalText_red}>공유 음식점 삭제</Text>
         </TouchableOpacity>
       </View>
     </Modal>
@@ -257,4 +277,9 @@ const styles = StyleSheet.create({
       fontSize:14,
       marginLeft:10
     },
+    modalText_red:{
+      fontSize:14,
+      marginLeft:10,
+      color:'red'
+    }
 });

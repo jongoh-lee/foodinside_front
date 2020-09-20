@@ -1,5 +1,5 @@
 import * as React from "react";
-import {StyleSheet, KeyboardAvoidingView, View, Platform, Text, Image, ImageBackground,TouchableOpacity, Alert} from "react-native";
+import {StyleSheet, KeyboardAvoidingView, View, Platform, Text, Image, ImageBackground,TouchableOpacity, Alert, SafeAreaView} from "react-native";
 import ShadowInput from "../../components/Custom/ShadowInput";
 import useInput from "../../hooks/useInput";
 import numInput from "../../hooks/numInput";
@@ -122,7 +122,7 @@ export default ({ navigation, route }) => {
         })
         const { 
           data : { location : locationMainImage } 
-        } = await axios.post("http://172.30.1.21:4000/api/upload", formMainImage, {
+        } = await axios.post("http://172.30.1.11:4000/api/upload", formMainImage, {
           headers: {
             "content-type": "multipart/form-data"
           }
@@ -142,7 +142,7 @@ export default ({ navigation, route }) => {
         }
         const { 
           data : { location : locationNewMenuImages } 
-        } = await axios.post("http://172.30.1.21:4000/api/upload", formNewMenus, {
+        } = await axios.post("http://172.30.1.11:4000/api/upload", formNewMenus, {
           headers: {
             "content-type": "multipart/form-data"
           }
@@ -164,7 +164,7 @@ export default ({ navigation, route }) => {
         }
         const { 
           data : { location : locationEditMenuImages } 
-        } = await axios.post("http://172.30.1.21:4000/api/upload", formEditMenus, {
+        } = await axios.post("http://172.30.1.11:4000/api/upload", formEditMenus, {
           headers: {
             "content-type": "multipart/form-data"
           }
@@ -184,7 +184,7 @@ export default ({ navigation, route }) => {
         });
         const { 
           data : { location : locationFounder } 
-        } = await axios.post("http://172.30.1.21:4000/api/upload", formFounder, {
+        } = await axios.post("http://172.30.1.11:4000/api/upload", formFounder, {
           headers: {
             "content-type": "multipart/form-data"
           }
@@ -204,7 +204,7 @@ export default ({ navigation, route }) => {
         }
         const { 
           data : { location : locationNewMembers } 
-        } = await axios.post("http://172.30.1.21:4000/api/upload", formNewMembers, {
+        } = await axios.post("http://172.30.1.11:4000/api/upload", formNewMembers, {
           headers: {
             "content-type": "multipart/form-data"
           }
@@ -226,7 +226,7 @@ export default ({ navigation, route }) => {
         }
         const { 
           data : { location : locationEditMembers } 
-        } = await axios.post("http://172.30.1.21:4000/api/upload", formEditMembers, {
+        } = await axios.post("http://172.30.1.11:4000/api/upload", formEditMembers, {
           headers: {
             "content-type": "multipart/form-data"
           }
@@ -269,9 +269,9 @@ export default ({ navigation, route }) => {
 
   return (
   <>
-  <View style={styles.container}>
+  <SafeAreaView style={styles.container}>
     <KeyboardAvoidingView 
-      behavior={Platform.OS === "ios" ? "position" : "height"}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{flex:1, justifyContent:"center"}}
       keyboardVerticalOffset={50}
       enabled >
@@ -492,7 +492,7 @@ export default ({ navigation, route }) => {
                           </View>)}
                       </TouchableOpacity>
                         <View style={styles.position}>
-                            <Text style={styles.text} numberOfLines={1}>{route.params.myProfile.user.lastName+' '+route.params.myProfile.user.firstName} <Caption>사장님</Caption></Text>
+                            <Text style={styles.text} numberOfLines={1}>{route.params.myProfile.user.lastName+route.params.myProfile.user.firstName} <Caption>사장님</Caption></Text>
                         </View>
                     </View>
 
@@ -561,7 +561,7 @@ export default ({ navigation, route }) => {
           <BasicButton text={'제출하기'} onPress={handleCompleteProfile} marginVertical={10} loading={loading} disabled={profileNameInput.value && sector && tokenInput.value && mainImage && foodGuideInput.value && originInput.value && fullPriceInput.value && founderImage? loading : true}/>
         </ScrollView>
     </KeyboardAvoidingView>
-  </View>    
+  </SafeAreaView>    
   
     <Modal
       isVisible={menuModal}

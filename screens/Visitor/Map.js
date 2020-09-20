@@ -83,12 +83,12 @@ export default () => {
       x = x - SPACING_FOR_CARD_INSET;
     }
 
-    _scrollView.current.getNode().scrollTo({x: x , y: 0, animated: true});
+    _scrollView.current.scrollTo({x: x , y: 0, animated: true});
   }
   
   React.useEffect(()=>{
     if(Platform.OS === 'ios'){
-      _scrollView.current.getNode().scrollTo({animated:false, x: - SPACING_FOR_CARD_INSET})
+      _scrollView.current.scrollTo({animated:false, x: - SPACING_FOR_CARD_INSET})
     }
   },[])
   return (

@@ -7,9 +7,10 @@ import useInput from "../../hooks/useInput";
 import DismissKeyboard from "../../components/Custom/DismissKeyboard";
 import { useMutation } from "@apollo/react-hooks";
 import { LOG_IN } from "./AuthQueries";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default ({ navigation, route }) => {
-  const [email, setEmail] = React.useState(route.params? route.params?.email : "");
+  const [email, setEmail] = React.useState(route? route.params?.email : "");
   const onChange = text => {
     setEmail(text);
   };
@@ -42,7 +43,7 @@ export default ({ navigation, route }) => {
     setEmail(route?.params?.email)
   }, [route])
     return (
-    <View style={{flex:1, backgroundColor:"white"}}>
+    <SafeAreaView style={{flex:1, backgroundColor:"white"}}>
       <KeyboardAvoidingView 
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{flex:1}}
@@ -74,7 +75,7 @@ export default ({ navigation, route }) => {
           <Text style={styles.signupText}>푸드인사이드 <Text style={{fontWeight:"bold"}}>가입하기</Text></Text>
         </View>
       </TouchableOpacity>
-  </View>
+  </SafeAreaView>
   )
 };
 

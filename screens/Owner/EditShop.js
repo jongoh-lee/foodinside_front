@@ -1,6 +1,6 @@
 import { TextInput, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from "react-native-gesture-handler";
 import * as React from "react";
-import {StyleSheet, View, Text, Image} from "react-native";
+import {StyleSheet, View, Text, Image, SafeAreaView} from "react-native";
 import constants from "../../constants";
 import axios from "axios";
 import BasicButton from "../../components/Custom/BasicButton";
@@ -59,7 +59,7 @@ export default ({ navigation, route }) => {
       });
       const {
         data: { location : exteriorUrl }
-      } = await axios.post("http://172.30.1.21:4000/api/upload", formExterior, {
+      } = await axios.post("http://172.30.1.11:4000/api/upload", formExterior, {
           headers: {
             "content-type": "multipart/form-data"
           }
@@ -75,7 +75,7 @@ export default ({ navigation, route }) => {
       });
       const {
         data: { location : hallUrl }
-      } = await axios.post("http://172.30.1.21:4000/api/upload", formHall, {
+      } = await axios.post("http://172.30.1.11:4000/api/upload", formHall, {
           headers: {
             "content-type": "multipart/form-data"
           }
@@ -91,7 +91,7 @@ export default ({ navigation, route }) => {
       });
       const {
         data: { location : kitchenUrl }
-      } = await axios.post("http://172.30.1.21:4000/api/upload", formKitchen, {
+      } = await axios.post("http://172.30.1.11:4000/api/upload", formKitchen, {
           headers: {
             "content-type": "multipart/form-data"
           }
@@ -107,7 +107,7 @@ export default ({ navigation, route }) => {
       });
       const {
         data: { location : registrationUrl }
-      } = await axios.post("http://172.30.1.21:4000/api/upload", formRegistration, {
+      } = await axios.post("http://172.30.1.11:4000/api/upload", formRegistration, {
           headers: {
             "content-type": "multipart/form-data"
           }
@@ -138,7 +138,7 @@ export default ({ navigation, route }) => {
     }
   }
   return (
-  <View style={styles.container}>
+  <SafeAreaView style={styles.container}>
     <ScrollView showsVerticalScrollIndicator={false}>
 
       <View style={styles.textContainer}>
@@ -221,7 +221,7 @@ export default ({ navigation, route }) => {
     
       <BasicButton text={'제출하기'} onPress={handleEditShop} disabled={exterior && hall && kitchen && registration && route.params.myShop.address && addressDetailInput.value && contactInput.value ? loading : true} loading={loading} />
     </ScrollView>
-  </View>
+  </SafeAreaView>
 )};
 
 

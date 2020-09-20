@@ -1,6 +1,6 @@
 import * as React from "react";
 import { TouchableWithoutFeedback, ScrollView } from "react-native-gesture-handler";
-import {StyleSheet, View, Text, Image, KeyboardAvoidingView} from "react-native";
+import {StyleSheet, View, Text, Image, KeyboardAvoidingView, SafeAreaView} from "react-native";
 import axios from "axios";
 import constants from "../../constants";
 import { AntDesign } from '@expo/vector-icons'; 
@@ -52,7 +52,7 @@ export default ({ navigation, route }) => {
 
       const {
         data: { location }
-      } = await axios.post("http://172.30.1.21:4000/api/upload", formData, {
+      } = await axios.post("http://172.30.1.11:4000/api/upload", formData, {
         headers: {
           "content-type": "multipart/form-data"
         }
@@ -83,7 +83,7 @@ export default ({ navigation, route }) => {
   }
 
   return (
-  <View style={styles.container}>
+  <SafeAreaView style={styles.container}>
      <KeyboardAvoidingView 
       behavior={Platform.OS === "ios" ? "position" : "height"}
       style={{flex:1, justifyContent:"center"}}
@@ -145,13 +145,13 @@ export default ({ navigation, route }) => {
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
-  </View>
+  </SafeAreaView>
 )};
 
 const styles = StyleSheet.create({
   container:{
     flex:1,
-    alignItems:'center',
+    backgroundColor:"#ffffff"
   },
   imageInput:{
     width:constants.width * 0.25,
