@@ -55,7 +55,7 @@ export default ({ route }) => {
             <View>
               <AuthInput {...secretInput} placeholder="인증키를 입력하세요" keyboardType="default" autoFocus={false} editable={!loading}/>
               <Text style={{fontSize:10, color:"red", paddingLeft:5}}>{alert}</Text>
-              <AuthButton text="로그인" onPress={handleConfirm} disabled={value.length > 0? loading : true} loading={loading}/>
+              <AuthButton text="로그인" onPress={handleConfirm} disabled={value?.length > 0? loading : true} loading={loading}/>
             </View>
           </View>
         </DismissKeyboard>

@@ -13,6 +13,7 @@ import {ApolloProvider} from '@apollo/react-hooks';
 import apolloClientOptions from './apollo'
 import Navcontroller from './components/Navcontroller';
 import { AuthProvider } from './AuthContext';
+import * as SplashScreen from 'expo-splash-screen';
 
 export default function App() {
   const [loaded, setLoaded] = React.useState(false);
@@ -47,6 +48,7 @@ export default function App() {
     } 
   }
   React.useEffect(()=>{
+    SplashScreen.preventAutoHideAsync();
     preload()
   }, []);
 

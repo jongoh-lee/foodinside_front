@@ -22,13 +22,17 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.foodinside.foodinsideApp"
     },
-    "android": { 
-      "package": "com.foodinside.rn_prac", 
-      "config": { 
-        "googleMaps": { "apiKey": "AIzaSyB77l5gKZERH5nDSvT5PboXLkl_uJbVcUQ" } 
-      } 
-    }
+    "android": {
+      "package": "com.foodinside.rn_prac",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyB77l5gKZERH5nDSvT5PboXLkl_uJbVcUQ"
+        }
+      }
+    },
+    "sdkVersion": "38.0.0"
   }
 }
