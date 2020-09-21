@@ -1,7 +1,7 @@
 import { TouchableWithoutFeedback, ScrollView } from "react-native-gesture-handler";
 import * as React from "react";
 import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
-import MapView, {Marker} from "react-native-maps";
+import MapView, {Marker, PROVIDER_GOOGLE} from "react-native-maps";
 import constants from "../../constants";
 import BookingCalendar from "./BookingCalendar";
 import { MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
@@ -230,6 +230,7 @@ export default ({ shopImages, facility, tables, chairs, scale, shopName, distric
                 <View style={styles.mapBox}>
                     <MapView 
                     style={styles.map}
+                    provider={PROVIDER_GOOGLE}
                     initialRegion={{
                       latitude:37.537140,
                       longitude:126.986935,

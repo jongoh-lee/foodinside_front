@@ -1,6 +1,6 @@
 import * as React from "react";
 import { View, Text, StyleSheet, Image} from "react-native";
-import MapView, {Marker} from "react-native-maps";
+import MapView, {Marker, PROVIDER_GOOGLE} from "react-native-maps";
 import constants from "../../constants";
 
 const styles = StyleSheet.create({
@@ -15,7 +15,8 @@ const styles = StyleSheet.create({
 export default ( openInfo ) => (
   <View style={styles.container}>
     <MapView 
-    style={{flex:1}} 
+    style={{flex:1}}
+    provider={PROVIDER_GOOGLE}
     initialRegion={{
       latitude:37.537140,
       longitude:126.986935,
