@@ -38,6 +38,7 @@ export const OWNER_FRAGMENT = gql`
       id
       dateString
       priceState
+      isBooked
     }
     facility{
         id
