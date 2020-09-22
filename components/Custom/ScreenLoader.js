@@ -1,9 +1,10 @@
 import * as React from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
+import constants from "../../constants";
 
 const styles = StyleSheet.create({
   constainer:{
-    width:'100%',
+    width:constants.width,
     height:'100%', 
     position:'absolute', 
     alignItems:"center", 
