@@ -1,55 +1,65 @@
 import * as React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { EvilIcons } from '@expo/vector-icons'; 
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { TouchableOpacity, TouchableWithoutFeedback } from "react-native-gesture-handler";
+import GetTotalPrice from "../../components/Owner/GetTotalPrice";
 import { Caption } from "react-native-paper";
+import constants from "../../constants";
 
 const styles = StyleSheet.create({
   container:{
     flex:1,
     backgroundColor:"white"
   },
+  // 상단 버튼 바
   monthBar:{
     flexDirection:"row",
     marginTop:10,
     justifyContent:"space-between",
     alignItems:"center"
   },
+  monthBox:{
+    position:"absolute",
+    left:0,
+    right:0,
+    top:0,
+    bottom:0,
+    justifyContent:"center",
+    alignItems:"center",
+    zIndex: -10
+  },
   month:{
     fontSize:16,
-    fontWeight:"bold"
+    fontWeight:"bold",
   },
   monthBtn_left:{
-    width:100,
-    alignItems:"flex-start"
+    width:constants.width / 2,
+    alignItems:"flex-start",
   },
   monthBtn_right:{
-    width:100,
-    alignItems:"flex-end"
+    width:constants.width / 2,
+    alignItems:"flex-end",
   },
 
-
+  //수익현황 dash board
   earningBox:{
     flex:4,
     alignItems:"center",
-    paddingTop:60
+    paddingTop:100,
   },
   earningTitle:{
-    marginBottom:2,
+    marginBottom:20,
     color:"rgba(0, 0, 0, .5)"
-  },
-  earningNum:{
-    fontSize:20,
-    fontWeight:"bold",
   },
   accountText:{
     textDecorationLine:"underline",
     position:"absolute",
     bottom:50,
-    justifyContent:"center"
+    justifyContent:"center",
+    color:"#666"
   },
 
-
+  //새로운 소식
   newsBox:{
     flex:1,
     flexDirection:"row",
@@ -67,31 +77,55 @@ const styles = StyleSheet.create({
   newsNum:{
     textDecorationLine:"underline"
   },
+  //하단 빈공간
   empty:{
-    flex:2
+    flex:2,
   }
 })
 
 export default () => {
+  const date = new Date();
+  const [year,setYear] = React.useState(date.getFullYear());
+  const [month, setMonth] = React.useState(date.getMonth());
+  const onPressNext = () => {
+    if(month === 11){
+      setMonth(0),
+      setYear(year + 1)
+    }else{
+      setMonth(month + 1)
+    }
+  }
+
+  const onPressBack = () => {
+    if(month === 0){
+      setMonth(11),
+      setYear(year - 1)
+    }else{
+      setMonth(month - 1)
+    }
+  }
   return(
     <View style={styles.container}>
 
       <View style={styles.monthBar}>
-        <TouchableWithoutFeedback style={styles.monthBtn_left}>
+        <TouchableOpacity style={styles.monthBtn_left} onPress={onPressBack}>
           <EvilIcons name="chevron-left" size={40} />
-        </TouchableWithoutFeedback>
-        <Text style={styles.month}>6월</Text>
-        <TouchableWithoutFeedback style={styles.monthBtn_right}>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.monthBtn_right} onPress={onPressNext}>
           <EvilIcons name="chevron-right" size={40}/>
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
+        <View style={styles.monthBox}>
+        <Text style={styles.month}>{year}년 {month + 1}월</Text>
+        </View>
       </View>
 
       <View style={styles.earningBox}>
-        <Text style={styles.earningTitle}>임대 수익</Text>
-        <Text style={styles.earningNum}>4,735,000원</Text>
+        <Text style={styles.earningTitle}>수익 합계</Text>
+        <GetTotalPrice year={year} month={month}/>
         <Text style={styles.accountText}>계좌 등록</Text>
       </View>
 
+      {/* 새로운 소식 숨김
       <View style={styles.newsBox}>
         <View style={styles.newsCol}>
           <Text style={styles.newsTitle}>새로운 댓글</Text>
@@ -103,6 +137,7 @@ export default () => {
           <Caption style={styles.newsNum}>6</Caption>
         </View>
       </View>
+      */}
 
       <View style={styles.empty}/>
     </View>
