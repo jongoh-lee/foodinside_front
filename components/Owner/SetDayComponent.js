@@ -13,13 +13,14 @@ const textChanger = {
 export default ({date, today, marking, onPress}) => {
     //날짜 색 설정
     const { priceState, active, isBooked } = marking;
-    const dateColor = date.dateString.replace(/[^0-9]/g,'') - today;
+    const dateColor = date.dateString.replace(/[^0-9]/g,'') - today ;
+    
     
     //배경색 설정
     return (
-        <TouchableOpacity onPress={() => onPress(date, marking)} disabled={dateColor < 0} >
+        <TouchableOpacity onPress={() => onPress(date, marking)} disabled={dateColor < 0 || isBooked} >
           <View style={active? styles.active : styles.inactive}>
-              <Text style={dateColor < 0 ? styles.date_disabled : ( dateColor > 0 ? styles.date : styles.date_today)}>{date.day}</Text>
+              <Text style={ dateColor < 0 ? styles.date_disabled : ( dateColor == 0 ? styles.date_today : ( isBooked ? styles.date_disabled : styles.date))}>{date.day}</Text>
               <Caption style={styles.price} numberOfLines={1}>{textChanger[priceState]? textChanger[priceState] : priceState.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Caption>
           </View>
         </TouchableOpacity>    

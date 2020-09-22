@@ -1,13 +1,12 @@
-import React from "react";
-import { StyleSheet, View, Text, TouchableOpacity, Image, SafeAreaView} from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, View, Text, TouchableOpacity, Image, SafeAreaView, ActivityIndicator, Alert} from "react-native";
 import { chats } from "../../components/Visitor/data";
 import { ScrollView } from "react-native-gesture-handler";
 import { Caption } from "react-native-paper";
 import constants from "../../constants";
-import { useQuery } from "@apollo/react-hooks";
-import { MY_PROFILE, PROFILE_CONTACT } from "./ProfileQueries";
-import numInput from "../../hooks/numInput";
-import BasicInput from "../../components/Custom/BasicInput";
+import { useMutation, useQuery } from "@apollo/react-hooks";
+import { BOOKING_SHOP, MY_PROFILE, PROFILE_CONTACT } from "./ProfileQueries";
+import ScreenLoader from "../../components/Custom/ScreenLoader";
 
 const styles = StyleSheet.create({
   container:{
@@ -27,6 +26,19 @@ const styles = StyleSheet.create({
   reserveBox:{
     padding:5,
     marginLeft:10
+  },
+  //결제 부분
+  paymentBox:{
+    flexDirection:"row", 
+    alignItems:"flex-end",
+    paddingBottom:4
+  },
+  paymentTitle:{
+    color:"black",
+    fontWeight:"bold"
+  },
+  paymentInfo:{
+    color:'#666',
   },
   rowBox:{
     flexDirection:"row",
@@ -52,17 +64,48 @@ const styles = StyleSheet.create({
   },
 })
 
-export default ({ route }) => {
-  const { mainImage, shopName, firstDate, lastDate, totalPrice, selectedList, district } = route.params;
-  const { data, loading} = useQuery(PROFILE_CONTACT,{
+export default ({ route, navigation }) => {
+  const { id:ownerId, mainImage, shopName, firstDate, lastDate, totalPrice, selectedList, district } = route.params;
+  const [loading, setLoading] = React.useState(false)
+  const { data, loading: userLoading} = useQuery(PROFILE_CONTACT,{
     fetchPolicy:"network-only"
   });
-  const [contact, setContact] = React.useState();
-  const contactInput = numInput(data?.myProfile?.contact);
-  //console.log(selectedList);
+  const [bookingShopMutation] = useMutation(BOOKING_SHOP,{
+    refetchQueries:[`seeFullShop`]
+  })
+  const handleBooking = async () =>{
+    setLoading(true)
+    try{
+      await bookingShopMutation({
+        variables:{
+          ownerId,
+          firstDate,
+          lastDate: lastDate? lastDate : firstDate,
+          dateList: Object.keys(selectedList),
+          totalPrice,
+          username: data?.myProfile?.user?.lastName +' '+data?.myProfile?.user?.firstName,
+          contact: data?.myProfile?.contact,
+        }
+      });
+      navigation.goBack();
+    }catch(e){
+      Alert.alert(
+        '알림',
+        `방금 누군가 먼저 예약했습니다.`,[
+        { text: '확인', onPress: () => {
+          route.params.refetch();
+          navigation.goBack();
+        } }
+        ]
+      )
+      console.log(e);
+    }
+    setLoading(false)
+  } 
   return (
   <SafeAreaView style={styles.container}>
     <ScrollView contentContainerStyle={{paddingHorizontal:15, paddingBottom:40}} showsVerticalScrollIndicator={false}>
+    {loading ? <ScreenLoader/> : null }
       <View style={styles.box}>
         <Text style={styles.title}>{shopName} in {district}</Text>
         <View style={{flexDirection:"row", alignItems:"center"}}>
@@ -93,8 +136,23 @@ export default ({ route }) => {
       </View>
 
       <View style={styles.box}>
-        <Text style={styles.title}>결제 정보</Text>
-        <BasicInput {...contactInput}/>
+        <Text style={styles.title}>예약 정보</Text>
+
+        <View style={styles.paymentBox}>
+          <Text style={styles.paymentTitle}>성함: </Text>
+          <Text style={styles.paymentInfo}>{userLoading? <View style={{width:constants.width * 0.4, padding:7, backgroundColor:"#E0E0E0", borderRadius:5,}}/> : data?.myProfile?.user?.lastName +' '+data?.myProfile?.user?.firstName}</Text>
+        </View>
+
+        <View style={styles.paymentBox}>
+          <Text style={styles.paymentTitle}>연락처: </Text>
+          <Text style={styles.paymentInfo}>{userLoading? <View style={{width:constants.width * 0.4, padding:7, backgroundColor:"#E0E0E0", borderRadius:5,}}/> : data?.myProfile?.contact}</Text>
+        </View>
+
+        <View style={styles.paymentBox}>
+          <Text style={styles.paymentTitle}>입금 마감일: </Text>
+          <Text style={styles.paymentInfo}>금일 23시 59분 59초 까지</Text>
+        </View>
+
       </View>
 
       <View style={styles.box}>
@@ -151,7 +209,7 @@ export default ({ route }) => {
 
     </ScrollView>
       
-    <TouchableOpacity style={{position:"absolute", bottom:0, left:0, right:0, justifyContent:"center", alignItems:"center", padding:20, backgroundColor:"rgb(5, 230, 244)"}}>
+    <TouchableOpacity onPress={handleBooking} style={{position:"absolute", bottom:0, left:0, right:0, justifyContent:"center", alignItems:"center", padding:20, backgroundColor:"rgb(5, 230, 244)"}} disabled={loading || userLoading}>
       <Text style={{color:"#ffffff", fontWeight:"bold"}}>약관 동의 및 예약하기</Text>
     </TouchableOpacity>
   </SafeAreaView>

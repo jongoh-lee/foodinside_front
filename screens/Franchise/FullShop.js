@@ -10,7 +10,7 @@ import ScreenLoader from "../../components/Custom/ScreenLoader";
 
 export default ({ navigation, route }) => {
     const [visible, setVisible ] = React.useState(false);
-    const { data, loading, error } = useQuery(SEE_FULL_SHOP,{
+    const { data, loading, error, refetch } = useQuery(SEE_FULL_SHOP,{
       variables:{
         id: route.params.id
       },
@@ -46,7 +46,7 @@ export default ({ navigation, route }) => {
       <>
         {mutationLoading? <ScreenLoader/> : null}
         <View style={styles.container}>
-            <OwnerComponent {...data?.seeFullShop} />
+            <OwnerComponent {...data?.seeFullShop} refetch={refetch}/>
         </View>
 
         <Modal

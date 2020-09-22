@@ -183,6 +183,36 @@ export const PROFILE_CONTACT = gql`
         myProfile{
             id
             contact
+            user{
+                id
+                firstName
+                lastName
+            }
         }
     }
+`;
+
+export const BOOKING_SHOP =gql`
+    mutation bookingShop(
+        $ownerId: String!
+        $firstDate: String!
+        $lastDate: String!
+        $dateList: [String!]!
+        $totalPrice: String!
+        $username: String!
+        $contact: String!
+    ){
+        bookingShop(
+            ownerId: $ownerId
+            firstDate: $firstDate
+            lastDate: $lastDate
+            dateList: $dateList
+            totalPrice: $totalPrice
+            username: $username
+            contact: $contact
+        ){
+            ...OwnerParts
+        }
+    }
+    ${OWNER_FRAGMENT}
 `;

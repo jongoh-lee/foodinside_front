@@ -15,26 +15,15 @@ import { Caption } from "react-native-paper";
 
 
 export default () => {
-  const { data, error, loading } = useQuery(MY_CALENDAR,{
+  const { data, error, loading, refetch } = useQuery(MY_CALENDAR,{
     fetchPolicy:"network-only"
   });
-
-  const markedDates = data?.myCalendar?.calendar.reduce(
-    (emptyObject, date) => {
-      var dateString = date.dateString;
-      emptyObject[dateString] = {id: date.id, priceState: date.priceState, isBooked: date.isBooked };
-      return emptyObject
-    }, {}
-  );
-
-    
   if(error) return console.log(error);
-  
   return(
     <View style={styles.container}>
       {loading ? <ScreenLoader /> : null}
 
-      <SetCalendar markedDates={markedDates} ownerState={data?.myCalendar?.ownerState} franchiseState={data?.myCalendar?.franchiseState}/>
+      <SetCalendar ownerState={data?.myCalendar?.ownerState} franchiseState={data?.myCalendar?.franchiseState} calendar={data?.myCalendar?.calendar} refetch={refetch}/>
 
     </View>
 )};

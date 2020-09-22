@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, View, TouchableOpacity, Text,  } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Text, Alert } from "react-native";
 import { LocaleConfig, CalendarList } from "react-native-calendars";
 import SetDayComponent from "./SetDayComponent";
 import constants from "../../constants";
@@ -26,12 +26,20 @@ LocaleConfig.defaultLocale = 'fr';
 
 const SetCalendar = ({ 
   ownerState,
-  markedDates,
-  franchiseState
+  calendar,
+  franchiseState,
+  refetch
   }) => {
     const [editCalendarMutation] = useMutation(EDIT_CALENDAR);
     const [loading, setLoading] = React.useState(false)
     
+    const markedDates = calendar?.reduce(
+      (emptyObject, date) => {
+        var dateString = date.dateString;
+        emptyObject[dateString] = {id: date.id, priceState: date.priceState, isBooked: date.isBooked };
+        return emptyObject
+      }, {}
+    );
     // today
     let now = new Date()
     let mm = now.getMonth() + 1;
@@ -44,8 +52,6 @@ const SetCalendar = ({
 
     // Mutation
     const [updateList, setUpdateList] = React.useState({});
-
-    console.log(price.value);
 
     const onDatePress = (date, marking) => {
         if(ownerState !== 3) {
@@ -80,6 +86,12 @@ const SetCalendar = ({
       }
     }catch(e){
       console.log("가격 초기화 에러", e);
+      Alert.alert(
+        '알림',
+        `방금 누군가 공간을 예약했습니다.`,[
+        { text: '확인', onPress: () => refetch() }
+        ]
+      )
     }finally{
       setUpdateList({})
       setLoading(false);
@@ -101,6 +113,12 @@ const SetCalendar = ({
       });
     }catch(e){
       console.log("직접 영업 에러", e);
+      Alert.alert(
+        '알림',
+        `방금 누군가 공간을 예약했습니다.`,[
+        { text: '확인', onPress: () => refetch() }
+        ]
+      )
     }finally{
       setUpdateList({})
       setLoading(false);
@@ -123,6 +141,12 @@ const SetCalendar = ({
       });
     }catch(e){
       console.log("가격 설정 에러", e);
+      Alert.alert(
+        '알림',
+        `방금 누군가 공간을 예약했습니다.`,[
+        { text: '확인', onPress: () => refetch() }
+        ]
+      )
     }finally{
       setUpdateList({})
       setLoading(false);
@@ -132,7 +156,6 @@ const SetCalendar = ({
   React.useEffect(() => {
     
   },[price.value])
-
   return (
       <>
 

@@ -12,10 +12,9 @@ const textChanger = {
 
 export default ({date, today, marking, onPress}) => {
     //날짜 색 설정
-    const { priceState, active } = marking;
+    const { priceState, active, isBooked } = marking;
     const dateColor = date.dateString.replace(/[^0-9]/g,'') - today;
-    const checkDisable = date.dateString.replace(/[^0-9]/g,'') - today < 0 || priceState === 'self' || priceState === undefined ? true : false;
-
+    const checkDisable = date.dateString.replace(/[^0-9]/g,'') - today < 0 || priceState === 'self' || priceState === undefined || isBooked ? true : false;
     //배경색 설정
     return (
         <TouchableOpacity onPress={() => onPress(date, marking)} disabled={checkDisable} >

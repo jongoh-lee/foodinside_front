@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     }
 })
 
-export default ({ shopImages, facility, tables, chairs, scale, shopName, district, description, precaution, address, checkIn, checkOut, minReserve, calendar, isSelf, franchiseState}) => {
+export default ({ refetch, id, shopImages, facility, tables, chairs, scale, shopName, district, description, precaution, address, checkIn, checkOut, minReserve, calendar, isSelf, franchiseState}) => {
     const [tabName, setTabName] = React.useState("EXTERIOR");
     const [index, setIndex] = React.useState(0);
     const exterior = shopImages.filter(el => el["type"] === 'EXTERIOR');
@@ -323,7 +323,7 @@ export default ({ shopImages, facility, tables, chairs, scale, shopName, distric
             <View style={styles.box}>
                 <Text style={styles.title}>입점 하기</Text>
                 <View style={styles.calendar}>
-                    <BookingCalendar calendar={calendar} isSelf={isSelf} calendarHeight={isSelf? (Platform.OS === 'ios'? 450 : 500 ) : (Platform.OS === 'ios'? 480 : 500)} franchiseState={franchiseState} mainImage={exterior[0].url} shopName={shopName} district={district} minReserve={minReserve}/>
+                    <BookingCalendar calendar={calendar} refetch={refetch} isSelf={isSelf} calendarHeight={isSelf? (Platform.OS === 'ios'? 450 : 500 ) : (Platform.OS === 'ios'? 480 : 500)} franchiseState={franchiseState} mainImage={exterior[0].url} shopName={shopName} district={district} minReserve={minReserve} id={id}/>
                 </View>
             </View>
             {/*

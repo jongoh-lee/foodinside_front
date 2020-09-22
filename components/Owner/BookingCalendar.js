@@ -16,7 +16,7 @@ LocaleConfig.locales['fr'] = {
 LocaleConfig.defaultLocale = 'fr';
 
 
-const Calendar = ({ calendarHeight,  franchiseState, isSelf, calendar, mainImage, shopName, district, minReserve}) => {
+const Calendar = ({ id, calendarHeight,  franchiseState, isSelf, calendar, mainImage, shopName, district, minReserve, refetch}) => {
     const [selectedList, setSelectedList] = React.useState({});
     const [firstDate, setFirstDate] = React.useState(null);
     const [lastDate, setLastDate] = React.useState(null);
@@ -27,7 +27,7 @@ const Calendar = ({ calendarHeight,  franchiseState, isSelf, calendar, mainImage
     const markedDates = calendar.reduce(
       (emptyObject, date) => {
         var dateString = date.dateString;
-        emptyObject[dateString] = {id: date.id, priceState: date.priceState };
+        emptyObject[dateString] = {id: date.id, priceState: date.priceState, isBooked: date.isBooked };
         return emptyObject
       }, {}
     );
@@ -67,7 +67,7 @@ const Calendar = ({ calendarHeight,  franchiseState, isSelf, calendar, mainImage
           setLastDate(null);
           setTotalPrice(marking.priceState.replace(/\B(?=(\d{3})+(?!\d))/g, ","));
           setAlert("")
-        //리스트에 날짝 담긴 경우
+        //리스트에 날짜가 담긴 경우
         }else if(Object.keys(selectedList).length == 1){
           let firstNumber = Object.keys(selectedList)[0]
           //두 번째 날짜가 첫 날짜 보다 적은 경우 날짜를 바꿉니다.
@@ -90,18 +90,20 @@ const Calendar = ({ calendarHeight,  franchiseState, isSelf, calendar, mainImage
                 let _firstDate = new Date( firstNumber );
                 let _lastDate = new Date( date.dateString );
                 let datelist = getDates(_firstDate, _lastDate);
+                let selected = datelist.map(el => el.toISOString().substring(0, 10));
+
+                const updateList = selected.reduce(
+                  (emptyObject, date) => {
+                    if(markedDates[date]?.priceState !== 'self' && markedDates[date]?.isBooked !== true){
+                      emptyObject[date] = {id: markedDates[date].id, priceState: markedDates[date].priceState, active:true};
+                    }
+                    return emptyObject
+                  }, {}
+                );
+                const updateDateArray = Object.keys(updateList);
                 //리스트가 8보다 작은 경우
-                if(datelist.length < 8 && datelist.length >= minReserve){
-                  let selected = datelist.map(el => el.toISOString().substring(0, 10));
-                  const updateList = selected.reduce(
-                    (emptyObject, date) => {
-                      if(markedDates[date] && markedDates[date].priceState !== 'self'){
-                        emptyObject[date] = {id: markedDates[date].id, priceState: markedDates[date].priceState, active:true};
-                      }
-                      return emptyObject
-                    }, {}
-                  );
-                  let priceStates = Object.values(updateList).map( el => el.priceState).filter(el => el !== 'self');
+                if(updateDateArray.length < 8 && updateDateArray.length >= minReserve){
+                  let priceStates = Object.values(updateList).map( el => el.priceState);
                   let totalPrice = priceStates.map(el => parseInt(el)).reduce((a, b) => a + b, 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                   
                   setFirstDate(selected[0]);
@@ -109,13 +111,13 @@ const Calendar = ({ calendarHeight,  franchiseState, isSelf, calendar, mainImage
                   setTotalPrice(totalPrice);
                   setSelectedList(updateList);
                   setAlert("")
-                }else if(datelist.length > 7){
+                }else if(dupdateDateArray.length > 7){
                   setSelectedList({});
                   setFirstDate(null);
                   setLastDate(null);
                   setTotalPrice(0);
                   setAlert("최대 7일까지 영업 가능 합니다")
-                }else if(atelist.length < minReserve){
+                }else if(updateDateArray.length < minReserve){
                   setSelectedList({});
                   setFirstDate(null);
                   setLastDate(null);
@@ -124,7 +126,7 @@ const Calendar = ({ calendarHeight,  franchiseState, isSelf, calendar, mainImage
                 }
             }
         }else{
-          //리스트 꽉 찬경우
+          //리스트가 다 찬 상태에서 새로운 날짜를 선택한 경우
           setSelectedList({[date.dateString] : {id: marking.id, priceState:marking.priceState, active:true}});
           setFirstDate(date.dateString)
           setLastDate(null);
@@ -167,15 +169,24 @@ const Calendar = ({ calendarHeight,  franchiseState, isSelf, calendar, mainImage
               <Caption>{alert? alert : firstDate && firstDate.replace(/-/gi, '/')}{lastDate && ' - ' + lastDate.replace(/-/gi, '/')}</Caption>
               <Text style={{color:"black", fontWeight:"bold", fontSize:16}}>합계: {totalPrice}</Text>
           </View>
-          <TouchableOpacity disabled={franchiseState === 3 && totalPrice !== 0 && Object.keys(selectedList).length >= minReserve? false : true} onPress={() => navigation.navigate("결제하기",{
-            mainImage,
-            shopName,
-            firstDate,
-            lastDate,
-            totalPrice,
-            selectedList,
-            district
-          })}>
+          <TouchableOpacity disabled={franchiseState === 3 && totalPrice !== 0 && Object.keys(selectedList).length >= minReserve? false : true} onPress={() => {
+            navigation.navigate("결제하기",{
+              id,
+              mainImage,
+              shopName,
+              firstDate,
+              lastDate,
+              totalPrice,
+              selectedList,
+              district,
+              refetch
+            });
+            setSelectedList({});
+            setFirstDate(null);
+            setLastDate(null);
+            setTotalPrice(0);
+            setAlert("")
+          }}>
             <View style={franchiseState === 3 && totalPrice !== 0 ? {padding:10, borderRadius:10, backgroundColor:"#05e6f4"} : {padding:10, borderRadius:10, backgroundColor:"rgba(5, 230, 244, .3)"}}>
               <Text style={{color:"#ffffff", fontWeight:"bold", fontSize:16}}>입점 하기</Text>
             </View>

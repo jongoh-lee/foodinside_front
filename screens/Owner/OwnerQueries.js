@@ -374,3 +374,29 @@ export const COMPLETE_SHOP_IMAGE = gql`
     }
 `;
         
+export const MY_EARNINGS = gql`
+    query myEarnings($date: String!){
+        myEarnings(date: $date)
+    }
+`;
+
+export const RESERVATION_LIST = gql`
+    query reservationList($date: String!){
+        reservationList(date: $date){
+            id
+            firstDate
+            lastDate
+            totalPrice
+            isPaid
+            isCancelled
+            profile{
+                id
+                mainImage
+                profileName
+                mainImage
+                sector
+                
+            }
+        }
+    }
+`;
