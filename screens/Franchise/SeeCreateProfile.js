@@ -4,13 +4,8 @@ import {StyleSheet, View, Text, Image, SafeAreaView, AsyncStorage} from "react-n
 import constants from "../../constants";
 import { useQuery } from "@apollo/react-hooks";
 import BasicButton from "../../components/Custom/BasicButton";
-import { YellowBox } from 'react-native';
 import { MY_PROFILE } from "./ProfileQueries";
 import Loader from "../../components/Custom/Loader";
-
-YellowBox.ignoreWarnings([
-  'Non-serializable values were found in the navigation state',
-]);
 
 export default ({ navigation }) => {
   const {data, loading, error} = useQuery(MY_PROFILE);

@@ -108,7 +108,7 @@ export default ({ route, navigation }) => {
                             </View>
                         </View>
 
-                        <BasicButton text={'제출 하기'} onPress={handleRule} loading={loading} disabled={checkInInput.value && checkOutInput.value && minReserveInput.value? loading : true} />
+                        <BasicButton text={'제출 하기'} onPress={() => handleRule()} loading={loading} disabled={checkInInput.value && checkOutInput.value && minReserveInput.value? loading : true} />
                     </ScrollView>
                 </DismissKeyboard>
             </KeyboardAvoidingView>

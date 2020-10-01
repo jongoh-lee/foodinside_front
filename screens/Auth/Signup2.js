@@ -21,7 +21,6 @@ export default ({ navigation, route }) => {
     },
     fetchPolicy:"network-only"
   });
-  console.log(data)
   const handlecheckUsername = () => {
     setEdit(false)
     try {
@@ -66,7 +65,7 @@ export default ({ navigation, route }) => {
         <AuthInput {...idInput} placeholder="아이디를 입력하세요" keyboardType="default" autoFocus={true} editable={edit}/> 
         {value?.length < 3? <Text  style={{fontSize:10}} /> : data?.checkUsername ? <Text style={{fontSize:10, color:"green", paddingLeft:5}}>{"사용 가능한 아이디 입니다"}</Text> : <Text style={{fontSize:10, color:"red", paddingLeft:5}}>{"사용할 수 없는 아이디 입니다"}</Text>}
 
-        <AuthButton text="다음(2/4단계)" disabled={value?.length > 2 && data?.checkUsername? loading : true} onPress={handlecheckUsername}/>
+        <AuthButton text="다음(2/4단계)" disabled={value?.length > 2 && data?.checkUsername? loading : true} onPress={() => handlecheckUsername()}/>
       </View>
       </DismissKeyboard>
       </KeyboardAvoidingView>

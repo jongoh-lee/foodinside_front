@@ -215,7 +215,7 @@ export default ({ id : postId, user, files, tasting, isSelf, isLiked:isLikedProp
           user:{ username, isSelf }
         })}>
           <View style={styles.headerLeft}>
-            <Image style={styles.avatar} source={{ uri: avatar }} />
+            <Image style={styles.avatar} source={avatar? { uri: avatar } : require('../../assets/Icons/avatarBasic.png')} />
             <View>
               <Text style={styles.username}>{username}</Text>
             </View>

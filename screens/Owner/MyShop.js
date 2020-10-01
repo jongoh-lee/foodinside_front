@@ -180,7 +180,7 @@ export default ({ navigation, route }) => {
               style: 'cancel',
             },
             {text: '확인',
-            onPress: () => console.log("삭제"),
+            onPress: () => Alert.alert("알림", "홈페이지를 통해 문의해 주세요\nwww.foodinside.net", [{ text: "확인" }]),
           },
           ],
           {cancelable: true},

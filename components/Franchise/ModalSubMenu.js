@@ -7,6 +7,7 @@ import constants from "../../constants";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import BasicButton from "../Custom/BasicButton";
+import DismissKeyboard from "../Custom/DismissKeyboard";
 
 export default ({ chosenMenu, submenus, setSubmenus, setCompleteMenuModal, newMenus, setNewMenus, editMenus, setEditMenus }) => {
     const { id, menuName, menuImage, fullPrice, salePrice, index } = chosenMenu
@@ -23,7 +24,7 @@ export default ({ chosenMenu, submenus, setSubmenus, setCompleteMenuModal, newMe
       if(id){
         let _index = submenus.findIndex(menu => menu.id === id);
         if(_index > -1){
-          submenus[_index] = { id: id, menuName: _menuName, fullPrice: Number(_fullPrice), salePrice: Number(_salePrice), menuImage:image.uri };
+          submenus[_index] = { id: id, menuName: _menuName, fullPrice: Number(_fullPrice), salePrice: Number(_salePrice), menuImage:image.uri? image.uri : image };
           setEditMenus(editMenus.concat({ id: id, menuName: _menuName, fullPrice: Number(_fullPrice), salePrice:Number(_salePrice), menuImage:image }))
         } else {
           setNewMenus(newMenus.concat({ menuName: _menuName, fullPrice:Number(_fullPrice), salePrice:Number(_salePrice), menuImage:image }));
@@ -37,14 +38,14 @@ export default ({ chosenMenu, submenus, setSubmenus, setCompleteMenuModal, newMe
     };
 
     return(
-      <KeyboardAvoidingView 
+    <KeyboardAvoidingView 
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{flex:1, justifyContent:"center"}}
       keyboardVerticalOffset={50}
-      enabled >
+      enabled
+    >
         <View style={styles.content}>
-          <ShadowInput {...menuNameInput} placeholder={'메뉴 이름'} width={'80%'} padding={5} fontSize={12}/>
-
+          <ShadowInput {...menuNameInput} placeholder={'메뉴 이름'} width={'80%'} padding={5} fontSize={12} blurOnSubmit={true}/>
             <TouchableOpacity onPress={() => (
               navigation.navigate('SelectPhoto', {
                 onSelect : onSelect
@@ -85,8 +86,8 @@ export default ({ chosenMenu, submenus, setSubmenus, setCompleteMenuModal, newMe
               </View>
             </TouchableOpacity>
                     
-            <ShadowInput {...fullPriceInput} placeholder={'정상가'} width={'80%'}  padding={5} fontSize={12} keyboardType={'numeric'}/>
-            <ShadowInput {...salePriceInput} placeholder={'할인가'} width={'80%'} padding={5} fontSize={12} keyboardType={'numeric'}/>
+            <ShadowInput {...fullPriceInput} placeholder={'정상가'} width={'80%'}  padding={5} fontSize={12} keyboardType={'numeric'} blurOnSubmit={true}/>
+            <ShadowInput {...salePriceInput} placeholder={'할인가'} width={'80%'} padding={5} fontSize={12} keyboardType={'numeric'} blurOnSubmit={true}/>
 
             <View style={{width: '80%'}}>
               <BasicButton onPress={() => (setCompleteMenuModal(false), handleMenuSubmit())} padding={10} text={'확인'} marginVertical={5} width={'100%'} disabled={image && _menuName && _fullPrice && _salePrice? false : true}/>

@@ -62,7 +62,8 @@ const styles = StyleSheet.create({
     backgroundColor:"#E0E0E0"
   },
   inner:{
-    padding:8
+    padding:4,
+    paddingBottom:0
   },
   address:{
     overflow:"hidden",

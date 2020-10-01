@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import PostComponent from "../../components/Visitor/PostComponent";
 import { posts } from "../../components/Visitor/data";
-import { shopProfile } from "../../components/Franchise/data";
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

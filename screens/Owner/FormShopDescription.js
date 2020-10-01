@@ -101,7 +101,7 @@ export default ({ route, navigation }) => {
                             <Text style={[styles.title, {paddingBottom:5}]}>해시 태그 #</Text>
                             <ShadowInput {...hashTagInput} placeholder={`ex) #네츄럴 #한식 #모던 #이태원`}  textAlign={"left"} multiline={true} returnKeyType={'done'}  editable={!loading}/>
                         </View>
-                        <BasicButton text={'제출 하기'} onPress={handleDescription} loading={loading} disabled={shopNameInput.value && districtInput.value && descriptionInput.value && precautionInput.value? loading : true} />
+                        <BasicButton text={'제출 하기'} onPress={() => handleDescription()} loading={loading} disabled={shopNameInput.value && districtInput.value && descriptionInput.value && precautionInput.value? loading : true} />
                     </ScrollView>
                 </DismissKeyboard>
             </KeyboardAvoidingView>

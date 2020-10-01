@@ -35,7 +35,17 @@ export default ({ navigation, route }) => {
     const handleFavorite = async () => {
       setVisible(false)
       try{
-        await toggleFavoriteMutation()
+        const { 
+          data : { toggleFavorite } 
+      } = await toggleFavoriteMutation();
+      if(!toggleFavorite){
+        Alert.alert(
+          '알림',
+          "프로필을 등록해 주세요",[
+          { text: '확인'}
+          ]
+        )
+      }
       }catch(e){
         console.log("즐겨찾기 추가 에러",e);
       }
@@ -60,7 +70,7 @@ export default ({ navigation, route }) => {
         >
           <View style={styles.modalContent_top}>
               <MaterialCommunityIcons name="chevron-down" size={26} color="#666" style={{alignSelf:"center"}} />
-              <TouchableOpacity style={styles.modalList} onPress={handleFavorite}>
+              <TouchableOpacity style={styles.modalList} onPress={() => handleFavorite()}>
                   <MaterialCommunityIcons name="message-text-outline" color="#666" size={22}/><Text style={styles.modalText}>즐겨찾기 추가/삭제</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.modalList} onPress={() => setVisible(false)}>

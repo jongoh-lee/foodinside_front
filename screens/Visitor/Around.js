@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
-import { shopProfile } from "../../components/Franchise/data";
 import { ScrollView } from "react-native-gesture-handler";
 
 const styles = StyleSheet.create({

@@ -497,7 +497,7 @@ export default ({ navigation, route}) => {
                 </View>
             </View>
 
-            <BasicButton text={'등록 하기'} onPress={handleShopFacility} loading={loading} disabled={loading}/>
+            <BasicButton text={'등록 하기'} onPress={() => handleShopFacility()} loading={loading} disabled={loading}/>
 
             </View>
         </ScrollView>

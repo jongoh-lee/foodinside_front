@@ -32,7 +32,7 @@ export default () => {
           <ShopCardLoading/>
           <ShopCardLoading/>
           </>) : null}
-          {data?.searchShopList.map((shop, index) => (
+          {data?.searchShopList?.map((shop, index) => (
             <ShopCard key={index} {...shop} />
             ))}
         </View>

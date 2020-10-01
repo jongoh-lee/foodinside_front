@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, View, Image, Text, TouchableOpacity, ScrollView, ImageBackground } from "react-native";
+import { StyleSheet, View, Image, Text, TouchableOpacity, ScrollView, ImageBackground, ActivityIndicator } from "react-native";
 import constants from "../../constants";
 import ShadowInput from "../../components/Custom/ShadowInput";
 import axios from "axios";
@@ -32,7 +32,7 @@ export default ({ navigation, route }) => {
         setLoading(true);
         const {
             data: { location }
-        } = await axios.post("http://172.30.1.11:4000/api/upload", formData, {
+        } = await axios.post("http://172.30.1.35:4000/api/upload", formData, {
             headers: {
               "content-type": "multipart/form-data"
             }
@@ -59,8 +59,8 @@ export default ({ navigation, route }) => {
 
     navigation.setOptions({
         headerRight:() => (
-            <TouchableOpacity style={loading? styles.button_disabled : styles.button} onPress={handleUpload} disabled={loading}>
-                <Text style={styles.buttonText}>업로드</Text>
+            <TouchableOpacity style={loading? styles.button_disabled : styles.button} onPress={() => handleUpload()} disabled={loading}>
+                {loading ? <ActivityIndicator size={"small"} color={"white"}/> : <Text style={styles.buttonText}>업로드</Text>}
            </TouchableOpacity>
         ),
     });
@@ -106,6 +106,8 @@ const styles = StyleSheet.create({
         borderRadius:5,
         backgroundColor:"rgb(5, 230, 244)",
         marginRight:10,
+        width:70,
+        alignItems:"center"
     },
     button_disabled:{
         padding:5,
@@ -113,6 +115,8 @@ const styles = StyleSheet.create({
         borderRadius:5,
         backgroundColor:"rgba(5, 230, 244, .4)",
         marginRight:10,
+        width:70,
+        alignItems:"center"
     },
     buttonText:{
         color:'#ffffff',

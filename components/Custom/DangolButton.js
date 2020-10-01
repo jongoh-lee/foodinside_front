@@ -28,7 +28,7 @@ const DangolButton = ({ id, isDangol : isDangolProps, dangolCount, setDangolCoun
         }
     }
     return(
-        <TouchableOpacity style={styles.logoRow} onPress={handleDangol}>
+        <TouchableOpacity style={styles.logoRow} onPress={() => handleDangol()}>
             {isDangol? <>
                 <Image style={styles.dangolLogo_checked} source={require('../../assets/Icons/cloche.png')} />
                 <Text style={styles.logoText_checked}>단골 중</Text>

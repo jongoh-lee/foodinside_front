@@ -52,7 +52,7 @@ export default ({ id, username, avatar, isSelf, isFollowing}) => {
       user:{ username, isSelf }
     })}>
       <View style={styles.headerLeft}>
-        <Image style={styles.avatar} source={{ uri: avatar }} />
+        <Image style={styles.avatar} source={avatar? { uri: avatar } : require('../../assets/Icons/avatarBasic.png')} />
         <View>
           <Text style={styles.username}>{username}</Text>
         </View>

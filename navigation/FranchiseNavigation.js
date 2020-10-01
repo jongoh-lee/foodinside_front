@@ -9,6 +9,7 @@ import {Feather, MaterialIcons, MaterialCommunityIcons} from '@expo/vector-icons
 // tab screens
 import SearchShop from '../screens/Franchise/SearchShop';
 import Favorite from '../screens/Franchise/Favorite';
+import BookingHistory from '../screens/Franchise/BookingHistory';
 import CreateProfile from '../screens/Franchise/CreateProfile';
 
 // nested screens
@@ -25,6 +26,8 @@ import ChatListFranchise from "../screens/Franchise/ChatListFranchise";
 import ChatListShop from "../screens/Franchise/ChatListShop";
 import Chat from "../screens/Franchise/Chat";
 import SelectPhoto from "../screens/SelectPhoto";
+import SelectUpload from "../screens/SelectUpload";
+import UploadPost from '../screens/Visitor/UploadPost';
 import SelectMainPhoto from "../screens/SelectMainPhoto";
 
 //button
@@ -33,6 +36,10 @@ import Logo from '../components/Custom/Logo';
 import BackArrow from '../components/Custom/BackArrow';
 import BackWarningArrow from '../components/Custom/BackWarningArrow';
 import BookingShop from '../screens/Franchise/BookingShop';
+import PostList from '../screens/Visitor/PostList';
+import FullUser from '../screens/Visitor/FullUser';
+import UserFollowers from '../screens/Visitor/UserFollowers';
+import CancelBooking from '../screens/Franchise/CancelBooking';
 
 
 const SearchStack = createStackNavigator();
@@ -49,9 +56,9 @@ function SearchStackScreen({navigation}) {
   //   });
   // }, [navigation]);
   return (
-    <SearchStack.Navigator screenOptions={{headerShown:true, cardStyle:{backgroundColor:'#ffffff'}}}>
+    <SearchStack.Navigator headerMode={"screen"} screenOptions={{headerShown:true, cardStyle:{backgroundColor:'#ffffff'}}}>
         <SearchStack.Screen name="Home" component={SearchShop} options={{
-            headerTitle:() => <Logo nav={'공유 음식점'}/>,
+            headerTitle:() => <Logo />,
             headerTitleAlign:'left'
         }}/>
         <SearchStack.Screen name="음식점 보기" component={FullShop} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}}/>
@@ -83,18 +90,39 @@ const ChatStack = createStackNavigator();
 
 function ChatStackScreen() {
     return (
-    <ChatStack.Navigator screenOptions={{cardStyle:{backgroundColor:'#ffffff'}, headerTitleStyle:{fontSize:20, fontWeight:'bold'}, headerShown:true}}>
+    <ChatStack.Navigator headerMode={"screen"} screenOptions={{cardStyle:{backgroundColor:'#ffffff'}, headerTitleStyle:{fontSize:20, fontWeight:'bold'}, headerShown:true}}>
       <ChatStack.Screen name="채팅" component={ChatTabScreen} />
     </ChatStack.Navigator>
   );
+}
+
+
+const FavoriteTabStack = createMaterialTopTabNavigator();
+
+function FavoriteTabScreen(){
+  return (
+    <FavoriteTabStack.Navigator 
+      tabBarOptions={{
+      indicatorStyle:{ backgroundColor: 'transparent'}, 
+      style:{ 
+        elevation: 0, //remove shadow on Android
+        shadowOpacity: 0, //remove shadow on IOS
+        borderWidth:1,
+        borderColor:'transparent'
+      }, 
+      labelStyle:{fontSize:14, fontWeight:"bold"}}}>
+      <FavoriteTabStack.Screen name='즐겨찾기' component={Favorite}/>
+      <FavoriteTabStack.Screen name='예약내역' component={BookingHistory}/>
+    </FavoriteTabStack.Navigator>
+  )
 }
 
 const FavoriteStack = createStackNavigator();
 
 function FavoriteStackScreen() {
     return (
-    <FavoriteStack.Navigator screenOptions={{cardStyle:{backgroundColor:'#ffffff'}, headerTitleStyle:{fontSize:20, fontWeight:'bold'}, headerShown:true}}>
-      <FavoriteStack.Screen name="즐겨찾기" component={Favorite} />
+    <FavoriteStack.Navigator headerMode={"screen"} screenOptions={{cardStyle:{backgroundColor:'#ffffff'}, headerTitleStyle:{fontSize:20, fontWeight:'bold'}, headerShown:true}}>
+      <FavoriteStack.Screen name="즐겨찾기" component={FavoriteTabScreen} />
       <FavoriteStack.Screen name="음식점 보기" component={FullShop} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}}/>
     </FavoriteStack.Navigator>
   );
@@ -105,9 +133,9 @@ const ProfileStack = createStackNavigator();
 function ProfileStackScreen() {
     return (
     <ProfileStack.Navigator 
-    initialRouteName={"프로필 안내"} screenOptions={{ headerTitleStyle:{fontSize:20, fontWeight:'bold'}, headerShown:true}}>
+    headerMode={"screen"} initialRouteName={"프로필 안내"} screenOptions={{ headerTitleStyle:{fontSize:20, fontWeight:'bold'}, headerShown:true}}>
       <ProfileStack.Screen name="프로필 안내" component={MyProfile} options={{
-        headerTitle:()=><Logo nav={'공유 음식점'}/>,
+        headerTitle:()=><Logo />,
         headerTitleAlign:"left",
       }} />
       <ProfileStack.Screen name="심사 중" component={SeeCreateProfile} options={{
@@ -116,6 +144,9 @@ function ProfileStackScreen() {
         headerLeft:()=> <BackArrow />,
       }} />
       <ProfileStack.Screen name="프로필 보기" component={FullProfile} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}} />
+      <ProfileStack.Screen name="PostList" component={PostList} options={{headerTitleAlign:"center", headerTitle:"포토리뷰", headerLeft:() => <BackArrow />}} />
+      <ProfileStack.Screen name="SeeUser" component={FullUser} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}} />
+      <ProfileStack.Screen name="UserFollowers" component={UserFollowers} options={{headerTitleAlign:"center", headerTitle:"팔로워", headerLeft:() => <BackArrow />}} />
     </ProfileStack.Navigator>
   );
 }
@@ -160,37 +191,49 @@ const FranchiseStack = createStackNavigator();
 
 export default () => {
   return (
-    <FranchiseStack.Navigator screenOptions={{headerShown:false}}>
-      <FranchiseStack.Screen name='Tabs' component={TabsScreen}/>
+    <FranchiseStack.Navigator screenOptions={{headerShown:true, headerTitleAlign:"center",}} headerMode={"screen"}>
+      <FranchiseStack.Screen name='Tabs' component={TabsScreen} options={{
+        headerShown:false,
+      }}/>
+      <FranchiseStack.Screen name='SelectPhoto' component={SelectPhoto} options={{
+        headerShown:false,
+      }}/>
+      <FranchiseStack.Screen name='SelectMainPhoto' component={SelectMainPhoto} options={{
+        headerShown:false,
+      }}/>
+      {/*
+      채팅 화면
       <FranchiseStack.Screen name='채팅 내용' component={Chat} options={
         ({route}) => ({
-        headerShown:true,
         title:route.params.shop.profileName
       })}/>
-      <FranchiseStack.Screen name='SelectPhoto' component={SelectPhoto} />
-      <FranchiseStack.Screen name='SelectMainPhoto' component={SelectMainPhoto} />
+      */}
+      <FranchiseStack.Screen name='SelectUpload' component={SelectUpload} options={{
+        headerTitle:"최근 항목",
+        headerLeft:()=> <BackArrow />,
+      }}/>
+      <FranchiseStack.Screen name='포스트' component={UploadPost} options={{
+        headerTitle:"최근 항목",
+        headerLeft:()=> <BackArrow />,
+      }}/>
       <FranchiseStack.Screen name="프로필 신청" component={CreateProfile} options={{
-        headerShown:true,
         headerTitle:"프로필 신청",
-        headerTitleAlign:"center",
         headerLeft:()=> <BackWarningArrow />,
       }} />
       <FranchiseStack.Screen name="프로필 수정(pre)" component={EditProfile} options={{
-        headerShown:true,
         headerTitle:"프로필 수정",
-        headerTitleAlign:"center",
         headerLeft:()=> <BackWarningArrow />,
       }} />
       <FranchiseStack.Screen name="프로필 완성" component={CompleteProfile} options={{
-        headerShown:true,
         headerTitle:"프로필 완성",
-        headerTitleAlign:"center",
         headerLeft:()=> <BackArrow />,
       }} />
       <FranchiseStack.Screen name="결제하기" component={BookingShop} options={{
-        headerShown:true,
         headerTitle:"결제하기",
-        headerTitleAlign:"center",
+        headerLeft:()=> <BackArrow />,
+      }} />
+      <FranchiseStack.Screen name="예약취소" component={CancelBooking} options={{
+        headerTitle:"예약취소",
         headerLeft:()=> <BackArrow />,
       }} />
     </FranchiseStack.Navigator>

@@ -6,12 +6,6 @@ import Loader from "../components/Custom/Loader";
 import constants from "../constants";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import BackArrow from "../components/Custom/BackArrow";
-import { YellowBox } from 'react-native';
-
-YellowBox.ignoreWarnings([
-    'Non-serializable values were found in the navigation state',
-  ]);
-  
 
 const styles = StyleSheet.create({
     container:{
@@ -109,7 +103,7 @@ export default ({ navigation, route }) => {
             <View>
                 <Image
                     style={{ width: constants.width, height: constants.height / 2,}}
-                    source={{ uri: bigImage.uri }}
+                    source={bigImage ? { uri: bigImage.uri } : null}
                 />
                 {selected.length === 5 && (
                     <View style={{padding:5, borderRadius:15, backgroundColor:"rgba(5, 230, 244, .4)", position:"absolute", bottom:5, alignSelf:"center"}}>
@@ -121,7 +115,7 @@ export default ({ navigation, route }) => {
 
               <ScrollView contentContainerStyle={{flexGrow:1}}>
                 <View style={{flexDirection:"row", flexWrap:"wrap"}}>
-                {allPhotos.map(photo => (
+                {allPhotos?.map(photo => (
                 <TouchableWithoutFeedback key={photo.id} onPress={() => merge(photo)}>
                   <ImageBackground
                     key={photo.id}

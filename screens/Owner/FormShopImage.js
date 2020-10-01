@@ -81,7 +81,7 @@ export default ({ navigation, route }) => {
                 }
                 const {
                     data: { location : newImageUrls }
-                } = await axios.post("http://172.30.1.11:4000/api/upload", formNewImages, {
+                } = await axios.post("http://172.30.1.35:4000/api/upload", formNewImages, {
                     headers: {
                       "content-type": "multipart/form-data"
                     }
@@ -105,7 +105,7 @@ export default ({ navigation, route }) => {
                 }
                 const {
                     data: { location : editImageUrls }
-                } = await axios.post("http://172.30.1.11:4000/api/upload", formEditImages, {
+                } = await axios.post("http://172.30.1.35:4000/api/upload", formEditImages, {
                     headers: {
                       "content-type": "multipart/form-data"
                     }
@@ -542,7 +542,7 @@ export default ({ navigation, route }) => {
                             </ScrollView>
                         </View>
                     </View>
-                    <BasicButton text={'사진 올리기'} onPress={handleSubmit} loading={loading} disabled={newImages.length + deleteImages.length + editImages.length > 0 ? loading : true} />
+                    <BasicButton text={'사진 올리기'} onPress={() => handleSubmit()} loading={loading} disabled={newImages.length + deleteImages.length + editImages.length > 0 ? loading : true} />
                 </View>   
             </ScrollView>
 

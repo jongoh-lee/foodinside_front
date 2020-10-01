@@ -2,7 +2,6 @@ import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { EvilIcons } from '@expo/vector-icons';
 import { TouchableWithoutFeedback, ScrollView, TouchableOpacity } from "react-native-gesture-handler";
-import { shopProfile } from "../../components/Franchise/data"
 import constants from "../../constants";
 import ReservationList from "../../components/Owner/ReservationList";
 

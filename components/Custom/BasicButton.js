@@ -22,7 +22,7 @@ const styles=StyleSheet.create({
 
 const BasicButton = ({ text, onPress, disabled = false, loading = false, marginVertical = 20 , padding = 15}) => (
   <View style={{marginVertical:marginVertical}}>
-    <TouchableOpacity style={ disabled? [styles.container_disabled, {padding:padding}] : [styles.container,{padding:padding}]} onPress={onPress} disabled={disabled}>
+    <TouchableOpacity style={ disabled? [styles.container_disabled, {padding:padding}] : [styles.container,{padding:padding}]} onPress={() => onPress()} disabled={disabled}>
      {loading ? <ActivityIndicator color={"white"} /> : <Text style={styles.text}>{text}</Text>}
     </TouchableOpacity>
   </View>

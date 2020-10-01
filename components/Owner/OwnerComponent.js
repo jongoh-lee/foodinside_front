@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
         fontSize:14,
         fontWeight:"bold",
         marginVertical:12,
+        color:"black"
     },
     inactiveTab:{
         fontSize:14,
@@ -117,7 +118,7 @@ const styles = StyleSheet.create({
     }
 })
 
-export default ({ refetch, id, shopImages, facility, tables, chairs, scale, shopName, district, description, precaution, address, checkIn, checkOut, minReserve, calendar, isSelf, franchiseState}) => {
+export default ({ refetch, id, shopImages, facility, tables, chairs, scale, shopName, district, description, precaution, address, addressDetail, latitude, longitude, checkIn, checkOut, minReserve, calendar, isSelf, franchiseState}) => {
     const [tabName, setTabName] = React.useState("EXTERIOR");
     const [index, setIndex] = React.useState(0);
     const exterior = shopImages.filter(el => el["type"] === 'EXTERIOR');
@@ -154,7 +155,7 @@ export default ({ refetch, id, shopImages, facility, tables, chairs, scale, shop
     return (
         <ScrollView showsVerticalScrollIndicator={false} scrollEventThrottle={1}>
             <View style={styles.imageBox}>
-                <Swiper key={index} index={index} paginationStyle={{bottom:10}} dot={<View style={{backgroundColor: 'rgba(255,255,255,.3)', width: 6, height: 6, borderRadius: 3, marginLeft: 3, marginRight: 3}} />} activeDot={<View style={{backgroundColor: '#fff', width: 8, height: 8, borderRadius: 4, marginLeft: 4, marginRight: 4}} />}>
+                <Swiper key={index} index={index} paginationStyle={{position:'absolute', bottom:10, overflow:"hidden"}} dot={<View style={{backgroundColor: 'rgba(255,255,255,.3)', width: 6, height: 6, borderRadius: 3, marginLeft: 3, marginRight: 3}} />} activeDot={<View style={{backgroundColor: '#fff', width: 8, height: 8, borderRadius: 4, marginLeft: 4, marginRight: 4}} />}>
                     {allImages.map((photo, index) => <Image key={index} style={styles.image} source={{uri:photo.url}}/>)}
                 </Swiper>
             </View>
@@ -235,14 +236,14 @@ export default ({ refetch, id, shopImages, facility, tables, chairs, scale, shop
                       longitude:126.986935,
                       latitudeDelta: 0.02,
                       longitudeDelta: 0.01,}}
-                    scrollEnabled={false}>
+                    scrollEnabled={true}>
                     <Marker
-                    coordinate={{latitude: 37.537140, longitude: 126.986935}}
-                    title="this is a marker"
-                    description="this is a marker example"/>
+                    coordinate={{latitude: latitude, longitude: longitude}}
+                    title={shopName}
+                    description={address}/>
                     </MapView>
                 </View>
-                <Text style={styles.subtitle}>{address}</Text>
+                <Text style={styles.subtitle}>{address + ' ' + addressDetail}</Text>
             </View>
 
             <View style={styles.box}>

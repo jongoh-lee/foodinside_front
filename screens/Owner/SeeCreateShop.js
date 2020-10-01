@@ -51,7 +51,7 @@ export default ({ navigation }) => {
       <View style={styles.textContainer}>
        <Text style={styles.title}>사업장 위치를 알려주세요</Text>
       </View>
-      <Text style={styles.warning}>주변 음식점과 함께 신청하면 선정 될 확률이 높습니다</Text> 
+      <Text style={styles.warning}>주변 음식점과 함께 신청할수록 선정 확률이 높아집니다</Text> 
 
         <Text style={styles.textInput}>{data.myShop.address + " " + data.myShop.addressDetail}</Text>
 

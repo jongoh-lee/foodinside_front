@@ -39,7 +39,7 @@ export default ({ navigation }) => {
 
         <Modal
         isVisible={visible}
-        onBackdropPress={() => setVisible(false)}
+        onBackdropPress={ () => setVisible(false)}
         onSwipeComplete={() => setVisible(false)}
         onBackButtonPress={() => setVisible(false)}
         swipeDirection={'down'}
@@ -53,6 +53,7 @@ export default ({ navigation }) => {
                         username : data?.me?.username,
                         avatar: data?.me?.avatar,
                         email: data?.me?.email,
+                        contact: data?.me?.contact
                     }),
                     setVisible(false))}>
                     <MaterialCommunityIcons name="account-edit" size={24} color="#666" /><Text style={styles.modalText}>정보수정</Text>

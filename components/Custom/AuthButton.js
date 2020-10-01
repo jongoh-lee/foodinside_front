@@ -27,7 +27,7 @@ const styles=StyleSheet.create({
 });
 
 const AuthButton = ({ text, onPress, disabled = false, loading = false }) => (
-  <TouchableOpacity style={ disabled? styles.container_disabled : styles.container} onPress={onPress} disabled={disabled}>
+  <TouchableOpacity style={ disabled? styles.container_disabled : styles.container} onPress={() => onPress()} disabled={disabled}>
      {loading ? <ActivityIndicator color={"white"} /> : <Text style={styles.text}>{text}</Text>}
   </TouchableOpacity>
 );

@@ -37,7 +37,7 @@ export default ({ navigation, route }) => {
         });
         const {
           data: { location }
-        } = await axios.post("http://172.30.1.11:4000/api/upload", formData, {
+        } = await axios.post("http://172.30.1.35:4000/api/upload", formData, {
           headers: {
             "content-type": "multipart/form-data"
           }
@@ -122,7 +122,7 @@ export default ({ navigation, route }) => {
       <ShadowInput {...contactInput} textAlign={'left'} placeholder={`( - ) 없이 번호만 입력해 주세요`} keyboardType="numeric" editable={!loading}/>
       
       <View style={{width:constants.width * .9}}>
-        <BasicButton text={'수정하기'} onPress={handleSubmit} disabled={loading} loading={loading}/>
+        <BasicButton text={'수정하기'} onPress={() => handleSubmit()} disabled={loading} loading={loading}/>
       </View>
       </ScrollView>
     </SafeAreaView>

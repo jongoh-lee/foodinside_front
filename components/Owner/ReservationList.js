@@ -67,7 +67,7 @@ export default ({ year, month }) => {
                 </View>
             </View>
             <View style={styles.headerRight}>
-                <Text style={styles.state}>{item.isCancelled? "예약 취소" : null}{item.isPaid ? "입금 완료" : "예약 완료"}</Text>
+                <Text style={styles.state}>{item.isCancelled? "예약 취소" : item.isPaid ? "입금 완료" : "예약 완료"}</Text>
                 <Text style={styles.headerSubtitle}>{item.totalPrice}</Text>
             </View>
         </View>
@@ -75,7 +75,7 @@ export default ({ year, month }) => {
 
     const emptyComponent = () => (
         <View style={{flex:1, justifyContent:"center", alignItems:"center"}}>
-            <Caption>목록이 없습니다</Caption>
+            <Caption>내역이 없습니다</Caption>
         </View>
     )
     return (

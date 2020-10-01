@@ -102,7 +102,7 @@ export default ({ id, isSelf, profileName, sector, token, mainImage, menuName, m
       {tabName=='포토리뷰'? (
         <View style={styles.imageBox}>
         {isSelf? (
-            <TouchableOpacity style={styles.grid}>
+            <TouchableOpacity style={styles.grid} onPress={() => navigation.navigate("SelectUpload", {id:id})}>
                 <View style={styles.upload}>
                     <Text>음식점 홍보하기</Text>
                 </View>
@@ -119,7 +119,7 @@ export default ({ id, isSelf, profileName, sector, token, mainImage, menuName, m
       ):( 
         null
       )}
-      {tabName=='영업정보'? <OpenInfo openInfo={openInfo} /> : null}
+      {tabName=='영업정보'? <OpenInfo id={id} /> : null}
       {tabName=='팀원소개'? <Members members={members} founderImage={founderImage} career={career} username={user.firstName} /> : null}
       
     </ScrollView>
@@ -234,6 +234,7 @@ const styles = StyleSheet.create({
   activeTab:{
     fontSize:16,
     fontWeight:"bold",
+    color:"black",
     marginVertical:12,
   },
   inactiveTab:{

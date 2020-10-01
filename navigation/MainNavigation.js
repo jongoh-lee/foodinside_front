@@ -1,5 +1,5 @@
-import React from 'react';
-import { Image, StyleSheet, View, Alert, Text } from 'react-native';
+import * as React from 'react';
+import { Image, StyleSheet, View, Alert, Text, } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import {
   DrawerItem,
@@ -65,15 +65,16 @@ const DrawerContent = props => {
           />
           <DrawerItem
             label="입점 업체"
-            labelStyle={{ color: 'white', marginLeft: -16 }}
-            style={{ alignItems: 'flex-start', marginVertical: 0 }}
+            labelStyle={styles.drawerLabel}
+            style={styles.drawerItem}
             onPress={() => props.navigation.navigate('Store')}
             icon={() => <MaterialCommunityIcons name="food-variant" color="white" size={20} />}
           />
           <DrawerItem
             label="방문객"
-            labelStyle={{ color: 'white', marginLeft: -14 }}
-            style={{ alignItems: 'flex-start', marginVertical: 0 }}
+            labelStyle={styles.drawerLabel}
+            drawerLabel="jo"
+            style={styles.drawerItem}
             onPress={() => props.navigation.navigate('Visitor')}
             icon={() => <FontAwesome5 name='concierge-bell' color="white" size={18} />}
           />
@@ -133,11 +134,11 @@ const styles = StyleSheet.create({
   },
   case1:{
     flex:1,
-    justifyContent:"flex-end"
+    justifyContent:"flex-end",
+    padding:10
   },
   case2:{
     flex:2,
-    marginLeft:-16,
   },
   stack: {
     flex: 1,
@@ -151,9 +152,9 @@ const styles = StyleSheet.create({
     elevation: 10,
     overflow:'hidden'
   },
-  drawerStyles: { flex: 1, width: '50%', backgroundColor: 'transparent' },
-  drawerItem: { alignItems: 'flex-start', marginVertical: 0 },
-  drawerLabel: { color: 'white', marginLeft: -16 },
+  drawerStyles: { flex: 1, width: '50%', backgroundColor: 'transparent',},
+  drawerItem: { marginLeft:0 },
+  drawerLabel: { color: 'white', marginLeft:-20},
   avatar: {
     borderRadius: 60,
     marginBottom: 16,

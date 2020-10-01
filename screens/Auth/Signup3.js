@@ -64,7 +64,7 @@ export default ({ navigation, route }) => {
         <AuthInput {...lastName} placeholder="성" keyboardType="default" autoFocus={true} width={.2} editable={!loading}/>
         <AuthInput {...firstName} placeholder="이름(성 제외)" keyboardType="default" width={.6} editable={!loading}/>
         </View>
-        <AuthButton text="다음(3/4단계)" onPress={handleSignUp} loading={loading} disabled={fName.length > 0 && lName.length > 0 ? loading : true }/>
+        <AuthButton text="다음(3/4단계)" onPress={() => handleSignUp()} loading={loading} disabled={fName.length > 0 && lName.length > 0 ? loading : true }/>
       </View>
       </DismissKeyboard>
       </KeyboardAvoidingView>

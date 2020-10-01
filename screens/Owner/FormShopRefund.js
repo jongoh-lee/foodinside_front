@@ -152,7 +152,7 @@ export default ({ route, navigation }) => {
                     </View>
                 </View>
             </View>
-            <BasicButton text={'제출 하기'} onPress={handleRefund} loading={loading} disabled={refundAgree? loading : true}/>
+            <BasicButton text={'제출 하기'} onPress={() => handleRefund()} loading={loading} disabled={refundAgree? loading : true}/>
         </ScrollView>
     </SafeAreaView>    
 )};

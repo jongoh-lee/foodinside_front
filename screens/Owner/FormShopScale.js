@@ -62,7 +62,7 @@ export default ({ navigation, route }) => {
                                 <ShadowInput {...scaleInput} editable={!loading} width={'50%'} placeholder={'명'} keyboardType={"numeric"}/>
                             </View>
                         </View>
-                        <BasicButton text={'제출 하기'} onPress={handleScale} loading={loading} disabled={chairInput.value?.length > 0 && tableInput.value?.length > 0 && scaleInput.value?.length > 0 ? loading : true}/>
+                        <BasicButton text={'제출 하기'} onPress={() => handleScale()} loading={loading} disabled={chairInput.value?.length > 0 && tableInput.value?.length > 0 && scaleInput.value?.length > 0 ? loading : true}/>
                     </ScrollView>
                 </DismissKeyboard>
             </KeyboardAvoidingView>

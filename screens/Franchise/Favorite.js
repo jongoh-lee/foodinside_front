@@ -10,6 +10,7 @@ import { Caption } from "react-native-paper";
 const styles = StyleSheet.create({
   container:{
     flex:1,
+    backgroundColor:"#ffffff"
   },
   note:{
     color:"#999"
@@ -17,21 +18,22 @@ const styles = StyleSheet.create({
 });
 
 
+
 export default () => {
-  const { data, error, loading } = useQuery(MY_FAVORITE,{
+  const { data, error, loading, refetch } = useQuery(MY_FAVORITE,{
     fetchPolicy:"network-only"
   });
   
   return(
   <View style={styles.container}>
-    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{padding:10, flexGrow:1}} >
+    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{padding:10, paddingTop:0, flexGrow:1}} >
       {loading? (
         <>
         <ShopCardLoading/>
         <ShopCardLoading/>
         <ShopCardLoading/>
         </>
-      ) : data?.myFavorite.length > 0 ? data?.myFavorite.map((favorite, index) => (
+      ) : data?.myFavorite?.length > 0 ? data?.myFavorite?.map((favorite, index) => (
         <ShopCard key={index} {...favorite.owner} />)
       ):(
         <View style={{flex:1, justifyContent:"center", alignItems:"center"}}><Caption>목록이 없습니다</Caption></View>

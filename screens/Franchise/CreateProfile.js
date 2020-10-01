@@ -10,13 +10,8 @@ import ShadowInput from "../../components/Custom/ShadowInput";
 import BasicInput from "../../components/Custom/BasicInput";
 import { useMutation } from "@apollo/react-hooks";
 import BasicButton from "../../components/Custom/BasicButton";
-import { YellowBox } from 'react-native';
 import { CREATE_PROFILE, MY_PROFILE } from "./ProfileQueries";
 import { RadioButton, } from "react-native-paper";
-
-YellowBox.ignoreWarnings([
-  'Non-serializable values were found in the navigation state',
-]);
 
 export default ({ navigation, route }) => {
   const [image, setImage] = React.useState(null);
@@ -52,7 +47,7 @@ export default ({ navigation, route }) => {
 
       const {
         data: { location }
-      } = await axios.post("http://172.30.1.11:4000/api/upload", formData, {
+      } = await axios.post("http://172.30.1.35:4000/api/upload", formData, {
         headers: {
           "content-type": "multipart/form-data"
         }
@@ -85,7 +80,7 @@ export default ({ navigation, route }) => {
   return (
   <SafeAreaView style={styles.container}>
      <KeyboardAvoidingView 
-      behavior={Platform.OS === "ios" ? "position" : "height"}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{flex:1, justifyContent:"center"}}
       keyboardVerticalOffset={50}
       enabled >
@@ -141,7 +136,7 @@ export default ({ navigation, route }) => {
         <ShadowInput {...contactInput} textAlign={'left'} placeholder={`( - ) 없이 번호만 입력해 주세요`} keyboardType="numeric" editable={!loading}/>
 
         <View style={{width:constants.width * .9}}>
-          <BasicButton text={'제출하기'} onPress={handleSubmit} disabled={image && menuNameInput.value && salePriceInput.value && conceptInput.value && contactInput.value && careerInput.value? loading : true} loading={loading}/>
+          <BasicButton text={'제출하기'} onPress={() => handleSubmit()} disabled={image && menuNameInput.value && salePriceInput.value && conceptInput.value && contactInput.value && careerInput.value? loading : true} loading={loading}/>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

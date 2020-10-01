@@ -201,7 +201,7 @@ export default ({ navigation }) => {
                 </View>
 
                 <View style={{width:WIDTH * .8}}>
-                    <BasicButton text={'내 음식점 보기'} onPress={handleMyShop} loading={loading} disabled={data.myShop.shopImages.length > 3 && data.myShop.facility && data.myShop.scale && data.myShop.description && data.myShop.address && data.myShop.checkIn && data.myShop.refundAgree ? loading : true}/>
+                    <BasicButton text={'내 음식점 보기'} onPress={() => handleMyShop()} loading={loading} disabled={data.myShop.shopImages.length > 3 && data.myShop.facility && data.myShop.scale && data.myShop.description && data.myShop.address && data.myShop.checkIn && data.myShop.refundAgree ? loading : true}/>
                 </View>
             </ScrollView>}
         </View>

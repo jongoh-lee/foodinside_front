@@ -60,7 +60,7 @@ function FeedStackScreen({navigation}) {
     <FeedStack.Navigator >
         <FeedStack.Screen name="Home" component={Feed} options={{
             headerShown:true,
-            headerTitle:()=> <Logo nav={'피드'}/>,
+            headerTitle:()=> <Logo />,
             headerTitleAlign:'center',
             headerLeft:()=>(
               <LocationButton/>
@@ -119,6 +119,9 @@ function FavoriteStackScreen() {
       <FavoriteStack.Screen name="단골" component={Dangol} />
       <FavoriteStack.Screen name="프로필 보기" component={FullProfile} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}} />
       <FavoriteStack.Screen name="PostList" component={PostList} options={{headerTitleAlign:"center", headerTitle:"포토리뷰", headerLeft:() => <BackArrow />}} />
+      <FavoriteStack.Screen name="SeeUser" component={FullUser} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}} />
+      <FavoriteStack.Screen name="FollowList" component={FollowTabScreen} options={{headerTitleAlign:"center", headerTitle:"팔로우", headerLeft:() => <BackArrow />}} />
+      <FavoriteStack.Screen name="UserFollowers" component={UserFollowers} options={{headerTitleAlign:"center", headerTitle:"팔로워", headerLeft:() => <BackArrow />}} />
     </FavoriteStack.Navigator>
   );
 }
@@ -153,6 +156,7 @@ function UserStackScreen() {
       <UserStack.Screen name="SeeUser" component={FullUser} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}} />
       <UserStack.Screen name="PostList" component={PostList} options={{headerTitleAlign:"center", headerTitle:"포토리뷰", headerLeft:() => <BackArrow />}} />
       <UserStack.Screen name="FollowList" component={FollowTabScreen} options={{headerTitleAlign:"center", headerTitle:"팔로우", headerLeft:() => <BackArrow />}} />
+      <UserStack.Screen name="UserFollowers" component={UserFollowers} options={{headerTitleAlign:"center", headerTitle:"팔로워", headerLeft:() => <BackArrow />}} />
     </UserStack.Navigator>
   );
 }
@@ -192,7 +196,9 @@ const VisitorStack = createStackNavigator();
 
 export default () => {
   return (
-    <VisitorStack.Navigator screenOptions={{
+    <VisitorStack.Navigator 
+    headerMode={"screen"}
+    screenOptions={{
       headerShown:true,
       headerTitleAlign:"center",
       headerLeft:() => <BackArrow />,

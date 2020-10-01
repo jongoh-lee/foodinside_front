@@ -62,7 +62,7 @@ export default ({ route, navigation }) => {
           <AuthInput {...emailInput} placeholder="이메일을 입력하세요" keyboardType="email-address" autoFocus={true} editable={!loading}/>
           {value?.length < 3 || !value ? <Text  style={{fontSize:10}} /> : data?.checkEmail ? <Text style={{fontSize:10, color:"green", paddingLeft:5}}>{"사용 가능한 이메일 입니다"}</Text> : <Text style={{fontSize:10, color:"red", paddingLeft:5}}>{"사용할 수 없는 이메일 입니다"}</Text>}
 
-          <AuthButton text="다음(1/4단계)" onPress={handlecheckEmail} disabled={value?.length > 0 && data?.checkEmail ? loadingProp : true} loading={loading}/>
+          <AuthButton text="다음(1/4단계)" onPress={() => handlecheckEmail()} disabled={value?.length > 0 && data?.checkEmail ? loadingProp : true} loading={loading}/>
         </View>
       </DismissKeyboard>
       </KeyboardAvoidingView>

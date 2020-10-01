@@ -11,7 +11,7 @@ export default () => {
         navigation.goBack();
     }
     return (
-        <TouchableOpacity style={{padding:5}} onPress={handleBack} disabled={inactive}>
+        <TouchableOpacity style={{padding:5}} onPress={() => handleBack()} disabled={inactive}>
             <MaterialCommunityIcons name="chevron-left" size={34} color="black"/>
         </TouchableOpacity>
     )

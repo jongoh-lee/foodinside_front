@@ -24,7 +24,7 @@ export default ({ chosenMember, members, setMembers, newMembers, editMembers, se
       if(id){
         let _index = members.findIndex(member => member.id === id);
         if(_index > -1){
-          members[_index] = { id: id, name: _name, position:_position, career:_career, image:memberImage.uri };
+          members[_index] = { id: id, name: _name, position:_position, career:_career, image:memberImage.uri ? memberImage.uri : memberImage };
           setEditMembers(editMembers.concat({ id: id, name: _name, position:_position, career:_career, image:memberImage }))
         } else {
           setNewMembers(newMembers.concat({ name: _name, position:_position, career:_career, image:memberImage }));
@@ -39,12 +39,14 @@ export default ({ chosenMember, members, setMembers, newMembers, editMembers, se
     };
 
     return(
-      <KeyboardAvoidingView 
+    <KeyboardAvoidingView 
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{flex:1, justifyContent:"center"}}
       keyboardVerticalOffset={50}
-      enabled >
-          <View style={styles.content}>
+      enabled
+      >
+        <View style={styles.content}>
+          {/* 이미지 */}
             <TouchableOpacity onPress={() => (
               navigation.navigate('SelectPhoto', {
                 onSelect : onSelect
@@ -83,7 +85,7 @@ export default ({ chosenMember, members, setMembers, newMembers, editMembers, se
                 </ImageBackground>
               </View>
             </TouchableOpacity>
-          <DismissKeyboard>
+            
             <View style={{flexDirection:"row", marginVertical:10}}>  
                 <ShadowInput {...nameInput} placeholder={'성함'} width={'50%'} padding={5} fontSize={12} returnKeyType={'done'}/>
                 <ShadowInput {...positionInput} placeholder={'직위'} width={'50%'} padding={5} fontSize={12} returnKeyType={'done'}/>
@@ -93,7 +95,6 @@ export default ({ chosenMember, members, setMembers, newMembers, editMembers, se
             <View style={{width: '100%'}}>
               <BasicButton onPress={() => (setEditMemberModal(false), handleMemberInfoSubmit())} padding={10} text={'확인'} marginVertical={5} disabled={_name && _position && _career && memberImage? false : true}/>
             </View>
-          </DismissKeyboard>
         </View>
     </KeyboardAvoidingView>
     )
