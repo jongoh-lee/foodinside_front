@@ -13,11 +13,10 @@ import DangolBar from "../Custom/DangolBar";
 
 const WIDTH = constants.width - 20;
 
-export default ({ id, isSelf, profileName, sector, token, mainImage, menuName, menuImage, fullPrice, salePrice, foodGuide, origin, submenus, isDangol, dangolCount, postsCount ,posts, myPosts, comments, openInfo, founderImage, career, user, members}) => {
+export default ({ id, isSelf, profileName, sector, token, mainImage, menuName, menuImage, fullPrice, salePrice, foodGuide, origin, submenus, isDangol, dangolCount, postsCount ,posts, myPosts, founderImage, career, user, members, wallets, myWallet}) => {
   const [showGuide, setShowGuide] = React.useState(false);
   const [tabName, setTabName] = React.useState('포토리뷰');
   const navigation = useNavigation();
-  
   return (
     <>
     <ScrollView 
@@ -80,7 +79,7 @@ export default ({ id, isSelf, profileName, sector, token, mainImage, menuName, m
         </View>
         {/* 단골, 포스트 수, 영업 횟수, 가맹점 수 */}
 
-        <DangolBar id={id} isDangol={isDangol} dangolCount={dangolCount} isSelf={isSelf} postsCount={postsCount} myPosts={myPosts}/>
+        <DangolBar id={id} isDangol={isDangol} dangolCount={dangolCount} isSelf={isSelf} postsCount={postsCount} myPosts={myPosts} wallets={wallets} myWallet={myWallet}/>
         
 
       </View>

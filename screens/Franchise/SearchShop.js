@@ -9,6 +9,7 @@ import { useQuery } from "@apollo/react-hooks";
 import { SEARCH_SHOP_LIST } from "./ProfileQueries";
 import ScreenLoader from "../../components/Custom/ScreenLoader";
 import ShopCardLoading from "../../components/Loading/ShopCardLoading";
+import Caption from "../../components/Custom/Caption";
 
 const styles = StyleSheet.create({
   container:{
@@ -23,7 +24,7 @@ export default () => {
   if(error) return console.log(error)
   return (
     <View style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{padding:10}}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{padding:10, flexGrow:1}}>
         <SearchBar/>
         <View style={styles.container}>
           {loading? (
@@ -32,9 +33,12 @@ export default () => {
           <ShopCardLoading/>
           <ShopCardLoading/>
           </>) : null}
-          {data?.searchShopList?.map((shop, index) => (
+          {data?.searchShopList.length > 0 ? data?.searchShopList?.map((shop, index) => (
             <ShopCard key={index} {...shop} />
-            ))}
+            )) : 
+            <View style={{flex:1, justifyContent:"center", alignItems:"center"}}>
+              <Caption>등록된 음식점이 없습니다</Caption>
+            </View>}
         </View>
       </ScrollView>
     </View>

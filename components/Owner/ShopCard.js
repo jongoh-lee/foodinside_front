@@ -2,7 +2,7 @@ import * as React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
-import { Caption } from "react-native-paper";
+import Caption from "../Custom/Caption";
 
 const styles = StyleSheet.create({
   container:{
@@ -58,33 +58,35 @@ const styles = StyleSheet.create({
     width:'100%',
   },
   inner:{
-    padding:8
+    paddingTop:4,
+    paddingLeft:4,
   },
   address:{
     overflow:"hidden",
-    marginBottom:5,
     fontSize:16,
-    fontWeight:"500"
+    fontWeight:"500",
   },
   hashTags: {
     flexWrap:"wrap",
     flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 4,
+    marginTop: 4,
+    marginBottom:2
   },
   hashTag:{
-    fontSize:14,
+    fontSize:12,
     color:'#c7c7c7'
   },
   shopBasic: {
-    padding:4
+    padding:4,
+    paddingTop:0,
   },
   caption:{
     flexDirection:"row",
     flexWrap:"wrap"
   },
   captionText: {
-    marginRight:4
+    marginRight:4,
+    marginTop:2
   },
   shopScale: {
     marginLeft: 8,
@@ -95,21 +97,22 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ({ id, classification, address, addressDetail, isSelf, scale, shopName, district, hashTag, minReserve, shopImages, calendar }) => {
+export default ({ id: ownerId, classification, address, addressDetail, isSelf, scale, shopName, district, hashTags, minReserve, shopImages, calendar }) => {
   const [opacity, setOpacity] = React.useState(1);
   const navigation = useNavigation();
   const exterior = shopImages.filter(el => el["type"] === 'EXTERIOR');
   const hall = shopImages.filter(el => el["type"] === 'HALL');
   const kitchen = shopImages.filter(el => el["type"] === 'KITCHEN');
-  let hashTags = "#오픈키친 #20평 #몽환적 분위기 #Pub 가능"
-  const priceList = calendar.filter(el => typeof(parseInt(el.priceState)) === "number");
+  const priceList = calendar.filter(el => el.isBooked === true && typeof(parseInt(el.priceState)) === "number");
   const priceSum = priceList.map(el => parseInt(el.priceState)).reduce((a, b) => a + b, 0);
-  const priceAve = (priceSum/ priceList.length).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+  const priceAve = (priceSum/ priceList.length)
+  const pricePrint = (Math.floor(priceAve/100)*100).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
   return (
-    <View key={id} style={styles.container}>
+    <View key={ownerId} style={styles.container}>
       <View style={styles.boxShop}>
         <TouchableWithoutFeedback onPress={() => navigation.navigate("음식점 보기", { 
-          id,
+          id: ownerId,
           shopName,
           classification,
           address, 
@@ -117,7 +120,7 @@ export default ({ id, classification, address, addressDetail, isSelf, scale, sho
           isSelf, 
           scale, 
           district, 
-          hashTag, 
+          hashTags, 
           minReserve, 
           shopImages
           })}>  
@@ -144,13 +147,15 @@ export default ({ id, classification, address, addressDetail, isSelf, scale, sho
             </View>
           </View>
 
-        <View style={styles.inner}>
-        <Text style={styles.address}>{address} in {addressDetail}</Text>
-        
-          <View style={styles.hashTags}>
-            <Text style={styles.hashTag}>{hashTags}</Text>
+          <View style={styles.inner}>
+            <Text style={styles.address}>{address} in {addressDetail}</Text>
+          
+            {hashTags.length > 0 ? (
+              <View style={styles.hashTags}>
+                {hashTags?.map((tag, index) => <Caption key={index} style={styles.hashTag}>#{tag}  </Caption>)}
+              </View>
+            ) : null}
           </View>
-        </View>
         </TouchableWithoutFeedback>
         
         <View style={styles.shopBasic}>
@@ -159,13 +164,13 @@ export default ({ id, classification, address, addressDetail, isSelf, scale, sho
           </Caption>
           <View style={styles.caption}>
             <Text style={styles.shopPrice}>
-              최소 예약: {minReserve}일<Text style={{fontWeight:"300", color:"#666"}}> | </Text>
+              최소 예약: {minReserve}일<Text style={{fontWeight:"300", color:"#666"}}> ・ </Text>
             </Text>
             <Text style={styles.shopPrice}>
-              1회전 규모: {scale}명<Text style={{fontWeight:"300", color:"#666"}}> | </Text>
+              1회전 규모: {scale}명<Text style={{fontWeight:"300", color:"#666"}}> ・ </Text>
             </Text>
             <Text style={styles.shopPrice}>
-              일 평균 {priceAve === "NaN" ? "100,000" : priceAve}원
+              일 평균 {Number.isNaN(priceAve) ? "100,000" : pricePrint}원
             </Text>
           </View>
         </View>
