@@ -5,13 +5,12 @@ import PropTypes from "prop-types";
 import { useMutation } from "@apollo/react-hooks";
 import { TOGGLE_DANGOL, } from "../../screens/Visitor/VisitorQueries";
 
-const DangolBar = ({ id, isDangol : isDangolProps, dangolCount : dangolCountProps, myPosts, isSelf, postsCount }) => {
-    const [ isDangol, setIsDangol ] = React.useState(isDangolProps);
-    const [dangolCount, setDangolCount] = React.useState(dangolCountProps);
-    const [ toggleDangolMutation ] = useMutation(TOGGLE_DANGOL,{
-        refetchQueries:[`me`,`myDangol`, `seeFullProfile`]
+const DangolBar = ({ id, isDangol : isDangolProps, dangolCount : dangolCountProps, myPosts, isSelf, postsCount, mapCard = false, myWallet, wallets }) => {
+    const [ isDangol, setIsDangol ] = React.useState();
+    const [dangolCount, setDangolCount] = React.useState();
+    const [ toggleDangolMutation, {loading} ] = useMutation(TOGGLE_DANGOL,{
+        refetchQueries:[`me`,`myDangol`, `seeFullProfile`, `shopOnSale`]
     });
-
     const handleDangol = async () => {
         if ( isDangol === true) {
             setDangolCount(dangolCount - 1);
@@ -28,54 +27,60 @@ const DangolBar = ({ id, isDangol : isDangolProps, dangolCount : dangolCountProp
         } catch (e) {
             console.log("단골 에러:", e);
         }
-    }
+    };
+
+    React.useEffect(() => {
+        setIsDangol(isDangolProps);
+        setDangolCount(dangolCountProps);
+    },[isDangolProps, dangolCountProps])
+
     return(
             <View style={styles.cardGrid}>
                 <View style={styles.cardInfo}>
-                    <Text style={styles.cardInfoText}>단골</Text>
-                    <Text style={styles.cardInfoNum} numberOfLines={1}>{dangolCount}</Text>
+                    <Text style={[styles.cardInfoText, mapCard ? {color:"rgba(255, 255, 255, .8)"} : null]}>단골</Text>
+                    <Text style={[styles.cardInfoNum, mapCard ? {color : "white"} : null]} numberOfLines={1}>{dangolCount}</Text>
                 </View>
             
                 <View style={styles.cardInfo}>
-                    <Text style={styles.cardInfoText}>포스트</Text>
-                    <Text style={styles.cardInfoNum} numberOfLines={1}>{postsCount}</Text>
+                    <Text style={[styles.cardInfoText, mapCard ? {color:"rgba(255, 255, 255, .8)"} : null]}>포스트</Text>
+                    <Text style={[styles.cardInfoNum, mapCard ? {color : "white"} : null]} numberOfLines={1}>{postsCount}</Text>
                 </View>
             
                 {isSelf ? (
                 <View style={styles.cardInfo}>
-                    <Text style={styles.cardInfoText} numberOfLines={1}>발행 포인트</Text>
-                    <Text style={styles.cardInfoNum} numberOfLines={1}>0</Text>
+                    <Text style={[styles.cardInfoText, mapCard ? {color:"rgba(255, 255, 255, .8)"} : null]} numberOfLines={1}>발행량</Text>
+                    <Text style={[styles.cardInfoNum, mapCard ? {color : "white"} : null]} numberOfLines={1}>{wallets.length > 0 ? wallets?.map(el => el.incoming).reduce((a, b) => a + b , 0) : 0}</Text>
                 </View>
                 ) : (
                 <View style={styles.cardInfo}>
-                    <Text style={styles.cardInfoText}>내 리뷰</Text>
-                    <Text style={styles.cardInfoNum} numberOfLines={1}>{myPosts}</Text>
+                    <Text style={[styles.cardInfoText, mapCard ? {color:"rgba(255, 255, 255, .8)"} : null]}>내 리뷰</Text>
+                    <Text style={[styles.cardInfoNum, mapCard ? {color : "white"} : null]} numberOfLines={1}>{myPosts}</Text>
                 </View>
                 )}
             
                 {isSelf ? (
                 <View style={styles.cardInfo}>
-                    <Text style={styles.cardInfoText} numberOfLines={1}>회수 포인트</Text>
-                    <Text style={styles.cardInfoNum} numberOfLines={1}>0</Text>
+                    <Text style={[styles.cardInfoText, mapCard ? {color:"rgba(255, 255, 255, .8)"} : null]} numberOfLines={1}>회수량</Text>
+                    <Text style={[styles.cardInfoNum, mapCard ? {color : "white"} : null]} numberOfLines={1}>{wallets.length > 0 ? wallets?.map(el => el.outgoing).reduce((a, b) => a + b , 0) : 0}</Text>
                 </View>
                 ) : (
                 <View style={styles.cardInfo}>
-                    <Text style={styles.cardInfoText}>포인트</Text>
-                    <Text style={styles.cardInfoNum} numberOfLines={1}>0</Text>
+                    <Text style={[styles.cardInfoText, mapCard ? {color:"rgba(255, 255, 255, .8)"} : null]}>포인트</Text>
+                    <Text style={[styles.cardInfoNum, mapCard ? {color : "white"} : null]} numberOfLines={1}>{myWallet ? (myWallet.incoming - myWallet.outgoing) : 0}</Text>
                 </View>
                 )}
             
-                <View style={styles.cardInfo}>
-                    <TouchableOpacity style={styles.logoRow} onPress={handleDangol}>
+                <View style={[styles.cardInfo, {justifyContent:"flex-end"}]}>
+                    <TouchableOpacity style={styles.logoRow} onPress={() => handleDangol()} disabled={loading}>
                         {isDangol? (
                         <>
-                            <Image style={styles.dangolLogo_checked} source={require('../../assets/Icons/cloche.png')} />
-                            <Text style={styles.logoText_checked}>단골 중</Text>
+                            <Image style={styles.dangolLogo_checked} source={mapCard ? require('../../assets/Icons/clocheWhite.png') : require('../../assets/Icons/cloche.png')} />
+                            <Text style={[styles.logoText_checked, mapCard? {color:"rgba(255, 255, 255, .8)"} : null]}>단골 중</Text>
                         </> 
                         ): (
                         <>
-                            <Image style={styles.dangolLogo} source={require('../../assets/Icons/cloche.png')} />
-                            <Text style={styles.logoText}>단골</Text>
+                            <Image style={styles.dangolLogo} source={mapCard ? require('../../assets/Icons/clocheWhite.png') : require('../../assets/Icons/cloche.png')} />
+                            <Text style={[styles.logoText, mapCard? {color:"white"} : null]}>단골</Text>
                         </>)}
                     </TouchableOpacity>
                 </View>
@@ -124,15 +129,15 @@ const styles=StyleSheet.create({
           width:10,
           resizeMode:"contain",
           marginRight:8,
-          opacity: .4,
+          opacity: .6,
       },
       logoText:{
           color:"rgba(0, 0, 0, .9)",
-          fontSize:14
+          fontSize:12
       },
       logoText_checked:{
-          color:"rgba(0, 0, 0, .4)",
-          fontSize:14
+          color:"rgba(0, 0, 0, .6 )",
+          fontSize:12
       },
   });
 
