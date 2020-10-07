@@ -20,11 +20,12 @@ export const SEE_USER = gql`
 `;
 
 export const EDIT_ME = gql`
-    mutation editMe($username:String!, $avatar:String){
-        editMe(username:$username, avatar:$avatar){
+    mutation editMe($username:String!, $avatar:String, $contact: String){
+        editMe(username:$username, avatar:$avatar, contact:$contact){
             id
             username
             avatar
+            contact
         }
     }
 `;
@@ -51,8 +52,8 @@ export const TOGGLE_DANGOL = gql`
 `;
 
 export const TOGGLE_LIKE = gql`
-    mutation toggleLike($postId: String!, $profileId: String!){
-        toggleLike(postId: $postId, profileId: $profileId)
+    mutation toggleLike($postId: String!, $token: Int!, $profileId: String!, $userId: String!){
+        toggleLike(postId: $postId, token: $token, profileId: $profileId, userId: $userId)
     }
 `;
 
@@ -132,16 +133,22 @@ export const MY_DANGOL = gql`
                 salePrice
                 fullPrice
                 classification
-                contact
                 sector
                 token
                 mainImage
-                foodGuide
-                origin
                 isDangol
                 dangolCount
                 myPosts
-                founderImage
+                myWallet{
+                    id
+                    incoming
+                    outgoing
+                }
+                wallets{
+                    id
+                    incoming
+                    outgoing
+                }
                 submenus{
                     id
                     menuName
@@ -149,21 +156,16 @@ export const MY_DANGOL = gql`
                     fullPrice
                     salePrice
                 }
-                members{
-                    id
-                    image
-                    name
-                    position
-                    career
-                }
-                career
                 profileState
-                user{
-                    id
-                    firstName
-                    lastName
-                }
                 postsCount
+                bookings{
+                    id
+                    isCancelled
+                    prices{
+                        id
+                        dateString
+                    }
+                }
             }
         }
     }
@@ -209,6 +211,58 @@ export const USER_FOLLOWER = gql`
                 avatar
                 isSelf
                 isFollowing
+            }
+        }
+    }
+`;
+
+export const SHOP_ON_SALE = gql`
+    query shopOnSale($dateInput: String!){
+        shopOnSale(dateInput: $dateInput){
+            id
+            firstDate
+            lastDate
+            profile{
+                id
+                isSelf
+                profileName
+                menuName
+                menuImage
+                salePrice
+                fullPrice
+                classification
+                contact
+                sector
+                token
+                mainImage
+                foodGuide
+                origin
+                isDangol
+                dangolCount
+                myWallet{
+                    id
+                    incoming
+                    outgoing
+                }
+                wallets{
+                    id
+                    incoming
+                    outgoing
+                }
+                submenus{
+                    id
+                    menuName
+                    menuImage
+                    fullPrice
+                    salePrice
+                }
+                postsCount
+                myPosts
+            }
+            owner{
+                id
+                longitude
+                latitude
             }
         }
     }

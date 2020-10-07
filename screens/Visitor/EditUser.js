@@ -10,11 +10,13 @@ import strickInput from '../../hooks/strickInput';
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import { EDIT_ME, ME, EDIT_USERNAME } from './VisitorQueries';
 import constants from '../../constants';
+import useInput from '../../hooks/useInput';
 
 export default ({ navigation, route }) => {
     const [avatar, setAvatar] = React.useState(route.params.avatar? route.params.avatar : null);
     const [loading, setLoading] = React.useState(false)
     const usernameInput = strickInput(route.params.username);
+    const contactInput = useInput(route.params.contact ? route.params.contact : "");
     const { value: username } = usernameInput;
     const [alert, setAlert] = React.useState();
     
@@ -22,7 +24,7 @@ export default ({ navigation, route }) => {
       setAvatar(image.photo)
     };
     
-    const { data, error } = useQuery(EDIT_USERNAME,{
+    const { data, error, loading:checking } = useQuery(EDIT_USERNAME,{
       variables:{
         username: username
       },
@@ -35,7 +37,7 @@ export default ({ navigation, route }) => {
       try {
         setLoading(true);
         let _avatar = [];
-        if(avatar.uri){
+        if(avatar?.uri){
           const formData = new FormData();
           formData.append('file',{
             name: avatar.filename,
@@ -44,7 +46,7 @@ export default ({ navigation, route }) => {
           });
         const {
           data: { location }
-        } = await axios.post("http://172.30.1.11:4000/api/upload", formData, {
+        } = await axios.post("https://foodinside-backend.herokuapp.com/api/upload", formData, {
           headers: {
             "content-type": "multipart/form-data"
           }
@@ -57,8 +59,8 @@ export default ({ navigation, route }) => {
         } = await editMeMutation({
           variables: {
             username: username,
-            avatar: avatar.uri? _avatar[0].url : avatar,
-            email: route.params.email
+            avatar: avatar?.uri ? _avatar[0].url : avatar,
+            contact: contactInput ? String(contactInput.value) : null
           }
         });
       if( editMe ){
@@ -85,9 +87,10 @@ export default ({ navigation, route }) => {
         <View style={{alignItems: 'center'}}>
           <TouchableOpacity onPress={() => (
             navigation.navigate('SelectPhoto', {
-              onSelect : onSelect
+              onSelect
             })
-            )}>
+            )}
+            disabled={loading}>
             <View style={{
                 height: 100,
                 width: 100,
@@ -123,14 +126,14 @@ export default ({ navigation, route }) => {
           </TouchableOpacity>
 
           <Text style={{marginTop: 10, fontSize: 18, fontWeight: 'bold'}}>
-            {username}
+            {username? username : ' '}
           </Text>
         </View>
 
         <View style={styles.action}>
           <FontAwesome name="user-o" size={20} />
           <View>
-            <BasicInput {...usernameInput} placeholder={'아이디'} keyboardType="default"/>
+            <BasicInput {...usernameInput} placeholder={'아이디'} keyboardType="default" multiline={false} disabled={loading}/>
           </View>
             {data?.editUsername || alert? <Text style={{fontSize:10, color:"red", position:"absolute", bottom:5 }}>사용할 수 없는 아이디 입니다</Text>: null}
         </View>
@@ -138,7 +141,7 @@ export default ({ navigation, route }) => {
 
         <View style={styles.action}>
           <Feather name="phone" size={20} />
-          <BasicInput placeholder={'연락처'} keyboardType="default"/>
+          <BasicInput {...contactInput} placeholder={'연락처'} keyboardType="default" keyboardType={"number-pad"} multiline={false} disabled={loading}/>
         </View>
 
         <View style={styles.action}>
@@ -152,10 +155,10 @@ export default ({ navigation, route }) => {
                 padding:15,
                 justifyContent:'flex-start',
                 }} 
-              placeholder={route.params.email} editable={false}/>
+              placeholder={route.params.email} editable={false} multiline={false}/>
         </View>
         <View style={{width:'100%'}}>
-          <BasicButton text={'수정하기'} disabled={alert? true : loading} onPress={handleEdit} loading={loading}/>
+          <BasicButton text={'수정하기'} disabled={alert || checking? true : loading} onPress={() => handleEdit()} loading={loading}/>
         </View>
 
         </ScrollView>
