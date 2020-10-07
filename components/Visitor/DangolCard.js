@@ -53,6 +53,20 @@ const styles = StyleSheet.create({
         color:'#666',
         fontSize:12,
     },
+    dateChips:{
+        margin:2,
+        padding:2,
+        borderRadius:8, 
+        marginHorizontal:2, 
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.18,
+        shadowRadius: 1.00,
+        elevation: 3,
+        backgroundColor:"#ffffff"
+    },
     menuScroll:{
         flexDirection:"row",
         marginRight: -5
@@ -140,9 +154,26 @@ const styles = StyleSheet.create({
 })
 
 // 내 정보 중 단골 업체 정보와 해당 업체의 단골/ 포스팅 수 + 내 포스팅 수 + 좋아요 수 + 적립 포인트
-export default ({ id, mainImage, profileName, sector,  menuName, menuImage, fullPrice, salePrice, submenus, members, origin, postsCount, myPosts, career, dangolCount, isDangol, isSelf, }) => {
+export default ({ id, mainImage, profileName, sector,  menuName, menuImage, fullPrice, salePrice, submenus, postsCount, myPosts, dangolCount, isDangol, isSelf, bookings, myWallet, wallets}) => {
     const [logoBtn, setLogoBtn] = React.useState(false);
     const navigation = useNavigation();
+    let now = new Date()
+    let mm = now.getMonth() + 1;
+    let dd = now.getDate();
+    const today = `${[now.getFullYear(), (mm>9 ? '' : '0') + mm, (dd>9 ? '' : '0') + dd].join('')}`
+    const todayString = `${[now.getFullYear(), (mm>9 ? '' : '0') + mm, (dd>9 ? '' : '0') + dd].join('-')}`
+    const [dateList, setDateList] = React.useState([]);
+
+    React.useEffect(() => {
+        let _dateList = bookings?.reduce((arr, booking) => {
+            if(!booking.isCancelled){
+                booking.prices.map(price => price.dateString.replace(/[^0-9]/g,'') - today >= 0 ?  arr.push(price.dateString) : null);
+            }
+            return arr
+        }, []);
+        setDateList(_dateList)
+    },[bookings])
+
     return (
         <View style={styles.container}>
             <View style={styles.box}>
@@ -158,17 +189,29 @@ export default ({ id, mainImage, profileName, sector,  menuName, menuImage, full
                     <View style={styles.header}>
                         <View style={styles.headerLeft}>
                             <Image style={styles.mainImage} source={{ uri: mainImage }}/>
-                                <View>
+                                <View style={{maxWidth: WIDTH * 0.6}}>
                                     <View style={styles.titleAlign}>
                                         <Text style={styles.headerTitle} numberOfLines={1} ellipsizeMode={"middle"}>{profileName}<Text style={styles.headerSubtitle}>  {sector}</Text></Text>
                                     </View>
-                                    {true? <Text style={styles.headerSubtitle}>7/15 - 7/21</Text> : null}
                                 </View>
                         </View>
-
-                        <Caption style={{color:'red'}}>영업중</Caption>
+                        {dateList.indexOf(todayString) > -1 ? <Caption style={{color:'red'}}>영업중</Caption> : <Caption style={{color:'#666'}}>준비중</Caption>}
                     </View>
                 </TouchableOpacity>
+
+                
+                    {dateList.length > 0 ? 
+                    <View style={{flexDirection:"row", padding: 5, alignItems:"center" }}>
+                        <Text style={styles.headerSubtitle}>영업일: </Text>
+                        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{flexDirection:"row"}}>
+                            {dateList.sort().map(date => (
+                                <View key={date} style={styles.dateChips}>
+                                    <Text style={{fontSize:11, color: "#666"}}>{date.slice(-5).replace('-','/')}</Text>
+                                </View>
+                                ))}
+                        </ScrollView>
+                    </View> : null}
+                    
             
             {/* 메뉴 스크롤*/}
             <ScrollView style={styles.menuScroll} showsHorizontalScrollIndicator={false} horizontal>
@@ -197,7 +240,7 @@ export default ({ id, mainImage, profileName, sector,  menuName, menuImage, full
             </ScrollView>
             
             {/* 단골바 */}
-            <DangolBar id={id} isDangol={isDangol} dangolCount={dangolCount} isSelf={isSelf} postsCount={postsCount} myPosts={myPosts}/>
+            <DangolBar id={id} isDangol={isDangol} dangolCount={dangolCount} isSelf={isSelf} postsCount={postsCount} myPosts={myPosts} myWallet={myWallet} wallets={wallets}/>
 
             </View>
         </View>

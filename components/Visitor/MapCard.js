@@ -2,9 +2,9 @@ import * as React from "react";
 import { StyleSheet, View, Image, Text, ImageBackground, } from "react-native";
 import constants from "../../constants";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
-import { Caption } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import DangolBar from "../Custom/DangolBar";
+import Caption from "../Custom/Caption";
 
 const WIDTH = constants.width - 20;
 const CARD_WIDTH = constants.width * 0.7;
@@ -21,16 +21,16 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent:"space-between",
-        padding:10
+        padding:10,
     },
     headerTitle:{
         maxWidth: WIDTH * 0.6,
         fontWeight:"500",
         fontSize:16,
-        color:'rgba(0, 0, 0, .7)',
+        color:"white"
     },
     sector:{
-        color:'#666',
+        color:'rgba(255, 255, 255, .7)',
         fontSize:12,
     },
     menuContainer:{
@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
     menuName:{
         fontSize:14,
         marginVertical:3,
+        color:"white"
     },
     priceBox:{
         flexDirection:"row",
@@ -56,14 +57,17 @@ const styles = StyleSheet.create({
         padding:5,
         justifyContent:"space-between",
         paddingBottom:0,
+        color:"white"
     },
     fullPrice:{
         textDecorationLine:"line-through",
         justifyContent:"flex-start",
         fontSize:14,
+        color:"white"
     },
     salePrice:{
         fontSize:14,
+        color:"white"
     },
     
     //가게 단골 정보
@@ -78,47 +82,21 @@ const styles = StyleSheet.create({
     },
     cardInfoText:{
         fontSize:12,
-        color:"rgba(0, 0, 0, .9)",
+        color:"rgba(255, 255, 255, .9)",
         paddingLeft:5,
     },
     cardInfoNum:{
-        color:"rgba(0, 0, 0, .4)",
+        color:"rgba(255, 255, 255, .4)",
         fontSize:13,
         paddingLeft:5,
         marginTop:5
     },
-
-    //단골 버튼
-    logoRow:{
-        flexDirection:"row",
-        alignItems:"center",
-        marginLeft:"auto",
-        marginRight:5,
-    },
-    dangolLogo:{
-        width:10,
-        resizeMode:"contain",
-        marginRight:5,
-        opacity: .9,
-    },
-    dangolLogo_checked:{
-        width:10,
-        resizeMode:"contain",
-        marginRight:5,
-        opacity: .4,
-    },
-    logoText:{
-        color:"rgba(0, 0, 0, .9)",
-        fontSize:13
-    },
-    logoText_checked:{
-        color:"rgba(0, 0, 0, .4)",
-        fontSize:13
-    },
 })
 
 // 내 정보 중 단골 업체 정보와 해당 업체의 단골/ 포스팅 수 + 내 포스팅 수 + 좋아요 수 + 적립 포인트
-export default ({ id, profileName, sector, mainImage, menuName, menuImage, fullPrice, salePrice, isDangol, dangolCount, isSelf, postsCount, submenus }) => {
+export default ({ profile, firstDate, lastDate }) => {
+    const { id, profileName, sector, mainImage, menuName, menuImage, fullPrice, salePrice, isDangol, dangolCount, isSelf, postsCount, submenus, myPosts, myWallet, wallets} = profile
+    
     const navigation = useNavigation();
     return (
         <ImageBackground 
@@ -126,6 +104,7 @@ export default ({ id, profileName, sector, mainImage, menuName, menuImage, fullP
             style={styles.cardImage}
             resizeMode="cover"
         >
+        <View style={{position:"absolute", left:0, top:0, width:'100%', height:"100%", backgroundColor:"rgba(0, 0, 0, .4)"}}/>
         <View style={styles.box}>
             {/* 헤더 */}
             <View style={styles.header}>
@@ -138,7 +117,6 @@ export default ({ id, profileName, sector, mainImage, menuName, menuImage, fullP
                     }})}>
                     <Text style={styles.headerTitle} numberOfLines={1} ellipsizeMode={"middle"}>{profileName}<Text style={styles.sector}>  {sector}</Text></Text>
                 </TouchableOpacity>
-                <Caption style={{fontSize:12}}>7/15 - 7/21</Caption>
             </View>
         
             {/* 메뉴 스크롤*/}
@@ -168,7 +146,7 @@ export default ({ id, profileName, sector, mainImage, menuName, menuImage, fullP
             </View>
             
             <View style={{flex:1}}>
-                <DangolBar id={id} isDangol={isDangol} dangolCount={dangolCount} isSelf={isSelf} postsCount={postsCount} />
+                <DangolBar id={id} isDangol={isDangol} dangolCount={dangolCount} isSelf={isSelf} postsCount={postsCount} myPosts={myPosts} mapCard={true} myWallet={myWallet} wallets={wallets}/>
             </View>
         </View>
     </ImageBackground>

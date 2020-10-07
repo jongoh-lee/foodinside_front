@@ -1,19 +1,30 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, Animated, Image, TouchableOpacity, Platform,} from "react-native";
+import { StyleSheet, Text, View, Animated, Image, TouchableOpacity, Platform, ActivityIndicator} from "react-native";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
-
-import { markers, profile } from '../../components/Franchise/data';
 import constants from '../../constants';
 import MapCard from '../../components/Visitor/MapCard';
+import { useQuery } from '@apollo/react-hooks';
+import { SHOP_ON_SALE } from './VisitorQueries';
+import ScreenLoader from '../../components/Custom/ScreenLoader';
+import { useLogOut } from '../../AuthContext';
 
 const CARD_HEIGHT = 250;
 const CARD_WIDTH = constants.width * 0.8;
 const SPACING_FOR_CARD_INSET = constants.width * 0.1 - 10;
 
 export default () => {
-
+  let now = new Date()
+  let mm = now.getMonth() + 1;
+  let dd = now.getDate();
+  const today = `${[now.getFullYear(), (mm>9 ? '' : '0') + mm, (dd>9 ? '' : '0') + dd].join('-')}`
+  const { data, loading, error } = useQuery(SHOP_ON_SALE,{
+    variables:{
+      dateInput: today
+    },
+    fetchPolicy:"network-only"
+  });
+  // data > data.onSaleShop 
   const initialMapState = {
-    markers,
     region: {
         latitude:37.537140,
         longitude:126.988484,
@@ -31,8 +42,8 @@ export default () => {
   React.useEffect(() => {
     mapAnimation.addListener(({ value }) => {
       let index = Math.floor(value / CARD_WIDTH + 0.3); // animate 30% away from landing on the next item
-      if (index >= state.markers.length) {
-        index = state.markers.length - 1;
+      if (index >= data?.shopOnSale.length) {
+        index = data?.shopOnSale.length - 1;
       }
       if (index <= 0) {
         index = 0;
@@ -43,9 +54,9 @@ export default () => {
       const regionTimeout = setTimeout(() => {
         if( mapIndex !== index ) {
           mapIndex = index;
-          const { coordinate } = state.markers[index];
-          let latitude = coordinate.latitude - 0.0015
-          let longitude = coordinate.longitude
+          const { owner } = data?.shopOnSale[index];
+          let latitude = owner.latitude - 0.0015
+          let longitude = owner.longitude
           _map.current.animateToRegion(
             {
               latitude:latitude,
@@ -60,7 +71,7 @@ export default () => {
     });
   });
 
-  const interpolations = state.markers.map((marker, index) => {
+  const interpolations = data?.shopOnSale.map((marker, index) => {
     const inputRange = [
       (index - 1) * CARD_WIDTH,
       index * CARD_WIDTH,
@@ -93,6 +104,7 @@ export default () => {
   },[])
   return (
     <View style={styles.container}>
+      {loading ? <ScreenLoader/> : null}
       <MapView
         ref={_map}
         initialRegion={state.region}
@@ -100,7 +112,7 @@ export default () => {
         style={styles.container}
         moveOnMarkerPress={false}
       >
-        {state.markers.map((marker, index) => {
+        {data ? data?.shopOnSale.map((shop, index) => {
           const scaleStyle = {
             transform: [
               {
@@ -109,7 +121,7 @@ export default () => {
             ],
           };
           return (
-            <MapView.Marker key={index} coordinate={{longitude:marker.coordinate.longitude, latitude: marker.coordinate.latitude}} onPress={(e)=>onMarkerPress(e)}>
+            <MapView.Marker key={index} coordinate={{longitude:shop.owner.longitude, latitude: shop.owner.latitude}} onPress={(e)=>onMarkerPress(e)}>
               <Animated.View style={[styles.markerWrap]}>
                 <Animated.Image
                   source={require('../../assets/Icons/mapMarker2.png')}
@@ -119,7 +131,7 @@ export default () => {
               </Animated.View>
             </MapView.Marker>
           );
-        })}
+        }) : null}
       </MapView>
       <Animated.ScrollView
         ref={_scrollView}
@@ -152,56 +164,11 @@ export default () => {
           {useNativeDriver: true}
         )}
       >
-        <View style={styles.card} key={0}>
-          <MapCard {...profile}/>
-        </View>
-
-        <View style={styles.card} key={1}>
-          <MapCard {...profile}/>
-        </View>
-
-        <View style={styles.card} key={2}>
-          <MapCard {...profile}/>
-        </View>
-
-        <View style={styles.card} key={3}>
-          <MapCard {...profile}/>
-        </View>
-
-        <View style={styles.card} key={4}>
-          <MapCard {...profile}/>
-        </View>
-        
-        {/* data query 이후 mapping할 리스트 입니다. 
-
-        {state.markers.map((marker, index) =>(
+        {data ? data?.shopOnSale?.map((booking, index) =>(
           <View style={styles.card} key={index}>
-            <Image 
-              source={{uri: marker.image}}
-              style={styles.cardImage}
-              resizeMode="cover"
-            />
-            <View style={styles.textContent}>
-              <Text numberOfLines={1} style={styles.cardtitle}>{marker.profileName}</Text>
-              <Text numberOfLines={1} style={styles.cardDescription}>{marker.description}</Text>
-              <View style={styles.button}>
-                <TouchableOpacity
-                  onPress={() => {}}
-                  style={[styles.signIn, {
-                    borderColor: '#05e6f4',
-                    borderWidth: 1
-                  }]}
-                >
-                  <Text style={[styles.textSign, {
-                    color: '#05e6f4'
-                  }]}>업체 정보</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        ))}
-
-        */}
+            <MapCard {...booking}/>
+          </View>)
+        ) : null}
 
       </Animated.ScrollView>
     </View>
