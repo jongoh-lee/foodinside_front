@@ -2,6 +2,8 @@ import { HttpLink } from "apollo-link-http";
 import { setContext } from "apollo-link-context";
 import AsyncStorage from "@react-native-community/async-storage";
 
+console.log(process.env.NODE_ENV)
+
 const authLink = setContext(async (_, { headers }) => {
   const token = await AsyncStorage.getItem("jwt");
   console.log("--> request update -->", token);
@@ -14,7 +16,10 @@ const authLink = setContext(async (_, { headers }) => {
 });
 
 const link = new HttpLink({
-  uri: "http://172.30.1.11:4000"
+  uri: process.env.NODE_ENV === "development" 
+  ? "http://172.30.1.21:4000"
+  : "https://foodinside-backend.herokuapp.com"
+
 });
 
 const options = {
