@@ -139,21 +139,21 @@ export const COMPLETE_SHOP_DESCRIPTION = gql`
         $district: String!
         $description: String!
         $precaution: String!
-        $hashTag: String
+        $hashTags: [String]
     ){
         completeShopDescription(
             shopName: $shopName
             district: $district
             description: $description
             precaution: $precaution
-            hashTag: $hashTag
+            hashTags: $hashTags
         ){
             id
             shopName
             district
             description
             precaution
-            hashTag
+            hashTags
         }
     }
 `;
@@ -389,14 +389,31 @@ export const RESERVATION_LIST = gql`
             totalPrice
             isPaid
             isCancelled
+            prices{
+                id
+                dateString
+            }
             profile{
                 id
                 mainImage
                 profileName
                 mainImage
                 sector
-                
             }
         }
     }
 `;
+
+export const COMPLETE_SHOP_ACCOUNT = gql`
+    mutation completeShopAccount($createAccount: CreateShopAccount, $updateAccount: UpdateShopAccount){
+        completeShopAccount(createAccount: $createAccount, updateAccount: $updateAccount){
+            id
+            account{
+                id
+                bank
+                accountNumber
+                accountHolder
+            }
+        }
+    }
+`

@@ -90,7 +90,6 @@ export default ({ navigation }) => {
             setLoading(false);
         }
     }
-    
     if(_loading) return <Loader />
     if(error) return console.log(error);
     return (
@@ -142,7 +141,7 @@ export default ({ navigation }) => {
                         district : data.myShop.district,
                         description : data.myShop.description,
                         precaution : data.myShop.precaution,
-                        hashTag : data.myShop.hashTag,
+                        hashTags : data.myShop.hashTags,
                     })}
                     disabled={loading}>
                         <View style={styles.buttonRow}>
@@ -200,8 +199,21 @@ export default ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
 
+                <View style={styles.buttonShadow}>
+                    <TouchableOpacity onPress={() => navigation.navigate("계좌 등록",{account: data.myShop.account})} disabled={loading}>
+                        <View style={styles.buttonRow}>
+                            <View style={[styles.buttonCircle, data.myShop.account? {borderColor: 'rgba(5, 230, 244, .6)'} : null]}>
+                                <MaterialIcons name="attach-money" size={34} color={data.myShop.account? "rgba(5, 230, 244, .6)" : "#E0E0E0"} />
+                            </View>
+                            <View style={styles.buttonText}>
+                                <Text style={[styles.text, data.myShop.account? {color: 'rgba(5, 230, 244, .6)'} : null]}>계좌 등록</Text>
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+
                 <View style={{width:WIDTH * .8}}>
-                    <BasicButton text={'내 음식점 보기'} onPress={() => handleMyShop()} loading={loading} disabled={data.myShop.shopImages.length > 3 && data.myShop.facility && data.myShop.scale && data.myShop.description && data.myShop.address && data.myShop.checkIn && data.myShop.refundAgree ? loading : true}/>
+                    <BasicButton text={'내 음식점 보기'} onPress={() => handleMyShop()} loading={loading} disabled={data.myShop.shopImages.length > 3 && data.myShop.facility && data.myShop.scale && data.myShop.description && data.myShop.address && data.myShop.checkIn && data.myShop.refundAgree && data.myShop.account ? loading : true}/>
                 </View>
             </ScrollView>}
         </View>
