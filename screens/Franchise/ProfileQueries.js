@@ -15,6 +15,7 @@ export const COMPLETE_PROFILE = gql`
         $profileName:String!
         $sector:String!
         $token:Int!
+        $contact: String!
         $mainImage:String!
         $foodGuide: String!
         $origin: String!
@@ -29,11 +30,14 @@ export const COMPLETE_PROFILE = gql`
         $editMembers: [EditMember!]
         $deleteMembers: [DeleteMember!]
 
+        $updateAccount: UpdateAccount
+
         $profileState: Int!){
             completeProfile(
                 profileName: $profileName
                 sector: $sector
                 token: $token
+                contact: $contact
                 mainImage: $mainImage
                 foodGuide: $foodGuide
                 origin: $origin
@@ -49,6 +53,7 @@ export const COMPLETE_PROFILE = gql`
                 deleteMembers: $deleteMembers
 
                 profileState: $profileState
+                updateAccount: $updateAccount
             ) {
                 id
                 profileName
@@ -72,6 +77,11 @@ export const COMPLETE_PROFILE = gql`
                     name
                     position
                     career
+                }
+                account{
+                    id
+                    bank
+                    accountNumber
                 }
                 career
                 profileState
@@ -113,7 +123,7 @@ export const MY_FAVORITE = gql`
                 #description
                 shopName
                 district
-                hashTag
+                hashTags
                 #rule
                 minReserve
                 shopImages{
@@ -125,6 +135,7 @@ export const MY_FAVORITE = gql`
                     id
                     dateString
                     priceState
+                    isBooked
                 }
 
             }
@@ -155,7 +166,7 @@ export const SEARCH_SHOP_LIST =gql`
             #description
             shopName
             district
-            hashTag
+            hashTags
             #rule
             minReserve
             shopImages{
@@ -167,6 +178,7 @@ export const SEARCH_SHOP_LIST =gql`
                 id
                 dateString
                 priceState
+                isBooked
             }
         }
     }
@@ -183,6 +195,12 @@ export const PROFILE_CONTACT = gql`
         myProfile{
             id
             contact
+            account{
+                id
+                bank
+                accountNumber
+                accountHolder
+            }
             user{
                 id
                 firstName
@@ -197,22 +215,111 @@ export const BOOKING_SHOP =gql`
         $ownerId: String!
         $firstDate: String!
         $lastDate: String!
-        $dateList: [String!]!
         $totalPrice: String!
         $username: String!
         $contact: String!
+        $prices: [InputPrice!]!
+        $account: CreateAccount
     ){
         bookingShop(
             ownerId: $ownerId
             firstDate: $firstDate
             lastDate: $lastDate
-            dateList: $dateList
             totalPrice: $totalPrice
             username: $username
             contact: $contact
+            prices: $prices
+            account: $account
         ){
             ...OwnerParts
         }
     }
     ${OWNER_FRAGMENT}
+`;
+
+export const BOOKING_LIST = gql`
+    query bookingList($date: String!){
+        bookingList(date: $date){
+            id
+            firstDate
+            lastDate
+            totalPrice
+            isPaid
+            isCancelled
+            refundPrice
+            owner{
+                id
+                shopName
+                district
+                shopImages{
+                    id
+                    type
+                    url
+                }
+            }
+            profile{
+                id
+                contact
+                user{
+                    id
+                    fullName
+                }
+            }
+            prices{
+                id
+                dateString
+                priceState
+            }
+        }
+    }
+`;
+
+export const CANCEL_BOOKING = gql`
+    mutation cancelBooking($ownerId: String!, $bookingId: String!, $refundPrice: String!, $contact: String!, $fullName: String!, $prices: [InputPrice!]! ){
+        cancelBooking(ownerId: $ownerId, bookingId: $bookingId, refundPrice: $refundPrice, contact: $contact, fullName: $fullName, prices: $prices){
+            id
+            firstDate
+            lastDate
+            totalPrice
+            isPaid
+            isCancelled
+            refundPrice
+        }
+    }
+`;
+
+export const BOOKING_LIMIT = gql`
+    query bookingLimit($today: String!, $ownerId: String!){
+        bookingLimit(today: $today, ownerId: $ownerId){
+            id
+            isCancelled
+            prices{
+                id
+                dateString
+            }
+        }
+    }
+`;
+
+export const OPEN_INFO = gql`
+    query openInfo($today: String!, $id: String!){
+        openInfo(today: $today, id: $id){
+            id
+            owner{
+                id
+                longitude
+                latitude
+            }
+            prices{
+                id
+                dateString
+            }
+        }
+    }
+`;
+
+export const CHECK_PROFILE_NAME = gql`
+    query checkProfileName($profileName: String){
+        checkProfileName(profileName:$profileName)
+    }
 `;

@@ -1,12 +1,16 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, Image, SafeAreaView, ActivityIndicator, Alert} from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, Image, ActivityIndicator, Alert} from "react-native";
 import { chats } from "../../components/Visitor/data";
 import { ScrollView } from "react-native-gesture-handler";
-import { Caption } from "react-native-paper";
 import constants from "../../constants";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import { BOOKING_SHOP, MY_PROFILE, PROFILE_CONTACT } from "./ProfileQueries";
 import ScreenLoader from "../../components/Custom/ScreenLoader";
+import Caption from "../../components/Custom/Caption";
+import useInput from "../../hooks/useInput";
+import DropDownPicker from 'react-native-dropdown-picker';
+import ShadowInput from "../../components/Custom/ShadowInput";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const styles = StyleSheet.create({
   container:{
@@ -25,7 +29,7 @@ const styles = StyleSheet.create({
   },
   reserveBox:{
     padding:5,
-    marginLeft:10
+    marginLeft:10,
   },
   //결제 부분
   paymentBox:{
@@ -62,17 +66,24 @@ const styles = StyleSheet.create({
     fontSize:14,
     color:"#e0383e",
   },
+  shadowBox:{
+    margin:5,
+    width:150,
+    height:35,
+  },
 })
 
 export default ({ route, navigation }) => {
   const { id:ownerId, mainImage, shopName, firstDate, lastDate, totalPrice, selectedList, district } = route.params;
-  const [loading, setLoading] = React.useState(false)
+  const [loading, setLoading] = React.useState(false);
+  const [bank, setbank] = React.useState("");
+  const accountNumberInput = useInput("");
   const { data, loading: userLoading} = useQuery(PROFILE_CONTACT,{
     fetchPolicy:"network-only"
   });
   const [bookingShopMutation] = useMutation(BOOKING_SHOP,{
-    refetchQueries:[`seeFullShop`]
-  })
+    refetchQueries: [`bookingLimit`,`myFavorite`, `bookingList`, `myProfile`]
+  });
   const handleBooking = async () =>{
     setLoading(true)
     try{
@@ -81,17 +92,22 @@ export default ({ route, navigation }) => {
           ownerId,
           firstDate,
           lastDate: lastDate? lastDate : firstDate,
-          dateList: Object.keys(selectedList),
+          prices: Object.entries(selectedList).map(([key, value]) => ({ id: value.id, priceState: value.priceState, dateString: key})),
           totalPrice,
           username: data?.myProfile?.user?.lastName +' '+data?.myProfile?.user?.firstName,
           contact: data?.myProfile?.contact,
+          account: data?.myProfile?.account ? null : {
+            bank,
+            accountNumber: String(accountNumberInput.value),
+            accountHolder: data?.myProfile?.user?.lastName +' '+data?.myProfile?.user?.firstName,
+          }
         }
       });
       navigation.goBack();
     }catch(e){
       Alert.alert(
         '알림',
-        `방금 누군가 먼저 예약했습니다.`,[
+        `${e.message}`,[
         { text: '확인', onPress: () => {
           route.params.refetch();
           navigation.goBack();
@@ -104,7 +120,7 @@ export default ({ route, navigation }) => {
   } 
   return (
   <SafeAreaView style={styles.container}>
-    <ScrollView contentContainerStyle={{paddingHorizontal:15, paddingBottom:40}} showsVerticalScrollIndicator={false}>
+    <ScrollView contentContainerStyle={{paddingHorizontal:15, paddingBottom:60}} showsVerticalScrollIndicator={false}>
     {loading ? <ScreenLoader/> : null }
       <View style={styles.box}>
         <Text style={styles.title}>{shopName} in {district}</Text>
@@ -126,9 +142,9 @@ export default ({ route, navigation }) => {
               <Text>{lastDate? lastDate.replace(/-/gi, '/') : firstDate?.replace(/-/gi, '/')}</Text>
             </View>
 
-            <View style={styles.reserveBox}>
+            <View style={[styles.reserveBox, {paddingBottom:0}]}>
               <Caption>결제 금액</Caption>
-              <Text style={{fontSize:16, fontWeight:"bold"}}>{totalPrice}</Text>
+              <Text style={{fontSize:18, fontWeight:"bold"}}>{totalPrice}</Text>
             </View>
 
           </View>
@@ -140,18 +156,107 @@ export default ({ route, navigation }) => {
 
         <View style={styles.paymentBox}>
           <Text style={styles.paymentTitle}>성함: </Text>
-          <Text style={styles.paymentInfo}>{userLoading? <View style={{width:constants.width * 0.4, padding:7, backgroundColor:"#E0E0E0", borderRadius:5,}}/> : data?.myProfile?.user?.lastName +' '+data?.myProfile?.user?.firstName}</Text>
+          {userLoading? <View style={{width:constants.width * 0.4, padding:7, backgroundColor:"#E0E0E0", borderRadius:5,}}/> : <Text style={styles.paymentInfo}>{data?.myProfile?.user?.lastName +' '+data?.myProfile?.user?.firstName}</Text>}
         </View>
 
         <View style={styles.paymentBox}>
           <Text style={styles.paymentTitle}>연락처: </Text>
-          <Text style={styles.paymentInfo}>{userLoading? <View style={{width:constants.width * 0.4, padding:7, backgroundColor:"#E0E0E0", borderRadius:5,}}/> : data?.myProfile?.contact}</Text>
+          {userLoading? <View style={{width:constants.width * 0.4, padding:7, backgroundColor:"#E0E0E0", borderRadius:5,}}/> : <Text style={styles.paymentInfo}>{data?.myProfile?.contact}</Text>}
         </View>
 
         <View style={styles.paymentBox}>
           <Text style={styles.paymentTitle}>입금 마감일: </Text>
-          <Text style={styles.paymentInfo}>금일 23시 59분 59초 까지</Text>
+          <Text style={styles.paymentInfo}>금일 23시 59분 까지</Text>
         </View>
+
+      </View>
+
+      <View style={[styles.box, {zIndex:10}]}>
+      <Text style={styles.title}>판매수익 입금계좌</Text>
+
+        <View style={styles.paymentBox}>
+          <Text style={styles.paymentTitle}>예금주: </Text>
+          {userLoading? <View style={{width:constants.width * 0.4, padding:7, backgroundColor:"#E0E0E0", borderRadius:5,}}/> : <Text style={styles.paymentInfo}>{data?.myProfile?.user?.lastName +' '+data?.myProfile?.user?.firstName}</Text>}
+        </View>
+
+        {userLoading ? null : data?.myProfile.account ? 
+        <>
+          <View style={styles.paymentBox}>
+            <Text style={styles.paymentTitle}>은행명: </Text>
+            {userLoading? <View style={{width:constants.width * 0.4, padding:7, backgroundColor:"#E0E0E0", borderRadius:5,}}/> : <Text style={styles.paymentInfo}>{data?.myProfile?.account.bank}</Text>}
+          </View>
+
+          <View style={styles.paymentBox}>
+            <Text style={styles.paymentTitle}>계좌 번호: </Text>
+            {userLoading? <View style={{width:constants.width * 0.4, padding:7, backgroundColor:"#E0E0E0", borderRadius:5,}}/> : <Text style={styles.paymentInfo}>{data?.myProfile?.account.accountNumber}</Text>}
+          </View>
+        </> : 
+        <>
+          <View style={{flexDirection:"row", alignItems:"center"}}>
+            <Text style={styles.paymentTitle}>입금 계좌: </Text>
+            <DropDownPicker
+                placeholder={'은행'}
+                defaultValue={bank}
+                disabled={loading}
+                items={[
+                    {label: '카카오뱅크', value: '카카오뱅크'},
+                    {label: '케이뱅크', value: '케이뱅크'},
+                    {label: '기업은행', value: '기업은행'},
+                    {label: '국민은행', value: '국민은행'},
+                    {label: '우리은행', value: '우리은행'},
+                    {label: '신한은행', value: '신한은행'},
+                    {label: '하나은행', value: '하나은행'},
+                    {label: '농협은행', value: '농협은행'},
+                    {label: '지역농축협', value: '지역농축협'},
+                    {label: 'SC은행', value: 'SC은행'},
+                    {label: '한국씨티은행', value: '한국씨티은행'},
+                    {label: '우체국', value: '우체국'},
+                    {label: '경남은행', value: '경남은행'},
+                    {label: '광주은행', value: '광주은행'},
+                    {label: '대구은행', value: '대구은행'},
+                    {label: '도이치', value: '도이치'},
+                    {label: '부산은행', value: '부산은행'},
+                    {label: '산림조합', value: '산림조합'},
+                    {label: '산업은행', value: '산업은행'},
+                    {label: '저축은행', value: '저축은행'},
+                    {label: '새마을금고', value: '새마을금고'},
+                    {label: '수협', value: '수협'},
+                    {label: '신협', value: '신협'},
+                    {label: '전북은행', value: '전북은행'},
+                    {label: '제주은행', value: '제주은행'},
+                    {label: 'BOA', value: 'BOA'},
+                    {label: 'HSBC', value: 'HSBC'},
+                    {label: 'JP모간', value: 'JP모간'},
+                    {label: '중국공산은행', value: '중국공산은행'},
+                    {label: '비엔피파리바은행', value: '비엔피파리바은행'},
+                    {label: '중국건설은행', value: '중국건설은행'},
+                    {label: '국세', value: '국세'},
+                    {label: '지방세입', value: '지방세입'},
+                ]}
+                onChangeItem={item => setbank(item.value)}
+                dropDownStyle={{backgroundColor: '#ffffff'}}
+                containerStyle={[styles.shadowBox, {width:100}]}
+                style={{
+                  borderTopLeftRadius: 10, borderTopRightRadius: 10,
+                  borderBottomLeftRadius: 10, borderBottomRightRadius: 10,
+                  borderWidth:0,
+                  shadowOffset: {
+                    width: 0,
+                    height: 1,
+                  },
+                  shadowOpacity: 0.20,
+                  shadowRadius: 1.41,
+                  elevation: 2,
+              }}
+              contentContainerStyle={{backgroundColor: '#ffffff'}}
+              itemStyle={{
+                  justifyContent: 'flex-start',
+              }}
+            />
+            <ShadowInput {...accountNumberInput} placeholder={'입금 계좌'} width={'45%'} editable={!loading} padding={8} textAlign={'left'} editable={!loading} keyboardType={"number-pad"}/>
+          </View>
+        </>
+        }
 
       </View>
 
@@ -208,9 +313,10 @@ export default ({ route, navigation }) => {
       </View>
 
     </ScrollView>
-      
-    <TouchableOpacity onPress={handleBooking} style={{position:"absolute", bottom:0, left:0, right:0, justifyContent:"center", alignItems:"center", padding:20, backgroundColor:"rgb(5, 230, 244)"}} disabled={loading || userLoading}>
-      <Text style={{color:"#ffffff", fontWeight:"bold"}}>약관 동의 및 예약하기</Text>
-    </TouchableOpacity>
+    <View>
+      <TouchableOpacity onPress={() => handleBooking()} style={{position:"absolute", bottom:0, left:0, right:0, justifyContent:"center", alignItems:"center", padding:20, backgroundColor:"rgb(5, 230, 244)"}} disabled={loading || userLoading}>
+        <Text style={{color:"#ffffff", fontWeight:"bold"}}>약관 동의 및 예약하기</Text>
+      </TouchableOpacity>
+    </View>  
   </SafeAreaView>
 )};

@@ -22,7 +22,7 @@ export const OWNER_FRAGMENT = gql`
     district
     description
     precaution
-    hashTag
+    hashTags
     #rule
     checkIn
     checkOut
@@ -39,6 +39,12 @@ export const OWNER_FRAGMENT = gql`
       dateString
       priceState
       isBooked
+    }
+    account{
+      id
+      bank
+      accountHolder
+      accountNumber
     }
     facility{
         id
@@ -207,6 +213,22 @@ export const PROFILE_FRAGMENT = gql`
     origin
     isDangol
     dangolCount
+    wallets{
+      id
+      incoming
+      outgoing
+    }
+    myWallet{
+      id
+      incoming
+      outgoing
+    }
+    account{
+      id
+      bank
+      accountNumber
+      accountHolder
+    }
     founderImage
     submenus{
         id
@@ -249,6 +271,7 @@ export const PROFILE_FRAGMENT = gql`
       }
       profile{
         id
+        token
       }
     }
   }
@@ -261,6 +284,7 @@ export const USER_FRAGMENT = gql`
     avatar
     username
     email
+    contact
     firstName
     lastName
     dangolCount
@@ -268,6 +292,11 @@ export const USER_FRAGMENT = gql`
     followersCount
     isFollowing
     postsCount
+    wallets{
+      id
+      incoming
+      outgoing
+    }
     posts{
       id
       tasting
@@ -286,6 +315,7 @@ export const USER_FRAGMENT = gql`
       }
       profile{
         id
+        token
       }
     }
   }
@@ -310,6 +340,7 @@ export const POST_FRAGMENT = gql`
     }
     profile{
       id
+      token
     }
   }
 `;

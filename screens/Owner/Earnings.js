@@ -5,6 +5,7 @@ import { TouchableOpacity, TouchableWithoutFeedback } from "react-native-gesture
 import GetTotalPrice from "../../components/Owner/GetTotalPrice";
 import { Caption } from "react-native-paper";
 import constants from "../../constants";
+import Account from "../../components/Owner/Account";
 
 const styles = StyleSheet.create({
   container:{
@@ -51,13 +52,6 @@ const styles = StyleSheet.create({
     marginBottom:20,
     color:"rgba(0, 0, 0, .5)"
   },
-  accountText:{
-    textDecorationLine:"underline",
-    position:"absolute",
-    bottom:50,
-    justifyContent:"center",
-    color:"#666"
-  },
 
   //새로운 소식
   newsBox:{
@@ -80,6 +74,7 @@ const styles = StyleSheet.create({
   //하단 빈공간
   empty:{
     flex:2,
+    alignItems:"center"
   }
 })
 
@@ -122,7 +117,6 @@ export default () => {
       <View style={styles.earningBox}>
         <Text style={styles.earningTitle}>수익 합계</Text>
         <GetTotalPrice year={year} month={month}/>
-        <Text style={styles.accountText}>계좌 등록</Text>
       </View>
 
       {/* 새로운 소식 숨김
@@ -139,7 +133,9 @@ export default () => {
       </View>
       */}
 
-      <View style={styles.empty}/>
+      <View style={styles.empty}>
+        {/* <Account/> */}
+      </View>
     </View>
   )
 }

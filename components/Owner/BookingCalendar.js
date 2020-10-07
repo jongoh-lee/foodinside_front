@@ -2,9 +2,11 @@ import * as React from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { LocaleConfig, CalendarList } from "react-native-calendars";
 import BookingDayComponent from "./BookingDayComponent";
-import { Caption } from "react-native-paper";
 import constants from "../../constants";
 import { useNavigation } from "@react-navigation/native";
+import { useQuery } from "@apollo/react-hooks";
+import { BOOKING_LIMIT } from "../../screens/Franchise/ProfileQueries";
+import ScreenLoader from "../Custom/ScreenLoader";
 
 LocaleConfig.locales['fr'] = {
   monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
@@ -17,9 +19,24 @@ LocaleConfig.defaultLocale = 'fr';
 
 
 const Calendar = ({ id, calendarHeight,  franchiseState, isSelf, calendar, mainImage, shopName, district, minReserve, refetch}) => {
+    let now = new Date()
+    let mm = now.getMonth() + 1;
+    let dd = now.getDate();
+    const today = `${[now.getFullYear(), (mm>9 ? '' : '0') + mm, (dd>9 ? '' : '0') + dd].join('')}`
+    const todayVariable = `${[now.getFullYear(), (mm>9 ? '' : '0') + mm, (dd>9 ? '' : '0') + '01'].join('-')}`
+    const [bookings, setBookings] = React.useState([]);
+    const [remainsDate, setRemainsDate] = React.useState();
+    const { data, error, loading } = useQuery(BOOKING_LIMIT,{
+      variables: {
+        today: todayVariable,
+        ownerId: id
+      },
+      fetchPolicy:"network-only"
+    });
+
     const [selectedList, setSelectedList] = React.useState({});
-    const [firstDate, setFirstDate] = React.useState(null);
-    const [lastDate, setLastDate] = React.useState(null);
+    const [firstDate, setFirstDate] = React.useState('');
+    const [lastDate, setLastDate] = React.useState('');
     const [totalPrice, setTotalPrice] = React.useState(0);
     const navigation = useNavigation();
     const [alert, setAlert] = React.useState('');
@@ -32,11 +49,6 @@ const Calendar = ({ id, calendarHeight,  franchiseState, isSelf, calendar, mainI
       }, {}
     );
     
-    let now = new Date()
-    let mm = now.getMonth() + 1;
-    let dd = now.getDate();
-    const today = `${[now.getFullYear(), (mm>9 ? '' : '0') + mm, (dd>9 ? '' : '0') + dd].join('')}`
-
     //날짜 사이 날짜 리스트
 
     Date.prototype.addDays = function(days) {
@@ -55,11 +67,32 @@ const Calendar = ({ id, calendarHeight,  franchiseState, isSelf, calendar, mainI
       return dateArray;
     }
 
+    const mergeDate = date => {
+      const result = {}; //(1)
+    
+      date.forEach(basket => { //(2)
+        for (let [key, value] of Object.entries(basket)) { //(3)
+          if (result[key]) { //(4)
+            result[key] += value; //(5)
+          } else { //(6)
+            result[key] = value;
+          }
+        }
+      });
+      return result; //(7)
+    };
+
     const onFranchisePress = (date, marking) => {
       //유저가 음식점 주인 또는 프로필이 없는 경우 아무것도 하지 않습니다.
       if(franchiseState !== 3 || isSelf) {
           return null
       }else{
+        //예약 가능 날짜 구하기
+        const selectedMonth = date.dateString.slice(0,7);
+        const reservedDates = bookings[selectedMonth]
+        
+        setRemainsDate(7 - (reservedDates ? reservedDates : 0));
+
         //리스트에 아무것도 없을 경우 그 날짜를 추가 합니다.
         if(Object.keys(selectedList).length == 0){
           setSelectedList({[date.dateString] : {id: marking.id, priceState:marking.priceState, active:true}});
@@ -94,36 +127,43 @@ const Calendar = ({ id, calendarHeight,  franchiseState, isSelf, calendar, mainI
 
                 const updateList = selected.reduce(
                   (emptyObject, date) => {
-                    if(markedDates[date]?.priceState !== 'self' && markedDates[date]?.isBooked !== true){
+                    if(markedDates[date]?.id &&  markedDates[date]?.priceState !== 'self' && markedDates[date]?.isBooked !== true){
                       emptyObject[date] = {id: markedDates[date].id, priceState: markedDates[date].priceState, active:true};
                     }
                     return emptyObject
                   }, {}
                 );
                 const updateDateArray = Object.keys(updateList);
+
+                //입점 제한을 위한 예약일 계산
+                const monthListArray = updateDateArray.map(el => el.slice(0, 7));
+                const monthNumberObject = monthListArray.reduce((monthNum, month) => { if (monthNum[month]) { monthNum[month]++ } else { monthNum[month] = 1 } return monthNum }, {});
+                const result = mergeDate([bookings, monthNumberObject]);
+                
                 //리스트가 8보다 작은 경우
-                if(updateDateArray.length < 8 && updateDateArray.length >= minReserve){
-                  let priceStates = Object.values(updateList).map( el => el.priceState);
-                  let totalPrice = priceStates.map(el => parseInt(el)).reduce((a, b) => a + b, 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                  
-                  setFirstDate(selected[0]);
-                  setLastDate(selected[selected.length -1]);
-                  setTotalPrice(totalPrice);
-                  setSelectedList(updateList);
-                  setAlert("")
-                }else if(dupdateDateArray.length > 7){
-                  setSelectedList({});
-                  setFirstDate(null);
-                  setLastDate(null);
-                  setTotalPrice(0);
-                  setAlert("최대 7일까지 영업 가능 합니다")
-                }else if(updateDateArray.length < minReserve){
-                  setSelectedList({});
-                  setFirstDate(null);
-                  setLastDate(null);
-                  setTotalPrice(0);
-                  setAlert(`최소 ${minReserve}일부터 영업 가능 합니다`)
-                }
+
+                  if(Object.values(result).filter(bookings => bookings > 7).length <= 0 && updateDateArray.length >= minReserve){
+                    let priceStates = Object.values(updateList).map( el => el.priceState);
+                    let totalPrice = priceStates.map(el => parseInt(el)).reduce((a, b) => a + b, 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+                    setFirstDate(selected[0]);
+                    setLastDate(selected[selected.length -1]);
+                    setTotalPrice(totalPrice);
+                    setSelectedList(updateList);
+                    setAlert("")
+                  }else if(Object.values(result).filter(bookings => bookings > 7).length > 0){
+                    setSelectedList({});
+                    setFirstDate(null);
+                    setLastDate(null);
+                    setTotalPrice(0);
+                    setAlert("매월 최대 7일까지 영업 가능 합니다")
+                  }else if(updateDateArray.length < minReserve){
+                    setSelectedList({});
+                    setFirstDate(null);
+                    setLastDate(null);
+                    setTotalPrice(0);
+                    setAlert(`최소 ${minReserve}일부터 영업 가능 합니다`)
+                  }
             }
         }else{
           //리스트가 다 찬 상태에서 새로운 날짜를 선택한 경우
@@ -134,10 +174,23 @@ const Calendar = ({ id, calendarHeight,  franchiseState, isSelf, calendar, mainI
         }
       }
     }
-    
+    React.useEffect(() => {
+      let bookedDates = data?.bookingLimit?.filter(el => el.isCancelled !== true);
+      if(bookedDates?.length > 0){
+        let _dateList = []
+        bookedDates.map(el => (el.prices.map(el => _dateList.push(el.dateString))))
+        
+        // 선택된 리스트 중 각 월별 날짜가 포함된 횟수
+        const monthListArray = _dateList.map(el => el.slice(0, 7));
+        const monthNumberObject = monthListArray.reduce((monthNum, month) => { if (monthNum[month]) { monthNum[month]++ } else { monthNum[month] = 1 } return monthNum }, {});
+        setBookings(monthNumberObject)
+      }
+
+    },[data]);
 
   return (
     <View>
+      {loading ? <ScreenLoader /> : null}
       <CalendarList 
       // 디자인
       monthFormat={`${'yyyy년'}  ${'MM월'}`}
@@ -156,7 +209,7 @@ const Calendar = ({ id, calendarHeight,  franchiseState, isSelf, calendar, mainI
       //달력 값
       minDate={today.dateString}
       pastScrollRange={1}
-      futureScrollRange={1}
+      futureScrollRange={2}
       markingType={'period'}
       markedDates={{...markedDates, ...selectedList}}
 
@@ -166,7 +219,9 @@ const Calendar = ({ id, calendarHeight,  franchiseState, isSelf, calendar, mainI
       {isSelf === false && (
         <View style={{position:"absolute", bottom:10, right:15, left:15, justifyContent:"space-between", flexDirection:"row", alignItems:"center"}}>
           <View>
-              <Caption>{alert? alert : firstDate && firstDate.replace(/-/gi, '/')}{lastDate && ' - ' + lastDate.replace(/-/gi, '/')}</Caption>
+              {alert ? <Text style={{color:"#666", fontSize:12}}>{alert}</Text> : (
+                <Text style={{color:"#666", fontSize:12}}>{firstDate && firstDate.replace(/-/gi, '/')}{lastDate && ' - ' + lastDate.replace(/-/gi, '/')}</Text>
+              )}
               <Text style={{color:"black", fontWeight:"bold", fontSize:16}}>합계: {totalPrice}</Text>
           </View>
           <TouchableOpacity disabled={franchiseState === 3 && totalPrice !== 0 && Object.keys(selectedList).length >= minReserve? false : true} onPress={() => {
@@ -187,7 +242,8 @@ const Calendar = ({ id, calendarHeight,  franchiseState, isSelf, calendar, mainI
             setTotalPrice(0);
             setAlert("")
           }}>
-            <View style={franchiseState === 3 && totalPrice !== 0 ? {padding:10, borderRadius:10, backgroundColor:"#05e6f4"} : {padding:10, borderRadius:10, backgroundColor:"rgba(5, 230, 244, .3)"}}>
+            <View style={franchiseState === 3 && totalPrice !== 0 && Object.keys(selectedList).length >= minReserve? {padding: 5, borderRadius:10, backgroundColor:"#05e6f4"} : {padding: 5, borderRadius:10, backgroundColor:"rgba(5, 230, 244, .3)"}}>
+              {Object.keys(selectedList).length > 0 ? <Text style={{color:'red', fontSize:10, position:"absolute", top: -15, left:0, right:0, textAlign:"center"}}>{remainsDate}일 입점 가능 </Text> : null}
               <Text style={{color:"#ffffff", fontWeight:"bold", fontSize:16}}>입점 하기</Text>
             </View>
           </TouchableOpacity>
