@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, View, Text, KeyboardAvoidingView, Platform } from "react-native";
+import { StyleSheet, View, Text, KeyboardAvoidingView, Platform, SafeAreaView } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import AuthInput from '../../components/Custom/AuthInput';
@@ -40,15 +40,7 @@ export default ({ route, navigation }) => {
     }
   }, [value])
   return(
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>회원 가입하기(1/4단계)</Text>
-
-        <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
-          <MaterialCommunityIcons name="chevron-left" size={30} color="#666" />
-        </TouchableWithoutFeedback>
-      </View>
-
+    <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView 
       behavior={Platform.OS === "ios" ? "padding" : null}
       style={styles.inner}
@@ -60,13 +52,13 @@ export default ({ route, navigation }) => {
           <Text style={styles.text}>자주 사용하는 이메일을 입력해 주세요</Text>
     
           <AuthInput {...emailInput} placeholder="이메일을 입력하세요" keyboardType="email-address" autoFocus={true} editable={!loading}/>
-          {value?.length < 3 || !value ? <Text  style={{fontSize:10}} /> : data?.checkEmail ? <Text style={{fontSize:10, color:"green", paddingLeft:5}}>{"사용 가능한 이메일 입니다"}</Text> : <Text style={{fontSize:10, color:"red", paddingLeft:5}}>{"사용할 수 없는 이메일 입니다"}</Text>}
+          {loadingProp? <Text  style={{fontSize:10}} /> : value?.length < 3 || !value ? <Text  style={{fontSize:10}} /> : data?.checkEmail ? <Text style={{fontSize:10, color:"green", paddingLeft:5}}>{"사용 가능한 이메일 입니다"}</Text> : <Text style={{fontSize:10, color:"red", paddingLeft:5}}>{"사용할 수 없는 이메일 입니다"}</Text>}
 
           <AuthButton text="다음(1/4단계)" onPress={() => handlecheckEmail()} disabled={value?.length > 0 && data?.checkEmail ? loadingProp : true} loading={loading}/>
         </View>
       </DismissKeyboard>
       </KeyboardAvoidingView>
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -74,21 +66,6 @@ const styles = StyleSheet.create({
   container:{
     flex:1,
     backgroundColor:"white"
-  },
-  header:{
-    flexDirection:"row",
-    marginTop:25,
-    paddingVertical:5,
-    borderBottomWidth:1,
-    borderBottomColor:"rgba(0, 0, 0, .1)",
-    alignItems:"center",
-  },
-  headerTitle:{
-    fontSize:16,
-    color:"#666",
-    width:'100%',
-    position:"absolute",
-    textAlign:"center"
   },
   inner:{
     padding:15,

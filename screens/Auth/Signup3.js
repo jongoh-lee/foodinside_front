@@ -9,6 +9,7 @@ import DismissKeyboard from "../../components/Custom/DismissKeyboard";
 import { useMutation } from "@apollo/react-hooks";
 import { CREATE_ACCOUNT } from "./AuthQueries";
 import constants from "../../constants";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default ({ navigation, route }) => {
   const [loading, setLoading] = React.useState(false);
@@ -41,15 +42,7 @@ export default ({ navigation, route }) => {
     }
   }
   return(
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>회원 가입하기(3/4단계)</Text>
-
-        <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
-          <MaterialCommunityIcons name="chevron-left" size={30} color="#666" />
-        </TouchableWithoutFeedback>
-      </View>
-
+    <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView 
       behavior={Platform.OS === "ios" ? "padding" : null}
       style={styles.inner}
@@ -68,7 +61,7 @@ export default ({ navigation, route }) => {
       </View>
       </DismissKeyboard>
       </KeyboardAvoidingView>
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -76,21 +69,6 @@ const styles = StyleSheet.create({
   container:{
     flex:1,
     backgroundColor:"white"
-  },
-  header:{
-    flexDirection:"row",
-    marginTop:25,
-    paddingVertical:5,
-    borderBottomWidth:1,
-    borderBottomColor:"rgba(0, 0, 0, .1)",
-    alignItems:"center",
-  },
-  headerTitle:{
-    fontSize:16,
-    color:"#666",
-    width:'100%',
-    position:"absolute",
-    textAlign:"center"
   },
   inner:{
     padding:15,

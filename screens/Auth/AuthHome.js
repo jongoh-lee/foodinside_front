@@ -40,7 +40,10 @@ export default ({ navigation, route }) => {
     if(email === ""){
       setAlert("")
     }
-    setEmail(route?.params?.email)
+    setEmail(route?.params?.email);
+    if(route){
+      setAlert("")
+    }
   }, [route])
     return (
     <SafeAreaView style={{flex:1, backgroundColor:"white"}}>
