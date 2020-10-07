@@ -6,12 +6,6 @@ import Loader from "../components/Custom/Loader";
 import constants from "../constants";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import BackArrow from "../components/Custom/BackArrow";
-import { YellowBox } from 'react-native';
-
-YellowBox.ignoreWarnings([
-    'Non-serializable values were found in the navigation state',
-  ]);
-  
 
 const styles = StyleSheet.create({
     container:{
@@ -61,10 +55,10 @@ export default ({ navigation, route }) => {
 
     const getPhotos = async () => {
         try{
-            const { assets } = await MediaLibrary.getAssetsAsync();
-            console.log()
-            let _assets = assets.sort((a,b)=>a.creationTime-b.creationTime) 
-            setAllPhotos(_assets);
+            const { assets } = await MediaLibrary.getAssetsAsync({
+                first:100
+            });
+            setAllPhotos(assets);
         } catch (e) {
             console.log('사진 선택 에러:',e);
         } finally {
@@ -92,7 +86,7 @@ export default ({ navigation, route }) => {
 
     navigation.setOptions({
         headerRight:() => (
-            <TouchableOpacity style={styles.select}  onPress={handleSelected} disabled={inactive}>
+            <TouchableOpacity style={styles.select}  onPress={() => handleSelected()} disabled={inactive}>
                 <Text style={styles.selectText}>선택</Text>
            </TouchableOpacity>
         ),
@@ -113,7 +107,7 @@ export default ({ navigation, route }) => {
 
             <View>
               <ScrollView contentContainerStyle={{flexDirection:"row", flexWrap:"wrap"}}>
-                {allPhotos.map(photo => (
+                {allPhotos?.map(photo => (
                 <TouchableWithoutFeedback key={photo.id} onPress={() => merge(photo)}>
                   <ImageBackground
                     key={photo.id}

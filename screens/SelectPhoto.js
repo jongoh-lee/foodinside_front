@@ -5,13 +5,7 @@ import { StyleSheet, View, Image, ScrollView, Text, StatusBar, SafeAreaView, Tou
 import Loader from "../components/Custom/Loader";
 import constants from "../constants";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import BackArrow from "../components/Custom/BackArrow";
-import { YellowBox } from 'react-native';
-
-YellowBox.ignoreWarnings([
-    'Non-serializable values were found in the navigation state',
-  ]);
-  
+import BackArrow from "../components/Custom/BackArrow";  
 
 const styles = StyleSheet.create({
     container:{
@@ -48,8 +42,8 @@ export default ({ navigation, route }) => {
     const [loading, setLoading] = React.useState(true);
     const [inactive, setInactive] = React.useState(false);
     const [hasPermission, setHasPermission] = React.useState(false);
-    const [selected, setSelected] = React.useState();
-    const [allPhotos, setAllPhotos] = React.useState();
+    const [selected, setSelected] = React.useState(null);
+    const [allPhotos, setAllPhotos] = React.useState([]);
     const data = route.params.data? route.params.data : null;
     const changeSelected = photo => {
         setSelected(photo);
@@ -57,10 +51,14 @@ export default ({ navigation, route }) => {
 
     const getPhotos = async () => {
         try{
-            const { assets } = await MediaLibrary.getAssetsAsync();
-            const [firstPhoto] = assets;
-            setSelected(firstPhoto);
-            setAllPhotos(assets);
+            const { assets } = await MediaLibrary.getAssetsAsync({
+                first:100,
+            });
+            if(assets.length > 0){
+                const [firstPhoto] = assets;
+                setSelected(firstPhoto);
+                setAllPhotos(assets);
+            }
         } catch (e) {
             console.log('사진 선택 에러:',e);
         } finally {
@@ -70,7 +68,7 @@ export default ({ navigation, route }) => {
 
     const askPermission = async () => {
         try{
-            const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL)
+            const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
             if(status === "granted"){
                 setHasPermission(true);
                 getPhotos();
@@ -83,8 +81,8 @@ export default ({ navigation, route }) => {
 
     const handleSelected = () => {
         setInactive(true)
-        navigation.goBack({ photo : selected });
         route.params.onSelect({ photo : selected, data: data});
+        navigation.goBack({ photo : selected });
     };
 
     React.useEffect(()=>{
@@ -98,7 +96,7 @@ export default ({ navigation, route }) => {
         <View style={styles.header}>
             <BackArrow />
             <Text style={styles.headerTitle}>최근 항목</Text>
-            <TouchableOpacity style={styles.select}  onPress={handleSelected} disabled={inactive}>
+            <TouchableOpacity style={styles.select}  onPress={() => handleSelected()} disabled={inactive}>
                 <Text style={styles.selectText}>선택</Text>
            </TouchableOpacity>
         </View>
@@ -116,7 +114,7 @@ export default ({ navigation, route }) => {
 
               <ScrollView contentContainerStyle={{flexGrow:1}}>
                 <View style={{flexDirection:"row", flexWrap:"wrap"}}>
-                {allPhotos.map(photo => (
+                {allPhotos?.map(photo => (
                     <TouchableWithoutFeedback key={photo.id} onPress={() => changeSelected(photo)}>
                       <Image
                         key={photo.id}
@@ -124,7 +122,7 @@ export default ({ navigation, route }) => {
                         style={{
                           width: constants.width / 3,
                           height: constants.height / 6,
-                          opacity: photo.id === selected.id ? 0.4 : 1
+                          opacity: photo.id === selected?.id ? 0.4 : 1
                         }}
                       />
                     </TouchableWithoutFeedback>

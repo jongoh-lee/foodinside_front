@@ -6,12 +6,6 @@ import Loader from "../components/Custom/Loader";
 import constants from "../constants";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import BackArrow from "../components/Custom/BackArrow";
-import { YellowBox } from 'react-native';
-
-YellowBox.ignoreWarnings([
-    'Non-serializable values were found in the navigation state',
-  ]);
-  
 
 const styles = StyleSheet.create({
     container:{
@@ -57,10 +51,14 @@ export default ({ navigation, route }) => {
 
     const getPhotos = async () => {
         try{
-            const { assets } = await MediaLibrary.getAssetsAsync();
-            const [firstPhoto] = assets;
-            setSelected(firstPhoto);
-            setAllPhotos(assets);
+            const { assets } = await MediaLibrary.getAssetsAsync({
+                first:100
+            });
+            if(assets.length > 0){
+                const [firstPhoto] = assets;
+                setSelected(firstPhoto);
+                setAllPhotos(assets);
+            }
         } catch (e) {
             console.log('사진 선택 에러:',e);
         } finally {
@@ -98,7 +96,7 @@ export default ({ navigation, route }) => {
         <View style={styles.header}>
             <BackArrow />
             <Text style={styles.headerTitle}>최근 항목</Text>
-            <TouchableOpacity style={styles.select}  onPress={handleSelected} disabled={inactive}>
+            <TouchableOpacity style={styles.select}  onPress={() => handleSelected()} disabled={inactive}>
                 <Text style={styles.selectText}>선택</Text>
            </TouchableOpacity>
         </View>
@@ -111,12 +109,12 @@ export default ({ navigation, route }) => {
             <>
               <Image
                 style={{ width: constants.width, height: constants.height / 4}}
-                source={{ uri: selected.uri }}
+                source={selected? { uri: selected.uri } : null}
               />
 
               <ScrollView contentContainerStyle={{flexGrow:1}}>
                 <View style={{flexDirection:"row", flexWrap:"wrap"}}>
-                {allPhotos.map(photo => (
+                {allPhotos?.map(photo => (
                     <TouchableWithoutFeedback key={photo.id} onPress={() => changeSelected(photo)}>
                       <Image
                         key={photo.id}
