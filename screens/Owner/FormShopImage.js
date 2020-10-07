@@ -81,7 +81,7 @@ export default ({ navigation, route }) => {
                 }
                 const {
                     data: { location : newImageUrls }
-                } = await axios.post("http://172.30.1.35:4000/api/upload", formNewImages, {
+                } = await axios.post("https://foodinside-backend.herokuapp.com/api/upload", formNewImages, {
                     headers: {
                       "content-type": "multipart/form-data"
                     }
@@ -105,7 +105,7 @@ export default ({ navigation, route }) => {
                 }
                 const {
                     data: { location : editImageUrls }
-                } = await axios.post("http://172.30.1.35:4000/api/upload", formEditImages, {
+                } = await axios.post("https://foodinside-backend.herokuapp.com/api/upload", formEditImages, {
                     headers: {
                       "content-type": "multipart/form-data"
                     }
@@ -549,6 +549,8 @@ export default ({ navigation, route }) => {
             <Modal
                 isVisible={editImageModal}
                 onBackdropPress={() => setEditImageModal(false)}
+                onSwipeComplete={() => setEditImageModal(false)}
+                onBackButtonPress={() => setEditImageModal(false)}
                 backdropColor={'#ffffff'}
                 backdropOpacity={.6}
                 animationIn="slideInLeft"

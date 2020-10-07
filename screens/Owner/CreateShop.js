@@ -65,7 +65,7 @@ export default ({ navigation, route }) => {
 
       const {
         data: { location : shopImagesUrl }
-      } = await axios.post("http://172.30.1.11:4000/api/upload", formShopImages, {
+      } = await axios.post("https://foodinside-backend.herokuapp.com/api/upload", formShopImages, {
           headers: {
             "content-type": "multipart/form-data"
           }
@@ -95,7 +95,7 @@ export default ({ navigation, route }) => {
       
       const {
         data: { location }
-      } = await axios.post("http://172.30.1.11:4000/api/upload", formRegistration, {
+      } = await axios.post("https://foodinside-backend.herokuapp.com/api/upload", formRegistration, {
           headers: {
             "content-type": "multipart/form-data"
           }
@@ -129,12 +129,12 @@ export default ({ navigation, route }) => {
   return (
   <SafeAreaView style={styles.container}>
     <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "position" : "height"}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{flex:1, justifyContent:"center"}}
       keyboardVerticalOffset={50}
       enabled
     >
-    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{padding:20}}>
+    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{padding:15}}>
 
       <View style={[styles.textContainer, {marginTop:20}]}>
         <Text style={styles.title}>내 가게가 공유 음식점이 될 수 있나요?</Text>
@@ -164,7 +164,7 @@ export default ({ navigation, route }) => {
       <View style={styles.textContainer}>
        <Text style={styles.title}>사업장 위치를 알려주세요</Text>
       </View>
-      <Text style={styles.warning}>주변 음식점과 함께 신청하면 선정 될 확률이 높습니다</Text> 
+      <Text style={styles.warning}>주변 음식점과 함께 신청할수록 선정 확률이 높아집니다</Text> 
 
       <TouchableWithoutFeedback onPress={() => navigation.navigate("주소 입력")}>
         <View style={styles.addressButton}>
@@ -214,7 +214,7 @@ export default ({ navigation, route }) => {
       
       <ShadowInput {...contactInput} placeholder={"연락처"} keyboardType="numeric" editable={!loading} textAlign={'left'} blurOnSubmit={true}/>
     
-      <BasicButton text={'제출하기'} onPress={handleCreateShop} disabled={exterior && hall && kitchen && registration && route.params?.address && addressDetailInput.value && contactInput.value ? loading : true} loading={loading} />
+      <BasicButton text={'제출하기'} onPress={() => handleCreateShop()} disabled={exterior && hall && kitchen && registration && route.params?.address && addressDetailInput.value && contactInput.value ? loading : true} loading={loading} />
     </ScrollView>
     </KeyboardAvoidingView>
   </SafeAreaView>

@@ -47,7 +47,7 @@ export default ({ navigation, route }) => {
 
       const {
         data: { location }
-      } = await axios.post("http://172.30.1.35:4000/api/upload", formData, {
+      } = await axios.post("https://foodinside-backend.herokuapp.com/api/upload", formData, {
         headers: {
           "content-type": "multipart/form-data"
         }
