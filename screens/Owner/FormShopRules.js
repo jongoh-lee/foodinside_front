@@ -102,7 +102,7 @@ export default ({ route, navigation }) => {
                             <View style={styles.rowBox}>
                                 <Text style={styles.title}>최대 예약일</Text>
                                 <View style={{flexDirection:"row", alignItems:"center"}}>
-                                    <ShadowInput value={"7"} editable={false} padding={5} width={'25%'}  returnKeyType={'done'}/>
+                                    <ShadowInput value={"7"} editable={false} padding={5} width={'25%'} disabled={true} returnKeyType={'done'}/>
                                     <Text style={{color: '#666'}}> 일</Text>
                                 </View>
                             </View>

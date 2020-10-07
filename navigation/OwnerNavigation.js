@@ -32,6 +32,7 @@ import FormShopFacility from '../screens/Owner/FormShopFacility';
 import FormShopScale from '../screens/Owner/FormShopScale';
 import FormShopDescription from '../screens/Owner/FormShopDescription';
 import FormShopAddress from '../screens/Owner/FormShopAddress';
+import FormShopAccount from '../screens/Owner/FormShopAccount';
 import FormShopRefund from '../screens/Owner/FormShopRefund';
 import FormShopRules from '../screens/Owner/FormShopRules';
 import SeeCreateShop from '../screens/Owner/SeeCreateShop';
@@ -200,6 +201,9 @@ export default () => {
         headerTitleStyle:{fontWeight:"bold"}
       }}/>
       <OwnerStack.Screen name='환불 정책' component={FormShopRefund} options={{
+        headerTitleStyle:{fontWeight:"bold"}
+      }}/>
+      <OwnerStack.Screen name='계좌 등록' component={FormShopAccount} options={{
         headerTitleStyle:{fontWeight:"bold"}
       }}/>
     </OwnerStack.Navigator>

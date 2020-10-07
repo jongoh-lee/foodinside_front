@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { StyleSheet, View, Text, ScrollView} from 'react-native';
+import { StyleSheet, View, Text, ScrollView, StatusBar} from 'react-native';
 import Postcode from 'react-native-daum-postcode';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import constants from '../constants';
 
 const styles = StyleSheet.create({
@@ -11,11 +12,18 @@ const styles = StyleSheet.create({
 });
 
 export default ({ navigation }) => {
+    React.useEffect(() => {
+        StatusBar.setHidden(false, 'slide')
+    },[])
     return (
-        <Postcode
-            style={{ width: constants.width, height:'100%'}}
-            jsOptions={{ animated: true }}
-            onSelected={(data) => navigation.navigate("신청 하기", {address: data.roadAddress})}
-        />
+        <>
+        <StatusBar hidden={false} />
+            <Postcode
+                style={{ width: constants.width, height:'100%'}}
+                jsOptions={{ animated: false }}
+                onSelected={(data) => navigation.navigate("신청 하기", {address: data.roadAddress})}
+                onS
+            />
+        </>
     )
 }

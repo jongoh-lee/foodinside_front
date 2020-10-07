@@ -54,7 +54,8 @@ export default ({ year, month }) => {
         fetchPolicy:"network-only"
     });
     
-    const renderItem = ({ item }) => (
+    const renderItem = ({ item }) => {
+        return(
         <View style={styles.header}>
             <View style={styles.headerLeft}>
                 <Image style={styles.mainImage} source={{uri: item.profile.mainImage}} />
@@ -71,7 +72,7 @@ export default ({ year, month }) => {
                 <Text style={styles.headerSubtitle}>{item.totalPrice}</Text>
             </View>
         </View>
-    );
+    )};
 
     const emptyComponent = () => (
         <View style={{flex:1, justifyContent:"center", alignItems:"center"}}>

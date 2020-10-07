@@ -44,7 +44,7 @@ export default ({ navigation, route }) => {
                 keyboardVerticalOffset={50}
                 enabled >
                 <DismissKeyboard>
-                    <ScrollView>
+                    <ScrollView contentContainerStyle={{padding:15}}>
                         <View style={styles.rowBox}>
                             <View style={styles.scaleBox}>
                                 <Text style={styles.scaleTitle}>의자 수</Text>
@@ -74,7 +74,6 @@ const styles = StyleSheet.create({
     container:{
         flex:1,
         backgroundColor:"#ffffff",
-        padding:15
     },
     rowBox:{
         flexDirection:"row",
