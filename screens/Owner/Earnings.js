@@ -5,7 +5,6 @@ import { TouchableOpacity, TouchableWithoutFeedback } from "react-native-gesture
 import GetTotalPrice from "../../components/Owner/GetTotalPrice";
 import { Caption } from "react-native-paper";
 import constants from "../../constants";
-import Account from "../../components/Owner/Account";
 
 const styles = StyleSheet.create({
   container:{
@@ -133,9 +132,7 @@ export default () => {
       </View>
       */}
 
-      <View style={styles.empty}>
-        {/* <Account/> */}
-      </View>
+      <View style={styles.empty} />
     </View>
   )
 }
