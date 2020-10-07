@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   snsBar: {
     flexDirection: "row",
     justifyContent:"flex-end",
-    alignItems:"flex-start"
+    alignItems:"flex-start",
   },
   snsButton: {
     alignItems:"center",
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   },
   tasting: {
     marginLeft: 5,
-    paddingVertical: 10,
+    paddingVertical:5,
   },
   postingTime:{
     paddingBottom:5
@@ -108,27 +108,22 @@ const styles = StyleSheet.create({
 
 export default ({ id : postId, user, files, tasting, isSelf, isLiked:isLikedProp, likeCount:likeCountProp, profile, profileId, postComments}) => {
   
-  
-  const { data, error, loading} = useQuery(SEE_FULL_POST,{
-    variables:{
-      id: postId
-    },
-  });
-  
   const { username, avatar } = user;
-  const [isLiked, setIsLiked] = React.useState(data?.seeFullPost.isLiked);
-  const [likeCount, setLikeCount] = React.useState(data?.seeFullPost?.likeCount? data?.seeFullPost?.likeCount : 0);
+  const [isLiked, setIsLiked] = React.useState();
+  const [likeCount, setLikeCount] = React.useState();
   const commentInput = useInput("");
   const { value : text } = commentInput;
   
   const [postModal, setPostModal] = React.useState(false);
   
-  const [toggleLikeMutation] = useMutation(TOGGLE_LIKE,{
+  const [toggleLikeMutation, { loading: likeLoading}] = useMutation(TOGGLE_LIKE,{
     variables:{
       postId: postId,
-      profileId: profile.id
+      token: profile.token,
+      profileId: profile.id,
+      userId: user.id
     },
-    refetchQueries:[`seeFullProfile`, `me`]
+    refetchQueries:[`seeFullProfile`, `me`, `myProfile`]
     //update(cache, {data: { toggleLike }}) {
     //  cache.writeQuery({
     //    query: SEE_FULL_POST,
@@ -152,6 +147,11 @@ export default ({ id : postId, user, files, tasting, isSelf, isLiked:isLikedProp
       console.log("좋아요 에러",e);
     }
   }
+
+  React.useEffect(() =>{
+    setIsLiked(isLikedProp);
+    setLikeCount(likeCountProp);
+  },[isLikedProp, likeCountProp])
 
   //모달
   const [editProfilePostMutation] = useMutation(EDIT_PROFILE_POST,{
@@ -208,64 +208,64 @@ export default ({ id : postId, user, files, tasting, isSelf, isLiked:isLikedProp
 
   return (
     <>
-      
+      <View>
       {/* 헤더 */}
-      <View style={styles.headerBar}>
-        <TouchableOpacity onPress={() => navigation.navigate("SeeUser", {
-          user:{ username, isSelf }
-        })}>
-          <View style={styles.headerLeft}>
-            <Image style={styles.avatar} source={avatar? { uri: avatar } : require('../../assets/Icons/avatarBasic.png')} />
-            <View>
-              <Text style={styles.username}>{username}</Text>
+        <View style={styles.headerBar}>
+          <TouchableOpacity onPress={() => navigation.navigate("SeeUser", {
+            user:{ username, isSelf }
+          })}>
+            <View style={styles.headerLeft}>
+              <Image style={styles.avatar} source={avatar? { uri: avatar } : require('../../assets/Icons/avatarBasic.png')} />
+              <View>
+                <Text style={styles.username}>{username}</Text>
+              </View>
             </View>
-          </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => setPostModal(true)}>
-          <Feather name="more-vertical" size={20} style={{paddingHorizontal:5}} color={'rgba(0, 0, 0, .7)'}/>
-        </TouchableOpacity>
-      </View>
-
-      {/* 이미지 */}
-      <View style={styles.imageBox}>
-        <Swiper paginationStyle={{bottom:10}} dot={<View style={{backgroundColor: 'rgba(255,255,255,.3)', width: 6, height: 6, borderRadius: 3, marginLeft: 3, marginRight: 3}} />} activeDot={<View style={{backgroundColor: '#fff', width: 8, height: 8, borderRadius: 4, marginLeft: 4, marginRight: 4}} />}>
-          {files.map((image, i) => <Image key={i} style={styles.image} source={{uri: image.url}}/>)}
-        </Swiper>
-      </View>
-
-      {/* 포스트 현황 */}
-      <View style={styles.postInfo}>
-        <View style={styles.snsBar}>
-          <View style={{flexGrow:1}}>
-            <ShadowInput {...commentInput} placeholder={"댓글을 입력해 주세요"} blurOnSubmit={true} textAlign={"left"} returnKeyType={'done'} />
-          </View>
-          <View style={styles.snsButton}>
-            <TouchableOpacity>
-              {text.length > 0 ? (
-                <MaterialCommunityIcons name={"comment-plus-outline"} size={30} style={{color:'black'}} />
-              ) : (
-                <MaterialCommunityIcons name={"comment-text-outline"} size={30} style={{color:'#9e9b9d'}} />
-              )}
-            </TouchableOpacity>
-            <Caption>{12}개</Caption>
-          </View>
-
-          <View style={styles.snsButton}>
-            <TouchableOpacity onPress={onPressLike}>
-              {isLiked? (
-                  <MaterialCommunityIcons name="heart" size={30} style={{color:'red'}} /> 
-              ):(
-                  <MaterialCommunityIcons name="heart-outline" size={30} style={{color:'#9e9b9d'}} /> 
-              )}
-            </TouchableOpacity>
-            <Caption>{likeCount}개</Caption>
-          </View>
+          <TouchableOpacity onPress={() => setPostModal(true)}>
+            <Feather name="more-vertical" size={20} style={{paddingHorizontal:5}} color={'rgba(0, 0, 0, .7)'}/>
+          </TouchableOpacity>
         </View>
 
-        {tasting.length > 0? <Text style={styles.tasting} >{tasting}</Text> : null}
+        {/* 이미지 */}
+        <View style={styles.imageBox}>
+          <Swiper paginationStyle={{bottom:10}} dot={<View style={{backgroundColor: 'rgba(255,255,255,.3)', width: 6, height: 6, borderRadius: 3, marginLeft: 3, marginRight: 3}} />} activeDot={<View style={{backgroundColor: '#fff', width: 8, height: 8, borderRadius: 4, marginLeft: 4, marginRight: 4}} />}>
+            {files.map((image, i) => <Image key={i} style={styles.image} source={{uri: image.url}}/>)}
+          </Swiper>
+        </View>
 
-        <Caption style={styles.postingTime}>12분 전</Caption>
+        {/* 포스트 현황 */}
+        <View style={styles.postInfo}>
+          <View style={styles.snsBar}>
+            <View style={{flexGrow:1, flexShrink:1}}>
+              <Text style={styles.tasting} numberOfLines={2}>{tasting}</Text>
+              {/* <ShadowInput {...commentInput} placeholder={"댓글을 입력해 주세요"} blurOnSubmit={true} textAlign={"left"} returnKeyType={'done'} /> */}
+            </View>
+            {/* <View style={styles.snsButton}> */}
+              {/* <TouchableOpacity>
+                {text.length > 0 ? (
+                  <MaterialCommunityIcons name={"comment-plus-outline"} size={30} style={{color:'black'}} />
+                ) : (
+                  <MaterialCommunityIcons name={"comment-text-outline"} size={30} style={{color:'#9e9b9d'}} />
+                )}
+              </TouchableOpacity> */}
+              {/* <Caption>{12}개</Caption> */}
+            {/* </View> */}
+
+            <View style={styles.snsButton}>
+              <TouchableOpacity onPress={onPressLike} disabled={likeLoading}>
+                {isLiked? (
+                    <MaterialCommunityIcons name="heart" size={30} style={{color:'red'}} /> 
+                ):(
+                    <MaterialCommunityIcons name="heart-outline" size={30} style={{color:'#9e9b9d'}} /> 
+                )}
+              </TouchableOpacity>
+              <Caption>{likeCount}개</Caption>
+            </View>
+          </View>
+
+          <Caption style={styles.postingTime}>12분 전</Caption>
+        </View>
       </View>
 
       {/* 모달*/}

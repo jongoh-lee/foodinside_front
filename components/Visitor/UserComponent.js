@@ -9,8 +9,9 @@ import PostHorizontal from "../Franchise/PostHorizontal";
 import { useMutation } from "@apollo/react-hooks";
 import { FOLLOW, UNFOLLOW } from "../../screens/Visitor/VisitorQueries";
 import { useNavigation } from "@react-navigation/native";
+import { number } from "prop-types";
 
-export default ({ id, avatar, username, email, isSelf ,dangolCount, followersCount, followingCount, postsCount, posts, isFollowing }) => {
+export default ({ id, avatar, username, email, isSelf ,dangolCount, followersCount, followingCount, postsCount, posts, isFollowing, wallets }) => {
     const navigation = useNavigation()
     const [toggleFollow, setToggleFollow] = React.useState(isFollowing);
     const [followerNumber, setFollowerNumber] = React.useState(followersCount);
@@ -103,7 +104,7 @@ export default ({ id, avatar, username, email, isSelf ,dangolCount, followersCou
                         <Text style={styles.title}>포스트</Text>
                     </View>
                     <View style={styles.inner}>
-                        <Text style={styles.number}>{0}</Text>
+                        <Text style={styles.number}>{wallets.length > 0 ? wallets?.map(el => (el.incoming - el.outgoing)).reduce((a, b) => a + b , 0) : 0}</Text>
                         <Text style={styles.title}>포인트</Text>
                     </View>
                     <TouchableOpacity style={styles.inner} onPress={() => isSelf? navigation.navigate("FollowList",{

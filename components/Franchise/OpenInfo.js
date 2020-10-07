@@ -1,7 +1,12 @@
+import { useQuery } from "@apollo/react-hooks";
 import * as React from "react";
 import { View, Text, StyleSheet, Image} from "react-native";
-import MapView, {Marker} from "react-native-maps";
+import { FlatList, ScrollView } from "react-native-gesture-handler";
+import MapView, {Marker, PROVIDER_GOOGLE} from "react-native-maps";
 import constants from "../../constants";
+import { OPEN_INFO } from "../../screens/Franchise/ProfileQueries";
+import Caption from "../Custom/Caption";
+import ScreenLoader from "../Custom/ScreenLoader";
 
 const styles = StyleSheet.create({
   container:{
@@ -13,54 +18,73 @@ const styles = StyleSheet.create({
   }
 })
 
-export default ( openInfo ) => (
-  <View style={styles.container}>
-    <MapView 
-    style={{flex:1}} 
-    initialRegion={{
-      latitude:37.537140,
-      longitude:126.986935,
-      latitudeDelta: 0.01,
-      longitudeDelta: 0.005,}}>
-      
-      <Marker 
-       coordinate={{latitude: 37.535140, longitude: 126.989935}}
-       >
-        <View style={{ flex:1, alignItems:"center",}}>
-          <View style={{ backgroundColor:"rgba(255, 255, 255, .7)", marginBottom:5}}>
-            <Text style={{fontWeight:"bold", padding:5}}>8/24 - 8/30</Text>
-          </View>
-          <Image source={require('../../assets/Icons/mapMarker2.png')} style={{  width: 25, height: 25,}} resizeMode="cover" />
-       </View>
-      </Marker>
+export default ({ id }) => {
+  let now = new Date()
+  let mm = now.getMonth() + 1;
+  let dd = now.getDate();
+  const today = `${[now.getFullYear(), (mm>9 ? '' : '0') + mm, (dd>9 ? '' : '0') + dd].join('-')}`
+  const { data, error, loading } = useQuery(OPEN_INFO,{
+    variables:{
+      today,
+      id
+    }
+  });
 
-      <Marker 
-       coordinate={{latitude: 37.539140, longitude: 126.987935}}
-       >
-        <View style={{ flex:1, alignItems:"center",}}>
-          <View style={{ backgroundColor:"rgba(255, 255, 255, .7)", marginBottom:5}}>
-            <Text style={{fontWeight:"bold", padding:5}}>8/24 - 8/30</Text>
-          </View>
-          <Image source={require('../../assets/Icons/mapMarker2.png')} style={{  width: 25, height: 25,}} resizeMode="cover" />
-       </View>
-      </Marker>
+  const [ openInfo, setOpenInfo ] = React.useState(null);
 
-      <Marker 
-       coordinate={{latitude: 37.537140, longitude: 126.981935}}
-       >
-        <View style={{ flex:1, alignItems:"center",}}>
-          <View style={{ backgroundColor:"rgba(255, 255, 255, .7)", marginBottom:5}}>
-            <Text style={{fontWeight:"bold", padding:5}}>8/24 - 8/30</Text>
-          </View>
-          <Image source={require('../../assets/Icons/mapMarker2.png')} style={{  width: 25, height: 25,}} resizeMode="cover" />
-       </View>
-      </Marker>
+  React.useEffect(() => {
+    const result = data?.openInfo.reduce((array, data) => {
+      let longitude = data.owner.longitude;
+      let latitude = data.owner.latitude;
+      let allDates = [];
+      data.prices.map(date => allDates.push(date.dateString));
 
-     
+      let overlab = array.map(( el ) =>  el.longitude === longitude && el.latitude === latitude ? array.indexOf(el) : null );
+      if(typeof(overlab[0]) === "number"){
+        let index = overlab[0]
+        array[index].allDates.push(...allDates)
+      }else{
+        array.push({
+          latitude,
+          longitude,
+          allDates
+        })
+      }
 
-    
+      return array
+    }, []);
 
-       </MapView>
-      
-  </View>
-);
+    setOpenInfo(result);
+  },[data]);
+
+  return (
+    <View style={styles.container}>
+      {loading ? <ScreenLoader /> : null }
+      <MapView 
+      style={{flex:1}} 
+      provider={PROVIDER_GOOGLE}
+      initialRegion={{
+        latitude:37.537140,
+        longitude:126.986935,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.005,}}>
+
+          {openInfo?.map(( booking, index ) => {
+            let result = booking.allDates.sort().map(el => String(el.slice(-5).replace('-','/'))).join(', ')
+          return (
+            <Marker
+            coordinate={{latitude: booking.latitude, longitude: booking.longitude}}
+            title={"영업정보"}
+            description={`${result}`}
+            key={index}
+            >
+                <View>
+                  <Image source={require('../../assets/Icons/mapMarker2.png')} style={{  width: 25, height: 25,}} resizeMode="cover" />
+                </View>
+               
+            </Marker>
+          )}
+        )}
+      </MapView>
+    </View>
+)};
