@@ -23,10 +23,16 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.foodinside.foodinside",
+      "buildNumber": "1.0.0",
+      "config": {
+        "googleMapsApiKey": "AIzaSyB77l5gKZERH5nDSvT5PboXLkl_uJbVcUQ"
+      }
     },
     "android": { 
-      "package": "com.foodinside.rn_prac", 
+      "package": "com.foodinside.foodinside", 
+      "versionCode": 1,
       "config": { 
         "googleMaps": { "apiKey": "AIzaSyB77l5gKZERH5nDSvT5PboXLkl_uJbVcUQ" } 
       } 
