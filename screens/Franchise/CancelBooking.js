@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, Image, SafeAreaView, ActivityIndicator, TouchableOpacity, Alert} from "react-native";
-import { chats } from "../../components/Visitor/data";
 import { ScrollView } from "react-native-gesture-handler";
 import constants from "../../constants";
 import { useMutation, useQuery } from "@apollo/react-hooks";
