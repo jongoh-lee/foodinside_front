@@ -30,7 +30,7 @@ export const AuthProvider = ({ isLoggedIn: isLoggedInProp, children }) => {
         cache,
         ...apolloClientOptions,
       });
-      client.clearStore()
+      client.resetStore()
     } catch (e) {
       console.log(e);
     }
