@@ -18,7 +18,7 @@ export default ({ navigation, route }) => {
   const [alert, setAlert] = React.useState("")
   const [requestSecretMutation ,{error, loading}] = useMutation(LOG_IN, {
     variables: {
-      email: email
+      email: email ? email : null
     }
   });
   
@@ -57,7 +57,7 @@ export default ({ navigation, route }) => {
             <Image style={styles.logoImage} source={require('../../assets/Logo.png')} />
 
             <View>
-              <AuthInput value={email} onChange={onChange} placeholder="이메일, 아이디 또는 전화번호( - 생략)를 입력하세요" keyboardType="email-address" editable={!loading}/>
+              <AuthInput value={email} onChange={onChange} placeholder="이메일을 입력하세요" keyboardType="email-address" editable={!loading}/>
 
               <Text style={{fontSize:10, color:"red", paddingLeft:5}}>{alert}</Text>
 

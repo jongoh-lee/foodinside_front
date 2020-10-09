@@ -1,76 +1,94 @@
 import * as React from "react";
-import { StyleSheet, View, Text, Platform, Picker } from "react-native";
-import { MaterialCommunityIcons } from '@expo/vector-icons'; 
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { StyleSheet, View, Text, Platform, SafeAreaView } from "react-native";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import AuthButton from '../../components/Custom/AuthButton';
-import useInput from "../../hooks/useInput";
-import constants from "../../constants";
-// import DatePicker from '@react-native-community/datetimepicker';
-
+import foodinsideRule from "../../assets/Rules/FOODINSIDE_TERMS_OF_USE";
+import foodinsidePrivacyPolicy from "../../assets/Rules/FOODINSIDE_PRIVACY_POLICY";
+import foodinsideLocationBasedService from "../../assets/Rules/FOODINSIDE_LOCATION_BASED_SERVICE_TERMS_OF_USE";
+import { useMutation } from "@apollo/react-hooks";
+import { CREATE_ACCOUNT } from "./AuthQueries";
 
 export default ({ navigation, route }) => {
-  const [date, setDate] = React.useState(new Date());
-  const [show, setShow] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+  const [agreeRules, setAgreeRules] = React.useState(false);
+  const [agreePrivacy, setAgreePrivacy] = React.useState(false);
+  const [agreeLocation, setAgreeLocation] = React.useState(false);
 
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setShow(Platform.OS === 'ios');
-    setDate(currentDate);
-  };
+  const [createAccountMutation] = useMutation(CREATE_ACCOUNT, {
+    variables:{
+      username: route.params.username,
+      email: route.params.email,
+      firstName: route.params.firstName,
+      lastName: route.params.lastName
+    }
+  })
 
-  const showDatepicker = () => {
-    setShow(true);
-  };
+  const handleSignUp = async () => {
+    try {
+      setLoading(true);
+      const {
+        data: { createAccount }
+      } = await createAccountMutation();
+      if (createAccount) {
+        navigation.navigate("AuthHome",{email: route.params.email});
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+
+  const AgreeButton = ({ agree, setState }) => {
+    return (
+      <TouchableOpacity onPress={() => setState(!agree)} style={{flexDirection:"row", alignItems:"center", paddingRight:5}} disabled={loading}>
+        <Text style={{paddingRight:5, fontSize:12, color: agree ? "rgb(5, 230, 244)" : "rgba(5, 230, 244, .5)"}}>동의</Text>
+        <View style={{width:20, height:20, justifyContent:"center", alignItems:"center", borderColor: agree ? "rgb(5, 230, 244)" : "rgba(5, 230, 244, .3)", borderWidth:2, borderRadius:10}}>
+          <View style={{width:12, height:12, borderRadius:6, backgroundColor: agree ? "rgb(5, 230, 244)" : "rgba(5, 230, 244, .3)"}}/>
+        </View>
+      </TouchableOpacity>
+    )
+  }
 
   return(
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>회원 가입하기(4/4단계)</Text>
+      <ScrollView contentContainerStyle={styles.inner}>
+          <Text style={styles.title}>푸드 인사이드 이용약관</Text>
+          
+          <View style={{flexDirection:"row", justifyContent:"space-between", alignItems:"center"}}>
+            <Text style={styles.text}>푸드 인사이드 이용약관</Text>
+            <AgreeButton agree={agreeRules} setState={setAgreeRules}/>
+          </View>
 
-        <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
-          <MaterialCommunityIcons name="chevron-left" size={30} color="#666" />
-        </TouchableWithoutFeedback>
-      </View>
+            <View style={styles.textBox}>
+              <ScrollView style={styles.inner}>
+                <Text style={styles.termsOfUseText}>{foodinsideRule}</Text>
+              </ScrollView>
+            </View>
 
-      <View style={styles.inner}>
-        <Text style={styles.title}>생년월일을 입력하세요</Text>
-        <Text style={styles.text}>만 14세 미만 아동은 이용이 제한됩니다</Text>
+          <View style={{flexDirection:"row", justifyContent:"space-between", alignItems:"center"}}>
+            <Text style={styles.text}>푸드 인사이드 개인정보 처리방침</Text>
+            <AgreeButton agree={agreePrivacy} setState={setAgreePrivacy}/>
+          </View>
+            <View style={styles.textBox}>
+              <ScrollView style={styles.inner}>
+                <Text style={styles.termsOfUseText}>{foodinsidePrivacyPolicy}</Text>
+              </ScrollView>
+            </View>
+          
+          <View style={{flexDirection:"row", justifyContent:"space-between", alignItems:"center"}}>
+            <Text style={styles.text}>위치기반 서비스 이용약관</Text>
+            <AgreeButton agree={agreeLocation} setState={setAgreeLocation}/>
+          </View>
+            <View style={styles.textBox}>
+              <ScrollView style={styles.inner}>
+                <Text style={styles.termsOfUseText}>{foodinsideLocationBasedService}</Text>
+              </ScrollView>
+            </View>
 
-        <View style={styles.inputContainer}>
-          <TouchableWithoutFeedback style={styles.inputBox} onPress={showDatepicker}>
-            <Text>{date}</Text>
-          </TouchableWithoutFeedback>
-        </View>
-    
-        {show && <DatePicker
-        style={{width: 200}}
-        value={date}
-        mode={"date"}
-        display="spinner"
-        placeholder="날짜를 선택 하세요"
-        format="YYYY-MM-DD"
-        minDate="2016-05-01"
-        maxDate="2016-06-01"
-        confirmBtnText="확인"
-        cancelBtnText="취소"
-        customStyles={{
-          dateIcon: {
-            position: 'absolute',
-            left: 0,
-            top: 4,
-            marginLeft: 0
-          },
-          dateInput: {
-            marginLeft: 36
-          }
-          // ... You can check the source to find the other keys.
-        }}
-        onChange={onChange}
-      />}
-
-        <AuthButton text="가입 완료" onPress={()=>console.log(route.params)} />
-      </View>
-
+          <AuthButton text="가입 완료" onPress={handleSignUp} disabled={agreeRules && agreePrivacy && agreeLocation ? loading : true}/>
+      </ScrollView>
     </View>
   )
 }
@@ -80,43 +98,26 @@ const styles = StyleSheet.create({
     flex:1,
     backgroundColor:"white"
   },
-  header:{
-    flexDirection:"row",
-    marginTop:25,
-    paddingVertical:5,
-    borderBottomWidth:1,
-    borderBottomColor:"rgba(0, 0, 0, .1)",
-    alignItems:"center",
-  },
-  headerTitle:{
-    fontSize:16,
-    color:"#666",
-    width:'100%',
-    position:"absolute",
-    textAlign:"center"
-  },
   inner:{
     padding:15,
-    flex:1,
   },
   title:{
     fontSize:16,
     fontWeight:'bold',
-    paddingTop:40
+    paddingBottom:40,
+    paddingTop:20
+  },
+  textBox:{
+    height: 100, 
+    borderWidth:1,
+    borderColor:"rgba(0, 0, 0, .1)",
+    borderRadius:10,
+    marginBottom:30
   },
   text:{
-    paddingBottom:40
+    paddingBottom:10
   },
-  inputContainer:{
-    marginBottom:15
-  },
-  inputBox:{
-    width:constants.width * 0.9,
-    padding: 15,
-    backgroundColor: "#F9F9F9",
-    borderBottomWidth:1,
-    borderColor: "#05e6f4",
-    borderRadius:6,
-    alignItems:"center"
+  termsOfUseText:{
+    fontSize:12,
   }
 })
