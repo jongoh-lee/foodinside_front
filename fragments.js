@@ -259,6 +259,7 @@ export const PROFILE_FRAGMENT = gql`
       isSelf
       isLiked
       likeCount
+      createdAt
       user{
         id
         username
@@ -272,6 +273,7 @@ export const PROFILE_FRAGMENT = gql`
       profile{
         id
         token
+        profileName
       }
     }
   }
@@ -303,12 +305,7 @@ export const USER_FRAGMENT = gql`
       isSelf
       isLiked
       likeCount
-      user{
-        id
-        username
-        avatar
-        isSelf
-      }
+      createdAt
       files{
         id
         url
@@ -316,6 +313,9 @@ export const USER_FRAGMENT = gql`
       profile{
         id
         token
+        profileName
+        sector
+        isSelf
       }
     }
   }
@@ -342,5 +342,6 @@ export const POST_FRAGMENT = gql`
       id
       token
     }
+    createdAt
   }
 `;

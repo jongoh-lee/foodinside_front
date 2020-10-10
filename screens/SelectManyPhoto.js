@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as Permissions from "expo-permissions";
 import * as MediaLibrary from "expo-media-library";
+import * as ImageManipulator from "expo-image-manipulator";
 import { StyleSheet, View, Image, ScrollView, Text, StatusBar, SafeAreaView, TouchableOpacity, ImageBackground } from "react-native";
 import Loader from "../components/Custom/Loader";
 import constants from "../constants";
@@ -78,10 +79,24 @@ export default ({ navigation, route }) => {
             setHasPermission(false);
         }
     };
-    const handleSelected = () => {
+    const handleSelected = async () => {
         setInactive(true);
-        navigation.goBack();
-        route.params.onSelect({ photo : selected, data: data});
+        const images = [];
+        const results = selected.map( async (photo) => {
+                const manipResult = await ImageManipulator.manipulateAsync(
+                    photo.uri,
+                    [],
+                    { compress: 0.1, format: ImageManipulator.SaveFormat.JPEG }
+                );
+                return {...photo, height:manipResult.height, width:manipResult.width, uri:manipResult.uri};
+            }
+        );
+        
+        Promise.all(results).then((completed) => {
+            images.push(...completed);
+            navigation.goBack();
+            route.params.onSelect({ photo : images, data: data});
+        });
     };
 
     navigation.setOptions({
@@ -114,7 +129,7 @@ export default ({ navigation, route }) => {
                     source={{ uri: photo.uri }}
                     style={{
                       width: constants.width / 3,
-                      height: constants.height / 6,
+                      height: constants.width / 3,
                       opacity: selected.indexOf(photo) > -1 ? 0.8 : 1
                     }}
                   >

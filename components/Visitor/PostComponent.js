@@ -3,13 +3,15 @@ import { StyleSheet, Image, View, Text, TouchableOpacity, Alert } from "react-na
 import constants from "../../constants";
 import Swiper from 'react-native-swiper';
 import { MaterialCommunityIcons, Feather, AntDesign } from '@expo/vector-icons'; 
-import { Caption } from "react-native-paper";
+import Caption from "../../components/Custom/Caption"
+import ScreenLoader from "../../components/Custom/ScreenLoader"
 import Modal from "react-native-modal";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import { EDIT_USER_POST, EDIT_PROFILE_POST, TOGGLE_LIKE, SEE_FULL_POST } from "../../screens/Visitor/VisitorQueries";
 import { useNavigation } from "@react-navigation/native";
 import ShadowInput from "../Custom/ShadowInput";
 import useInput from "../../hooks/useInput";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 const styles = StyleSheet.create({
   headerBar: {
@@ -37,7 +39,7 @@ const styles = StyleSheet.create({
   //사진
   imageBox:{
     width: constants.width,
-    height: constants.height / 2,
+    height: constants.width,
   },
   image: {
     width: '100%',
@@ -59,7 +61,6 @@ const styles = StyleSheet.create({
     paddingHorizontal:5
   },
   tasting: {
-    marginLeft: 5,
     paddingVertical:5,
   },
   postingTime:{
@@ -106,14 +107,14 @@ const styles = StyleSheet.create({
 },
 });
 
-export default ({ id : postId, user, files, tasting, isSelf, isLiked:isLikedProp, likeCount:likeCountProp, profile, profileId, postComments}) => {
+export default ({ id : postId, user, userInfo, files, tasting, isSelf, isLiked:isLikedProp, likeCount:likeCountProp, profile, profileId, createdAt}) => {
   
-  const { username, avatar } = user;
+  const { id: userId, username, avatar } = profileId ? user : userInfo;
   const [isLiked, setIsLiked] = React.useState();
   const [likeCount, setLikeCount] = React.useState();
   const commentInput = useInput("");
   const { value : text } = commentInput;
-  
+  const [showText, setShowText] = React.useState(2);
   const [postModal, setPostModal] = React.useState(false);
   
   const [toggleLikeMutation, { loading: likeLoading}] = useMutation(TOGGLE_LIKE,{
@@ -121,7 +122,7 @@ export default ({ id : postId, user, files, tasting, isSelf, isLiked:isLikedProp
       postId: postId,
       token: profile.token,
       profileId: profile.id,
-      userId: user.id
+      userId: userId
     },
     refetchQueries:[`seeFullProfile`, `me`, `myProfile`]
     //update(cache, {data: { toggleLike }}) {
@@ -133,6 +134,8 @@ export default ({ id : postId, user, files, tasting, isSelf, isLiked:isLikedProp
     //  });
     //}
   })
+
+  const postTime = createdAt.slice(0, 10).replace(/-/gi, '/');
 
   const onPressLike = async() =>{
     if( isLiked === true){
@@ -154,7 +157,7 @@ export default ({ id : postId, user, files, tasting, isSelf, isLiked:isLikedProp
   },[isLikedProp, likeCountProp])
 
   //모달
-  const [editProfilePostMutation] = useMutation(EDIT_PROFILE_POST,{
+  const [editProfilePostMutation, {loading}] = useMutation(EDIT_PROFILE_POST,{
     refetchQueries: [`me`]
   });
 
@@ -205,27 +208,35 @@ export default ({ id : postId, user, files, tasting, isSelf, isLiked:isLikedProp
       console.log("포스트 삭제 in 사용자 에러", e);
     }
   }
-
   return (
     <>
       <View>
+      {loading && <ScreenLoader />}
       {/* 헤더 */}
+      <TouchableOpacity onPress={() => navigation.navigate("SeeUser", {
+        user:{ username, isSelf }
+        })}>
         <View style={styles.headerBar}>
-          <TouchableOpacity onPress={() => navigation.navigate("SeeUser", {
-            user:{ username, isSelf }
-          })}>
-            <View style={styles.headerLeft}>
-              <Image style={styles.avatar} source={avatar? { uri: avatar } : require('../../assets/Icons/avatarBasic.png')} />
-              <View>
-                <Text style={styles.username}>{username}</Text>
-              </View>
+          <View style={styles.headerLeft}>
+            <Image style={styles.avatar} source={avatar? { uri: avatar } : require('../../assets/Icons/avatarBasic.png')} />
+            <View>
+              <Text style={styles.username}>{username}</Text>
+              {!profileId && <TouchableOpacity onPress={() => navigation.navigate("프로필 보기", {
+                    seeFullProfile:{
+                        id: profile.id,
+                        profileName: profile.profileName,
+                        sector: profile.sector,
+                        isSelf: profile.isSelf
+                    }
+                })} style={{zIndex:100, paddingTop:2}}><Caption>{profile.profileName}</Caption></TouchableOpacity>}
             </View>
-          </TouchableOpacity>
+          </View>
 
-          <TouchableOpacity onPress={() => setPostModal(true)}>
+          <TouchableOpacity onPress={() => setPostModal(true)} style={{zIndex:200}}>
             <Feather name="more-vertical" size={20} style={{paddingHorizontal:5}} color={'rgba(0, 0, 0, .7)'}/>
           </TouchableOpacity>
         </View>
+        </TouchableOpacity>
 
         {/* 이미지 */}
         <View style={styles.imageBox}>
@@ -238,8 +249,10 @@ export default ({ id : postId, user, files, tasting, isSelf, isLiked:isLikedProp
         <View style={styles.postInfo}>
           <View style={styles.snsBar}>
             <View style={{flexGrow:1, flexShrink:1}}>
-              <Text style={styles.tasting} numberOfLines={2}>{tasting}</Text>
-              {/* <ShadowInput {...commentInput} placeholder={"댓글을 입력해 주세요"} blurOnSubmit={true} textAlign={"left"} returnKeyType={'done'} /> */}
+              <TouchableWithoutFeedback onPress={() => showText ? setShowText(null) : setShowText(2)}>
+                <Text style={styles.tasting} numberOfLines={showText}>{tasting}</Text>
+                {/* <ShadowInput {...commentInput} placeholder={"댓글을 입력해 주세요"} blurOnSubmit={true} textAlign={"left"} returnKeyType={'done'} /> */}
+              </TouchableWithoutFeedback>
             </View>
             {/* <View style={styles.snsButton}> */}
               {/* <TouchableOpacity>
@@ -264,7 +277,7 @@ export default ({ id : postId, user, files, tasting, isSelf, isLiked:isLikedProp
             </View>
           </View>
 
-          <Caption style={styles.postingTime}>12분 전</Caption>
+            <Caption style={styles.postingTime}>{postTime}</Caption>
         </View>
       </View>
 

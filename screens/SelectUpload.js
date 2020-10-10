@@ -5,6 +5,7 @@ import { StyleSheet, View, Image, ScrollView, Text, StatusBar, SafeAreaView, Tou
 import Loader from "../components/Custom/Loader";
 import constants from "../constants";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import * as ImageManipulator from "expo-image-manipulator";
 import BackArrow from "../components/Custom/BackArrow";
 
 const styles = StyleSheet.create({
@@ -78,9 +79,28 @@ export default ({ navigation, route }) => {
         }
     };
 
+    const onPressNext = async () => {
+        setActive(true)
+        const images = [];
+        const results = selected.map( async (photo) => {
+                const manipResult = await ImageManipulator.manipulateAsync(
+                    photo.uri,
+                    [],
+                    { compress: 0.1, format: ImageManipulator.SaveFormat.JPEG }
+                );
+                return {...photo, height:manipResult.height, width:manipResult.width, uri:manipResult.uri};
+            }
+        );
+        
+        Promise.all(results).then((completed) => {
+            images.push(...completed);
+            navigation.navigate("포스트", { images: images, id:route.params.id })       
+        });
+    }
+
     navigation.setOptions({
         headerRight:() => (
-            <TouchableOpacity style={selected.length > 0 ? styles.selectButton : [styles.selectButton, {backgroundColor:"rgba(5, 230, 244, .4)"}]}  onPress={() => navigation.navigate("포스트", { images: selected, id:route.params.id })}>
+            <TouchableOpacity style={selected.length > 0 ? styles.selectButton : [styles.selectButton, {backgroundColor:"rgba(5, 230, 244, .4)"}]} disabled={active} onPress={onPressNext}>
                 <Text style={styles.selectText}>선택</Text>
            </TouchableOpacity>
         ),
@@ -102,7 +122,7 @@ export default ({ navigation, route }) => {
 
             <View>
                 <Image
-                    style={{ width: constants.width, height: constants.height / 2,}}
+                    style={{ width: constants.width, height: constants.width,}}
                     source={bigImage ? { uri: bigImage.uri } : null}
                 />
                 {selected.length === 5 && (

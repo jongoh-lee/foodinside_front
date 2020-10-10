@@ -26,6 +26,7 @@ import ChatListFranchise from "../screens/Franchise/ChatListFranchise";
 import ChatListShop from "../screens/Franchise/ChatListShop";
 import Chat from "../screens/Franchise/Chat";
 import SelectPhoto from "../screens/SelectPhoto";
+import SelectMemberPhoto from "../screens/SelectMemberPhoto";
 import SelectUpload from "../screens/SelectUpload";
 import UploadPost from '../screens/Visitor/UploadPost';
 import SelectMainPhoto from "../screens/SelectMainPhoto";
@@ -196,6 +197,9 @@ export default () => {
         headerShown:false,
       }}/>
       <FranchiseStack.Screen name='SelectPhoto' component={SelectPhoto} options={{
+        headerShown:false,
+      }}/>
+      <FranchiseStack.Screen name='SelectMemberPhoto' component={SelectMemberPhoto} options={{
         headerShown:false,
       }}/>
       <FranchiseStack.Screen name='SelectMainPhoto' component={SelectMainPhoto} options={{

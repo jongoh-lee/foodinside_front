@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as Permissions from "expo-permissions";
 import * as MediaLibrary from "expo-media-library";
+import * as ImageManipulator from "expo-image-manipulator";
 import { StyleSheet, View, Image, ScrollView, Text, StatusBar, SafeAreaView, TouchableOpacity, Platform, StatusBarIOS } from "react-native";
 import Loader from "../components/Custom/Loader";
 import constants from "../constants";
@@ -45,6 +46,7 @@ export default ({ navigation, route }) => {
     const [selected, setSelected] = React.useState(null);
     const [allPhotos, setAllPhotos] = React.useState([]);
     const data = route.params.data? route.params.data : null;
+
     const changeSelected = photo => {
         setSelected(photo);
     };
@@ -79,10 +81,33 @@ export default ({ navigation, route }) => {
         }
     };
 
-    const handleSelected = () => {
+    const handleSelected = async () => {
         setInactive(true)
-        route.params.onSelect({ photo : selected, data: data});
-        navigation.goBack({ photo : selected });
+        const image = [];
+        if(selected.width < selected.height){
+            const manipResult = await ImageManipulator.manipulateAsync(
+                selected.uri,
+                [{ crop:{ originX: 0, originY:(selected.height - selected.width)/2, width:selected.width, height:selected.width }}],
+                { compress: 0.1, format: ImageManipulator.SaveFormat.JPEG }
+            );
+            image.push({...selected, height:manipResult.height, width:manipResult.width, uri:manipResult.uri});
+        }else if(selected.width > selected.height){
+            const manipResult = await ImageManipulator.manipulateAsync(
+                selected.uri,
+                [{ crop:{ originX: (selected.width - selected.height)/2, originY:0, width:selected.height, height:selected.height }}],
+                { compress: 0.1, format: ImageManipulator.SaveFormat.JPEG }
+            );
+            image.push({...selected, height:manipResult.height, width:manipResult.width, uri:manipResult.uri});
+        }else{
+            const manipResult = await ImageManipulator.manipulateAsync(
+                selected.uri,
+                [],
+                { compress: 0.1, format: ImageManipulator.SaveFormat.JPEG }
+            );
+            image.push({...selected, height:manipResult.height, width:manipResult.width, uri:manipResult.uri});
+        }
+        route.params.onSelect({ photo : image[0], data: data});
+        navigation.goBack({ photo : image[0] });
     };
 
     React.useEffect(()=>{
@@ -108,7 +133,7 @@ export default ({ navigation, route }) => {
             {hasPermission ? (
             <>
               <Image
-                style={{ width: constants.width, height: constants.height / 2}}
+                style={{ width: constants.width, height: constants.width}}
                 source={selected? { uri: selected.uri } : null}
               />
 
@@ -121,7 +146,7 @@ export default ({ navigation, route }) => {
                         source={{ uri: photo.uri }}
                         style={{
                           width: constants.width / 3,
-                          height: constants.height / 6,
+                          height: constants.width / 3,
                           opacity: photo.id === selected?.id ? 0.4 : 1
                         }}
                       />

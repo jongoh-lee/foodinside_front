@@ -13,14 +13,14 @@ const styles = StyleSheet.create({
 export default ({ navigation, route }) => {
     const renderItem = ({ item }) => {
     return (
-        <PostComponent {...item} profileId={route.params.post.profileId}/>
+        <PostComponent {...item}  profileId={route.params.post.profileId} userInfo={route.params.post.user}/>
         
     )};
     
     return (
         <View style={styles.container}>
             <FlatList 
-                data={route.params.post.thumnail}
+                data={route.params.post.posts}
                 renderItem={renderItem}
                 keyExtractor={item => item.id}
                 showsVerticalScrollIndicator={true}

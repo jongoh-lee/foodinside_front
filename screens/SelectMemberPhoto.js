@@ -1,11 +1,12 @@
 import * as React from "react";
 import * as Permissions from "expo-permissions";
 import * as MediaLibrary from "expo-media-library";
+import * as ImageManipulator from "expo-image-manipulator";
 import { StyleSheet, View, Image, ScrollView, Text, StatusBar, SafeAreaView, TouchableOpacity, Platform, StatusBarIOS } from "react-native";
 import Loader from "../components/Custom/Loader";
 import constants from "../constants";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import BackArrow from "../components/Custom/BackArrow";
+import BackArrow from "../components/Custom/BackArrow";  
 
 const styles = StyleSheet.create({
     container:{
@@ -42,8 +43,9 @@ export default ({ navigation, route }) => {
     const [loading, setLoading] = React.useState(true);
     const [inactive, setInactive] = React.useState(false);
     const [hasPermission, setHasPermission] = React.useState(false);
-    const [selected, setSelected] = React.useState();
-    const [allPhotos, setAllPhotos] = React.useState();
+    const [selected, setSelected] = React.useState(null);
+    const [allPhotos, setAllPhotos] = React.useState([]);
+
     const changeSelected = photo => {
         setSelected(photo);
     };
@@ -51,7 +53,7 @@ export default ({ navigation, route }) => {
     const getPhotos = async () => {
         try{
             const { assets } = await MediaLibrary.getAssetsAsync({
-                first:100
+                first:100,
             });
             if(assets.length > 0){
                 const [firstPhoto] = assets;
@@ -67,7 +69,7 @@ export default ({ navigation, route }) => {
 
     const askPermission = async () => {
         try{
-            const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL)
+            const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
             if(status === "granted"){
                 setHasPermission(true);
                 getPhotos();
@@ -78,10 +80,17 @@ export default ({ navigation, route }) => {
         }
     };
 
-    const handleSelected = () => {
+    const handleSelected = async () => {
         setInactive(true)
+        const image = [];
+        const manipResult = await ImageManipulator.manipulateAsync(
+            selected.uri,
+            [],
+            { compress: 0.1, format: ImageManipulator.SaveFormat.JPEG }
+        );
+        image.push({...selected, height:manipResult.height, width:manipResult.width, uri:manipResult.uri});
+        route.params.onSelect({ photo : selected });
         navigation.goBack({ photo : selected });
-        route.params.onSelect({ photo : selected});
     };
 
     React.useEffect(()=>{
@@ -107,7 +116,7 @@ export default ({ navigation, route }) => {
             {hasPermission ? (
             <>
               <Image
-                style={{ width: constants.width, height: constants.height / 4}}
+                style={{ width: constants.width, height: constants.width * 1.2}}
                 source={selected? { uri: selected.uri } : null}
               />
 
@@ -121,7 +130,7 @@ export default ({ navigation, route }) => {
                         style={{
                           width: constants.width / 3,
                           height: constants.width / 3,
-                          opacity: photo.id === selected.id ? 0.4 : 1
+                          opacity: photo.id === selected?.id ? 0.4 : 1
                         }}
                       />
                     </TouchableWithoutFeedback>

@@ -8,7 +8,7 @@ import { useMutation } from "@apollo/react-hooks";
 import { UPLOAD } from "./VisitorQueries";
 
 export default ({ navigation, route }) => {
-    const [images, setImages] = React.useState(route.params.images);
+    const [images, setImages] = React.useState();
     const tastingInput = useInput("");
     const [loading, setLoading] = React.useState(false);
     
@@ -64,7 +64,9 @@ export default ({ navigation, route }) => {
            </TouchableOpacity>
         ),
     });
-
+    React.useEffect(() => {
+        setImages(route.params.images)
+    },[])
     return (
         
     <ScrollView style={styles.container}>
@@ -79,7 +81,7 @@ export default ({ navigation, route }) => {
                 showsHorizontalScrollIndicator={false} 
                 horizontal
             >   
-                {images.map(
+                {images?.map(
                     (image, index) => (
                         <Image key={index} style={styles.image} source={{uri:image.uri}} />
                     )
