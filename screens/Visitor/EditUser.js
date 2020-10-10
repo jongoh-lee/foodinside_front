@@ -94,14 +94,14 @@ export default ({ navigation, route }) => {
             <View style={{
                 height: 100,
                 width: 100,
-                borderRadius: 15,
+                borderRadius: 50,
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
               <ImageBackground
                 source={avatar? avatar.uri? {uri: avatar.uri} : {uri: avatar} : require('../../assets/Icons/avatarBasic.png') }
                 style={{height: 100, width: 100}}
-                imageStyle={{borderRadius: 15}}>
+                imageStyle={{borderRadius: 50}}>
                 <View style={{
                     flex: 1,
                     justifyContent: 'center',
@@ -133,7 +133,7 @@ export default ({ navigation, route }) => {
         <View style={styles.action}>
           <FontAwesome name="user-o" size={20} />
           <View>
-            <BasicInput {...usernameInput} placeholder={'아이디'} keyboardType="default" multiline={false} disabled={loading}/>
+            <BasicInput {...usernameInput} placeholder={'아이디'} keyboardType="default" multiline={false} editable={!loading}/>
           </View>
             {data?.editUsername || alert? <Text style={{fontSize:10, color:"red", position:"absolute", bottom:5 }}>사용할 수 없는 아이디 입니다</Text>: null}
         </View>
@@ -141,7 +141,7 @@ export default ({ navigation, route }) => {
 
         <View style={styles.action}>
           <Feather name="phone" size={20} />
-          <BasicInput {...contactInput} placeholder={'연락처'} keyboardType="default" keyboardType={"number-pad"} multiline={false} disabled={loading}/>
+          <BasicInput {...contactInput} placeholder={'연락처'} keyboardType="default" keyboardType={"number-pad"} multiline={false} editable={!loading}/>
         </View>
 
         <View style={styles.action}>
