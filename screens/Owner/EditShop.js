@@ -141,7 +141,7 @@ export default ({ navigation, route }) => {
   <SafeAreaView style={styles.container}>
     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{padding:15}}>
 
-      <View style={styles.textContainer}>
+      <View style={[styles.textContainer, {marginTop: 20}]}>
         <Text style={styles.title}>내 가게가 공유 음식점이 될 수 있나요?</Text>
       </View>
       <Text style={styles.warning}>가게 사진을 제출해주세요, 선정 결과는 이메일/문자로 알려드립니다</Text> 
