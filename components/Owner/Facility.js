@@ -3,7 +3,8 @@ import { StyleSheet, Image, Text, View } from "react-native";
 import { MaterialCommunityIcons, Entypo, FontAwesome5, Ionicons, Feather } from "@expo/vector-icons"
 import constants from "../../constants";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import { Caption } from "react-native-paper";
+import Caption from "../Custom/Caption";
+
 
 const styles = StyleSheet.create({
     container:{
@@ -259,9 +260,9 @@ export default (facility) => {
             if(facility[en]){
                 if(typeof(facility[en]) === 'string'){
                     return(
-                    <View key={kor} style={{alignItems:"center", justifyContent:"center"}}>
+                    <View key={kor} style={{alignItems:"center", justifyContent:"center", marginHorizontal:3}}>
                         <Text style={[styles.itemText,{paddingBottom:-10}]}>{kor}</Text>
-                        <Caption>{facility[en]}</Caption>
+                        <Caption style={{fontSize:10}}>{facility[en]}</Caption>
                     </View>
                     )
                 }

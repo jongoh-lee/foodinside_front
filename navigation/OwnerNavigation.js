@@ -84,7 +84,7 @@ const EarningsStack = createStackNavigator();
 function EarningsStackScreen() {
     return (
     <EarningsStack.Navigator screenOptions={{ headerTitleStyle:{fontSize:20, fontWeight:'bold'}, headerShown:true}}>
-      <EarningsStack.Screen name="임대수익" component={EarningTabScreen} />
+      <EarningsStack.Screen name="수익" component={EarningTabScreen} />
     </EarningsStack.Navigator>
   );
 }
@@ -135,7 +135,7 @@ function TabsScreen() {
             <Tabs.Screen name='달력' component={CalendarStackScreen}  options={{tabBarIcon:({focused, color })=>(
               <NavIcon name={ 'calendar-edit' } color={focused? 'black' : color} size={25}/>
             )}}/>
-            <Tabs.Screen name='임대수익' component={EarningsStackScreen}  options={{tabBarIcon:({focused, color })=>(
+            <Tabs.Screen name='수익' component={EarningsStackScreen}  options={{tabBarIcon:({focused, color })=>(
               <NavIcon name={ 'chart-bar' } color={focused? 'black' : color} size={25}/>
             )}}/>
             <Tabs.Screen name='음식점' component={MyShopStackScreen}  options={{tabBarIcon:({focused, color })=>(

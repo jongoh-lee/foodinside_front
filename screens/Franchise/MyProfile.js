@@ -47,9 +47,9 @@ export default ({ navigation }) => {
         <View style={styles.buttonBox}>
 
           <TouchableWithoutFeedback onPress={()=> navigation.navigate("프로필 보기", {seeFullProfile : {
-                        id: "ckdra85bd1gjw0a3557xq2hnc",
-                        profileName: "큐슈 고쿠리",
-                        sector: "일식",
+                        id: "ckg3od2mg00y70764juta30nv",
+                        profileName: "그 시절 그 카페",
+                        sector: "비알콜 음료점",
                         isSelf:false
                     }})}>
             <View style={styles.button}>
@@ -70,14 +70,14 @@ export default ({ navigation }) => {
 
     {data?.myProfile?.profileState === 1 &&  (
       <>
-        <Text style={styles.title}>죄송합니다.{`\n`}회원님과 컨셉이 유사한{`\n`}<Text style={{color:"black"}}>다수의 업체가</Text> 이미 등록되어 있습니다.</Text>
+        <Text style={styles.title}>죄송합니다.{`\n`}컨셉이 유사한{`\n`}<Text style={{color:"black"}}>다수의 프로필이</Text> 이미 등록되어 있습니다.</Text>
         
         <View style={styles.buttonBox}>
 
           <TouchableWithoutFeedback onPress={()=> navigation.navigate("프로필 보기", {seeFullProfile : {
-                        id: "ckdra85bd1gjw0a3557xq2hnc",
-                        profileName: "큐슈 고쿠리",
-                        sector: "일식",
+                        id: "ckg3od2mg00y70764juta30nv",
+                        profileName: "그 시절 그 카페",
+                        sector: "비알콜 음료점",
                         isSelf:false
                     }})}>
             <View style={styles.button}>
@@ -86,7 +86,9 @@ export default ({ navigation }) => {
             <Text style={styles.buttonText}>프로필 예시</Text>
           </TouchableWithoutFeedback>
 
-          <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 신청")}>
+          <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 수정(pre)",{
+            myProfile:data.myProfile
+            })}>
             <View style={styles.button}>
                 <AntDesign name="form" size={34} color="rgba(0,0,0, .3)" />
             </View>
@@ -103,9 +105,9 @@ export default ({ navigation }) => {
         <View style={styles.buttonBox}>
 
           <TouchableWithoutFeedback onPress={()=> navigation.navigate("프로필 보기", {seeFullProfile : {
-                        id: "ckdra85bd1gjw0a3557xq2hnc",
-                        profileName: "큐슈 고쿠리",
-                        sector: "일식",
+                        id: "ckg3od2mg00y70764juta30nv",
+                        profileName: "그 시절 그 카페",
+                        sector: "비알콜 음료점",
                         isSelf:false
                     }})}>
             <View style={styles.button}>
@@ -135,9 +137,9 @@ export default ({ navigation }) => {
         <View style={styles.buttonBox}>
 
           <TouchableWithoutFeedback onPress={()=> navigation.navigate("프로필 보기", {seeFullProfile : {
-                        id: "ckdra85bd1gjw0a3557xq2hnc",
-                        profileName: "큐슈 고쿠리",
-                        sector: "일식",
+                        id: "ckg3od2mg00y70764juta30nv",
+                        profileName: "그 시절 그 카페",
+                        sector: "비알콜 음료점",
                         isSelf:false
                     }})}>
             <View style={styles.button}>
