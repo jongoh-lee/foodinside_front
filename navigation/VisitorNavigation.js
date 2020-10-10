@@ -157,6 +157,7 @@ function UserStackScreen() {
       <UserStack.Screen name="PostList" component={PostList} options={{headerTitleAlign:"center", headerTitle:"포토리뷰", headerLeft:() => <BackArrow />}} />
       <UserStack.Screen name="FollowList" component={FollowTabScreen} options={{headerTitleAlign:"center", headerTitle:"팔로우", headerLeft:() => <BackArrow />}} />
       <UserStack.Screen name="UserFollowers" component={UserFollowers} options={{headerTitleAlign:"center", headerTitle:"팔로워", headerLeft:() => <BackArrow />}} />
+      <UserStack.Screen name="프로필 보기" component={FullProfile} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}} />
     </UserStack.Navigator>
   );
 }

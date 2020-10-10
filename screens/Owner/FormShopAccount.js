@@ -11,6 +11,7 @@ import ShadowInput from "../../components/Custom/ShadowInput";
 import { useMutation } from "@apollo/react-hooks";
 import { COMPLETE_SHOP_ACCOUNT } from "./OwnerQueries";
 import ScreenLoader from "../../components/Custom/ScreenLoader";
+import numInput from "../../hooks/numInput";
 
 const styles = StyleSheet.create({
     container:{
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
 
 export default ({ navigation, route }) => {
     const [bank, setBank] = React.useState(route.params.account? route.params.account.bank : "");
-    const accountNumberInput = useInput(route.params.account? route.params.account.accountNumber : "");
+    const accountNumberInput = numInput(route.params.account? route.params.account.accountNumber : "");
     const accountHolderInput = useInput(route.params.account? route.params.account.accountHolder : "");
     const [loading, setLoading] = React.useState(false);
     const [completeShopAccountMutation] = useMutation(COMPLETE_SHOP_ACCOUNT);

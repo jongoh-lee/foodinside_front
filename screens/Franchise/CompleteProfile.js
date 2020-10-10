@@ -14,7 +14,8 @@ import ModalMemberInfo from "../../components/Franchise/ModalMemberInfo";
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import { CHECK_PROFILE_NAME, COMPLETE_PROFILE } from "./ProfileQueries";
-import { Caption } from "react-native-paper";
+import Caption from "../../components/Custom/Caption";
+
 
 export default ({ navigation, route }) => {
   const [loading, setLoading] = React.useState(false);
@@ -371,7 +372,7 @@ export default ({ navigation, route }) => {
             <ShadowInput {...contactInput} placeholder={'연락처'} width={'50%'} editable={!loading} padding={8} textAlign={'left'} editable={!loading} keyboardType={"number-pad"}/>
           </View>
 
-          {true ? 
+          {bank ? 
           (<View style={[{flexDirection:"row", alignItems:"center"}, Platform.OS === 'ios' ? { zIndex:3 } : null]}>
             <Text style={styles.subTitle}>입금 계좌: </Text>
             <DropDownPicker
@@ -469,7 +470,7 @@ export default ({ navigation, route }) => {
           </View>
 
         <View style={{flexDirection:"row", justifyContent:"space-between", paddingVertical:10}}>
-          <Text style={styles.title}>메뉴 정보</Text>
+          <Text style={styles.title} numberOfLines={1}>메뉴 정보 <Caption style={{fontSize:10}}>왼쪽은 정상가, 오른쪽은 단골 할인가 입니다.</Caption></Text>
           <TouchableOpacity style={{flexDirection:"row"}} disabled={loading} onPress={() => (
               setCompleteMenuModal(true),
               setChosenMenu({id:new Date().valueOf()})
@@ -505,7 +506,7 @@ export default ({ navigation, route }) => {
               <Text style={styles.menuName} numberOfLines={1}>{route.params.myProfile.menuName}</Text>
               <Image style={styles.menuImage} source={{uri:route.params.myProfile.menuImage}}/>
               <View style={styles.priceBox}>
-                <TextInput style={{borderBottomWidth:1, width:'40%', textAlign:"center",}}>{fullPriceInput.value}</TextInput>
+                <TextInput style={{borderBottomWidth:1, width:'40%', textAlign:"center",}} editable={!loading} value={fullPriceInput.value} onChangeText={fullPriceInput.onChange} placeholder={"정상가"} keyboardType={"number-pad"} returnKeyType={"default"}/>
                 <Text style={styles.salePrice}>{route.params.myProfile.salePrice}</Text>
               </View>
             </View>
@@ -578,7 +579,7 @@ export default ({ navigation, route }) => {
                 <View style={styles.card}>
                     <View style={styles.member}>
                       <TouchableOpacity onPress={() => (
-                        navigation.navigate('SelectMainPhoto', {
+                        navigation.navigate('SelectMemberPhoto', {
                           onSelect : onSelectFounderImage
                         })
                       )} disabled={loading}>

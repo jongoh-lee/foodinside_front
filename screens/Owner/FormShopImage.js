@@ -119,7 +119,6 @@ export default ({ navigation, route }) => {
                 }
             }
 
-            console.log(newImages);
             const {
                 data : { completeShopImage }
             } = await completeShopImageMutation({

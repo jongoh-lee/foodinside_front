@@ -32,8 +32,7 @@ export default () => {
           <ShopCardLoading/>
           <ShopCardLoading/>
           <ShopCardLoading/>
-          </>) : null}
-          {data?.searchShopList.length > 0 ? data?.searchShopList?.map((shop, index) => (
+          </>) : data?.searchShopList.length > 0 ? data?.searchShopList?.map((shop, index) => (
             <ShopCard key={index} {...shop} />
             )) : 
             <View style={{flex:1, justifyContent:"center", alignItems:"center"}}>
