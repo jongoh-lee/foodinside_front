@@ -43,9 +43,9 @@ export default ({ navigation, route }) => {
         
         <View style={styles.buttonBox}>
           <TouchableWithoutFeedback style={{alignItems:"center"}} onPress={() => navigation.navigate("음식점 보기",{
-            id: "ckf23cjy16zop0a3581hz4o16",
+            id: "ckg3oqn24012j076467rdynxh",
             shopName:"내 가게",
-            classification:"일반",
+            classification:"휴게",
             isSelf:false, 
           })}>
             <View style={styles.button}>
@@ -66,13 +66,13 @@ export default ({ navigation, route }) => {
 
     {data?.myShop?.ownerState === 1 && (
       <>
-        <Text style={styles.title}>죄송합니다. {`\n`}아쉽게도 사장님의 음식점은 <Text style={{color:"black"}}>{`\n`}푸드인사이드</Text>에 등록할 수 없습니다.</Text>
+        <Text style={styles.title}>죄송합니다. {`\n`}아쉽게도 신청된 음식점은 <Text style={{color:"black"}}>{`\n`}공유음식점</Text>으로 등록할 수 없습니다.</Text>
         <View style={styles.buttonBox}>
 
           <TouchableWithoutFeedback style={{alignItems:"center"}} onPress={() => navigation.navigate("음식점 보기",{
-            id: "ckf23cjy16zop0a3581hz4o16",
+            id: "ckg3oqn24012j076467rdynxh",
             shopName:"내 가게",
-            classification:"일반",
+            classification:"휴게",
             isSelf:false, 
           })}>
             <View style={styles.button}>
@@ -81,7 +81,9 @@ export default ({ navigation, route }) => {
             <Text style={styles.buttonText}>공유 음식점 예시</Text>
           </TouchableWithoutFeedback>
 
-          <TouchableWithoutFeedback style={{alignItems:"center"}} onPress={() => navigation.navigate("신청 하기")}>
+          <TouchableWithoutFeedback style={{alignItems:"center"}} onPress={() => navigation.navigate("수정 하기",{
+            myShop:data.myShop
+          })}>
             <View style={styles.button}>
                 <AntDesign name="form" size={34} color="rgba(0,0,0, .3)" />
             </View>
@@ -98,9 +100,9 @@ export default ({ navigation, route }) => {
         <View style={styles.buttonBox}>
 
           <TouchableWithoutFeedback style={{alignItems:"center"}} onPress={() => navigation.navigate("음식점 보기",{
-            id: "ckf23cjy16zop0a3581hz4o16",
+            id: "ckg3oqn24012j076467rdynxh",
             shopName:"내 가게",
-            classification:"일반",
+            classification:"휴게",
             isSelf:false, 
           })}>
             <View style={styles.button}>
@@ -129,9 +131,9 @@ export default ({ navigation, route }) => {
         <View style={styles.buttonBox}>
 
           <TouchableWithoutFeedback style={{alignItems:"center"}} onPress={() => navigation.navigate("음식점 보기",{
-            id: "ckf23cjy16zop0a3581hz4o16",
+            id: "ckg3oqn24012j076467rdynxh",
             shopName:"내 가게",
-            classification:"일반",
+            classification:"휴게",
             isSelf:false, 
           })}>
             <View style={styles.button}>
