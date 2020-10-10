@@ -66,7 +66,7 @@ export default ({ id, avatar, username, email, isSelf ,dangolCount, followersCou
                         <Avatar.Image
                         source={avatar? {uri:avatar} : require('../../assets/Icons/avatarBasic.png')}
                         size={60}
-                        backgroundColor={'#ffffff'}
+                        backgroundColor={'#e0e0e0'}
                         />
                     </View>
                     <View style={{flex:3}}>
@@ -121,7 +121,7 @@ export default ({ id, avatar, username, email, isSelf ,dangolCount, followersCou
             {/* 리뷰 리스트 */}
                 {posts.length > 0 ? (
                     <View style={{flex:1, backgroundColor:"#ffffff", flexDirection:"row", flexWrap:"wrap"}}>
-                        <PostHorizontal id={null} posts={posts}/>
+                        <PostHorizontal id={null} posts={posts} user={{user: id, username, avatar}}/>
                     </View>
                 ) : (
                     <View style={{flex:1, backgroundColor:"#ffffff", justifyContent:"center", alignItems:"center"}}>

@@ -147,6 +147,7 @@ const styles = StyleSheet.create({
     width: constants.width,
     height: constants.height / 4,
     resizeMode:"cover",
+    backgroundColor:"#e0e0e0"
   },
   subContainer:{
     padding:5,
@@ -166,6 +167,7 @@ const styles = StyleSheet.create({
     height: WIDTH / 3,
     resizeMode:"cover",
     borderRadius: 15,
+    backgroundColor:"#e0e0e0"
   },
   menuName:{
     fontSize:14,

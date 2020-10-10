@@ -35,14 +35,14 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     titleAlign: {
-        flexDirection: "row",
         alignItems: "baseline",
     },
     mainImage: {
         width: WIDTH * 0.2,
         height: WIDTH * 0.11,
         marginRight: 8,
-        borderRadius:10
+        borderRadius:10,
+        backgroundColor:'#e0e0e0', 
     },
     headerTitle:{
         maxWidth: WIDTH * 0.55,
@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
         height: WIDTH / 3,
         resizeMode:"cover",
         borderRadius: 15,
+        backgroundColor:'#e0e0e0', 
     },
     menuName:{
         fontSize:14,
@@ -191,7 +192,8 @@ export default ({ id, mainImage, profileName, sector,  menuName, menuImage, full
                             <Image style={styles.mainImage} source={{ uri: mainImage }}/>
                                 <View style={{maxWidth: WIDTH * 0.6}}>
                                     <View style={styles.titleAlign}>
-                                        <Text style={styles.headerTitle} numberOfLines={1} ellipsizeMode={"middle"}>{profileName}<Text style={styles.headerSubtitle}>  {sector}</Text></Text>
+                                        <Text style={styles.headerTitle} numberOfLines={1} ellipsizeMode={"middle"}>{profileName}</Text>
+                                        <Text style={styles.headerSubtitle}>{sector}</Text>
                                     </View>
                                 </View>
                         </View>

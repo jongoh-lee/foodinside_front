@@ -18,7 +18,8 @@ const styles = StyleSheet.create({
         width: constants.width / 3,
         height: constants.width / 2.5,
         resizeMode:"cover",
-        borderRadius:10
+        borderRadius:10,
+        backgroundColor:"#e0e0e0"
     },
     position:{
         flexDirection:"row",

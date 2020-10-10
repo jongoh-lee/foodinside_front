@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
         margin:1,
         justifyContent:"center",
         alignItems:"center",
+        backgroundColor:'#e0e0e0', 
     },
     upload:{
         borderBottomColor:"#50caef",
@@ -24,17 +25,17 @@ const styles = StyleSheet.create({
 
 
 
-export default ({ id, posts }) => {
-    const navigation = useNavigation()
+export default ({ id, posts, user }) => {
+    const navigation = useNavigation();
     return (
     <>
         {posts.map((post, index) => (
             <TouchableOpacity key={post.id} onPress={() => navigation.navigate("PostList", {
                 post:{
                     profileId: id,
-                    postId: post.id,
-                    thumnail: posts,
-                    index
+                    posts,
+                    index,
+                    user
                 }
             })} >
                 <Image style={styles.grid} source={{uri:post.files[0].url}}/>
