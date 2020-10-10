@@ -90,29 +90,29 @@ export default ({ navigation, route }) => {
           <Text style={styles.title}>대표 메뉴</Text>
         </View>
 
-        <TouchableWithoutFeedback style={styles.imageInput} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelect})}>
+        <TouchableWithoutFeedback style={styles.imageInput} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelect})} disabled={loading}>
           {image === null? <AntDesign name="plus" size={30} color="black" /> : <Image style={styles.image} source={{uri: image.uri}}/>}
         </TouchableWithoutFeedback>
 
         <View style={styles.action}>
           <Text style={{fontWeight:'bold'}}>메뉴 이름:  </Text> 
-          <ShadowInput {...menuNameInput}  placeholder={"메뉴 이름"} width={'70%'} padding={5} borderColor={'white'}/>
+          <ShadowInput {...menuNameInput}  placeholder={"메뉴 이름"} width={'70%'} padding={5} borderColor={'white'} editable={!loading}/>
         </View>
 
         <View style={styles.action}>
           <Text style={{fontWeight:'bold'}}>희망 가격:  </Text> 
-          <ShadowInput {...salePriceInput}  placeholder={"희망가격"} width={'70%'} padding={5} borderColor={'white'} keyboardType="numeric"/>
+          <ShadowInput {...salePriceInput}  placeholder={"희망가격"} width={'70%'} padding={5} borderColor={'white'} keyboardType="numeric" editable={!loading}/>
         </View>
 
         <View style={styles.action}>
           <Text style={{fontWeight:'bold'}}>업종:  </Text> 
           <RadioButton.Group onValueChange={classification => setClassification(classification)} value={classification}>
             <View style={{flexDirection:"row", alignItems:"center"}}>
-              <RadioButton value="일반" color={'#05e6f4'} uncheckedColor={'rgba(5, 230, 244, .3)'}/>
+              <RadioButton value="일반" color={'#05e6f4'} uncheckedColor={'rgba(5, 230, 244, .3)'} disabled={loading}/>
               <Text>일반 음식점</Text>
             </View>
             <View style={{flexDirection:"row", alignItems:"center"}}>
-              <RadioButton value="휴게" color={'#05e6f4'} uncheckedColor={'rgba(5, 230, 244, .3)'}/>
+              <RadioButton value="휴게" color={'#05e6f4'} uncheckedColor={'rgba(5, 230, 244, .3)'} disabled={loading}/>
               <Text>휴게 음식점</Text>
             </View>
           </RadioButton.Group>
