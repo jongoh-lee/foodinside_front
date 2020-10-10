@@ -17,7 +17,7 @@ const authLink = setContext(async (_, { headers }) => {
 
 const link = new HttpLink({
   uri: process.env.NODE_ENV === "development" 
-  ? "http://172.30.1.21:4000"
+  ? "http://172.30.1.30:4000"
   : "https://foodinside-backend.herokuapp.com"
 
 });
