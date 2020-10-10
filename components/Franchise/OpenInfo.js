@@ -27,9 +27,10 @@ export default ({ id }) => {
     variables:{
       today,
       id
-    }
+    },
+    fetchPolicy:"network-only"
   });
-
+  
   const [ openInfo, setOpenInfo ] = React.useState(null);
 
   React.useEffect(() => {
@@ -53,19 +54,19 @@ export default ({ id }) => {
 
       return array
     }, []);
-
     setOpenInfo(result);
+    
   },[data]);
 
   return (
     <View style={styles.container}>
-      {loading ? <ScreenLoader /> : null }
+      {loading ? <ScreenLoader /> : 
       <MapView 
       style={{flex:1}} 
       provider={PROVIDER_GOOGLE}
       initialRegion={{
-        latitude:37.537140,
-        longitude:126.986935,
+        latitude: data?.openInfo[0] ? data?.openInfo[0].owner.latitude : 37.537140,
+        longitude: data?.openInfo[0] ? data?.openInfo[0].owner.longitude : 126.986935,
         latitudeDelta: 0.01,
         longitudeDelta: 0.005,}}>
 
@@ -85,6 +86,6 @@ export default ({ id }) => {
             </Marker>
           )}
         )}
-      </MapView>
+      </MapView>}
     </View>
 )};
