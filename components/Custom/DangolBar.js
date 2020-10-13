@@ -70,7 +70,7 @@ const DangolBar = ({ id, isDangol : isDangolProps, dangolCount : dangolCountProp
                 </View>
                 )}
             
-                <View style={[styles.cardInfo, {justifyContent:"flex-end"}]}>
+                <View style={styles.cardInfo}>
                     <TouchableOpacity style={styles.logoRow} onPress={() => handleDangol()} disabled={loading}>
                         {isDangol? (
                         <>

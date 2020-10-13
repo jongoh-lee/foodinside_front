@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View, Platform } from "react-native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import Caption from "../Custom/Caption";
@@ -42,21 +42,21 @@ const styles = StyleSheet.create({
   },
   imageMain: {
     borderRadius:10,
-    height: 202,
+    height: Platform.isPad ? 402 : 202,
     width:'59.5%',
     marginRight: "0.5%",
     backgroundColor:"#e0e0e0"
   },
   imageHall: {
     borderRadius:10,
-    height: 100,
+    height: Platform.isPad ? 200 :100,
     width:'100%',
     marginBottom: 2,
     backgroundColor:"#e0e0e0"
   },
   imageKitchen: {
     borderRadius:10,
-    height: 100,
+    height: Platform.isPad ? 200 : 100,
     width:'100%',
     backgroundColor:"#e0e0e0"
   },

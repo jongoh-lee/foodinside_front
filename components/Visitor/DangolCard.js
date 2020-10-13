@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, View, Image, Text,  } from "react-native";
+import { StyleSheet, View, Image, Text, Platform } from "react-native";
 import constants from "../../constants";
 import { ScrollView, TouchableWithoutFeedback, TouchableOpacity } from "react-native-gesture-handler";
 import { Caption } from "react-native-paper";
@@ -38,8 +38,8 @@ const styles = StyleSheet.create({
         alignItems: "baseline",
     },
     mainImage: {
-        width: WIDTH * 0.2,
-        height: WIDTH * 0.11,
+        width: Platform.isPad ? WIDTH * 0.1 : WIDTH * 0.2,
+        height: Platform.isPad ? WIDTH * 0.05 : WIDTH * 0.11,
         marginRight: 8,
         borderRadius:10,
         backgroundColor:'#e0e0e0', 

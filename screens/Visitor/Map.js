@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     shadowOpacity: 0.3,
     shadowOffset: { x: 2, y: -2 },
-    height: CARD_HEIGHT,
+    height: Platform.isPad ? 450 : CARD_HEIGHT,
     width: CARD_WIDTH,
     overflow: "hidden",
   },
