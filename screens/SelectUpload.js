@@ -100,7 +100,7 @@ export default ({ navigation, route }) => {
 
     navigation.setOptions({
         headerRight:() => (
-            <TouchableOpacity style={selected.length > 0 ? styles.selectButton : [styles.selectButton, {backgroundColor:"rgba(5, 230, 244, .4)"}]} disabled={active} onPress={onPressNext}>
+            <TouchableOpacity style={selected.length > 0 ? styles.selectButton : [styles.selectButton, {backgroundColor:"rgba(5, 230, 244, .4)"}]} disabled={!active} onPress={onPressNext}>
                 <Text style={styles.selectText}>선택</Text>
            </TouchableOpacity>
         ),
