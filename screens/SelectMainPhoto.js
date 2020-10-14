@@ -5,6 +5,7 @@ import { StyleSheet, View, Image, ScrollView, Text, StatusBar, SafeAreaView, Tou
 import Loader from "../components/Custom/Loader";
 import constants from "../constants";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import * as ImageManipulator from "expo-image-manipulator";
 import BackArrow from "../components/Custom/BackArrow";
 
 const styles = StyleSheet.create({
@@ -78,10 +79,17 @@ export default ({ navigation, route }) => {
         }
     };
 
-    const handleSelected = () => {
+    const handleSelected = async () => {
         setInactive(true)
-        navigation.goBack({ photo : selected });
-        route.params.onSelect({ photo : selected});
+        const image = [];
+        const manipResult =  await ImageManipulator.manipulateAsync(
+            selected.uri,
+            [],
+            { compress: 0.1, format: ImageManipulator.SaveFormat.JPEG }
+        );
+        image.push({...selected, height: manipResult.height, width: manipResult.width, uri:manipResult.uri})
+        navigation.goBack({ photo : image[0] });
+        route.params.onSelect({ photo : image[0]});
     };
 
     React.useEffect(()=>{
