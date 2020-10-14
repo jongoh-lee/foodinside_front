@@ -26,10 +26,11 @@ export default ({ navigation, route }) => {
                 showsVerticalScrollIndicator={true}
                 contentContainerStyle={{paddingVertical:10}}
                 initialScrollIndex={route.params.post.index}
-                initialNumToRender={3}
-                getItemLayout={(data, index) => (
-                    {length: 601, offset: 601 * index, index}
-                  )}
+                initialNumToRender={9}
+                // getItemLayout={(data, index) => (
+                //     {length: 601, offset: 601 * index, index}
+                //   )}
+                onScrollToIndexFailed={() =>{}}
             />
         </View>
     )
