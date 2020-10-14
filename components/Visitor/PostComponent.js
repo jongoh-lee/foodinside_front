@@ -211,31 +211,31 @@ export default ({ id : postId, user, userInfo, files, tasting, isSelf, isLiked:i
   return (
     <>
       <View>
-      {loading && <ScreenLoader />}
-      {/* 헤더 */}
-      <TouchableOpacity onPress={() => navigation.navigate("SeeUser", {
-        user:{ username, isSelf }
-        })}>
-        <View style={styles.headerBar}>
-          <View style={styles.headerLeft}>
-            <Image style={styles.avatar} source={avatar? { uri: avatar } : require('../../assets/Icons/avatarBasic.png')} />
-            <View>
-              <Text style={styles.username}>{username}</Text>
-              {!profileId && <TouchableOpacity onPress={() => navigation.navigate("프로필 보기", {
-                    seeFullProfile:{
-                        id: profile.id,
-                        profileName: profile.profileName,
-                        sector: profile.sector,
-                        isSelf: profile.isSelf
-                    }
-                })} style={{zIndex:100, paddingTop:2}}><Caption>{profile.profileName}</Caption></TouchableOpacity>}
+        {loading && <ScreenLoader />}
+        {/* 헤더 */}
+        <TouchableOpacity onPress={() => navigation.navigate("SeeUser", {
+          user:{ username, isSelf }
+          })}>
+          <View style={styles.headerBar}>
+            <View style={styles.headerLeft}>
+              <Image style={styles.avatar} source={avatar? { uri: avatar } : require('../../assets/Icons/avatarBasic.png')} />
+              <View>
+                <Text style={styles.username}>{username}</Text>
+                {!profileId && <TouchableOpacity onPress={() => navigation.navigate("프로필 보기", {
+                      seeFullProfile:{
+                          id: profile.id,
+                          profileName: profile.profileName,
+                          sector: profile.sector,
+                          isSelf: profile.isSelf
+                      }
+                  })} style={{zIndex:100, paddingTop:2}}><Caption>{profile.profileName}</Caption></TouchableOpacity>}
+              </View>
             </View>
-          </View>
 
-          <TouchableOpacity onPress={() => setPostModal(true)} style={{zIndex:200}}>
-            <Feather name="more-vertical" size={20} style={{paddingHorizontal:5}} color={'rgba(0, 0, 0, .7)'}/>
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity onPress={() => setPostModal(true)} style={{zIndex:200}}>
+              <Feather name="more-vertical" size={20} style={{paddingHorizontal:5}} color={'rgba(0, 0, 0, .7)'}/>
+            </TouchableOpacity>
+          </View>
         </TouchableOpacity>
 
         {/* 이미지 */}
@@ -264,7 +264,6 @@ export default ({ id : postId, user, userInfo, files, tasting, isSelf, isLiked:i
               </TouchableOpacity> */}
               {/* <Caption>{12}개</Caption> */}
             {/* </View> */}
-
             <View style={styles.snsButton}>
               <TouchableOpacity onPress={onPressLike} disabled={likeLoading}>
                 {isLiked? (
@@ -277,7 +276,7 @@ export default ({ id : postId, user, userInfo, files, tasting, isSelf, isLiked:i
             </View>
           </View>
 
-            <Caption style={styles.postingTime}>{postTime}</Caption>
+          <Caption style={styles.postingTime}>{postTime}</Caption>
         </View>
       </View>
 
@@ -291,55 +290,52 @@ export default ({ id : postId, user, userInfo, files, tasting, isSelf, isLiked:i
       style={styles.modal}
       backdropOpacity={.4}
       >
-      {isSelf === true? (
-        <>
-          <View style={styles.modalContent_top}>
-            <MaterialCommunityIcons name="chevron-down" size={26} color="#666" style={{alignSelf:"center"}} />
+        {isSelf === true? (
+          <>
+            <View style={styles.modalContent_top}>
+              <MaterialCommunityIcons name="chevron-down" size={26} color="#666" style={{alignSelf:"center"}} />
 
-            <TouchableOpacity style={styles.modalList} onPress={() => navigation.navigate("") }>
-              <MaterialCommunityIcons name="square-edit-outline" size={24} color="#666" /><Text style={styles.modalText}>리뷰 수정</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.modalList} onPress={() => setPostModal(false)}>
-              <AntDesign name="back" size={24} color="#666" /><Text style={styles.modalText}>취소</Text>
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.modalContent_bottom}>
-            <TouchableOpacity style={styles.modalList} onPress={() => Alert.alert('확인','리뷰를 삭제 하시겠습니까?',
-                [
-                  {
-                    text: '취소',
-                    style: 'cancel',
-                  },
-                  {text: '확인',
-                  onPress: () => profileId? deleteProfilePost() : deleteUserPost()
-                },
-                ],
-            {cancelable: true},
-            )}>
-              <MaterialCommunityIcons name="delete-empty-outline" size={25} color="red"/><Text style={styles.modalText_red}>리뷰 삭제</Text>
-            </TouchableOpacity>
-          </View>
-        </>
-      ) : (
-        <>
-          <View style={styles.modalContent_top}>
-            <MaterialCommunityIcons name="chevron-down" size={26} color="#666" style={{alignSelf:"center"}} />
               <TouchableOpacity style={styles.modalList} onPress={() => setPostModal(false)}>
                 <AntDesign name="back" size={24} color="#666" /><Text style={styles.modalText}>취소</Text>
               </TouchableOpacity>
-           
-          </View>
+            </View>
 
-          <View style={styles.modalContent_bottom}>
-            <TouchableOpacity style={styles.modalList}>
-              <MaterialCommunityIcons name="alarm-light-outline" size={25} color="red"/><Text style={styles.modalText_red}>신고 하기</Text>
-            </TouchableOpacity>
-          </View>
-        </>
-      )}
+            <View style={styles.modalContent_bottom}>
+              <TouchableOpacity style={styles.modalList} onPress={() => Alert.alert('확인','리뷰를 삭제 하시겠습니까?',
+                  [
+                    {
+                      text: '취소',
+                      style: 'cancel',
+                    },
+                    {text: '확인',
+                    onPress: () => profileId? deleteProfilePost() : deleteUserPost()
+                  },
+                  ],
+              {cancelable: true},
+              )}>
+                <MaterialCommunityIcons name="delete-empty-outline" size={25} color="red"/><Text style={styles.modalText_red}>리뷰 삭제</Text>
+              </TouchableOpacity>
+            </View>
+          </>
+        ) : (
+          <>
+            <View style={styles.modalContent_top}>
+              <MaterialCommunityIcons name="chevron-down" size={26} color="#666" style={{alignSelf:"center"}} />
+                <TouchableOpacity style={styles.modalList} onPress={() => setPostModal(false)}>
+                  <AntDesign name="back" size={24} color="#666" /><Text style={styles.modalText}>취소</Text>
+                </TouchableOpacity>
+
+            </View>
+
+            <View style={styles.modalContent_bottom}>
+              <TouchableOpacity style={styles.modalList}>
+                <MaterialCommunityIcons name="alarm-light-outline" size={25} color="red"/><Text style={styles.modalText_red}>신고 하기</Text>
+              </TouchableOpacity>
+            </View>
+          </>
+        )}
       
-    </Modal>
+      </Modal>
 
     </>
 )};
