@@ -8,7 +8,7 @@
       "web"
     ],
     "sdkVersion": "39.0.0",
-    "version": "0.1.3",
+    "version": "0.1.5",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -23,23 +23,28 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
+      "supportsTablet": false,
       "bundleIdentifier": "com.foodinside.foodinside",
-      "buildNumber": "0.1.3",
+      "buildNumber": "0.1.5",
       "config": {
         "googleMapsApiKey": "AIzaSyB77l5gKZERH5nDSvT5PboXLkl_uJbVcUQ"
       },
       "infoPlist":{
-        "NSPhotoLibraryUsageDescription": "푸드 인사이드가 사진을 업로드하기 위해 사진첩에 접근하려 합니다. 접근을 승인하시겠습니까?"
+        "CFBundleAllowMixedLocalizations": true,
+        "NSPhotoLibraryUsageDescription": "This app requires access to the photo library to upload your photo"
       }
     },
     "android": { 
       "package": "com.foodinside.foodinside", 
-      "versionCode": 4,
+      "versionCode": 6,
       "config": { 
         "googleMaps": { "apiKey": "AIzaSyB77l5gKZERH5nDSvT5PboXLkl_uJbVcUQ" } 
       },
       "permissions": ["READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"]
+    },
+    "locales" : {
+      "ko" : "./languages/korean.json",
+      "en" : "./languages/english.json"
     }
   }
 }
