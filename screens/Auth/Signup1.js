@@ -33,7 +33,7 @@ export default ({ route, navigation }) => {
       setLoading(false);
     }
   }
-  console.log(value)
+  
   React.useEffect(()=>{
     if(value === ""){
       setAlert("")
