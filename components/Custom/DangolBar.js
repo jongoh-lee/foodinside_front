@@ -74,13 +74,13 @@ const DangolBar = ({ id, isDangol : isDangolProps, dangolCount : dangolCountProp
                     <TouchableOpacity style={styles.logoRow} onPress={() => handleDangol()} disabled={loading}>
                         {isDangol? (
                         <>
-                            <Image style={styles.dangolLogo_checked} source={mapCard ? require('../../assets/Icons/clocheWhite.png') : require('../../assets/Icons/cloche.png')} />
-                            <Text style={[styles.logoText_checked, mapCard? {color:"rgba(255, 255, 255, .8)"} : null]}>단골 중</Text>
+                            <Image style={styles.dangolLogo_checked} source={mapCard ? require('../../assets/Icons/clocheBlue.png') : require('../../assets/Icons/clocheBlue.png')} />
+                            <Text style={[styles.logoText_checked, mapCard? {color:"rgba(5, 230, 244, .6)"} : null]}>단골 중</Text>
                         </> 
                         ): (
                         <>
-                            <Image style={styles.dangolLogo} source={mapCard ? require('../../assets/Icons/clocheWhite.png') : require('../../assets/Icons/cloche.png')} />
-                            <Text style={[styles.logoText, mapCard? {color:"white"} : null]}>단골</Text>
+                            <Image style={styles.dangolLogo} source={mapCard ? require('../../assets/Icons/clocheBlue.png') : require('../../assets/Icons/clocheBlue.png')} />
+                            <Text style={[styles.logoText, mapCard? {color:"rgba(5, 230, 244, .9)"} : null]}>단골</Text>
                         </>)}
                     </TouchableOpacity>
                 </View>
@@ -132,11 +132,11 @@ const styles=StyleSheet.create({
           opacity: .6,
       },
       logoText:{
-          color:"rgba(0, 0, 0, .9)",
+          color:"rgba(5, 230, 244, .9)",
           fontSize:12
       },
       logoText_checked:{
-          color:"rgba(0, 0, 0, .6 )",
+          color:"rgba(5, 230, 244, .6)",
           fontSize:12
       },
   });
