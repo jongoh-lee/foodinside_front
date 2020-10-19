@@ -24,7 +24,7 @@ export default ({ year, month }) => {
     });
     return (
         <View style={styles.loading}> 
-            {loading ? <ActivityIndicator color={"#05e6f4"} size={"small"}/> : <Text style={styles.earningNum}>{String(data?.myEarnings).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 원</Text>}
+            {loading ? <ActivityIndicator color={"#05e6f4"} size={"small"}/> : <Text style={styles.earningNum}>{String(data?.myEarnings * 0.85).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 원</Text>}
         </View>    
     )
 }
