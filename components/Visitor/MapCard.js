@@ -1,7 +1,7 @@
 import * as React from "react";
 import { StyleSheet, View, Image, Text, ImageBackground, } from "react-native";
 import constants from "../../constants";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import { ScrollView, TouchableOpacity, TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import DangolBar from "../Custom/DangolBar";
 import Caption from "../Custom/Caption";
@@ -107,17 +107,17 @@ export default ({ profile, firstDate, lastDate }) => {
         <View style={{position:"absolute", left:0, top:0, width:'100%', height:"100%", backgroundColor:"rgba(0, 0, 0, .4)"}}/>
         <View style={styles.box}>
             {/* 헤더 */}
-            <View style={styles.header}>
-                <TouchableOpacity 
+            <TouchableWithoutFeedback 
                     onPress={()=> navigation.navigate("프로필 보기", {seeFullProfile : {
                         id,
                         profileName,
                         sector,
                         isSelf:true
                     }})}>
-                    <Text style={styles.headerTitle} numberOfLines={1} ellipsizeMode={"middle"}>{profileName}<Text style={styles.sector}>  {sector}</Text></Text>
-                </TouchableOpacity>
-            </View>
+                <View style={styles.header}>
+                        <Text style={styles.headerTitle} numberOfLines={1} ellipsizeMode={"middle"}>{profileName}<Text style={styles.sector}>  {sector}</Text></Text>
+                </View>
+            </TouchableWithoutFeedback>
         
             {/* 메뉴 스크롤*/}
             <View style={{flex:3}}>
