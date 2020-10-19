@@ -7,7 +7,6 @@ import { useLazyQuery } from "@apollo/react-hooks";
 import { Entypo, Feather, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { LOAD_MORE_REVIEW } from "../../screens/Franchise/ProfileQueries";
 // screens
-import PostHorizontal from "./PostHorizontal";
 import OpenInfo from "./OpenInfo";
 import Members from "./Members";
 import DangolBar from "../Custom/DangolBar";
