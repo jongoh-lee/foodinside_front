@@ -73,7 +73,7 @@ export default ({ navigation, route }) => {
       }
     }
     React.useEffect(() => {
-      if(username.length < 3){
+      if(username.length < 2){
         setAlert(true)
       }else{
         setAlert(false)
