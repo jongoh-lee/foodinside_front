@@ -341,6 +341,9 @@ export const POST_FRAGMENT = gql`
     profile{
       id
       token
+      profileName
+      sector
+      isSelf
     }
     createdAt
   }

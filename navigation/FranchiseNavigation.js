@@ -37,7 +37,8 @@ import Logo from '../components/Custom/Logo';
 import BackArrow from '../components/Custom/BackArrow';
 import BackWarningArrow from '../components/Custom/BackWarningArrow';
 import BookingShop from '../screens/Franchise/BookingShop';
-import PostList from '../screens/Visitor/PostList';
+import UserPostList from '../screens/Visitor/UserPostList';
+import FranchisePostList from '../screens/Franchise/FranchisePostList';
 import FullUser from '../screens/Visitor/FullUser';
 import UserFollowers from '../screens/Visitor/UserFollowers';
 import CancelBooking from '../screens/Franchise/CancelBooking';
@@ -145,7 +146,8 @@ function ProfileStackScreen() {
         headerLeft:()=> <BackArrow />,
       }} />
       <ProfileStack.Screen name="프로필 보기" component={FullProfile} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}} />
-      <ProfileStack.Screen name="PostList" component={PostList} options={{headerTitleAlign:"center", headerTitle:"포토리뷰", headerLeft:() => <BackArrow />}} />
+      <ProfileStack.Screen name="UserPostList" component={UserPostList} options={{headerTitleAlign:"center", headerTitle:"포토리뷰", headerLeft:() => <BackArrow />}} />
+      <ProfileStack.Screen name="FranchisePostList" component={FranchisePostList} options={{headerTitleAlign:"center", headerTitle:"포토리뷰", headerLeft:() => <BackArrow />}} />
       <ProfileStack.Screen name="SeeUser" component={FullUser} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}} />
       <ProfileStack.Screen name="UserFollowers" component={UserFollowers} options={{headerTitleAlign:"center", headerTitle:"팔로워", headerLeft:() => <BackArrow />}} />
     </ProfileStack.Navigator>
@@ -213,8 +215,7 @@ export default () => {
       })}/>
       */}
       <FranchiseStack.Screen name='SelectUpload' component={SelectUpload} options={{
-        headerTitle:"최근 항목",
-        headerLeft:()=> <BackArrow />,
+        headerShown:false,
       }}/>
       <FranchiseStack.Screen name='포스트' component={UploadPost} options={{
         headerTitle:"최근 항목",

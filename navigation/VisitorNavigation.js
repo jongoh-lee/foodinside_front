@@ -20,7 +20,8 @@ import Search from '../screens/Visitor/Search';
 //nested screen
 import FullProfile from '../screens/Visitor/FullProfile';
 import FullUser from '../screens/Visitor/FullUser';
-import PostList from '../screens/Visitor/PostList';
+import UserPostList from '../screens/Visitor/UserPostList';
+import FranchisePostList from '../screens/Franchise/FranchisePostList';
 
 // 사진 선택
 import SelectPhoto from '../screens/SelectPhoto';
@@ -83,7 +84,8 @@ function MapStackScreen() {
       <MapStack.Screen name="랜덤 음식점" component={Map}/>
       <MapStack.Screen name="프로필 보기" component={FullProfile} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}} />
       <MapStack.Screen name="SeeUser" component={FullUser} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}} />
-      <MapStack.Screen name="PostList" component={PostList} options={{headerTitleAlign:"center", headerTitle:"포토리뷰", headerLeft:() => <BackArrow />}} />
+      <MapStack.Screen name="UserPostList" component={UserPostList} options={{headerTitleAlign:"center", headerTitle:"포토리뷰", headerLeft:() => <BackArrow />}} />
+      <MapStack.Screen name="FranchisePostList" component={FranchisePostList} options={{headerTitleAlign:"center", headerTitle:"포토리뷰", headerLeft:() => <BackArrow />}} />
       <MapStack.Screen name="FollowList" component={FollowTabScreen} options={{headerTitleAlign:"center", headerTitle:"팔로우", headerLeft:() => <BackArrow />}} />
       <MapStack.Screen name="UserFollowers" component={UserFollowers} options={{headerTitleAlign:"center", headerTitle:"팔로워", headerLeft:() => <BackArrow />}} />
     </MapStack.Navigator>
@@ -118,7 +120,8 @@ function FavoriteStackScreen() {
     <FavoriteStack.Navigator headerMode={"screen"} screenOptions={{headerShown:true, headerTitleStyle:{fontSize:20, fontWeight:'bold'}}}>
       <FavoriteStack.Screen name="단골" component={Dangol} />
       <FavoriteStack.Screen name="프로필 보기" component={FullProfile} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}} />
-      <FavoriteStack.Screen name="PostList" component={PostList} options={{headerTitleAlign:"center", headerTitle:"포토리뷰", headerLeft:() => <BackArrow />}} />
+      <FavoriteStack.Screen name="UserPostList" component={UserPostList} options={{headerTitleAlign:"center", headerTitle:"포토리뷰", headerLeft:() => <BackArrow />}} />
+      <FavoriteStack.Screen name="FranchisePostList" component={FranchisePostList} options={{headerTitleAlign:"center", headerTitle:"포토리뷰", headerLeft:() => <BackArrow />}} />
       <FavoriteStack.Screen name="SeeUser" component={FullUser} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}} />
       <FavoriteStack.Screen name="FollowList" component={FollowTabScreen} options={{headerTitleAlign:"center", headerTitle:"팔로우", headerLeft:() => <BackArrow />}} />
       <FavoriteStack.Screen name="UserFollowers" component={UserFollowers} options={{headerTitleAlign:"center", headerTitle:"팔로워", headerLeft:() => <BackArrow />}} />
@@ -154,7 +157,8 @@ function UserStackScreen() {
     <UserStack.Navigator headerMode={"screen"} screenOptions={{headerShown:true, headerTitleStyle:{fontSize:20, fontWeight:'bold'}}}>
       <UserStack.Screen name="내 정보" component={Me}/>  
       <UserStack.Screen name="SeeUser" component={FullUser} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}} />
-      <UserStack.Screen name="PostList" component={PostList} options={{headerTitleAlign:"center", headerTitle:"포토리뷰", headerLeft:() => <BackArrow />}} />
+      <UserStack.Screen name="UserPostList" component={UserPostList} options={{headerTitleAlign:"center", headerTitle:"포토리뷰", headerLeft:() => <BackArrow />}} />
+      <UserStack.Screen name="FranchisePostList" component={FranchisePostList} options={{headerTitleAlign:"center", headerTitle:"포토리뷰", headerLeft:() => <BackArrow />}} />
       <UserStack.Screen name="FollowList" component={FollowTabScreen} options={{headerTitleAlign:"center", headerTitle:"팔로우", headerLeft:() => <BackArrow />}} />
       <UserStack.Screen name="UserFollowers" component={UserFollowers} options={{headerTitleAlign:"center", headerTitle:"팔로워", headerLeft:() => <BackArrow />}} />
       <UserStack.Screen name="프로필 보기" component={FullProfile} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}} />
@@ -211,7 +215,7 @@ export default () => {
         headerShown:false,
       }}/>
       <VisitorStack.Screen name='SelectUpload' component={SelectUpload} options={{
-        headerTitle:"최근 항목",
+        headerShown:false,
       }}/>
       <VisitorStack.Screen name='포스트' component={UploadPost}/>
       <VisitorStack.Screen name='정보수정' component={EditUser} options={{

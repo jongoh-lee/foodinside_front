@@ -1,20 +1,25 @@
-import { ScrollView, TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { FlatList, TouchableWithoutFeedback } from "react-native-gesture-handler";
 import * as React from "react";
 import { Image, StyleSheet, Text, View, RefreshControl, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
-import { Avatar, Title, Caption } from "react-native-paper";
+import { Avatar, Title } from "react-native-paper";
 import constants from "../../constants";
-import { Feather, MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
-import Loader from "../../components/Custom/Loader";
-import PostHorizontal from "../Franchise/PostHorizontal";
-import { useMutation } from "@apollo/react-hooks";
-import { FOLLOW, UNFOLLOW } from "../../screens/Visitor/VisitorQueries";
+import { useLazyQuery, useMutation } from "@apollo/react-hooks";
+import { FOLLOW, LOAD_MORE_POST, UNFOLLOW } from "../../screens/Visitor/VisitorQueries";
 import { useNavigation } from "@react-navigation/native";
-import { number } from "prop-types";
+import Caption from "../Custom/Caption";
 
 export default ({ id, avatar, username, email, isSelf ,dangolCount, followersCount, followingCount, postsCount, posts, isFollowing, wallets }) => {
     const navigation = useNavigation()
     const [toggleFollow, setToggleFollow] = React.useState(isFollowing);
     const [followerNumber, setFollowerNumber] = React.useState(followersCount);
+    const [postList, setPostList] = React.useState([]);
+    const flatList = React.useRef();
+    const [endOfScroll, setEndOfScroll] = React.useState(false)
+    const [loadMorePostQuery, { called, data }] = useLazyQuery(LOAD_MORE_POST,{
+        fetchPolicy:"network-only",
+    });
+    const [imageLoading, setImageLoading] = React.useState(false)
+    
     const [followMutation, {loading: followLoading}] = useMutation(FOLLOW, {
         variables:{
             id: id
@@ -56,11 +61,11 @@ export default ({ id, avatar, username, email, isSelf ,dangolCount, followersCou
         }
     }
 
-    return (
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow:1}}>
-            <View style={styles.container}>
-
-                {/* 아바타 + 자기소개 + 함께아는 팔로워 */}
+    //component
+    const userInfo = () => {
+        return (
+            <View>
+            {/* 아바타 + 자기소개 + 함께아는 팔로워 */}
                 <View style={styles.box}>
                     <View style={{flex:2, alignItems:"flex-end", paddingRight:30}}>
                         <Avatar.Image
@@ -79,20 +84,19 @@ export default ({ id, avatar, username, email, isSelf ,dangolCount, followersCou
                                     <Caption>팔로잉 : {followingCount}</Caption>
                                 </TouchableOpacity> 
                                 ) : (
-                                    toggleFollow? ( 
-                                    <TouchableOpacity disabled={unfollowLoading} onPress={onPressUnfollow} style={{width:100, borderWidth:1, borderColor:"#05e6f4", alignItems:"center", padding:4, borderRadius:5}}>
-                                        {unfollowLoading? <ActivityIndicator size={"small"} color={"#05e6f4"} /> : <Text style={{color:"#05e6f4"}}>팔로잉</Text>}
-                                    </TouchableOpacity> 
-                                    ) : (
-                                    <TouchableOpacity disabled={followLoading} onPress={onPressFollow} style={{width:100, borderWidth:1, borderColor:"#ffffff", backgroundColor: "#05e6f4", alignItems:"center", padding:4, borderRadius:5}}>
-                                        {followLoading? <ActivityIndicator size={"small"} color={"white"} /> : <Text style={{color:"#ffffff"}}>팔로우</Text>}
-                                    </TouchableOpacity>
-                                    )
+                                toggleFollow? ( 
+                                <TouchableOpacity disabled={unfollowLoading} onPress={onPressUnfollow} style={{width:100, borderWidth:1, borderColor:"#05e6f4", alignItems:"center", padding:4, borderRadius:5}}>
+                                    {unfollowLoading? <ActivityIndicator size={"small"} color={"#05e6f4"} /> : <Text style={{color:"#05e6f4"}}>팔로잉</Text>}
+                                </TouchableOpacity> 
+                                ) : (
+                                <TouchableOpacity disabled={followLoading} onPress={onPressFollow} style={{width:100, borderWidth:1, borderColor:"#ffffff", backgroundColor: "#05e6f4", alignItems:"center", padding:4, borderRadius:5}}>
+                                    {followLoading? <ActivityIndicator size={"small"} color={"white"} /> : <Text style={{color:"#ffffff"}}>팔로우</Text>}
+                                </TouchableOpacity>
+                                )
                             )}
                         </View>
                     </View>
                 </View>
-
                 {/* 대쉬보드 */}
                 <View style={styles.dashBoard}>
                     <View style={styles.inner}>
@@ -117,25 +121,96 @@ export default ({ id, avatar, username, email, isSelf ,dangolCount, followersCou
                     </TouchableOpacity>
                 </View>
             </View>
+        );
+    };
 
-            {/* 리뷰 리스트 */}
-                {posts.length > 0 ? (
-                    <View style={{flex:1, backgroundColor:"#ffffff", flexDirection:"row", flexWrap:"wrap"}}>
-                        <PostHorizontal id={null} posts={posts} user={{user: id, username, avatar}}/>
-                    </View>
-                ) : (
-                    <View style={{flex:1, backgroundColor:"#ffffff", justifyContent:"center", alignItems:"center"}}>
-                        <Caption>포토 리뷰를 작성해 주세요</Caption>
-                    </View>)}
-        </ScrollView>
+    const emptyList = () => {
+        return(
+            <View style={{flexGrow:1, backgroundColor:"#ffffff", justifyContent:"center", alignItems:"center"}}>
+                <Caption>포토 리뷰를 작성해 주세요</Caption>
+            </View>
+        )
+    }
+
+    const renderReview = ({ item, index }) => {
+        return(
+            <TouchableOpacity key={item.id} onPress={() => navigation.navigate("UserPostList", {
+                post:{
+                    profileId: null,
+                    postList:[...posts, ...postList],
+                    index,
+                    user:{
+                        id,
+                        username,
+                        avatar
+                    }
+                }
+            })} >
+                <Image style={styles.grid} source={{uri:item.files[0].url}}/>
+            </TouchableOpacity>
+        )
+    };
+
+    const renderFooter = () => {
+        return(
+            imageLoading ? <View style={{height: constants.height * 0.1, justifyContent:"center", alignItems:"center"}}>
+                <ActivityIndicator color={"#E0E0E0"}/>
+            </View> : endOfScroll ? (
+            <View style={{height: constants.height * 0.1, alignItems:"center", justifyContent:"center"}}>
+                <Caption>게시물이 없습니다</Caption>
+            </View>
+            ) : null
+            
+        )
+    }
+
+    const loadMoreImages = () => {
+        if(posts.length > 14)
+        setImageLoading(true);
+        const id = postList.length > 0 ? postList.slice(-1)[0].id : posts.slice(-1)[0].id
+        loadMorePostQuery({
+            variables:{
+                id: id,
+                username: username
+            },
+        });
+    }
+
+    React.useEffect(() => {
+        setImageLoading(false)
+        if(data?.loadMorePost.length > 0){
+            setPostList(postList.concat(data.loadMorePost));
+        }else if(data?.loadMorePost.length === 0){
+            setEndOfScroll(true)
+          }
+    }, [data?.loadMorePost])
+
+    return (
+        <View style={styles.container}>
+            <FlatList
+                ref={flatList}
+                data={[...posts, ...postList]}
+                renderItem={renderReview}
+                keyExtractor={item => item.id}
+                ListHeaderComponent={userInfo}
+                ListHeaderComponentStyle={{padding:15}}
+                ListEmptyComponent={emptyList}
+                contentContainerStyle={{flexGrow:1}}
+                showsVerticalScrollIndicator={false}
+                numColumns={3}
+                onEndReached={() => loadMoreImages()}
+                onEndReachedThreshold={0}
+                ListFooterComponent={renderFooter}
+            />
+        </View>
     );
   };
 
   
 const styles = StyleSheet.create({
     container:{
+        flex:1,
         backgroundColor:"#ffffff",
-        padding:15,
     },
     grid:{
         width: constants.width / 3 - 2 ,
@@ -143,6 +218,7 @@ const styles = StyleSheet.create({
         margin:1,
         justifyContent:"center",
         alignItems:"center",
+        backgroundColor:"#E0E0E0"
     },
 
       

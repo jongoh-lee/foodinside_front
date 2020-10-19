@@ -13,102 +13,8 @@ import ShadowInput from "../Custom/ShadowInput";
 import useInput from "../../hooks/useInput";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
-const styles = StyleSheet.create({
-  headerBar: {
-    flexDirection: "row",
-    padding: 5,
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom:10
-  },
-  headerLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  avatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    marginRight: 10,
-  },
-  username: {
-    fontSize: 14,
-    fontWeight:'bold',
-  },
-
-  //사진
-  imageBox:{
-    width: constants.width,
-    height: constants.width,
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-    resizeMode: "cover",
-  },
-
-  //postInfo
-  postInfo:{
-    padding:5,
-  },
-  snsBar: {
-    flexDirection: "row",
-    justifyContent:"flex-end",
-    alignItems:"flex-start",
-  },
-  snsButton: {
-    alignItems:"center",
-    paddingHorizontal:5
-  },
-  tasting: {
-    paddingVertical:5,
-  },
-  postingTime:{
-    paddingBottom:5
-  },
-
-  
-  //modal
-  modal:{
-    justifyContent:"flex-end",
-    margin:0,
-    paddingHorizontal:5
-  },
-  modalContent_top:{
-      backgroundColor: 'white',
-      paddingHorizontal: 22,
-      borderRadius: 15,
-      borderColor: 'rgba(0, 0, 0, 0.1)',
-      paddingBottom:20,
-      marginBottom:10
-  },
-  modalContent_bottom:{
-    backgroundColor: 'white',
-    paddingHorizontal: 22,
-    borderRadius: 15,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
-    paddingVertical:10,
-    marginBottom:10
-},
-  modalList:{
-      width:'100%',
-      paddingVertical:10,
-      flexDirection:'row',
-      alignItems:"center",
-  },
-  modalText:{
-      fontSize:14,
-      marginLeft:10
-  },
-  modalText_red:{
-    fontSize:14,
-    marginLeft:10,
-    color:'red'
-},
-});
 
 export default ({ id : postId, user, userInfo, files, tasting, isSelf, isLiked:isLikedProp, likeCount:likeCountProp, profile, profileId, createdAt}) => {
-  
   const { id: userId, username, avatar } = profileId ? user : userInfo;
   const [isLiked, setIsLiked] = React.useState();
   const [likeCount, setLikeCount] = React.useState();
@@ -116,6 +22,14 @@ export default ({ id : postId, user, userInfo, files, tasting, isSelf, isLiked:i
   const { value : text } = commentInput;
   const [showText, setShowText] = React.useState(2);
   const [postModal, setPostModal] = React.useState(false);
+  const [imageList, setImageList] = React.useState(files);
+
+  const { data, loading: fileLoader, error } = useQuery(SEE_FULL_POST,{
+    variables:{
+      id: postId
+    },
+    fetchPolicy:"cache-and-network"
+  })
   
   const [toggleLikeMutation, { loading: likeLoading}] = useMutation(TOGGLE_LIKE,{
     variables:{
@@ -207,7 +121,14 @@ export default ({ id : postId, user, userInfo, files, tasting, isSelf, isLiked:i
     } catch(e){
       console.log("포스트 삭제 in 사용자 에러", e);
     }
-  }
+  };
+
+  React.useEffect(()=>{
+    if(data?.seeFullPost.allFiles.length > 1){
+      setImageList(data.seeFullPost.allFiles)
+    }
+  },[data])
+
   return (
     <>
       <View>
@@ -241,7 +162,7 @@ export default ({ id : postId, user, userInfo, files, tasting, isSelf, isLiked:i
         {/* 이미지 */}
         <View style={styles.imageBox}>
           <Swiper paginationStyle={{bottom:10}} dot={<View style={{backgroundColor: 'rgba(255,255,255,.3)', width: 6, height: 6, borderRadius: 3, marginLeft: 3, marginRight: 3}} />} activeDot={<View style={{backgroundColor: '#fff', width: 8, height: 8, borderRadius: 4, marginLeft: 4, marginRight: 4}} />}>
-            {files.map((image, i) => <Image key={i} style={styles.image} source={{uri: image.url}}/>)}
+            {imageList.map((image, i) => <Image key={i} style={styles.image} source={{uri: image.url}}/>)}
           </Swiper>
         </View>
 
@@ -272,7 +193,7 @@ export default ({ id : postId, user, userInfo, files, tasting, isSelf, isLiked:i
                     <MaterialCommunityIcons name="heart-outline" size={30} style={{color:'#9e9b9d'}} /> 
                 )}
               </TouchableOpacity>
-              <Caption>{likeCount}개</Caption>
+              <Caption>{likeCount ? likeCount : 0}개</Caption>
             </View>
           </View>
 
@@ -339,3 +260,99 @@ export default ({ id : postId, user, userInfo, files, tasting, isSelf, isLiked:i
 
     </>
 )};
+
+const styles = StyleSheet.create({
+  headerBar: {
+    flexDirection: "row",
+    padding: 5,
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom:10
+  },
+  headerLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 10,
+    backgroundColor:"#E0E0E0"
+  },
+  username: {
+    fontSize: 14,
+    fontWeight:'bold',
+  },
+
+  //사진
+  imageBox:{
+    width: constants.width,
+    height: constants.width,
+  },
+  image: {
+    width: constants.width,
+    height: constants.width,
+    resizeMode: "cover",
+  },
+
+  //postInfo
+  postInfo:{
+    padding:5,
+    maxHeight: 78
+  },
+  snsBar: {
+    flexDirection: "row",
+    justifyContent:"flex-end",
+    alignItems:"flex-start",
+  },
+  snsButton: {
+    alignItems:"center",
+    paddingHorizontal:5
+  },
+  tasting: {
+    paddingVertical:5,
+  },
+  postingTime:{
+    paddingBottom:5
+  },
+
+  
+  //modal
+  modal:{
+    justifyContent:"flex-end",
+    margin:0,
+    paddingHorizontal:5
+  },
+  modalContent_top:{
+      backgroundColor: 'white',
+      paddingHorizontal: 22,
+      borderRadius: 15,
+      borderColor: 'rgba(0, 0, 0, 0.1)',
+      paddingBottom:20,
+      marginBottom:10
+  },
+  modalContent_bottom:{
+    backgroundColor: 'white',
+    paddingHorizontal: 22,
+    borderRadius: 15,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+    paddingVertical:10,
+    marginBottom:10
+},
+  modalList:{
+      width:'100%',
+      paddingVertical:10,
+      flexDirection:'row',
+      alignItems:"center",
+  },
+  modalText:{
+      fontSize:14,
+      marginLeft:10
+  },
+  modalText_red:{
+    fontSize:14,
+    marginLeft:10,
+    color:'red'
+},
+});

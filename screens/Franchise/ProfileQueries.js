@@ -1,5 +1,5 @@
 import gql from "graphql-tag";
-import { PROFILE_FRAGMENT, OWNER_FRAGMENT } from "../../fragments";
+import { PROFILE_FRAGMENT, OWNER_FRAGMENT, POST_FRAGMENT } from "../../fragments";
 
 export const CREATE_PROFILE = gql`
     mutation createProfile($menuImage:String!, $menuName:String!, $salePrice:Int!, $foodGuide:String!, $career:String!, $contact:String!, $profileState:Int!, $classification:String!) {
@@ -322,4 +322,13 @@ export const CHECK_PROFILE_NAME = gql`
     query checkProfileName($profileName: String){
         checkProfileName(profileName:$profileName)
     }
+`;
+
+export const LOAD_MORE_REVIEW = gql`
+    query loadMoreReview($id: String!, $profileId: String!){
+        loadMoreReview(id: $id, profileId: $profileId){
+            ...PostParts
+        }
+    }
+    ${POST_FRAGMENT}
 `;

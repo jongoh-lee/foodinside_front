@@ -81,10 +81,13 @@ export const UPLOAD = gql`
 export const SEE_FULL_POST = gql`
     query seeFullPost($id: String!){
         seeFullPost(id: $id){
-            ...PostParts
+            id
+            allFiles{
+                id
+                url
+            }
         }
     }
-    ${POST_FRAGMENT}
 `;
 
 export const EDIT_PROFILE_POST = gql`
@@ -266,4 +269,13 @@ export const SHOP_ON_SALE = gql`
             }
         }
     }
+`;
+
+export const LOAD_MORE_POST = gql`
+    query loadMorePost($id: String!, $username: String!){
+        loadMorePost(id: $id, username: $username){
+            ...PostParts
+        }
+    }
+    ${POST_FRAGMENT}
 `;
