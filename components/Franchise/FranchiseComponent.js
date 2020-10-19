@@ -133,7 +133,7 @@ export default ({ id, isSelf, profileName, sector, token, mainImage, menuName, m
             index: index - 1,
           }
           })} >
-          <Image style={styles.grid} source={{uri:item.files[0].url}}/>
+          <Image style={[styles.grid, {backgroundColor:"#E0E0E0"}]} source={{uri:item.files[0].url}}/>
         </TouchableOpacity>    
       )
     }

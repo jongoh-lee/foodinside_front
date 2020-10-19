@@ -146,7 +146,7 @@ export default ({ id, avatar, username, email, isSelf ,dangolCount, followersCou
                     }
                 }
             })} >
-                <Image style={styles.grid} source={{uri:item.files[0].url}}/>
+                <Image style={[styles.grid, {backgroundColor:"#E0E0E0"}]} source={{uri:item.files[0].url}}/>
             </TouchableOpacity>
         )
     };
@@ -165,15 +165,16 @@ export default ({ id, avatar, username, email, isSelf ,dangolCount, followersCou
     }
 
     const loadMoreImages = () => {
-        if(posts.length > 14)
-        setImageLoading(true);
-        const id = postList.length > 0 ? postList.slice(-1)[0].id : posts.slice(-1)[0].id
-        loadMorePostQuery({
-            variables:{
-                id: id,
-                username: username
-            },
-        });
+        if(posts.length > 14){
+            setImageLoading(true);
+            const id = postList.length > 0 ? postList.slice(-1)[0].id : posts.slice(-1)[0].id
+            loadMorePostQuery({
+                variables:{
+                    id: id,
+                    username: username
+                },
+            });
+        }
     }
 
     React.useEffect(() => {
