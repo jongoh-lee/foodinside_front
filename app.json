@@ -8,7 +8,7 @@
       "web"
     ],
     "sdkVersion": "39.0.0",
-    "version": "0.1.5",
+    "version": "0.1.8",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -25,7 +25,7 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.foodinside.foodinside",
-      "buildNumber": "0.1.5",
+      "buildNumber": "0.1.8",
       "config": {
         "googleMapsApiKey": "AIzaSyB77l5gKZERH5nDSvT5PboXLkl_uJbVcUQ"
       },
@@ -36,7 +36,7 @@
     },
     "android": { 
       "package": "com.foodinside.foodinside", 
-      "versionCode": 6,
+      "versionCode": 9,
       "config": { 
         "googleMaps": { "apiKey": "AIzaSyB77l5gKZERH5nDSvT5PboXLkl_uJbVcUQ" } 
       },
