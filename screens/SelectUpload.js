@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as Permissions from "expo-permissions";
 import * as MediaLibrary from "expo-media-library";
-import { StyleSheet, View, Image, ScrollView, Text, StatusBar, SafeAreaView, TouchableOpacity, ImageBackground } from "react-native";
+import { StyleSheet, View, Image, ScrollView, Text, StatusBar, SafeAreaView, ImageBackground, TouchableOpacity, Platform } from "react-native";
 import Loader from "../components/Custom/Loader";
 import constants from "../constants";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
     container:{
         flex:1,
         backgroundColor:'#ffffff',
+        paddingTop: StatusBar.currentHeight
     },
     selectButton:{
         padding:5,
@@ -23,12 +24,24 @@ const styles = StyleSheet.create({
     selectText:{
         color:'#ffffff',
         fontSize:16,
-    }
+    },
+    header:{
+        flexDirection:"row",
+        borderBottomWidth:1,
+        borderBottomColor:"rgba(0, 0, 0, .1)",
+        justifyContent:"space-between",
+        alignItems:"center",
+    },
+    headerTitle:{
+        fontSize:18,
+        fontWeight:"bold",
+        textAlign:"center",
+    },
 });
 
 export default ({ navigation, route }) => {
     const [loading, setLoading] = React.useState(true);
-    const [active, setActive] = React.useState(true);
+    const [active, setActive] = React.useState(false);
     const [hasPermission, setHasPermission] = React.useState(false);
     const [selected, setSelected] = React.useState([]);
     const [bigImage, setBigImage] = React.useState();
@@ -86,7 +99,7 @@ export default ({ navigation, route }) => {
                 const manipResult = await ImageManipulator.manipulateAsync(
                     photo.uri,
                     [],
-                    { compress: 0.1, format: ImageManipulator.SaveFormat.JPEG }
+                    { compress: 0, format: ImageManipulator.SaveFormat.JPEG }
                 );
                 return {...photo, height:manipResult.height, width:manipResult.width, uri:manipResult.uri};
             }
@@ -95,23 +108,24 @@ export default ({ navigation, route }) => {
         Promise.all(results).then((completed) => {
             images.push(...completed);
             navigation.navigate("포스트", { images: images, id:route.params.id })       
+            setActive(false)
         });
     }
-
-    navigation.setOptions({
-        headerRight:() => (
-            <TouchableOpacity style={selected.length > 0 ? styles.selectButton : [styles.selectButton, {backgroundColor:"rgba(5, 230, 244, .4)"}]} disabled={!active} onPress={onPressNext}>
-                <Text style={styles.selectText}>선택</Text>
-           </TouchableOpacity>
-        ),
-    })
-
     React.useEffect(()=>{
         askPermission();
     }, []);
-
     return (
     <SafeAreaView style={styles.container}>
+
+        <View style={styles.header}>
+            <BackArrow />
+            <Text style={styles.headerTitle}>최근 항목</Text>
+            <TouchableOpacity style={{ height:44, justifyContent:"center", alignItems:"center", }} onPress={onPressNext} hitSlop={{top:10, left:10, bottom:10}}>
+                <View style={selected.length > 0 ? styles.selectButton : [styles.selectButton, {backgroundColor:"rgba(5, 230, 244, .4)"}]}>
+                    <Text style={styles.selectText}>선택</Text>
+                </View>
+            </TouchableOpacity>
+        </View>
     
         {loading ? (
           <Loader />

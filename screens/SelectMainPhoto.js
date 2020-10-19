@@ -85,7 +85,7 @@ export default ({ navigation, route }) => {
         const manipResult =  await ImageManipulator.manipulateAsync(
             selected.uri,
             [],
-            { compress: 0.1, format: ImageManipulator.SaveFormat.JPEG }
+            { compress: 0, format: ImageManipulator.SaveFormat.JPEG }
         );
         image.push({...selected, height: manipResult.height, width: manipResult.width, uri:manipResult.uri})
         navigation.goBack({ photo : image[0] });

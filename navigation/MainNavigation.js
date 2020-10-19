@@ -27,7 +27,9 @@ const Screens = ({ navigation, style }) => {
           headerTransparent: true,
           headerTitle: null,
           headerLeft: false,
-          gestureEnabled:false
+          headerRight: false,
+          headerTitleAlign:"center",
+          gestureEnabled:false,
         }}
         >
         <Stack.Screen name="Visitor">{props => <Visitor {...props} />}</Stack.Screen>
