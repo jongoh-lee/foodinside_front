@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, View, Text, ScrollView, StatusBar} from 'react-native';
 import Postcode from 'react-native-daum-postcode';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import constants from '../constants';
 
 const styles = StyleSheet.create({

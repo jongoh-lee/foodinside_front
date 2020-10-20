@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, Image, ActivityIndicator, Alert} from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, Image, ActivityIndicator, Alert, SafeAreaView} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import constants from "../../constants";
 import { useMutation, useQuery } from "@apollo/react-hooks";
@@ -9,7 +9,6 @@ import Caption from "../../components/Custom/Caption";
 import useInput from "../../hooks/useInput";
 import DropDownPicker from 'react-native-dropdown-picker';
 import ShadowInput from "../../components/Custom/ShadowInput";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const styles = StyleSheet.create({
   container:{
