@@ -77,7 +77,7 @@ export default ({ navigation, route }) => {
                 })}
                 onScrollToIndexFailed={() => {}}
                 onEndReached={loadMoreImages}
-                onEndReachedThreshold={0}
+                onEndReachedThreshold={Platform.OS === 'ios' ? 0 : 0.2}
                 ListFooterComponent={renderFooter}
             />
         </View>

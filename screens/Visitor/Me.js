@@ -11,7 +11,7 @@ import { ME } from "./VisitorQueries";
 import { useLogOut } from "../../AuthContext";
 import UserComponent from "../../components/Visitor/UserComponent";
 
-export default ({ navigation }) => {
+export default ({ navigation, route }) => {
     const [visible, setVisible ] = React.useState(false);
     const { data, loading, error, refetch } = useQuery(ME,{
         fetchPolicy:"network-only"
@@ -35,7 +35,7 @@ export default ({ navigation }) => {
     return (
     <View style={{flex:1, backgroundColor:'#ffffff'}}>
 
-        <UserComponent {...data?.me} />
+        <UserComponent {...data?.me} route={route}/>
 
         <Modal
         isVisible={visible}

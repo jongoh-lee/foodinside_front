@@ -1,15 +1,14 @@
-import { FlatList, TouchableWithoutFeedback } from "react-native-gesture-handler";
 import * as React from "react";
-import { Image, StyleSheet, Text, View, RefreshControl, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
+import { Image, StyleSheet, Text, View, RefreshControl, TouchableOpacity, Alert, ActivityIndicator, Platform } from "react-native";
+import { FlatList, TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { Avatar, Title } from "react-native-paper";
 import constants from "../../constants";
+import { useNavigation } from "@react-navigation/native";
 import { useLazyQuery, useMutation } from "@apollo/react-hooks";
 import { FOLLOW, LOAD_MORE_POST, UNFOLLOW } from "../../screens/Visitor/VisitorQueries";
-import { useNavigation } from "@react-navigation/native";
 import Caption from "../Custom/Caption";
 
-export default ({ id, avatar, username, email, isSelf ,dangolCount, followersCount, followingCount, postsCount, posts, isFollowing, wallets }) => {
-    const navigation = useNavigation()
+export default ({ id, avatar, username, email, isSelf ,dangolCount, followersCount, followingCount, postsCount, posts, isFollowing, wallets, route }) => {
     const [toggleFollow, setToggleFollow] = React.useState(isFollowing);
     const [followerNumber, setFollowerNumber] = React.useState(followersCount);
     const [postList, setPostList] = React.useState([]);
@@ -18,6 +17,7 @@ export default ({ id, avatar, username, email, isSelf ,dangolCount, followersCou
     const [loadMorePostQuery, { called, data }] = useLazyQuery(LOAD_MORE_POST,{
         fetchPolicy:"network-only",
     });
+    const navigation = useNavigation()
     const [imageLoading, setImageLoading] = React.useState(false)
     
     const [followMutation, {loading: followLoading}] = useMutation(FOLLOW, {
@@ -151,19 +151,6 @@ export default ({ id, avatar, username, email, isSelf ,dangolCount, followersCou
         )
     };
 
-    const renderFooter = () => {
-        return(
-            imageLoading ? <View style={{height: constants.height * 0.1, justifyContent:"center", alignItems:"center"}}>
-                <ActivityIndicator color={"#E0E0E0"}/>
-            </View> : endOfScroll ? (
-            <View style={{height: constants.height * 0.1, alignItems:"center", justifyContent:"center"}}>
-                <Caption>게시물이 없습니다</Caption>
-            </View>
-            ) : null
-            
-        )
-    }
-
     const loadMoreImages = () => {
         if(posts.length > 14){
             setImageLoading(true);
@@ -177,15 +164,41 @@ export default ({ id, avatar, username, email, isSelf ,dangolCount, followersCou
         }
     }
 
+    const renderFooter = () => {
+        return(
+            imageLoading ? (
+            <View style={{height: constants.height * 0.1, justifyContent:"center", alignItems:"center"}}>
+                <ActivityIndicator color={"#E0E0E0"}/>
+            </View>) : endOfScroll ? (
+            <View style={{height: constants.height * 0.1, alignItems:"center", justifyContent:"center"}}>
+                <Caption>게시물이 없습니다</Caption>
+            </View>
+            ) : null
+            
+        )
+    }
+
     React.useEffect(() => {
-        setImageLoading(false)
         if(data?.loadMorePost.length > 0){
             setPostList(postList.concat(data.loadMorePost));
         }else if(data?.loadMorePost.length === 0){
             setEndOfScroll(true)
-          }
-    }, [data?.loadMorePost])
+        }
+        setImageLoading(false)
+    }, [data?.loadMorePost]);
 
+    React.useEffect(() => {
+        setPostList([]);
+        setEndOfScroll(false)
+        flatList.current.scrollToOffset({ animated: false, offset: 0 });
+    },[posts]);
+
+    React.useEffect(() => {
+        if(route.params?.id){
+            setPostList(postList.filter(post => post.id !== route.params.id))
+        }
+    },[route]);
+    
     return (
         <View style={styles.container}>
             <FlatList
@@ -199,8 +212,8 @@ export default ({ id, avatar, username, email, isSelf ,dangolCount, followersCou
                 contentContainerStyle={{flexGrow:1}}
                 showsVerticalScrollIndicator={false}
                 numColumns={3}
-                onEndReached={() => loadMoreImages()}
-                onEndReachedThreshold={0}
+                onEndReached={loadMoreImages}
+                onEndReachedThreshold={Platform.OS === "ios" ? 0 : 0.}
                 ListFooterComponent={renderFooter}
             />
         </View>

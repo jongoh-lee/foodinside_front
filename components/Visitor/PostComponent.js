@@ -23,15 +23,17 @@ export default ({ id : postId, user, userInfo, files, tasting, isSelf, isLiked:i
   const [showText, setShowText] = React.useState(2);
   const [postModal, setPostModal] = React.useState(false);
   const [imageList, setImageList] = React.useState(files);
+  const navigation = useNavigation();
+  const postTime = createdAt.slice(0, 10).replace(/-/gi, '/');
 
-  const { data, loading: fileLoader, error } = useQuery(SEE_FULL_POST,{
+  const { data, loading:fileLoader, error } = useQuery(SEE_FULL_POST,{
     variables:{
       id: postId
     },
     fetchPolicy:"cache-and-network"
   })
   
-  const [toggleLikeMutation, { loading: likeLoading}] = useMutation(TOGGLE_LIKE,{
+  const [toggleLikeMutation, { loading:likeLoading}] = useMutation(TOGGLE_LIKE,{
     variables:{
       postId: postId,
       token: profile.token,
@@ -49,7 +51,13 @@ export default ({ id : postId, user, userInfo, files, tasting, isSelf, isLiked:i
     //}
   })
 
-  const postTime = createdAt.slice(0, 10).replace(/-/gi, '/');
+  const [editProfilePostMutation, {loading:profileloading}] = useMutation(EDIT_PROFILE_POST,{
+    refetchQueries: [`me`]
+  });
+
+  const [editUserPostMutation, {loading:userloading}] = useMutation(EDIT_USER_POST,{
+    refetchQueries: [`seeFullProfile`]
+  });
 
   const onPressLike = async() =>{
     if( isLiked === true){
@@ -65,22 +73,7 @@ export default ({ id : postId, user, userInfo, files, tasting, isSelf, isLiked:i
     }
   }
 
-  React.useEffect(() =>{
-    setIsLiked(isLikedProp);
-    setLikeCount(likeCountProp);
-  },[isLikedProp, likeCountProp])
-
   //모달
-  const [editProfilePostMutation, {loading}] = useMutation(EDIT_PROFILE_POST,{
-    refetchQueries: [`me`]
-  });
-
-  const [editUserPostMutation] = useMutation(EDIT_USER_POST,{
-    refetchQueries: [`seeFullProfile`]
-  });
-
-  const navigation = useNavigation();
-
   const deleteProfilePost = async () => {
     let DELETE = "DELETE";
     setPostModal(false);
@@ -110,18 +103,22 @@ export default ({ id : postId, user, userInfo, files, tasting, isSelf, isLiked:i
         data : { editUserPost } 
       } = await editUserPostMutation({
         variables:{
-          profileId: profileId,
           postId: postId,
           action: DELETE
         }
       })
       if(editUserPost){
-        navigation.goBack();
+        navigation.navigate("내 정보", { id: postId});
       }
     } catch(e){
       console.log("포스트 삭제 in 사용자 에러", e);
     }
   };
+
+  React.useEffect(() =>{
+    setIsLiked(isLikedProp);
+    setLikeCount(likeCountProp);
+  },[isLikedProp, likeCountProp])
 
   React.useEffect(()=>{
     if(data?.seeFullPost.allFiles.length > 1){
@@ -132,7 +129,6 @@ export default ({ id : postId, user, userInfo, files, tasting, isSelf, isLiked:i
   return (
     <>
       <View>
-        {loading && <ScreenLoader />}
         {/* 헤더 */}
         <TouchableOpacity onPress={() => navigation.navigate("SeeUser", {
           user:{ username, isSelf }
@@ -200,6 +196,8 @@ export default ({ id : postId, user, userInfo, files, tasting, isSelf, isLiked:i
           <Caption style={styles.postingTime}>{postTime}</Caption>
         </View>
       </View>
+
+      {(profileloading || userloading) ? <ScreenLoader /> : null}
 
       {/* 모달*/}
       <Modal

@@ -177,8 +177,15 @@ export default ({ id, isSelf, profileName, sector, token, mainImage, menuName, m
   },[reviewData?.loadMoreReview]);
 
   React.useEffect(() => {
+    setEndOfScroll(false)
     flatList.current.scrollToEnd();
-  },[tabName])
+  },[tabName]);
+
+  React.useEffect(() => {
+    setPostList([]);
+    setEndOfScroll(false)
+    flatList.current.scrollToOffset({ animated: false, offset: 0 });
+  },[posts])
 
   return (
     <View style={styles.container}>
@@ -188,11 +195,11 @@ export default ({ id, isSelf, profileName, sector, token, mainImage, menuName, m
         renderItem={tabName === '포토리뷰'? renderReview : null}
         keyExtractor={item => item.id}
         ListHeaderComponent={franchiseInfo}
-        contentContainerStyle={{flexGrow:1, paddingVertical:1}}
+        contentContainerStyle={{flexGrow:1}}
         showsVerticalScrollIndicator={false}
         numColumns={3}
         onEndReached={tabName === '포토리뷰' ? loadMoreImages : null}
-        onEndReachedThreshold={0}
+        onEndReachedThreshold={Platform.OS === 'ios'? 0 : 0.4}
         ListFooterComponent={renderFooter}
       />
     </View>
