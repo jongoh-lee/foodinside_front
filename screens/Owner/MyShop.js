@@ -66,7 +66,7 @@ export default ({ navigation, route }) => {
 
     {data?.myShop?.ownerState === 1 && (
       <>
-        <Text style={styles.title}>죄송합니다. {`\n`}아쉽게도 신청된 음식점은 <Text style={{color:"black"}}>{`\n`}공유음식점</Text>으로 등록할 수 없습니다.</Text>
+        <Text style={styles.title}>죄송합니다{`\n`}아쉽게도 신청된 음식점은<Text style={{color:"black"}}>{`\n`}공유 음식점</Text>으로 등록할 수 없습니다</Text>
         <View style={styles.buttonBox}>
 
           <TouchableWithoutFeedback style={{alignItems:"center"}} onPress={() => navigation.navigate("음식점 보기",{
@@ -95,7 +95,7 @@ export default ({ navigation, route }) => {
 
     {data?.myShop?.ownerState === 2 && (
       <>
-        <Text style={styles.title}><Text style={{color:"black"}}>축하합니다. </Text>음식점을 등록해 주세요</Text>
+        <Text style={styles.title}><Text style={{color:"black"}}>축하합니다 </Text>음식점을 등록해 주세요</Text>
         
         <View style={styles.buttonBox}>
 
@@ -217,7 +217,8 @@ const styles = StyleSheet.create({
     title:{
       fontSize:18,
       color:'#666',
-      paddingBottom:50
+      paddingBottom:50,
+      lineHeight: 30
     },
     buttonBox:{
       flexDirection:"row",

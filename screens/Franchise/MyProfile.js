@@ -70,7 +70,7 @@ export default ({ navigation }) => {
 
     {data?.myProfile?.profileState === 1 &&  (
       <>
-        <Text style={styles.title}>죄송합니다.{`\n`}컨셉이 유사한{`\n`}<Text style={{color:"black"}}>다수의 프로필이</Text> 이미 등록되어 있습니다.</Text>
+        <Text style={styles.title}>죄송합니다{`\n`}컨셉이 유사한 <Text style={{color:"black"}}>다수의 프로필이</Text>{`\n`}이미 등록되어 있습니다</Text>
         
         <View style={styles.buttonBox}>
 
@@ -228,7 +228,8 @@ const styles = StyleSheet.create({
   title:{
     fontSize:20,
     color:'#666',
-    paddingBottom:50
+    paddingBottom:50,
+    lineHeight: 30
   },
   buttonBox:{
     flexDirection:"row",
