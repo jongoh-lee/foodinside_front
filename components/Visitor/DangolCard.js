@@ -69,16 +69,15 @@ const styles = StyleSheet.create({
     },
     menuScroll:{
         flexDirection:"row",
-        marginRight: -5
     },
     menuContainer:{
-        width: WIDTH /3,
+        width: (WIDTH - 20) /3,
         marginRight:5,
         alignItems:"center"
     },
     menuImage:{
-        width: WIDTH /3,
-        height: WIDTH / 3,
+        width: (WIDTH - 20) /3,
+        height: (WIDTH - 20) / 3,
         resizeMode:"cover",
         borderRadius: 15,
         backgroundColor:'#e0e0e0', 
@@ -89,7 +88,7 @@ const styles = StyleSheet.create({
     },
     priceBox:{
         flexDirection:"row",
-        width: WIDTH /3,
+        width: (WIDTH - 20) /3,
         fontSize:14,
         padding:5,
         justifyContent:"space-between"
