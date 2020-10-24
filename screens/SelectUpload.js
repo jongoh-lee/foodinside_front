@@ -67,6 +67,7 @@ export default ({ navigation, route }) => {
     const getPhotos = async () => {
         try{
             const { assets } = await MediaLibrary.getAssetsAsync({
+                sortBy:"default",
                 first:100,
             });
             const [firstPhoto] = assets;
@@ -99,7 +100,7 @@ export default ({ navigation, route }) => {
                 const manipResult = await ImageManipulator.manipulateAsync(
                     photo.uri,
                     [],
-                    { compress: 0, format: ImageManipulator.SaveFormat.JPEG }
+                    { compress: Platform.OS === 'ios' ? 0 : 0.2, format: ImageManipulator.SaveFormat.JPEG }
                 );
                 return {...photo, height:manipResult.height, width:manipResult.width, uri:manipResult.uri};
             }

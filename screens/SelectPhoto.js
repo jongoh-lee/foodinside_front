@@ -54,6 +54,7 @@ export default ({ navigation, route }) => {
     const getPhotos = async () => {
         try{
             const { assets } = await MediaLibrary.getAssetsAsync({
+                sortBy:"default",
                 first:100,
             });
             if(assets.length > 0){
@@ -88,21 +89,21 @@ export default ({ navigation, route }) => {
             const manipResult = await ImageManipulator.manipulateAsync(
                 selected.uri,
                 [{ crop:{ originX: 0, originY:(selected.height - selected.width)/2, width:selected.width, height:selected.width }}],
-                { compress: 0, format: ImageManipulator.SaveFormat.JPEG }
+                { compress: Platform.OS === 'ios' ? 0 : 0.2, format: ImageManipulator.SaveFormat.JPEG }
             );
             image.push({...selected, height:manipResult.height, width:manipResult.width, uri:manipResult.uri});
         }else if(selected.width > selected.height){
             const manipResult = await ImageManipulator.manipulateAsync(
                 selected.uri,
                 [{ crop:{ originX: (selected.width - selected.height)/2, originY:0, width:selected.height, height:selected.height }}],
-                { compress: 0, format: ImageManipulator.SaveFormat.JPEG }
+                { compress: Platform.OS === 'ios' ? 0 : 0.2, format: ImageManipulator.SaveFormat.JPEG }
             );
             image.push({...selected, height:manipResult.height, width:manipResult.width, uri:manipResult.uri});
         }else{
             const manipResult = await ImageManipulator.manipulateAsync(
                 selected.uri,
                 [],
-                { compress: 0, format: ImageManipulator.SaveFormat.JPEG }
+                { compress: Platform.OS === 'ios' ? 0 : 0.2, format: ImageManipulator.SaveFormat.JPEG }
             );
             image.push({...selected, height:manipResult.height, width:manipResult.width, uri:manipResult.uri});
         }

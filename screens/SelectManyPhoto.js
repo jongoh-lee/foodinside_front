@@ -2,7 +2,7 @@ import * as React from "react";
 import * as Permissions from "expo-permissions";
 import * as MediaLibrary from "expo-media-library";
 import * as ImageManipulator from "expo-image-manipulator";
-import { StyleSheet, View, Image, ScrollView, Text, StatusBar, SafeAreaView, TouchableOpacity, ImageBackground } from "react-native";
+import { StyleSheet, View, Image, ScrollView, Text, StatusBar, SafeAreaView, TouchableOpacity, ImageBackground, Platform } from "react-native";
 import Loader from "../components/Custom/Loader";
 import constants from "../constants";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
@@ -57,6 +57,7 @@ export default ({ navigation, route }) => {
     const getPhotos = async () => {
         try{
             const { assets } = await MediaLibrary.getAssetsAsync({
+                sortBy:"default",
                 first:100
             });
             setAllPhotos(assets);
@@ -86,7 +87,7 @@ export default ({ navigation, route }) => {
                 const manipResult = await ImageManipulator.manipulateAsync(
                     photo.uri,
                     [],
-                    { compress: 0, format: ImageManipulator.SaveFormat.JPEG }
+                    { compress: Platform.OS === 'ios'? 0 : 0.2, format: ImageManipulator.SaveFormat.JPEG }
                 );
                 return {...photo, height:manipResult.height, width:manipResult.width, uri:manipResult.uri};
             }
