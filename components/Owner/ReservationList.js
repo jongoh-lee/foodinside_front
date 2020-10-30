@@ -62,7 +62,7 @@ export default ({ year, month }) => {
                 <View>
                     <View style={styles.titleAlign}>
                         <Text style={styles.headerTitle} numberOfLines={1}>{item.profile.profileName}</Text>
-                        <Text style={styles.headerSubtitle}>  {item.profile.sector}</Text>
+                        <Text style={styles.headerSubtitle}>{item.profile.sector}</Text>
                     </View>
                     <Text style={styles.headerSubtitle}>{item.firstDate.slice(-5).replace('-', '/')} ~ {item.lastDate.slice(-5).replace('-', '/')}</Text>
                 </View>
