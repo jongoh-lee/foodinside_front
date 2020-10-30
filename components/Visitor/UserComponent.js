@@ -134,7 +134,7 @@ export default ({ id, avatar, username, email, isSelf ,dangolCount, followersCou
 
     const renderReview = ({ item, index }) => {
         return(
-            <TouchableOpacity key={item.id} onPress={() => navigation.navigate("UserPostList", {
+            <TouchableOpacity key={item.id} onPress={() => navigation.push("UserPostList", {
                 post:{
                     profileId: null,
                     postList:[...posts, ...postList],

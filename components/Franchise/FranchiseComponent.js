@@ -126,7 +126,7 @@ export default ({ id, isSelf, profileName, sector, token, mainImage, menuName, m
       )
     }else{
       return(
-        <TouchableOpacity key={item.id} onPress={() => navigation.navigate("FranchisePostList", {
+        <TouchableOpacity key={item.id} onPress={() => navigation.push("FranchisePostList", {
           post:{
             profileId: id,
             postList:[...posts, ...postList],

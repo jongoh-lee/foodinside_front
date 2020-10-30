@@ -48,7 +48,7 @@ export default ({ id, username, avatar, isSelf, isFollowing}) => {
     }
     return (
     <View style={styles.headerBar}>
-    <TouchableOpacity onPress={() => navigation.navigate("SeeUser", {
+    <TouchableOpacity onPress={() => navigation.push("SeeUser", {
       user:{ username, isSelf }
     })}>
       <View style={styles.headerLeft}>

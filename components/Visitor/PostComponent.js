@@ -130,7 +130,7 @@ export default ({ id : postId, user, userInfo, files, tasting, isSelf, isLiked:i
     <>
       <View>
         {/* 헤더 */}
-        <TouchableOpacity onPress={() => navigation.navigate("SeeUser", {
+        <TouchableOpacity onPress={() => navigation.push("SeeUser", {
           user:{ username, isSelf }
           })}>
           <View style={styles.headerBar}>
@@ -138,14 +138,17 @@ export default ({ id : postId, user, userInfo, files, tasting, isSelf, isLiked:i
               <Image style={styles.avatar} source={avatar? { uri: avatar } : require('../../assets/Icons/avatarBasic.png')} />
               <View>
                 <Text style={styles.username}>{username}</Text>
-                {!profileId && <TouchableOpacity onPress={() => navigation.navigate("프로필 보기", {
+                {!profileId && 
+                  <TouchableOpacity onPress={() => navigation.push("프로필 보기", {
                       seeFullProfile:{
                           id: profile.id,
                           profileName: profile.profileName,
                           sector: profile.sector,
                           isSelf: profile.isSelf
                       }
-                  })} style={{zIndex:100, paddingTop:2}}><Caption>{profile.profileName}</Caption></TouchableOpacity>}
+                    })} style={{zIndex:100, paddingTop:2}}>
+                    <Caption>{profile.profileName}</Caption>
+                  </TouchableOpacity>}
               </View>
             </View>
 
