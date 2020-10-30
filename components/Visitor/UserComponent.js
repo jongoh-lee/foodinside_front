@@ -193,8 +193,9 @@ export default ({ id, avatar, username, email, isSelf ,dangolCount, followersCou
         flatList.current.scrollToOffset({ animated: false, offset: 0 });
     },[posts]);
 
+    //포스트 삭제
     React.useEffect(() => {
-        if(route.params?.id){
+        if(route?.params?.id){
             setPostList(postList.filter(post => post.id !== route.params.id))
         }
     },[route]);
