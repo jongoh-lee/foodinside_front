@@ -12,6 +12,13 @@ import ScreenLoader from "../../components/Custom/ScreenLoader";
 export default ({ navigation, route }) => {
     const [visible, setVisible ] = React.useState(false);
     const [seeFullProfile, setSeeFullProfile] = React.useState(route.params.seeFullProfile? route.params.seeFullProfile : { id: "ckdra85bd1gjw0a3557xq2hnc"})
+    const { data, loading, error, refetch } = useQuery(SEE_FULL_PROFILE,{
+        variables: {
+            id: seeFullProfile.id
+        },
+        fetchPolicy:"network-only"
+    });
+
     navigation.setOptions({
         headerTitle:() => <Text style={styles.headerTitle} numberOfLines={1} ellipsizeMode={"middle"}>{seeFullProfile.profileName} <Text style={styles.headerSector}>{seeFullProfile.sector}</Text></Text>,
         headerRight:() => (
@@ -21,12 +28,6 @@ export default ({ navigation, route }) => {
             </TouchableOpacity>
           )
         )
-    });
-    const { data, loading, error, refetch } = useQuery(SEE_FULL_PROFILE,{
-        variables: {
-            id: seeFullProfile.id
-        },
-        fetchPolicy:"network-only"
     });
     if(error) return console.log(error);
 
