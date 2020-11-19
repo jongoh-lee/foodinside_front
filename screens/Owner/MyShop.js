@@ -43,9 +43,9 @@ export default ({ navigation, route }) => {
         
         <View style={styles.buttonBox}>
           <TouchableWithoutFeedback style={{alignItems:"center"}} onPress={() => navigation.navigate("음식점 보기",{
-            id: "ckg3oqn24012j076467rdynxh",
+            id: "ckhen5kpi00690710am1lo0kv",
             shopName:"내 가게",
-            classification:"휴게",
+            classification:"일반",
             isSelf:false, 
           })}>
             <View style={styles.button}>
@@ -70,9 +70,9 @@ export default ({ navigation, route }) => {
         <View style={styles.buttonBox}>
 
           <TouchableWithoutFeedback style={{alignItems:"center"}} onPress={() => navigation.navigate("음식점 보기",{
-            id: "ckg3oqn24012j076467rdynxh",
+            id: "ckhen5kpi00690710am1lo0kv",
             shopName:"내 가게",
-            classification:"휴게",
+            classification:"일반",
             isSelf:false, 
           })}>
             <View style={styles.button}>
@@ -100,9 +100,9 @@ export default ({ navigation, route }) => {
         <View style={styles.buttonBox}>
 
           <TouchableWithoutFeedback style={{alignItems:"center"}} onPress={() => navigation.navigate("음식점 보기",{
-            id: "ckg3oqn24012j076467rdynxh",
+            id: "ckhen5kpi00690710am1lo0kv",
             shopName:"내 가게",
-            classification:"휴게",
+            classification:"일반",
             isSelf:false, 
           })}>
             <View style={styles.button}>
@@ -131,9 +131,9 @@ export default ({ navigation, route }) => {
         <View style={styles.buttonBox}>
 
           <TouchableWithoutFeedback style={{alignItems:"center"}} onPress={() => navigation.navigate("음식점 보기",{
-            id: "ckg3oqn24012j076467rdynxh",
+            id: "ckhen5kpi00690710am1lo0kv",
             shopName:"내 가게",
-            classification:"휴게",
+            classification:"일반",
             isSelf:false, 
           })}>
             <View style={styles.button}>
