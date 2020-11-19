@@ -59,7 +59,7 @@ const DrawerContent = props => {
         </View>
         <View style={styles.case2}>
           <DrawerItem
-            label="공유 음식점 점주"
+            label="공유 음식점"
             labelStyle={styles.drawerLabel}
             style={styles.drawerItem}
             onPress={() => props.navigation.navigate('Owner')}
