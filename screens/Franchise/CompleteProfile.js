@@ -32,6 +32,7 @@ export default ({ navigation, route }) => {
   const foodGuideInput = useInput(route.params.myProfile.foodGuide? route.params.myProfile.foodGuide : "");
   const originInput = useInput(route.params.myProfile.origin? route.params.myProfile.origin : "");
   const fullPriceInput = numInput(route.params.myProfile.fullPrice? String(route.params.myProfile.fullPrice) : "");
+  const salePriceInput = numInput(route.params.myProfile.salePrice? String(route.params.myProfile.salePrice) : "");
   const [founderImage, setFounderImage] = React.useState(route.params.myProfile.founderImage? route.params.myProfile.founderImage : null);
   //check profile name
   const { data, error, loading: checkNameLoading } = useQuery(CHECK_PROFILE_NAME,{
@@ -263,6 +264,7 @@ export default ({ navigation, route }) => {
             foodGuide: foodGuideInput.value,
             origin: originInput.value,
             fullPrice: Number(fullPriceInput.value),
+            salePrice: Number(salePriceInput.value),
             createMenus: [...newMenus],
             editMenus: [...editMenus],
             deleteMenus: [...deleteMenus],
@@ -507,7 +509,7 @@ export default ({ navigation, route }) => {
               <Image style={styles.menuImage} source={{uri:route.params.myProfile.menuImage}}/>
               <View style={styles.priceBox}>
                 <TextInput style={{borderBottomWidth:1, width:'40%', textAlign:"center",}} editable={!loading} value={fullPriceInput.value} onChangeText={fullPriceInput.onChange} placeholder={"정상가"} keyboardType={"number-pad"} returnKeyType={"default"}/>
-                <Text style={styles.salePrice}>{route.params.myProfile.salePrice}</Text>
+                <TextInput style={{borderBottomWidth:1, width:'40%', textAlign:"center",}} editable={!loading} value={salePriceInput.value} onChangeText={salePriceInput.onChange} placeholder={"할인가"} keyboardType={"number-pad"} returnKeyType={"default"}/>
               </View>
             </View>
             
@@ -667,7 +669,7 @@ export default ({ navigation, route }) => {
             </View>
           </View>
 
-          <BasicButton text={'제출하기'} onPress={() => handleCompleteProfile()} marginVertical={10} loading={loading} disabled={profileNameInput.value && sector && tokenInput.value && mainImage && foodGuideInput.value && originInput.value && fullPriceInput.value && founderImage? loading : true}/>
+          <BasicButton text={'제출하기'} onPress={() => handleCompleteProfile()} marginVertical={10} loading={loading} disabled={profileNameInput.value && sector && tokenInput.value && mainImage && foodGuideInput.value && originInput.value && fullPriceInput.value && salePriceInput.value && founderImage? loading : true}/>
         </ScrollView>
     </KeyboardAvoidingView>
   </SafeAreaView>    
