@@ -107,13 +107,13 @@ export default ({ navigation, route }) => {
       <View style={styles.textContainer}>
         <Text style={styles.title}>업체 컨셉</Text>
       </View>
-      <ShadowInput {...conceptInput} textAlign={'left'} textAlignVertical={'top'} placeholder={`메뉴 설명, 식재료 원산지, 조리과정, 먹는 방법 등 \n대표 메뉴의 스토리를 작성해주세요`} keyboardType="default" editable={!loading}/>
+      <ShadowInput {...conceptInput} multiline={true} textAlign={'left'} blurOnSubmit={false} textAlignVertical={'top'} placeholder={`메뉴 설명, 식재료 원산지, 조리과정, 먹는 방법 등 \n대표 메뉴의 스토리를 작성해주세요`} keyboardType="default" editable={!loading} returnKeyType={'none'}/>
 
       <View style={styles.textContainer_last}>
        <Text style={styles.title}>경력</Text> 
       </View>
       <Text style={styles.warning}>선정 후 경력은 수정할 수 없고 모든 이용자가 볼 수 있습니다</Text> 
-      <ShadowInput {...careerInput} textAlign={'left'} placeholder={`요리 입문 년도, 수상 내역, 자격증, 관련 경험 등 `} keyboardType="default" editable={!loading}/>
+      <ShadowInput {...careerInput} multiline={true} textAlign={'left'} blurOnSubmit={false} placeholder={`요리 입문 년도, 수상 내역, 자격증, 관련 경험 등 `} keyboardType="default" editable={!loading} returnKeyType={'none'}/>
 
       <View style={styles.textContainer_last}>
         <Text style={styles.title}>연락처</Text>
