@@ -237,7 +237,7 @@ export default ({ refetch, id, shopImages, facility, tables, chairs, scale, shop
                       longitude,
                       latitudeDelta: 0.02,
                       longitudeDelta: 0.01,}}
-                    scrollEnabled={true}>
+                    scrollEnabled={false}>
                     <Marker
                     coordinate={{latitude: latitude, longitude: longitude}}
                     title={shopName}
