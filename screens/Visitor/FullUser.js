@@ -7,10 +7,11 @@ import { useQuery } from "@apollo/react-hooks";
 import Loader from "../../components/Custom/Loader";
 import { SEE_USER } from "./VisitorQueries";
 import UserComponent from "../../components/Visitor/UserComponent";
+import ScreenLoader from "../../components/Custom/ScreenLoader";
 
 export default ({ navigation, route }) => {
     const [visible, setVisible ] = React.useState(false);
-    const { data, loading, error } = useQuery(SEE_USER,{
+    const { data, loading, error, refetch } = useQuery(SEE_USER,{
         variables:{
             username: route.params.user.username
         },
@@ -34,33 +35,36 @@ export default ({ navigation, route }) => {
     if(error) return console.log(error);
 
     return (
-    <View style={{backgroundColor:"#ffffff", flex:1}}>
+    <>
+        
+        <View style={{backgroundColor:"#ffffff", flex:1}}>
 
-        <UserComponent {...data?.seeUser} />
+            <UserComponent {...data?.seeUser} refetch={refetch}/>
 
-        <Modal
-        isVisible={visible}
-        onBackdropPress={() => setVisible(false)}
-        onSwipeComplete={() => setVisible(false)}
-        onBackButtonPress={() => setVisible(false)}
-        swipeDirection={'down'}
-        style={styles.modal}
-        backdropOpacity={.4}
-        >
-            <View style={styles.modalContent_top}>
-                <MaterialCommunityIcons name="chevron-down" size={26} color="#666" style={{alignSelf:"center"}} />
-                <TouchableOpacity style={styles.modalList} onPress={() => setVisible(false)}>
-                    <AntDesign name="back" size={24} color="#666" /><Text style={styles.modalText}>취소</Text>
-                </TouchableOpacity>
-            </View>
+            <Modal
+            isVisible={visible}
+            onBackdropPress={() => setVisible(false)}
+            onSwipeComplete={() => setVisible(false)}
+            onBackButtonPress={() => setVisible(false)}
+            swipeDirection={'down'}
+            style={styles.modal}
+            backdropOpacity={.4}
+            >
+                <View style={styles.modalContent_top}>
+                    <MaterialCommunityIcons name="chevron-down" size={26} color="#666" style={{alignSelf:"center"}} />
+                    <TouchableOpacity style={styles.modalList} onPress={() => setVisible(false)}>
+                        <AntDesign name="back" size={24} color="#666" /><Text style={styles.modalText}>취소</Text>
+                    </TouchableOpacity>
+                </View>
 
-            <View style={styles.modalContent_bottom}>
-                <TouchableOpacity style={styles.modalList}>
-                    <MaterialCommunityIcons name="alarm-light-outline" size={25} color="red"/><Text style={styles.modalText_red}>신고 하기</Text>
-                </TouchableOpacity>
-            </View>
-        </Modal>
-    </View>
+                <View style={styles.modalContent_bottom}>
+                    <TouchableOpacity style={styles.modalList}>
+                        <MaterialCommunityIcons name="alarm-light-outline" size={25} color="red"/><Text style={styles.modalText_red}>신고 하기</Text>
+                    </TouchableOpacity>
+                </View>
+            </Modal>
+        </View>
+    </>
     );
   };
 

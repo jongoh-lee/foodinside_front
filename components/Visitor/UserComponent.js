@@ -8,15 +8,26 @@ import { useLazyQuery, useMutation } from "@apollo/react-hooks";
 import { FOLLOW, LOAD_MORE_POST, UNFOLLOW } from "../../screens/Visitor/VisitorQueries";
 import Caption from "../Custom/Caption";
 
-export default ({ id, avatar, username, email, isSelf ,dangolCount, followersCount, followingCount, postsCount, posts, isFollowing, wallets, route }) => {
+export default ({ id, avatar, username, email, isSelf ,dangolCount, followersCount, followingCount, postsCount, posts, isFollowing, wallets, route, refetch }) => {
     const [toggleFollow, setToggleFollow] = React.useState(isFollowing);
+    const [refreshing, setRefreshing] = React.useState(false);
     const [followerNumber, setFollowerNumber] = React.useState(followersCount);
     const [postList, setPostList] = React.useState([]);
     const flatList = React.useRef();
     const [endOfScroll, setEndOfScroll] = React.useState(false)
     const [loadMorePostQuery, { called, data }] = useLazyQuery(LOAD_MORE_POST,{
-        fetchPolicy:"network-only",
+        fetchPolicy:"cache-and-network",
     });
+    const refresh = async () => {
+        try {
+          setRefreshing(true);
+          await refetch()
+        } catch(e){
+          console.log(e, "me 새로고침 에러");
+        } finally {
+          setRefreshing(false);
+        }
+    }
     const navigation = useNavigation()
     const [imageLoading, setImageLoading] = React.useState(false)
     
@@ -216,6 +227,7 @@ export default ({ id, avatar, username, email, isSelf ,dangolCount, followersCou
                 onEndReached={loadMoreImages}
                 onEndReachedThreshold={Platform.OS === "ios" ? 0 : 0.}
                 ListFooterComponent={renderFooter}
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh}/>}
             />
         </View>
     );

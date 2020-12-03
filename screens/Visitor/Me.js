@@ -35,7 +35,7 @@ export default ({ navigation, route }) => {
     return (
     <View style={{flex:1, backgroundColor:'#ffffff'}}>
 
-        <UserComponent {...data?.me} route={route}/>
+        <UserComponent {...data?.me} route={route} refetch={refetch}/>
 
         <Modal
         isVisible={visible}

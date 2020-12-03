@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, RefreshControl } from "react-native";
 //import FollowComponent from "../../components/Visitor/FollowComponent";
 import { FlatList } from "react-native-gesture-handler";
 import { useQuery } from "@apollo/react-hooks";
@@ -16,9 +16,21 @@ const styles = StyleSheet.create({
 });
 
 export default () => {
-    const {data, error, loading} = useQuery(MY_FOLLOWING,{
+    const [refreshing, setRefreshing] = React.useState(false);
+    const {data, error, loading, refetch} = useQuery(MY_FOLLOWING,{
         fetchPolicy:"network-only"
     });
+
+    const refresh = async () => {
+        try {
+          setRefreshing(true);
+          await refetch()
+        } catch(e){
+          console.log(e, "팔로잉 새로고침 에러");
+        } finally {
+          setRefreshing(false);
+        }
+      }
     
     const renderItem = ({ item }) => (
         <UserSummary {...item}/>
@@ -33,6 +45,7 @@ export default () => {
                 keyExtractor={item => item.id}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{padding:15}}
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh}/>}
             />
             ) : (
                 <View style={{flex:1, justifyContent:"center", alignItems:"center"}}>

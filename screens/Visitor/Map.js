@@ -7,22 +7,36 @@ import { useQuery } from '@apollo/react-hooks';
 import { SHOP_ON_SALE } from './VisitorQueries';
 import ScreenLoader from '../../components/Custom/ScreenLoader';
 import { useLogOut } from '../../AuthContext';
+import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 
 const CARD_HEIGHT = 250;
 const CARD_WIDTH = constants.width * 0.8;
 const SPACING_FOR_CARD_INSET = constants.width * 0.1 - 10;
 
-export default () => {
+export default ({navigation}) => {
   let now = new Date()
   let mm = now.getMonth() + 1;
   let dd = now.getDate();
   const today = `${[now.getFullYear(), (mm>9 ? '' : '0') + mm, (dd>9 ? '' : '0') + dd].join('-')}`
-  const { data, loading, error } = useQuery(SHOP_ON_SALE,{
+  const { data, loading, error, refetch } = useQuery(SHOP_ON_SALE,{
     variables:{
       dateInput: today
     },
-    fetchPolicy:"network-only"
+    fetchPolicy:"network-only",
+    notifyOnNetworkStatusChange: true
   });
+  navigation.setOptions({
+    headerRight:()=> (
+      <TouchableOpacity onPress={() => refetch()}>
+        <MaterialCommunityIcons 
+          name="refresh"
+          size={24}
+          color={'black'}
+          style={{paddingHorizontal:10}}
+        />
+      </TouchableOpacity>
+    )
+  })
   // data > data.onSaleShop 
   const initialMapState = {
     region: {
