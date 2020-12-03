@@ -106,11 +106,10 @@ export default ({ id: ownerId, classification, address, addressDetail, isSelf, s
   const exterior = shopImages.filter(el => el["type"] === 'EXTERIOR');
   const hall = shopImages.filter(el => el["type"] === 'HALL');
   const kitchen = shopImages.filter(el => el["type"] === 'KITCHEN');
-  const priceList = calendar.filter(el => el.isBooked === true && typeof(parseInt(el.priceState)) === "number");
+  const priceList = calendar.filter(el => el.priceState !== "self");
   const priceSum = priceList.map(el => parseInt(el.priceState)).reduce((a, b) => a + b, 0);
   const priceAve = (priceSum/ priceList.length)
   const pricePrint = (Math.floor(priceAve/100)*100).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
   return (
     <View key={ownerId} style={styles.container}>
       <View style={styles.boxShop}>
@@ -151,7 +150,7 @@ export default ({ id: ownerId, classification, address, addressDetail, isSelf, s
           </View>
 
           <View style={styles.inner}>
-            <Text style={styles.address}>{address} in {addressDetail}</Text>
+            <Text style={styles.address}>{address} {addressDetail}</Text>
           
             {hashTags.length > 0 ? (
               <View style={styles.hashTags}>
