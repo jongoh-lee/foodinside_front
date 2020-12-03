@@ -1,5 +1,5 @@
 import * as React from "react";
-import {StyleSheet, View, Image, Text, TouchableOpacity, ActivityIndicator,} from "react-native";
+import {StyleSheet, View, Image, Text, TouchableOpacity, ActivityIndicator, RefreshControl,} from "react-native";
 import { ScrollView, FlatList, TouchableWithoutFeedback } from "react-native-gesture-handler";
 import constants from "../../constants";
 import { useNavigation } from "@react-navigation/native";
@@ -14,17 +14,29 @@ import Caption from "../Custom/Caption";
 
 const WIDTH = constants.width - 20;
 
-export default ({ id, isSelf, profileName, sector, token, mainImage, menuName, menuImage, fullPrice, salePrice, foodGuide, origin, submenus, isDangol, dangolCount, postsCount ,posts, myPosts, founderImage, career, user, members, wallets, myWallet}) => {
+export default ({ id, isSelf, profileName, sector, token, mainImage, menuName, menuImage, fullPrice, salePrice, foodGuide, origin, submenus, isDangol, dangolCount, postsCount ,posts, myPosts, founderImage, career, user, members, wallets, myWallet, refetch}) => {
   const [showGuide, setShowGuide] = React.useState(false);
   const [tabName, setTabName] = React.useState('포토리뷰');
   const flatList = React.useRef();
   const [imageLoading, setImageLoading] = React.useState(false)
   const [postList, setPostList] = React.useState([]);
   const [endOfScroll, setEndOfScroll] = React.useState(false)
+  const [refreshing, setRefreshing] = React.useState(false);
   const [loadMoreReviewQuery, { called, loading, data:reviewData }] = useLazyQuery(LOAD_MORE_REVIEW,{
     fetchPolicy:"network-only",
   });
   const navigation = useNavigation();
+
+  const refresh = async () => {
+    try {
+      setRefreshing(true);
+      await refetch()
+    } catch(e){
+      console.log(e, "프로필 새로고침 에러");
+    } finally {
+      setRefreshing(false);
+    }
+}
   
   const franchiseInfo = React.useMemo(() => {
     return (
@@ -201,6 +213,7 @@ export default ({ id, isSelf, profileName, sector, token, mainImage, menuName, m
         onEndReached={tabName === '포토리뷰' ? loadMoreImages : null}
         onEndReachedThreshold={Platform.OS === 'ios'? 0 : 0.4}
         ListFooterComponent={renderFooter}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh}/>}
       />
     </View>
 )};

@@ -12,11 +12,11 @@ import ScreenLoader from "../../components/Custom/ScreenLoader";
 export default ({ navigation, route }) => {
     const [visible, setVisible ] = React.useState(false);
     const [seeFullProfile, setSeeFullProfile] = React.useState(route.params.seeFullProfile? route.params.seeFullProfile : { id: "ckdra85bd1gjw0a3557xq2hnc"})
-    const { data, loading, error, refetch } = useQuery(SEE_FULL_PROFILE,{
+    const { data, loading, refetch } = useQuery(SEE_FULL_PROFILE,{
         variables: {
             id: seeFullProfile.id
         },
-        fetchPolicy:"network-only"
+        fetchPolicy:"cache-and-network"
     });
 
     navigation.setOptions({
@@ -29,14 +29,13 @@ export default ({ navigation, route }) => {
           )
         )
     });
-    if(error) return console.log(error);
 
   return (
     <>
     {loading?<ScreenLoader /> : null}
         <View style={styles.container}>
             {data?.seeFullProfile && (
-                <FranchiseComponent {...data?.seeFullProfile}/>
+                <FranchiseComponent {...data?.seeFullProfile} refetch={refetch}/>
             )}
         </View>
 

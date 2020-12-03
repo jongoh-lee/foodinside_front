@@ -13,11 +13,10 @@ import Logo from "../../components/Custom/Logo";
 export default ({ navigation }) => {
   const [visible, setVisible ] = React.useState(false);
   const { data, loading, error, refetch } = useQuery(MY_PROFILE,{
-    fetchPolicy:"network-only"
+    fetchPolicy:"network-only",
+    pollInterval: 1800000,
   });
-  
   if(loading) return <Loader />;
-  if(error) return console.log(error);
 
   if(data?.myProfile?.profileState === 3){
     navigation.setOptions({
@@ -48,7 +47,7 @@ export default ({ navigation }) => {
 
           <TouchableWithoutFeedback onPress={()=> navigation.navigate("프로필 보기", {seeFullProfile : {
                         id: "ckg3od2mg00y70764juta30nv",
-                        profileName: "그 시절 그 카페",
+                        profileName: "업체 정보",
                         sector: "비알콜 음료점",
                         isSelf:false
                     }})}>
@@ -76,7 +75,7 @@ export default ({ navigation }) => {
 
           <TouchableWithoutFeedback onPress={()=> navigation.navigate("프로필 보기", {seeFullProfile : {
                         id: "ckg3od2mg00y70764juta30nv",
-                        profileName: "그 시절 그 카페",
+                        profileName: "업체 정보",
                         sector: "비알콜 음료점",
                         isSelf:false
                     }})}>
@@ -106,7 +105,7 @@ export default ({ navigation }) => {
 
           <TouchableWithoutFeedback onPress={()=> navigation.navigate("프로필 보기", {seeFullProfile : {
                         id: "ckg3od2mg00y70764juta30nv",
-                        profileName: "그 시절 그 카페",
+                        profileName: "업체 정보",
                         sector: "비알콜 음료점",
                         isSelf:false
                     }})}>
@@ -127,7 +126,7 @@ export default ({ navigation }) => {
     )}
 
     {data?.myProfile?.profileState === 3 && (
-        <FranchiseComponent {...data?.myProfile} visible={visible} setVisible={setVisible}/>
+        <FranchiseComponent {...data?.myProfile} visible={visible} setVisible={setVisible} refetch={refetch}/>
     )}
 
     {data?.myProfile === null &&  (
@@ -138,7 +137,7 @@ export default ({ navigation }) => {
 
           <TouchableWithoutFeedback onPress={()=> navigation.navigate("프로필 보기", {seeFullProfile : {
                         id: "ckg3od2mg00y70764juta30nv",
-                        profileName: "그 시절 그 카페",
+                        profileName: "업체 정보",
                         sector: "비알콜 음료점",
                         isSelf:false
                     }})}>
