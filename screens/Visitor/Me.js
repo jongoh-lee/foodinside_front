@@ -30,7 +30,6 @@ export default ({ navigation, route }) => {
         )
     });
     if(loading) return <Loader/>;
-    if(error) return console.log(error);
 
     return (
     <View style={{flex:1, backgroundColor:'#ffffff'}}>

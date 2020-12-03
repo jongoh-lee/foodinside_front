@@ -37,7 +37,7 @@ export default () => {
     <ScrollView 
       showsVerticalScrollIndicator={false} 
       contentContainerStyle={{padding:10, flexGrow:1}} 
-      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh}/>}>
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} />}>
 
       {data?.myDangol?.length < 1 ? (
         <View style={{flex:1, backgroundColor:"#ffffff", justifyContent:"center", alignItems:"center"}}>
