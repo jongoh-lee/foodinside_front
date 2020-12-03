@@ -14,7 +14,7 @@ export default ({ navigation, route }) => {
       variables:{
         id: route.params.id
       },
-      fetchPolicy:"network-only"
+      fetchPolicy:"cache-and-network"
     });
     navigation.setOptions({
         headerTitle:() => <Text style={styles.headerTitle} numberOfLines={1} ellipsizeMode={"middle"}>{route.params.shopName} <Text style={styles.headerClassification}>{route.params.classification}음식점</Text></Text>,
@@ -50,8 +50,6 @@ export default ({ navigation, route }) => {
         console.log("즐겨찾기 추가 에러",e);
       }
     }
-    if(loading) return <Loader />
-    if(error) return console.log("Owner Error",error);
     return (
       <>
         {mutationLoading? <ScreenLoader/> : null}

@@ -4,13 +4,26 @@ import { useMutation, useQuery } from "@apollo/react-hooks";
 import { MY_CALENDAR, EDIT_CALENDAR } from "./OwnerQueries";
 import ScreenLoader from "../../components/Custom/ScreenLoader";
 import SetCalendar from "../../components/Owner/SetCalendar";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 
-export default () => {
+export default ({navigation}) => {
   const { data, error, loading, refetch } = useQuery(MY_CALENDAR,{
-    fetchPolicy:"network-only"
+    fetchPolicy:"network-only",
+    notifyOnNetworkStatusChange: true
   });
-  if(error) return console.log(error);
+  navigation.setOptions({
+    headerRight:()=> (
+      <TouchableOpacity onPress={() => refetch()}>
+        <MaterialCommunityIcons 
+          name="refresh"
+          size={24}
+          color={'black'}
+          style={{paddingHorizontal:10}}
+        />
+      </TouchableOpacity>
+    )
+  })
   return(
     <View style={styles.container}>
       {loading ? <ScreenLoader /> : null}

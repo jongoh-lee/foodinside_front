@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/react-hooks";
 import * as React from "react";
-import { StyleSheet, View, Image, Text, ActivityIndicator } from "react-native";
+import { StyleSheet, View, Image, Text, ActivityIndicator, RefreshControl } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { Caption } from "react-native-paper";
 import constants from "../../constants";
@@ -47,12 +47,24 @@ const styles = StyleSheet.create({
 })
 
 export default ({ year, month }) => {
-    const { data, loading, error } = useQuery(RESERVATION_LIST,{
+    const [refreshing, setRefreshing] = React.useState(false);
+    const { data, loading, error, refetch } = useQuery(RESERVATION_LIST,{
         variables:{
             date: year + '-' + ('0' + (month + 1)).slice(-2)
         },
         fetchPolicy:"network-only"
     });
+
+    const refresh = async () => {
+        try {
+            setRefreshing(true);
+            await refetch()
+        } catch(e){
+            console.log(e, "점주 예약 내역 새로고침 에러");
+        } finally {
+            setRefreshing(false);
+        }
+    }
     
     const renderItem = ({ item }) => {
         return(
@@ -89,6 +101,7 @@ export default ({ year, month }) => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{padding:10, flexGrow:1}}
         ListEmptyComponent={emptyComponent}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh}/>}
     />}
         </>
     )

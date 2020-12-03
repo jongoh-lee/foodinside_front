@@ -1,6 +1,6 @@
 import { TouchableWithoutFeedback, ScrollView } from "react-native-gesture-handler";
 import * as React from "react";
-import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, Image, TouchableOpacity, RefreshControl } from "react-native";
 import MapView, {Marker, PROVIDER_GOOGLE} from "react-native-maps";
 import constants from "../../constants";
 import BookingCalendar from "./BookingCalendar";
@@ -17,7 +17,8 @@ const styles = StyleSheet.create({
     image:{
         width: '100%',
         height: '100%',
-        resizeMode:"cover"
+        resizeMode:"cover",
+        backgroundColor:"#E0E0E0"
     },
     tabBar:{
         flexDirection:"row",
@@ -119,6 +120,7 @@ const styles = StyleSheet.create({
 })
 
 export default ({ refetch, id, shopImages, facility, tables, chairs, scale, shopName, district, description, precaution, address, addressDetail, latitude, longitude, checkIn, checkOut, minReserve, calendar, isSelf, franchiseState}) => {
+    const [refreshing, setRefreshing] = React.useState(false);
     const [tabName, setTabName] = React.useState("EXTERIOR");
     const [index, setIndex] = React.useState(0);
     const exterior = shopImages.filter(el => el["type"] === 'EXTERIOR');
@@ -135,6 +137,17 @@ export default ({ refetch, id, shopImages, facility, tables, chairs, scale, shop
     const tablewareLength = tableware.length;
     const cleanerLength = cleaner.length;
     const ectLength = ect.length;
+
+    const refresh = async () => {
+        try {
+          setRefreshing(true);
+          await refetch()
+        } catch(e){
+          console.log(e, "공유 음식점 새로고침 에러");
+        } finally {
+          setRefreshing(false);
+        }
+    }
 
     const onIndexChanged = ( index ) => {
         if(index >= 0 && index < exteriorLength){
@@ -153,7 +166,11 @@ export default ({ refetch, id, shopImages, facility, tables, chairs, scale, shop
         setIndex(index)
     }
     return (
-        <ScrollView showsVerticalScrollIndicator={false} scrollEventThrottle={1}>
+        <ScrollView 
+            showsVerticalScrollIndicator={false} 
+            scrollEventThrottle={1}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} />}
+            >
             <View style={styles.imageBox}>
                 <Swiper key={index} index={index} paginationStyle={{position:'absolute', bottom:10, overflow:"hidden"}} dot={<View style={{backgroundColor: 'rgba(255,255,255,.3)', width: 6, height: 6, borderRadius: 3, marginLeft: 3, marginRight: 3}} />} activeDot={<View style={{backgroundColor: '#fff', width: 8, height: 8, borderRadius: 4, marginLeft: 4, marginRight: 4}} />}>
                     {allImages.map((photo, index) => <Image key={index} style={styles.image} source={{uri:photo.url}}/>)}
