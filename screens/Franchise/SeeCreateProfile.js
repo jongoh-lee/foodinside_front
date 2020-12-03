@@ -21,7 +21,6 @@ export default ({ navigation }) => {
     )
   })
   if (loading) return <Loader />;
-  if (error) return console.log(error);
   return (
     <View style={styles.container}>
     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{alignItems:"center"}}>

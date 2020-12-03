@@ -91,7 +91,6 @@ export default ({ navigation }) => {
         }
     }
     if(_loading) return <Loader />
-    if(error) return console.log(error);
     return (
         <View style={styles.container}>
             {data && data.myShop &&

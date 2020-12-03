@@ -10,7 +10,7 @@ import Loader from "../../components/Custom/Loader";
 import BackArrow from "../../components/Custom/BackArrow";
 
 export default ({ navigation }) => {
-  const { data , error, loading, refetch } = useQuery(MY_SHOP);
+  const { data , loading, refetch } = useQuery(MY_SHOP);
   navigation.setOptions({
     headerRight:() => (
     <TouchableWithoutFeedback onPress={() => navigation.navigate("수정 하기",{
@@ -25,7 +25,6 @@ export default ({ navigation }) => {
   });
 
   if (loading) return <Loader />;
-  if (error) return console.log(error);
 
   return (
     <View style={styles.container}>
