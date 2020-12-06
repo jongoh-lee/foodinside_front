@@ -81,7 +81,7 @@ const MapStack = createStackNavigator();
 function MapStackScreen() {
     return (
     <MapStack.Navigator headerMode={"screen"} screenOptions={{ headerShown:true, cardStyle:{backgroundColor:'#ffffff'}, headerTitleStyle:{fontSize:20, fontWeight:'bold'}}}>
-      <MapStack.Screen name="랜덤 음식점" component={Map}/>
+      <MapStack.Screen name="영업 중" component={Map}/>
       <MapStack.Screen name="프로필 보기" component={FullProfile} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}} />
       <MapStack.Screen name="SeeUser" component={FullUser} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}} />
       <MapStack.Screen name="UserPostList" component={UserPostList} options={{headerTitleAlign:"center", headerTitle:"포토리뷰", headerLeft:() => <BackArrow />}} />
@@ -180,7 +180,7 @@ function TabScreen() {
           {/* <Tabs.Screen name='피드' component={FeedStackScreen} options={{tabBarIcon: ({ focused, color }) => (
             <FontAwesome5 name='concierge-bell' color={focused? 'black' : color} size={23} />
           )}}/> */}
-          <Tabs.Screen name='랜덤 음식점' component={MapStackScreen} options={{tabBarIcon: ({ focused, color }) => (
+          <Tabs.Screen name='영업 중' component={MapStackScreen} options={{tabBarIcon: ({ focused, color }) => (
             <FontAwesome5 name='question' color={focused?  'black' : color} size={20} solid/>
           )}}/>
           <Tabs.Screen name='단골' component={FavoriteStackScreen} options={{tabBarIcon: ({ focused, color }) => (
