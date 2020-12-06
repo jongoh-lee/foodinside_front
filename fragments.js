@@ -199,6 +199,7 @@ export const PROFILE_FRAGMENT = gql`
   fragment ProfileParts on Profile {
     id
     isSelf
+    release
     profileName
     menuName
     menuImage

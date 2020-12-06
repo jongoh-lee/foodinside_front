@@ -15,11 +15,13 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import { CHECK_PROFILE_NAME, COMPLETE_PROFILE } from "./ProfileQueries";
 import Caption from "../../components/Custom/Caption";
+import { Switch } from 'react-native-paper';
 
 
 export default ({ navigation, route }) => {
   const [loading, setLoading] = React.useState(false);
   //myProfile data
+  const [release, setRelease] = React.useState(route.params.myProfile.release? route.params.myProfile.release : false)
   const profileNameInput = useInput(route.params.myProfile.profileName? route.params.myProfile.profileName : "");
   const [sector, setSector] = React.useState(route.params.myProfile.sector? route.params.myProfile.sector : "");
   const [bank, setBank] = React.useState(route.params.myProfile.account? route.params.myProfile.account.bank : "");
@@ -43,7 +45,7 @@ export default ({ navigation, route }) => {
   });
   const [ alert, setAlert ] = React.useState("")
 
-  
+  const togglePublic = () => setRelease(!release);
   //ref
   const scrollViewRef1 = React.useRef();
 
@@ -256,6 +258,7 @@ export default ({ navigation, route }) => {
           data : { completeProfile }
         } = await completeProfileMutation({
           variables:{
+            release: Boolean(release),
             profileName: profileNameInput.value,
             sector: sector,
             token: Number(tokenInput.value),
@@ -315,6 +318,12 @@ export default ({ navigation, route }) => {
       <ScrollView contentContainerStyle={{padding:15}}>
         <View style={[{paddingBottom:15}, Platform.OS === 'ios' ? { zIndex:5 } : null]}>
           <Text style={[styles.title, {paddingVertical:10}]}>업체 정보 </Text>
+          
+          {/* 프로필 공개 설정 추가, 기본 비공개 */}
+          <View style={{flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingBottom: 1}}>
+            <Text style={styles.subTitle}>공개 설정:  {release ? <Text style={{color:"#666", fontWeight:"600"}}>공개</Text> : <Text style={{color:"#666", fontWeight:"600"}}>비공개</Text>}</Text>
+            <Switch disabled={loading} color="#05e6f4" value={release} onValueChange={togglePublic}/>
+          </View>
 
           <View style={{flexDirection:"row", alignItems:"center", paddingBottom: 1}}>
             <Text style={styles.subTitle}>업체명: </Text>

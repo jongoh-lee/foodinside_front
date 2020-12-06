@@ -12,6 +12,7 @@ export const CREATE_PROFILE = gql`
 
 export const COMPLETE_PROFILE = gql`
     mutation completeProfile(
+        $release: Boolean!
         $profileName:String!
         $sector:String!
         $token:Int!
@@ -35,6 +36,7 @@ export const COMPLETE_PROFILE = gql`
 
         $profileState: Int!){
             completeProfile(
+                release: $release
                 profileName: $profileName
                 sector: $sector
                 token: $token
@@ -58,6 +60,7 @@ export const COMPLETE_PROFILE = gql`
                 updateAccount: $updateAccount
             ) {
                 id
+                release
                 profileName
                 sector
                 token
