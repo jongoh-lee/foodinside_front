@@ -52,9 +52,11 @@ export default ({ navigation, route }) => {
     }
     return (
       <>
-        {mutationLoading? <ScreenLoader/> : null}
+        {loading || mutationLoading? <ScreenLoader/> : null}
         <View style={styles.container}>
+          {data?.seeFullShop && (
             <OwnerComponent {...data?.seeFullShop} refetch={refetch}/>
+          )}
         </View>
 
         <Modal
