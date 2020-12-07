@@ -312,7 +312,7 @@ export default ({ route, navigation }) => {
 
     </ScrollView>
     <View>
-      <TouchableOpacity onPress={() => handleBooking()} style={{position:"absolute", bottom:0, left:0, right:0, justifyContent:"center", alignItems:"center", padding:20, backgroundColor:"rgb(5, 230, 244)"}} disabled={loading || userLoading}>
+      <TouchableOpacity onPress={() => handleBooking()} style={{position:"absolute", bottom:0, left:0, right:0, justifyContent:"center", alignItems:"center", padding:20, backgroundColor:"rgb(5, 230, 244)"}} disabled={data?.myProfile?.account ? (loading || userLoading) : (bank && accountNumberInput.value) ? (loading || userLoading) : true}>
         <Text style={{color:"#ffffff", fontWeight:"bold"}}>약관 동의 및 예약하기</Text>
       </TouchableOpacity>
     </View>  

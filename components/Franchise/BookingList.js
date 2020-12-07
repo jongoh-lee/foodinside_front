@@ -59,7 +59,7 @@ export default ({ year, month }) => {
       }
 
     const renderItem = ({ item }) => {
-        const { firstDate, lastDate, totalPrice, isCancelled, isPaid, owner, profile, prices } = item;
+        const { firstDate, lastDate, totalPrice, isCancelled, isPaid, owner, profile, prices, refundPrice } = item;
         const dateList = prices.map(el => el.dateString);
         const mainImage = owner.shopImages.filter(image => image.type === "EXTERIOR")[0]
         //얘약 상황: 영업 중, 영업 완료 추가
@@ -94,19 +94,19 @@ export default ({ year, month }) => {
             <View style={styles.paymentBar}>
                 <View style={styles.paymentBox}>
                     <Caption style={styles.captionStyle}>결제금액</Caption>
-                    <Text style={{fontSize:18, fontWeight:"bold"}}>{totalPrice}</Text>
+                    <Text style={{fontSize:16, fontWeight:"bold"}}>{totalPrice}원</Text>
                 </View>
 
                 <View style={styles.paymentBox}>
                     <Caption style={styles.captionStyle}>예약상태</Caption>
-                    <Text style={{fontSize:18, fontWeight:"bold"}}>{isCancelled ? "예약취소" : isPaid? "입점승인" : "예약완료"}</Text>
+                    <Text style={{fontSize:16, fontWeight:"bold"}}>{isCancelled ? "예약취소" : isPaid? "입점승인" : "예약완료"}</Text>
                 </View>
 
                 <View style={[styles.paymentBox, isCancelled ? null : {justifyContent:"flex-end"}]}>
                     {isCancelled ? (
                         <>
                             <Caption style={styles.captionStyle}>환불예정</Caption>
-                            <Text style={{fontSize:18, fontWeight:"bold"}}>0원</Text>
+                            <Text style={{fontSize:16, fontWeight:"bold"}}>{refundPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</Text>
                         </>
                     ) : <BasicButton text={"예약 취소"} marginVertical={0} padding={5} onPress={() => navigation.navigate("예약취소", {
                         ...item,
