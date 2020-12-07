@@ -72,7 +72,7 @@ export default () => {
                         </View>
                         <View style={styles.flexBox}>
                             <Text style={styles.question}>Q. 프로필을 신청하니 심사 중이라고 나옵니다, 기준이 뭔가요?</Text>
-                            <Caption style={{lineHeight:20}}>{`푸드 인사이드 입점 기준은 차별성입니다.\n만약 100명이 '김치찌개'를 등록한다면, 먼저 신청한 사람이 등록됩니다.\n시간이 지날수록 단순한 메뉴로 입점하기 어렵겠죠?`}</Caption>
+                            <Caption style={{lineHeight:20}}>{`푸드 인사이드 입점 기준은 차별성입니다.\n만약 100명이 '김치찌개'를 등록한다면, 먼저 신청한 사람이 등록됩니다.\n시간이 지날수록 단순한 메뉴로 입점하기 어렵겠죠?`}</Caption>
                         </View>
                         <View style={styles.flexBox}>
                             <Text style={styles.question}>Q. 등록한 메뉴를 바꿀 수 있나요?</Text>
@@ -84,11 +84,11 @@ export default () => {
                         </View>
                         <View style={styles.flexBox}>
                             <Text style={styles.question}>Q. 영업 전에 준비해야 할게 있나요?</Text>
-                            <Caption style={{lineHeight:20}}>{`영업 중 대표자는 '위생교육수료증'을. 모든 참여 인원은 1년 이내 '보건증'을 소지해야 합니다. 또 방문객에게 보여줄 60cmx180cm 배너를 준비해주세요`}</Caption>
+                            <Caption style={{lineHeight:20}}>{`영업 중 대표자는 '위생교육수료증'을, 모든 참여 인원은 1년 이내 '보건증'을 소지해야 합니다. 또 방문객에게 보여줄 60cmx180cm 배너를 준비해주세요`}</Caption>
                         </View>
                         <View style={styles.flexBox}>
                             <Text style={styles.question}>Q. 언제부터 음식을 판매할 수 있나요?</Text>
-                            <Caption style={{lineHeight:20}}>{`현재 많은 분께서 메뉴를 등록주셨습니다.\n푸드 인사이드도 하루빨리 여러분에게 새로운 음식으로 인사드리고 싶은 마음이 간절합니다.\n\n하지만 최근 확진자 수가 급격하게 증가했습니다.\n확산의 속도를 역학조사가 따라가지 못하는 현 시점에서 무리한 진행은 코로나 확산 방지에 악영향을 미칠것으로 사료됩니다.\n\n때문에 공유 음식점 영업은 향후 확진자 수의 변화와 거리두기 추이를 보고 다시 안내드리겠습니다.\n\n가장 필요한 순간에 도움을 드리지 못해 대단히 죄송합니다. `}</Caption>
+                            <Caption style={{lineHeight:20}}>{`현재 많은 분께서 메뉴를 등록주셨습니다.\n푸드 인사이드도 하루빨리 여러분에게 새로운 음식으로 인사드리고 싶은 마음이 간절합니다.\n\n하지만 최근 확진자 수가 급격하게 증가했습니다.\n확산의 속도를 역학조사가 따라가지 못하는 현 시점에서 무리한 진행은 코로나 확산 방지에 악영향을 미칠것으로 사료됩니다.\n\n때문에 공유 음식점 영업은 향후 확진자 수의 변화와 거리두기 추이를 보고 결정하겠습니다.`}</Caption>
                         </View>
                     </View>
                 )}
@@ -101,7 +101,7 @@ export default () => {
                         </View>
                         <View style={styles.flexBox}>
                             <Text style={styles.question}>Q. '단골'은 무엇인가요?</Text>
-                            <Caption style={{lineHeight:20}}>{`마음에 드는 업체의 '단골'버튼을 눌러주세요, 해당 업체의 영업 날짜와 장소를 미리 알 수 있고 할인된 가격으로 음식을 밋볼 수 있습니다.`}</Caption>
+                            <Caption style={{lineHeight:20}}>{`마음에 드는 업체의 '단골'버튼을 눌러주세요, 해당 업체의 영업 날짜와 장소를 미리 알 수 있고 할인된 가격으로 음식을 맛볼 수 있습니다.`}</Caption>
                         </View>
                     </View>
                 )}
