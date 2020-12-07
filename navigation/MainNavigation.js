@@ -7,7 +7,7 @@ import {
   DrawerContentScrollView,
 } from '@react-navigation/drawer';
 import Animated from 'react-native-reanimated';
-import { FontAwesome5, AntDesign, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome5, AntDesign, MaterialIcons, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
 // screens
@@ -15,9 +15,29 @@ import Franchise from '../navigation/FranchiseNavigation';
 import Visitor from '../navigation/VisitorNavigation';
 import Owner from '../navigation/OwnerNavigation';
 import { NavigationContainer } from '@react-navigation/native';
+import Notification from '../screens/Notification/Notification';
+import BackClose from '../components/Custom/BackClose';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
+
+const AboutStack = createStackNavigator();
+
+const About = ({style}) => {
+  return (
+      <AboutStack.Navigator
+        headerMode={"float"}
+        screenOptions={{
+          headerShown:true,
+          headerTitleAlign:"center",
+          headerLeft:() => <BackClose />
+          }}
+      >
+        <AboutStack.Screen name="도움말" component={Notification}/>
+      </AboutStack.Navigator>
+    
+  )
+}
 
 const Screens = ({ navigation, style }) => {
   return (
@@ -35,6 +55,7 @@ const Screens = ({ navigation, style }) => {
         <Stack.Screen name="Visitor">{props => <Visitor {...props} />}</Stack.Screen>
         <Stack.Screen name="Owner">{props => <Owner {...props} />}</Stack.Screen>
         <Stack.Screen name="Store">{props => <Franchise {...props} />}</Stack.Screen>
+        <Stack.Screen name="About" options={{gestureEnabled:true}}>{props => <About {...props} />}</Stack.Screen>
       </Stack.Navigator>
     </Animated.View>
   );
@@ -58,31 +79,40 @@ const DrawerContent = props => {
           </Text>
         </View>
         <View style={styles.case2}>
-          <DrawerItem
-            label="공유 음식점"
-            labelStyle={styles.drawerLabel}
-            style={styles.drawerItem}
-            onPress={() => props.navigation.navigate('Owner')}
-            icon={() => <MaterialIcons name="store" color="white" size={20} />}
-          />
-          <DrawerItem
-            label="입점 업체"
-            labelStyle={styles.drawerLabel}
-            style={styles.drawerItem}
-            onPress={() => props.navigation.navigate('Store')}
-            icon={() => <MaterialCommunityIcons name="food-variant" color="white" size={20} />}
-          />
-          <DrawerItem
-            label="방문객"
-            labelStyle={styles.drawerLabel}
-            drawerLabel="jo"
-            style={styles.drawerItem}
-            onPress={() => props.navigation.navigate('Visitor')}
-            icon={() => <FontAwesome5 name='concierge-bell' color="white" size={18} />}
-          />
+          <View style={{flex:1}}>
+            <DrawerItem
+              label="공유 음식점"
+              labelStyle={styles.drawerLabel}
+              style={styles.drawerItem}
+              onPress={() => props.navigation.navigate('Owner')}
+              icon={() => <MaterialIcons name="store" color="white" size={20} />}
+            />
+            <DrawerItem
+              label="입점 업체"
+              labelStyle={styles.drawerLabel}
+              style={styles.drawerItem}
+              onPress={() => props.navigation.navigate('Store')}
+              icon={() => <MaterialCommunityIcons name="food-variant" color="white" size={20} />}
+            />
+            <DrawerItem
+              label="방문객"
+              labelStyle={styles.drawerLabel}
+              style={styles.drawerItem}
+              onPress={() => props.navigation.navigate('Visitor')}
+              icon={() => <FontAwesome5 name='concierge-bell' color="white" size={18} />}
+            />
+          </View>
+          <View style={{flex:1}}>
+            <DrawerItem
+              label="도움말"
+              labelStyle={styles.drawerLabel}
+              style={[styles.drawerItem, {marginTop:30}]}
+              onPress={() => props.navigation.navigate('About')}
+              icon={() => <Entypo name='megaphone' color="white" size={18} />}
+            />
+          </View>
         </View>
       </View>
-
     </DrawerContentScrollView>
   );
 };
