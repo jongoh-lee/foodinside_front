@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
+import * as Updates from 'expo-updates';
 import { Asset } from 'expo-asset'
 import { Ionicons, AntDesign, MaterialCommunityIcons, EvilIcons, MaterialIcons, Feather, Entypo, FontAwesome5,  } from '@expo/vector-icons';
 import { AppLoading } from 'expo';
@@ -21,6 +22,20 @@ export default function App() {
   const [client, setClient] = React.useState(null);
   const [isLoggedIn, setIsLoggedIn] = React.useState(null);
 
+  const update = async () => {
+    try {
+      const update = await Updates.checkForUpdateAsync();
+      if (update.isAvailable) {
+        await Updates.fetchUpdateAsync();
+        // ... notify user of update ...
+        await Updates.reloadAsync();
+      }
+    } catch (e) {
+      console.log("restart error",e);
+    }
+    preload()
+  }
+  
   const preload = async () => {
     try {
       //await Font.loadAsync({
@@ -56,7 +71,7 @@ export default function App() {
     }
   }
   React.useEffect(()=>{
-    preload();
+      update()
   }, []);
 
   return loaded && client && isLoggedIn !== null ?  (
