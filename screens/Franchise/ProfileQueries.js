@@ -64,6 +64,7 @@ export const COMPLETE_PROFILE = gql`
                 profileName
                 sector
                 token
+                contact
                 mainImage
                 foodGuide
                 origin
