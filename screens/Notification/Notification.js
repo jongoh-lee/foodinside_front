@@ -97,7 +97,7 @@ export default () => {
                     <View style={{flex:1, padding:20}}>
                         <View style={styles.flexBox}>
                             <Text style={styles.question}>Q. 영업 중인 음식점이 한 곳도 없습니다</Text>
-                            <Caption style={{lineHeight:20}}>{`현재 바이러스의 확산으로 공유 음식점 영업이 잠시 중단되었습니다.`}</Caption>
+                            <Caption style={{lineHeight:20}}>{`현재 확진자 수의 증가로 공유 음식점 영업이 잠시 중단되었습니다.`}</Caption>
                         </View>
                         <View style={styles.flexBox}>
                             <Text style={styles.question}>Q. '단골'은 무엇인가요?</Text>
