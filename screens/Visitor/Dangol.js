@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { StyleSheet, View, Text, RefreshControl } from "react-native";
 import DangolCard from "../../components/Visitor/DangolCard";
 import { ScrollView } from "react-native-gesture-handler";
@@ -36,7 +36,7 @@ export default () => {
       {loading? <ScreenLoader/> : null}
     <ScrollView 
       showsVerticalScrollIndicator={false} 
-      contentContainerStyle={{padding:10, flexGrow:1}} 
+      contentContainerStyle={{padding:10, paddingTop:0, flexGrow:1}} 
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} />}>
 
       {data?.myDangol?.length < 1 ? (
