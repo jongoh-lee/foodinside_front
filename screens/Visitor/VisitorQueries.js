@@ -279,3 +279,54 @@ export const LOAD_MORE_POST = gql`
     }
     ${POST_FRAGMENT}
 `;
+
+export const SEARCH_PROFILE = gql`
+    query searchProfile($name: String){
+        searchProfile(name: $name){
+            id
+            profile{
+                id
+                isSelf
+                profileName
+                menuName
+                menuImage
+                salePrice
+                fullPrice
+                classification
+                sector
+                token
+                mainImage
+                isDangol
+                dangolCount
+                myPosts
+                myWallet{
+                    id
+                    incoming
+                    outgoing
+                }
+                wallets{
+                    id
+                    incoming
+                    outgoing
+                }
+                submenus{
+                    id
+                    menuName
+                    menuImage
+                    fullPrice
+                    salePrice
+                }
+                profileState
+                postsCount
+                bookings{
+                    id
+                    isCancelled
+                    prices{
+                        id
+                        dateString
+                    }
+                }
+            }
+        }
+    }
+`;

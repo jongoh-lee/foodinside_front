@@ -93,11 +93,11 @@ function MapStackScreen() {
 }
 
 
-const FavoriteTabStack = createMaterialTopTabNavigator();
+const FranchiseInfoTabStack = createMaterialTopTabNavigator();
 
-function favoriteTabScreen(){
+function FranchiseInfoTabScreen(){
   return (
-    <FavoriteTabStack.Navigator
+    <FranchiseInfoTabStack.Navigator
       tabBarOptions={{
       indicatorStyle:{ backgroundColor: 'transparent'}, 
       style:{ 
@@ -107,9 +107,9 @@ function favoriteTabScreen(){
         borderColor:'transparent'
       }, 
       labelStyle:{fontSize:14, fontWeight:"bold"}}}>
-      <FavoriteTabStack.Screen name='단골' component={Dangol} />
-      <FavoriteTabStack.Screen name='주변 음식점' component={Around}/>
-    </FavoriteTabStack.Navigator>
+      <FranchiseInfoTabStack.Screen name='모든 업체' component={SearchProfileList}/>
+      <FranchiseInfoTabStack.Screen name='단골' component={Dangol} />
+    </FranchiseInfoTabStack.Navigator>
   )
 }
 
