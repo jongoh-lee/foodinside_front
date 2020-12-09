@@ -251,6 +251,7 @@ export const PROFILE_FRAGMENT = gql`
         id
         firstName
         lastName
+        username
     }
     postsCount
     myPosts

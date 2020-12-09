@@ -113,7 +113,7 @@ export default ({ id, isSelf, profileName, sector, token, mainImage, menuName, m
       </>
         
       {tabName ==='영업정보'? <OpenInfo id={id} /> : null}
-      {tabName ==='팀원소개'? <Members members={members} founderImage={founderImage} career={career} username={user.firstName} /> : null}
+      {tabName ==='팀원소개'? <Members members={members} founderImage={founderImage} career={career} username={user.username} /> : null}
       
       </View>
     )

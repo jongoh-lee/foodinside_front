@@ -2,6 +2,7 @@ import * as React from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
 import constants from "../../constants";
 import { ScrollView } from "react-native-gesture-handler";
+import Caption from "../Custom/Caption";
 
 const styles = StyleSheet.create({
     container:{
@@ -47,7 +48,7 @@ export default ( { members, founderImage, career, username } ) => {
                     <Image style={styles.image} source={{uri:founderImage}} />
 
                     <View style={styles.position}>
-                        <Text style={styles.text} numberOfLines={1}>{username}(사장님)</Text>
+                        <Text style={styles.text} numberOfLines={1} ellipsizeMode={"middle"}>{username} <Caption>사장님</Caption></Text>
                     </View>
                 </View>
                 
@@ -66,7 +67,7 @@ export default ( { members, founderImage, career, username } ) => {
                     <Image style={styles.image} source={{uri:member.image}} />
 
                     <View style={styles.position}>
-                        <Text style={styles.text} numberOfLines={1}>{member.name}({member.position})</Text>
+                        <Text style={styles.text} numberOfLines={1}>{member.name} <Caption>{member.position}</Caption></Text>
                     </View>
                 </View>
                 

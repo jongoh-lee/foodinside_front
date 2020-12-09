@@ -612,7 +612,7 @@ export default ({ navigation, route }) => {
                           </View>)}
                       </TouchableOpacity>
                         <View style={styles.position}>
-                            <Text style={styles.text} numberOfLines={1}>{route.params.myProfile.user.lastName+route.params.myProfile.user.firstName} <Caption>사장님</Caption></Text>
+                            <Text style={styles.text} numberOfLines={1}>{route.params.myProfile.user.username} <Caption>사장님</Caption></Text>
                         </View>
                     </View>
 
