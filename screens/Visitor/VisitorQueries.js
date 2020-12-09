@@ -284,47 +284,44 @@ export const SEARCH_PROFILE = gql`
     query searchProfile($name: String){
         searchProfile(name: $name){
             id
-            profile{
+            isSelf
+            profileName
+            menuName
+            menuImage
+            salePrice
+            fullPrice
+            classification
+            sector
+            token
+            mainImage
+            isDangol
+            dangolCount
+            myPosts
+            myWallet{
                 id
-                isSelf
-                profileName
+                incoming
+                outgoing
+            }
+            wallets{
+                id
+                incoming
+                outgoing
+            }
+            submenus{
+                id
                 menuName
                 menuImage
-                salePrice
                 fullPrice
-                classification
-                sector
-                token
-                mainImage
-                isDangol
-                dangolCount
-                myPosts
-                myWallet{
+                salePrice
+            }
+            profileState
+            postsCount
+            bookings{
+                id
+                isCancelled
+                prices{
                     id
-                    incoming
-                    outgoing
-                }
-                wallets{
-                    id
-                    incoming
-                    outgoing
-                }
-                submenus{
-                    id
-                    menuName
-                    menuImage
-                    fullPrice
-                    salePrice
-                }
-                profileState
-                postsCount
-                bookings{
-                    id
-                    isCancelled
-                    prices{
-                        id
-                        dateString
-                    }
+                    dateString
                 }
             }
         }

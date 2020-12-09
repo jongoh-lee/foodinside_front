@@ -4,7 +4,6 @@ import DangolCard from "../../components/Visitor/DangolCard";
 import { ScrollView } from "react-native-gesture-handler";
 import { useQuery } from "@apollo/react-hooks";
 import { SEARCH_PROFILE } from "./VisitorQueries";
-import { Caption } from "react-native-paper";
 import ScreenLoader from "../../components/Custom/ScreenLoader";
 
 const styles = StyleSheet.create({
@@ -34,18 +33,16 @@ export default () => {
     }
   }
 
-  console.log(data);
   return (
-  <View style={styles.container}>
+    <View style={styles.container}>
       {loading? <ScreenLoader/> : null}
-    <ScrollView 
-      showsVerticalScrollIndicator={false} 
-      contentContainerStyle={{padding:10, paddingTop:0, flexGrow:1}} 
-      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} />}>
-
-      {data?.searchProfile && (
-            data.searchProfile.map( ({profile}, index) => <DangolCard key={index} {...profile}/>)
-      )}
-    </ScrollView>
+        <ScrollView 
+          showsVerticalScrollIndicator={false} 
+          contentContainerStyle={{padding:10, paddingTop:0, flexGrow:1}} 
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} />}>
+          {data?.searchProfile && (
+            data?.searchProfile.map( (data, index) => <DangolCard key={index} {...data}/>)
+          )}
+        </ScrollView>
   </View>
 )};
