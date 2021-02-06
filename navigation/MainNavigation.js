@@ -81,21 +81,21 @@ const DrawerContent = props => {
         <View style={styles.case2}>
           <View style={{flex:1}}>
             <DrawerItem
-              label="공유 음식점"
+              label="공간등록"
               labelStyle={styles.drawerLabel}
               style={styles.drawerItem}
               onPress={() => props.navigation.navigate('Owner')}
               icon={() => <MaterialIcons name="store" color="white" size={20} />}
             />
             <DrawerItem
-              label="입점 업체"
+              label="입점하기"
               labelStyle={styles.drawerLabel}
               style={styles.drawerItem}
               onPress={() => props.navigation.navigate('Store')}
               icon={() => <MaterialCommunityIcons name="food-variant" color="white" size={20} />}
             />
             <DrawerItem
-              label="방문객"
+              label="음식찾기"
               labelStyle={styles.drawerLabel}
               style={styles.drawerItem}
               onPress={() => props.navigation.navigate('Visitor')}
