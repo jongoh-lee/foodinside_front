@@ -70,9 +70,11 @@ export default ({ navigation, route }) => {
                 sortBy:"default",
                 first:100,
             });
-            const [firstPhoto] = assets;
-            setBigImage(firstPhoto);
-            setAllPhotos(assets);
+            if(assets.length > 0){
+                const [firstPhoto] = assets;
+                setBigImage(firstPhoto);
+                setAllPhotos(assets);
+            }
         } catch (e) {
             console.log('사진 선택 에러:',e);
         } finally {
