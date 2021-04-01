@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, Animated, Image, TouchableOpacity, Platform, ActivityIndicator} from "react-native";
+import { StyleSheet, Text, View, Animated, Image, TouchableOpacity, Platform, ActivityIndicator, ImageBackground} from "react-native";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import constants from '../../constants';
 import MapCard from '../../components/Visitor/MapCard';
@@ -8,6 +8,7 @@ import { SHOP_ON_SALE } from './VisitorQueries';
 import ScreenLoader from '../../components/Custom/ScreenLoader';
 import { useLogOut } from '../../AuthContext';
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
+import Caption from '../../components/Custom/Caption';
 
 const CARD_HEIGHT = 250;
 const CARD_WIDTH = constants.width * 0.8;
@@ -28,7 +29,7 @@ export default ({navigation}) => {
   navigation.setOptions({
     headerRight:()=> (
       <TouchableOpacity onPress={() => refetch()}>
-        <MaterialCommunityIcons 
+        <MaterialCommunityIcons
           name="refresh"
           size={24}
           color={'black'}
@@ -37,7 +38,7 @@ export default ({navigation}) => {
       </TouchableOpacity>
     )
   })
-  // data > data.onSaleShop 
+  // data > data.onSaleShop
   const initialMapState = {
     region: {
         latitude:37.537140,
@@ -62,7 +63,7 @@ export default ({navigation}) => {
       if (index <= 0) {
         index = 0;
       }
-      
+
       clearTimeout(regionTimeout);
 
       const regionTimeout = setTimeout(() => {
@@ -103,14 +104,14 @@ export default ({navigation}) => {
 
   const onMarkerPress = (mapEventData) => {
     const markerID = mapEventData._targetInst.return.key;
-    let x = (markerID * CARD_WIDTH) + (markerID * 20); 
+    let x = (markerID * CARD_WIDTH) + (markerID * 20);
     if (Platform.OS === 'ios') {
       x = x - SPACING_FOR_CARD_INSET;
     }
 
     _scrollView.current.scrollTo({x: x , y: 0, animated: true});
   }
-  
+
   React.useEffect(()=>{
     if(Platform.OS === 'ios'){
       _scrollView.current.scrollTo({animated:false, x: - SPACING_FOR_CARD_INSET})
@@ -178,12 +179,19 @@ export default ({navigation}) => {
           {useNativeDriver: true}
         )}
       >
-        {data ? data?.shopOnSale?.map((booking, index) =>(
+        {data?.shopOnSale?.length > 0 ? data?.shopOnSale?.map((booking, index) =>(
           <View style={styles.card} key={index}>
             <MapCard {...booking}/>
           </View>)
-        ) : null}
+        ) : (
+          //예약 목록이 없을 때
+          <View style={styles.emptyCard}>
+            <Image source={require("../../assets/cloche.png")} style={styles.cloche}/>
+            <Caption>음식 준비 중...</Caption>
+            <View style={{position:"absolute", top:0, left:0, right:0, bottom:0, backgroundColor:"rgba(0, 0, 0, .3)"}} />
+          </View>
 
+        )}
       </Animated.ScrollView>
     </View>
   );
@@ -194,8 +202,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   chipsScrollView: {
-    position:'absolute', 
-    top:Platform.OS === 'ios' ? 90 : 80, 
+    position:'absolute',
+    top:Platform.OS === 'ios' ? 90 : 80,
     paddingHorizontal:10
   },
   chipsIcon: {
@@ -203,10 +211,10 @@ const styles = StyleSheet.create({
   },
   chipsItem: {
     flexDirection:"row",
-    backgroundColor:'#fff', 
+    backgroundColor:'#fff',
     borderRadius:20,
     padding:8,
-    paddingHorizontal:20, 
+    paddingHorizontal:20,
     marginHorizontal:10,
     height:35,
     shadowColor: '#ccc',
@@ -239,6 +247,27 @@ const styles = StyleSheet.create({
     height: Platform.isPad ? 450 : CARD_HEIGHT,
     width: CARD_WIDTH,
     overflow: "hidden",
+  },
+  emptyCard:{
+    elevation: 2,
+    backgroundColor: "#FFF",
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
+    marginHorizontal: 10,
+    shadowColor: "#000",
+    shadowRadius: 5,
+    shadowOpacity: 0.3,
+    shadowOffset: { x: 2, y: -2 },
+    height: Platform.isPad ? 450 : CARD_HEIGHT,
+    width: CARD_WIDTH,
+    overflow: "hidden",
+    justifyContent:"center",
+    alignItems:"center"
+  },
+  cloche:{
+    width:'60%',
+    height:'60%',
+    resizeMode:"contain",
   },
   cardImage: {
     flex: 3,
