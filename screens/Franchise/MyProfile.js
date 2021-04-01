@@ -131,27 +131,14 @@ export default ({ navigation }) => {
 
     {data?.myProfile === null &&  (
       <>
-        <Text style={styles.title}><Text style={{color:"black"}}>프로필</Text> 생성 후 입점 가능합니다</Text>
+        <Text style={styles.title}><Text style={{color:"black"}}>푸드인사이드 </Text>입점하기!</Text>
         
         <View style={styles.buttonBox}>
-
-          <TouchableWithoutFeedback onPress={()=> navigation.navigate("프로필 보기", {seeFullProfile : {
-                        id: "ckg3od2mg00y70764juta30nv",
-                        profileName: "업체 정보",
-                        sector: "비알콜 음료점",
-                        isSelf:false
-                    }})}>
-            <View style={styles.button}>
-                <MaterialCommunityIcons name="silverware-clean" size={34} color="rgba(0,0,0, .3)" />
-            </View>
-            <Text style={styles.buttonText}>프로필 예시</Text>
-          </TouchableWithoutFeedback>
-
           <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 신청")}>
             <View style={styles.button}>
                 <AntDesign name="form" size={34} color="rgba(0,0,0, .3)" />
             </View>
-            <Text style={styles.buttonText}>프로필 신청</Text>
+            <Text style={styles.buttonText}>신청서 작성</Text>
           </TouchableWithoutFeedback>
         </View>
       </>
