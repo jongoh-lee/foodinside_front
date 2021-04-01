@@ -108,7 +108,7 @@ function FranchiseInfoTabScreen() {
         borderColor:'transparent'
       }, 
       labelStyle:{fontSize:14, fontWeight:"bold"}}}>
-      <FranchiseInfoTabStack.Screen name='모든 업체' component={ProfileList}/>
+      <FranchiseInfoTabStack.Screen name='내 주변' component={ProfileList}/>
       <FranchiseInfoTabStack.Screen name='단골' component={Dangol} />
     </FranchiseInfoTabStack.Navigator>
   )
@@ -119,7 +119,7 @@ const FavoriteStack = createStackNavigator();
 function FavoriteStackScreen() {
     return (
     <FavoriteStack.Navigator headerMode={"screen"} screenOptions={{headerShown:true, headerTitleStyle:{fontSize:20, fontWeight:'bold'}}}>
-      <FavoriteStack.Screen name="준비 중" component={FranchiseInfoTabScreen} />
+      <FavoriteStack.Screen name="업체 정보" component={FranchiseInfoTabScreen} />
       <FavoriteStack.Screen name="프로필 보기" component={FullProfile} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}} />
       <FavoriteStack.Screen name="UserPostList" component={UserPostList} options={{headerTitleAlign:"center", headerTitle:"포토리뷰", headerLeft:() => <BackArrow />}} />
       <FavoriteStack.Screen name="FranchisePostList" component={FranchisePostList} options={{headerTitleAlign:"center", headerTitle:"포토리뷰", headerLeft:() => <BackArrow />}} />
