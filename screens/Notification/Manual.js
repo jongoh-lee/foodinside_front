@@ -1,7 +1,7 @@
-import { FontAwesome5, MaterialCommunityIcons, Fontisto } from "@expo/vector-icons";
+import { FontAwesome5, MaterialCommunityIcons, Fontisto, MaterialIcons } from "@expo/vector-icons";
 import * as React from "react";
 import { StyleSheet, View, Text, TouchableWithoutFeedback} from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import Caption from "../../components/Custom/Caption";
 import constants from "../../constants";
 
@@ -10,17 +10,19 @@ const WIDTH = constants.width - 40
 const styles = StyleSheet.create({
     container:{
         flex:1,
-        backgroundColor:"#ffffff"
+        backgroundColor:"#ffffff",
+        justifyContent:"flex-start",
     },
     subject:{
-        justifyContent:"center",
+        flexDirection:"row",
+        justifyContent:"space-between",
         alignItems:"center",
-        flex:1
+        margin:5,
+        padding:5,
     },
     subjectTitle:{
-        paddingTop:5,
         fontSize:12,
-        color: "rgba(0, 0, 0, .5)"
+        color: "black"
     },
     flexBox:{
         width: WIDTH,
@@ -34,13 +36,55 @@ const styles = StyleSheet.create({
     },
 })
 
-export default () => {
+export default ({ navigation }) => {
     const [user, setUser] = React.useState('Franchise');
     return(
     <View style={styles.container}> 
-        <ScrollView contentContainerStyle={{padding:10, flexGrow:1}}>
+        {/* <ScrollView contentContainerStyle={{padding:10, flexGrow:1}}> */}
+
+            <TouchableOpacity onPress={()=> navigation.navigate("플랫폼설명")}>
+                <View style={styles.subject}>
+                    <View style={styles.subject}>
+                        <MaterialCommunityIcons name="food" size={24} color="rgba(0, 0, 0, .3)" />
+                        <Text style={[styles.subjectTitle, {marginLeft:10}]}>푸드인사이드는 어떤 서비스인가요?</Text>
+                    </View>
+                    <MaterialIcons name="chevron-right" size={20} color="black" />
+                </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity>
+                <View style={styles.subject}>
+                    <View style={styles.subject}>
+                        <Fontisto name="surgical-knife" size={20} color="rgba(0, 0, 0, .3)" />
+                        <Text style={[styles.subjectTitle, {marginLeft:10}]}>공유 음식점에서 음식을 팔고싶어요</Text>
+                    </View>
+                    <MaterialIcons name="chevron-right" size={20} color="black" />
+                </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity>
+                <View style={styles.subject}>
+                    <View style={styles.subject}>
+                        <MaterialIcons name="store" size={24} color="rgba(0, 0, 0, .3)" />
+                        <Text style={[styles.subjectTitle, {marginLeft:10}]}>내 음식점을 빌려주고 싶어요</Text>
+                    </View>
+                    <MaterialIcons name="chevron-right" size={20} color="black" />
+                </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity>
+                <View style={styles.subject}>
+                    <View style={styles.subject}>
+                        <MaterialCommunityIcons name="silverware-fork-knife" size={24} color="rgba(0, 0, 0, .3)" />
+                        <Text style={[styles.subjectTitle, {marginLeft:10}]}>어떤 음식을 맛볼 수 있죠?</Text>
+                    </View>
+                    <MaterialIcons name="chevron-right" size={20} color="black" />
+                </View>
+            </TouchableOpacity>
+
+         
             {/* 입점 업체 알림 */}
-                <View style={{flexDirection:"row", marginTop:30}}>
+                {/* <View style={{flexDirection:"row", marginTop:30}}>
                     <TouchableWithoutFeedback onPress={()=> setUser("Franchise")}>
                         <View style={styles.subject}>
                             <Fontisto name="surgical-knife" size={26} color="rgba(0, 0, 0, .3)" />
@@ -61,8 +105,9 @@ export default () => {
                             <Text style={[styles.subjectTitle, {marginTop:5}]}>공간등록</Text>
                         </View>
                     </TouchableWithoutFeedback>
-                </View>
-                
+                </View> */}
+
+            {/*                 
                 {user === "Franchise" && (
                     <View style={{flex:1, padding:20}}>
                         <View style={styles.flexBox}>
@@ -76,7 +121,7 @@ export default () => {
                         </View>
                         <View style={styles.flexBox}>
                             <Text style={styles.question}>Q. 등록한 메뉴를 바꿀 수 있나요?</Text>
-                            <Caption style={{lineHeight:20}}>{`처음에 등록한 메뉴는 이름과 사진을 변경할 수 없습니다.\n다만, 가격은 수정할 수 있고, 새로운 메뉴를 추가/삭제할 수 있습니다.\n\n경력 또한 수정할 수 없기 때문에 '일식 경력 7년' 보다는 '일식 경력 7년 이상'으로 작성해 주세요`}</Caption>
+                            <Caption style={{lineHeight:20}}>{`프로필이 선정된 이후 메인 메뉴의 이름과 사진은 변경할 수 없습니다.\n만약 변경을 원하실 경우 홈페이지에 문의해주세요\n그 외 가격, 추가 메뉴는 자유롭게 수정하실 수 있습니다.\n\n경력 또한 수정할 수 없기 때문에 '일식 경력 7년' 보다는 '일식 경력 7년 이상'으로 작성해 주세요`}</Caption>
                         </View>
                         <View style={styles.flexBox}>
                             <Text style={styles.question}>Q. 심사에 어느정도 시간이 걸리나요?</Text>
@@ -125,8 +170,8 @@ export default () => {
                             <Caption style={{lineHeight:20}}>{`ljo.foodinside@gmail.com으로 문의 주세요`}</Caption>
                         </View>
                     </View>
-                )}
-        </ScrollView>
+                )} */}
+        {/* </ScrollView> */}
     </View>   
     )
 }

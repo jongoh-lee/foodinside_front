@@ -15,8 +15,11 @@ import Franchise from '../navigation/FranchiseNavigation';
 import Visitor from '../navigation/VisitorNavigation';
 import Owner from '../navigation/OwnerNavigation';
 import { NavigationContainer } from '@react-navigation/native';
-import Notification from '../screens/Notification/Notification';
+import Manual from '../screens/Notification/Manual';
 import BackClose from '../components/Custom/BackClose';
+import FoodinsideIs from '../screens/Notification/FoodinsideIs';
+import { useIsFirst } from '../IntroductionContext';
+import FirstPopupPages from '../screens/Notification/FirstPopupPages';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -26,14 +29,14 @@ const AboutStack = createStackNavigator();
 const About = ({style}) => {
   return (
       <AboutStack.Navigator
-        headerMode={"float"}
+        headerMode={"screen"}
         screenOptions={{
           headerShown:true,
           headerTitleAlign:"center",
           headerLeft:() => <BackClose />
           }}
       >
-        <AboutStack.Screen name="도움말" component={Notification}/>
+        <AboutStack.Screen name="어플소개" component={FoodinsideIs} />
       </AboutStack.Navigator>
     
   )
@@ -72,7 +75,7 @@ const DrawerContent = props => {
             style={{width:130, height:40, resizeMode:"contain",marginLeft:-4, marginBottom:10}}
           />
           <Text style={{color:"white", fontSize:16}}>
-            푸드 인사이드
+            푸드인사이드
           </Text>
           <Text style={{color:"white", marginBottom:20}} >
             www.foodinside.net
@@ -104,11 +107,11 @@ const DrawerContent = props => {
           </View>
           <View style={{flex:1}}>
             <DrawerItem
-              label="도움말"
+              label="어플소개"
               labelStyle={styles.drawerLabel}
               style={[styles.drawerItem, {marginTop:30}]}
               onPress={() => props.navigation.navigate('About')}
-              icon={() => <Entypo name='megaphone' color="white" size={18} />}
+              icon={() => <FontAwesome5 name='question' color="white" size={18} />}
             />
           </View>
         </View>
@@ -119,6 +122,7 @@ const DrawerContent = props => {
 
 export default ({style}) => {
   const [progress, setProgress] = React.useState(new Animated.Value(0));
+  const isFirst = useIsFirst();
   const scale = Animated.interpolate(progress, {
     inputRange: [0, 1],
     outputRange: [1, 0.8],
@@ -132,6 +136,9 @@ export default ({style}) => {
 
   return (
     <NavigationContainer>
+    {isFirst ? (
+      <FirstPopupPages />
+    ) : (
     <LinearGradient style={{ flex: 1 }} colors={['#fd9eba', '#fff1e6']}>
       <Drawer.Navigator
         // hideStatusBar
@@ -156,6 +163,7 @@ export default ({style}) => {
         </Drawer.Screen>
       </Drawer.Navigator>
     </LinearGradient>
+    )}
     </NavigationContainer>
   );
 };
