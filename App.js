@@ -67,10 +67,10 @@ export default function App() {
         setIsLoggedIn(true);
       }
       const isFirst = await AsyncStorage.getItem("isFirst");
-      if (!isFirst || isFirst === "true") {
-        setIsFirst(true);
+      if (isFirst === "false") {
+        setIsFirst(false);
       } else {
-        setIsFirst(false)
+        setIsFirst(true)
       }
       setLoaded(true);
       setClient(client);
