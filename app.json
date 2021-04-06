@@ -8,7 +8,7 @@
       "web"
     ],
     "sdkVersion": "39.0.0",
-    "version": "0.1.13",
+    "version": "0.1.16",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -25,27 +25,33 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.foodinside.foodinside",
-      "buildNumber": "0.1.13",
-      "icon":"./assets/iconIos.png",
+      "buildNumber": "0.1.17",
+      "icon": "./assets/iconIos.png",
       "config": {
         "googleMapsApiKey": "AIzaSyB77l5gKZERH5nDSvT5PboXLkl_uJbVcUQ"
       },
-      "infoPlist":{
+      "infoPlist": {
         "CFBundleAllowMixedLocalizations": true,
-        "NSPhotoLibraryUsageDescription": "This app requires access to the photo library to upload your photo"
+        "NSPhotoLibraryUsageDescription": "This app requires access to the photo library to upload your photo, other user can see your photo"
       }
     },
-    "android": { 
-      "package": "com.foodinside.foodinside", 
-      "versionCode": 14,
-      "config": { 
-        "googleMaps": { "apiKey": "AIzaSyB77l5gKZERH5nDSvT5PboXLkl_uJbVcUQ" } 
+    "android": {
+      "package": "com.foodinside.foodinside",
+      "versionCode": 18,
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyB77l5gKZERH5nDSvT5PboXLkl_uJbVcUQ"
+        }
       },
-      "permissions": ["READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"]
+      "permissions": [
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
     },
-    "locales" : {
-      "ko" : "./languages/korean.json",
-      "en" : "./languages/english.json"
-    }
+    "locales": {
+      "ko": "./languages/korean.json",
+      "en": "./languages/english.json"
+    },
+    "description": ""
   }
 }
