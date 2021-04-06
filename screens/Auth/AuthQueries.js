@@ -40,3 +40,9 @@ export const CHECK_USERNAME = gql`
     checkUsername(username: $username)
   }
 `;
+
+export const DELETE_ACCOUNT = gql`
+  mutation deleteAccount($id: String!){
+    deleteAccount(id: $id)
+  }  
+`;

@@ -5,18 +5,39 @@ import { Avatar, Title, Caption } from "react-native-paper";
 import constants from "../../constants";
 import { Feather, MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 import Modal from "react-native-modal";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery, useMutation } from "@apollo/react-hooks";
 import Loader from "../../components/Custom/Loader";
 import { ME } from "./VisitorQueries";
 import { useLogOut } from "../../AuthContext";
 import UserComponent from "../../components/Visitor/UserComponent";
+import { DELETE_ACCOUNT } from "../Auth/AuthQueries";
+import ScreenLoader from "../../components/Custom/ScreenLoader";
 
 export default ({ navigation, route }) => {
     const [visible, setVisible ] = React.useState(false);
+    const logOut = useLogOut();
     const { data, loading, error, refetch } = useQuery(ME,{
         fetchPolicy:"network-only"
     });
-    const logOut = useLogOut();
+    const [deleteAccountMutation, { loading: mutationLoading }] = useMutation(DELETE_ACCOUNT, {
+        variables:{
+            id: data?.me?.id,
+        }
+    });
+    const handleDeleteUser = async () => {
+        setVisible(false)
+        try {
+          const {
+            data: { deleteAccount }
+          } = await deleteAccountMutation();
+          if ( deleteAccount ) {
+            logOut()
+          }
+        } catch (e) {
+            console.log(e);
+        }
+    }
+    
     navigation.setOptions({
         headerRight:() => (
             <TouchableOpacity onPress={() => setVisible(!visible)} >
@@ -35,7 +56,7 @@ export default ({ navigation, route }) => {
     <View style={{flex:1, backgroundColor:'#ffffff'}}>
 
         <UserComponent {...data?.me} route={route} refetch={refetch}/>
-
+        
         <Modal
         isVisible={visible}
         onBackdropPress={ () => setVisible(false)}
@@ -78,11 +99,23 @@ export default ({ navigation, route }) => {
             </View>
 
             <View style={styles.modalContent_bottom}>
-                <TouchableOpacity style={styles.modalList}>
+                <TouchableOpacity style={styles.modalList} onPress={() => Alert.alert('확인','탈퇴 시 모든 정보가 삭제됩니다',
+                      [
+                        {
+                          text: '취소',
+                          style: 'cancel',
+                        },
+                        {text: '확인',
+                        onPress: () => handleDeleteUser(),
+                      },
+                      ],
+                      {cancelable: true},
+                      )}>
                     <AntDesign name="deleteuser" size={24} color="red" /><Text style={styles.modalText_red}>탈퇴하기</Text>
                 </TouchableOpacity>
             </View>
         </Modal>
+        {mutationLoading && <ScreenLoader />}
     </View>
     );
   };
