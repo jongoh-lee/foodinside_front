@@ -25,7 +25,7 @@ const AuthInput = ({
   keyboardType = "default",
   autoCapitalize = "none",
   onChange,
-  returnKeyType = "send",
+  returnKeyType = "done",
   autoFocus = false,
   width = 0.9,
   editable=true,
