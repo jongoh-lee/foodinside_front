@@ -82,6 +82,8 @@ export default ({ route, navigation }) => {
   const [bookingShopMutation] = useMutation(BOOKING_SHOP,{
     refetchQueries: [`bookingLimit`,`myFavorite`, `bookingList`, `myProfile`]
   });
+  const SUPPLY_PRICE = parseInt(totalPrice.replace(/,/gi, ''));
+  const COMMISSTION = SUPPLY_PRICE * 0.15
   const handleBooking = async () =>{
     setLoading(true)
     try{
@@ -91,7 +93,7 @@ export default ({ route, navigation }) => {
           firstDate,
           lastDate: lastDate? lastDate : firstDate,
           prices: Object.entries(selectedList).map(([key, value]) => ({ id: value.id, priceState: value.priceState, dateString: key})),
-          totalPrice,
+          totalPrice: String(COMMISSTION + SUPPLY_PRICE).replace(/\B(?=(\d{3})+(?!\d))/g, ","),
           username: data?.myProfile?.user?.lastName +' '+data?.myProfile?.user?.firstName,
           contact: data?.myProfile?.contact,
           account: data?.myProfile?.account ? null : {
@@ -140,9 +142,14 @@ export default ({ route, navigation }) => {
               <Text>{lastDate? lastDate.replace(/-/gi, '/') : firstDate?.replace(/-/gi, '/')}</Text>
             </View>
 
+            <View style={styles.reserveBox}>
+              <Caption>중개 수수료 15%</Caption>
+              <Text>{String(COMMISSTION).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
+            </View>
+
             <View style={[styles.reserveBox, {paddingBottom:0}]}>
               <Caption>결제 금액</Caption>
-              <Text style={{fontSize:18, fontWeight:"bold"}}>{totalPrice}</Text>
+              <Text style={{fontSize:18, fontWeight:"bold"}}>{String(COMMISSTION + SUPPLY_PRICE).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
             </View>
 
           </View>

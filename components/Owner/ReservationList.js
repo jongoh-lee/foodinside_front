@@ -67,6 +67,8 @@ export default ({ year, month }) => {
     }
     
     const renderItem = ({ item }) => {
+        const TOTAL_PRICE = parseInt(item.totalPrice.replace(/,/gi, ''));
+        const SUPPLY_PRICE = (TOTAL_PRICE*100)/115;
         return(
         <View style={styles.header}>
             <View style={styles.headerLeft}>
@@ -74,14 +76,14 @@ export default ({ year, month }) => {
                 <View>
                     <View style={styles.titleAlign}>
                         <Text style={styles.headerTitle} numberOfLines={1}>{item.profile.profileName}</Text>
-                        <Text style={styles.headerSubtitle}>{item.profile.sector}</Text>
+                        <Text style={styles.headerSubtitle}> {item.profile.sector}</Text>
                     </View>
-                    <Text style={styles.headerSubtitle}>{item.firstDate.slice(-5).replace('-', '/')} ~ {item.lastDate.slice(-5).replace('-', '/')}</Text>
+                    <Text style={styles.headerSubtitle}>{item.firstDate.slice(-5).replace('-', '/')}~{item.lastDate.slice(-5).replace('-', '/')}</Text>
                 </View>
             </View>
             <View style={styles.headerRight}>
                 <Text style={styles.state}>{item.isCancelled? "예약 취소" : item.isPaid ? "입금 완료" : "예약 완료"}</Text>
-                <Text style={styles.headerSubtitle}>{item.totalPrice}</Text>
+                <Text style={styles.headerSubtitle}>{String(SUPPLY_PRICE).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
             </View>
         </View>
     )};
