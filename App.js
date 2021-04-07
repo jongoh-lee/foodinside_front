@@ -67,7 +67,7 @@ export default function App() {
         setIsLoggedIn(true);
       }
       const isFirst = await AsyncStorage.getItem("isFirst");
-      if (isFirst === "false") {
+      if ( isFirst === "false") {
         setIsFirst(false);
       } else {
         setIsFirst(true)
