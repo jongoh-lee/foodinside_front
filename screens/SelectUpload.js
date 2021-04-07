@@ -123,7 +123,7 @@ export default ({ navigation, route }) => {
         <View style={styles.header}>
             <BackArrow />
             <Text style={styles.headerTitle}>최근 항목</Text>
-            <TouchableOpacity style={{ height:44, justifyContent:"center", alignItems:"center", }} onPress={onPressNext} hitSlop={{top:10, left:10, bottom:10}}>
+            <TouchableOpacity style={{ height:44, justifyContent:"center", alignItems:"center", }} disabled={selected.length < 1 } onPress={onPressNext} hitSlop={{top:10, left:10, bottom:10}}>
                 <View style={selected.length > 0 ? styles.selectButton : [styles.selectButton, {backgroundColor:"rgba(5, 230, 244, .4)"}]}>
                     <Text style={styles.selectText}>선택</Text>
                 </View>
