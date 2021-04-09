@@ -41,7 +41,7 @@ export default () => {
           contentContainerStyle={{padding:10, paddingTop:0, flexGrow:1}} 
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} />}>
           {data?.searchProfile && (
-            data?.searchProfile.map( (data, index) => <DangolCard key={index} {...data}/>)
+            data?.searchProfile.reverse().map( (data, index) => <DangolCard key={index} {...data}/>)
           )}
         </ScrollView>
   </View>
