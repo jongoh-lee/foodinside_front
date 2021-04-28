@@ -41,27 +41,15 @@ export default ({ navigation }) => {
     <View style={styles.container}>
     {data?.myProfile?.profileState === 0 &&  (
       <>
-        <Text style={styles.title}><Text style={{color:"black"}}>프로필</Text> 심사 중 입니다</Text>
+        <Text style={styles.title}><Text style={{color:"black"}}>검토 중</Text> 입니다</Text>
         
         <View style={styles.buttonBox}>
-
-          <TouchableWithoutFeedback onPress={()=> navigation.navigate("프로필 보기", {seeFullProfile : {
-                        id: "ckg3od2mg00y70764juta30nv",
-                        profileName: "업체 정보",
-                        sector: "비알콜 음료점",
-                        isSelf:false
-                    }})}>
-            <View style={styles.button}>
-                <MaterialCommunityIcons name="silverware-clean" size={34} color="rgba(0,0,0, .3)" />
-            </View>
-            <Text style={styles.buttonText}>프로필 예시</Text>
-          </TouchableWithoutFeedback>
 
           <TouchableWithoutFeedback onPress={() => navigation.navigate("심사 중")}>
             <View style={styles.button}>
                 <AntDesign name="form" size={34} color="rgba(0,0,0, .3)" />
             </View>
-            <Text style={styles.buttonText}>프로필 보기</Text>
+            <Text style={styles.buttonText}>메뉴 보기</Text>
           </TouchableWithoutFeedback>
         </View>
       </>
@@ -69,21 +57,9 @@ export default ({ navigation }) => {
 
     {data?.myProfile?.profileState === 1 &&  (
       <>
-        <Text style={styles.title}>죄송합니다{`\n`}컨셉이 유사한 <Text style={{color:"black"}}>다수의 프로필이</Text>{`\n`}이미 등록되어 있습니다</Text>
+        <Text style={styles.title}>메뉴를 <Text style={{color:"black"}}>보완해</Text> 주세요</Text>
         
         <View style={styles.buttonBox}>
-
-          <TouchableWithoutFeedback onPress={()=> navigation.navigate("프로필 보기", {seeFullProfile : {
-                        id: "ckg3od2mg00y70764juta30nv",
-                        profileName: "업체 정보",
-                        sector: "비알콜 음료점",
-                        isSelf:false
-                    }})}>
-            <View style={styles.button}>
-                <MaterialCommunityIcons name="silverware-clean" size={34} color="rgba(0,0,0, .3)" />
-            </View>
-            <Text style={styles.buttonText}>프로필 예시</Text>
-          </TouchableWithoutFeedback>
 
           <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 수정(pre)",{
             myProfile:data.myProfile
@@ -91,7 +67,7 @@ export default ({ navigation }) => {
             <View style={styles.button}>
                 <AntDesign name="form" size={34} color="rgba(0,0,0, .3)" />
             </View>
-            <Text style={styles.buttonText}>프로필 재신청</Text>
+            <Text style={styles.buttonText}>다시 등록</Text>
           </TouchableWithoutFeedback>
         </View>
       </>
@@ -99,7 +75,7 @@ export default ({ navigation }) => {
 
     {data?.myProfile?.profileState === 2 && (
       <>
-        <Text style={styles.title}>축하합니다! <Text style={{color:"black"}}>프로필</Text>을 완성해주세요</Text>
+        <Text style={styles.title}>내 <Text style={{color:"black"}}>음식점을</Text> 완성하세요</Text>
         
         <View style={styles.buttonBox}>
 
@@ -112,14 +88,14 @@ export default ({ navigation }) => {
             <View style={styles.button}>
                 <MaterialCommunityIcons name="silverware-clean" size={34} color="rgba(0,0,0, .3)" />
             </View>
-            <Text style={styles.buttonText}>프로필 예시</Text>
+            <Text style={styles.buttonText}>완성 예시</Text>
           </TouchableWithoutFeedback>
 
           <TouchableWithoutFeedback onPress={() => navigation.navigate("프로필 완성", {myProfile: data?.myProfile})}>
             <View style={styles.button}>
                 <AntDesign name="form" size={34} color="rgba(0,0,0, .3)" />
             </View>
-            <Text style={styles.buttonText}>프로필 완성</Text>
+            <Text style={styles.buttonText}>완성 하기</Text>
           </TouchableWithoutFeedback>
         </View>
       </>
@@ -138,7 +114,7 @@ export default ({ navigation }) => {
             <View style={styles.button}>
                 <AntDesign name="form" size={34} color="rgba(0,0,0, .3)" />
             </View>
-            <Text style={styles.buttonText}>신청서 작성</Text>
+            <Text style={styles.buttonText}>메뉴 등록</Text>
           </TouchableWithoutFeedback>
         </View>
       </>
