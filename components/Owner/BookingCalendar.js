@@ -224,29 +224,39 @@ const Calendar = ({ id, calendarHeight,  franchiseState, isSelf, calendar, mainI
               )}
               <Text style={{color:"black", fontWeight:"bold", fontSize:16}}>합계: {totalPrice}</Text>
           </View>
-          <TouchableOpacity disabled={franchiseState === 3 && totalPrice !== 0 && Object.keys(selectedList).length >= minReserve? false : true} onPress={() => {
-            navigation.navigate("결제하기",{
-              id,
-              mainImage,
-              shopName,
-              firstDate,
-              lastDate,
-              totalPrice,
-              selectedList,
-              district,
-              refetch
-            });
-            setSelectedList({});
-            setFirstDate(null);
-            setLastDate(null);
-            setTotalPrice(0);
-            setAlert("")
-          }}>
-            <View style={franchiseState === 3 && totalPrice !== 0 && Object.keys(selectedList).length >= minReserve? {padding: 5, borderRadius:10, backgroundColor:"#05e6f4"} : {padding: 5, borderRadius:10, backgroundColor:"rgba(5, 230, 244, .3)"}}>
-              {Object.keys(selectedList).length > 0 ? <Text style={{color:'red', fontSize:10, position:"absolute", top: -15, left:0, right:0, textAlign:"center"}}>{remainsDate}일 입점 가능 </Text> : null}
-              <Text style={{color:"#ffffff", fontWeight:"bold", fontSize:16}}>입점 하기</Text>
-            </View>
-          </TouchableOpacity>
+          {franchiseState !== 3 ? (
+            <TouchableOpacity onPress={() => {
+              navigation.navigate("프로필 안내");
+            }}>
+              <View style={{padding: 5, borderRadius:10, backgroundColor:"#05e6f4"}}>
+                <Text style={{color:"#ffffff", fontWeight:"bold", fontSize:16}}>메뉴 등록</Text>
+              </View>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity disabled={franchiseState === 3 && totalPrice !== 0 && Object.keys(selectedList).length >= minReserve? false : true} onPress={() => {
+              navigation.navigate("결제하기",{
+                id,
+                mainImage,
+                shopName,
+                firstDate,
+                lastDate,
+                totalPrice,
+                selectedList,
+                district,
+                refetch
+              });
+              setSelectedList({});
+              setFirstDate(null);
+              setLastDate(null);
+              setTotalPrice(0);
+              setAlert("")
+            }}>
+              <View style={franchiseState === 3 && totalPrice !== 0 && Object.keys(selectedList).length >= minReserve? {padding: 5, borderRadius:10, backgroundColor:"#05e6f4"} : {padding: 5, borderRadius:10, backgroundColor:"rgba(5, 230, 244, .3)"}}>
+                {Object.keys(selectedList).length > 0 ? <Text style={{color:'red', fontSize:10, position:"absolute", top: -15, left:0, right:0, textAlign:"center"}}>{remainsDate}일 입점 가능 </Text> : null}
+                <Text style={{color:"#ffffff", fontWeight:"bold", fontSize:16}}>입점 하기</Text>
+              </View>
+            </TouchableOpacity>
+          )}
         </View>
       )}
     </View>
