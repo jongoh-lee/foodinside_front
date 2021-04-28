@@ -16,8 +16,9 @@ import ScreenLoader from "../../components/Custom/ScreenLoader";
 export default ({ navigation, route }) => {
     const [visible, setVisible ] = React.useState(false);
     const logOut = useLogOut();
-    const { data, loading, error, refetch } = useQuery(ME,{
-        fetchPolicy:"network-only"
+    const { data, loading, error, refetch, networkStatus } = useQuery(ME,{
+        fetchPolicy:"network-only",
+        notifyOnNetworkStatusChange: true
     });
     const [deleteAccountMutation, { loading: mutationLoading }] = useMutation(DELETE_ACCOUNT, {
         variables:{
@@ -51,7 +52,7 @@ export default ({ navigation, route }) => {
         )
     });
     if(loading) return <Loader/>;
-
+    if(error) return <Loader/>;
     return (
     <View style={{flex:1, backgroundColor:'#ffffff'}}>
 
