@@ -33,6 +33,7 @@ export default ({ navigation, route }) => {
   const [mainImage, setMainImage] = React.useState(route.params.myProfile.mainImage? route.params.myProfile.mainImage : null);
   const foodGuideInput = useInput(route.params.myProfile.foodGuide? route.params.myProfile.foodGuide : "");
   const originInput = useInput(route.params.myProfile.origin? route.params.myProfile.origin : "");
+  const [mainMenuImage, setMainMenuImage] = React.useState(route.params.myProfile.menuImage);
   const fullPriceInput = numInput(route.params.myProfile.fullPrice? String(route.params.myProfile.fullPrice) : "");
   const salePriceInput = numInput(route.params.myProfile.salePrice? String(route.params.myProfile.salePrice) : "");
   const [founderImage, setFounderImage] = React.useState(route.params.myProfile.founderImage? route.params.myProfile.founderImage : null);
@@ -123,11 +124,16 @@ export default ({ navigation, route }) => {
     setFounderImage(image.photo)
   };
 
+  const onSelectMainMenuImage = (image) => [
+    setMainMenuImage(image.photo)
+  ]
+
   const [ completeProfileMutation ] = useMutation(COMPLETE_PROFILE);
   
   const handleCompleteProfile = async () => {
     let _mainImage = [];
     let _founderImage = [];
+    let _mainMenuImage = [];
     setLoading(true); 
       // 메인 이미지 수정
       if(mainImage.uri){
@@ -147,6 +153,24 @@ export default ({ navigation, route }) => {
         _mainImage.push(locationMainImage[0])
       }
 
+      //메인메뉴 이미지 수정
+      if(mainMenuImage.uri){
+        const formMainMenuImage = new FormData();
+        formMainMenuImage.append('file',{
+          name: mainMenuImage.filename,
+          type: "image/jpeg",
+          uri: mainMenuImage.uri
+        })
+        const { 
+          data : { location : locationMainMenuImage } 
+        } = await axios.post("https://foodinside-backend.herokuapp.com/api/upload", formMainMenuImage, {
+          headers: {
+            "content-type": "multipart/form-data"
+          }
+        });
+        _mainMenuImage.push(locationMainMenuImage[0])
+      }
+      
       // 새 메뉴 만들기
       if(newMenus.length > 0){
         const formNewMenus = new FormData();
@@ -266,6 +290,7 @@ export default ({ navigation, route }) => {
             mainImage: mainImage?.uri ? _mainImage[0].url : mainImage,
             foodGuide: foodGuideInput.value,
             origin: originInput.value,
+            menuImage: mainMenuImage?.uri ? _mainMenuImage[0].url : mainMenuImage,
             fullPrice: Number(fullPriceInput.value),
             salePrice: Number(salePriceInput.value),
             createMenus: [...newMenus],
@@ -515,7 +540,13 @@ export default ({ navigation, route }) => {
 
             <View style={styles.menuContainer}>
               <Text style={styles.menuName} numberOfLines={1}>{route.params.myProfile.menuName}</Text>
-              <Image style={styles.menuImage} source={{uri:route.params.myProfile.menuImage}}/>
+              <TouchableOpacity onPress={() => (
+                navigation.navigate('SelectPhoto', {
+                  onSelect : onSelectMainMenuImage
+                })
+              )} disabled={loading}>
+                <Image style={styles.menuImage} source={mainMenuImage?.uri? {uri:mainMenuImage.uri} : {uri: mainMenuImage}}/>
+              </TouchableOpacity>
               <View style={styles.priceBox}>
                 <TextInput style={{borderBottomWidth:1, width:'40%', textAlign:"center",}} editable={!loading} value={fullPriceInput.value} onChangeText={fullPriceInput.onChange} placeholder={"정상가"} keyboardType={"number-pad"} returnKeyType={"default"}/>
                 <TextInput style={{borderBottomWidth:1, width:'40%', textAlign:"center",}} editable={!loading} value={salePriceInput.value} onChangeText={salePriceInput.onChange} placeholder={"할인가"} keyboardType={"number-pad"} returnKeyType={"default"}/>
@@ -526,7 +557,7 @@ export default ({ navigation, route }) => {
             <TouchableOpacity key={menu.id} onPress={() => (
               setMenuModal(true),
               setChosenMenu(menu)
-              )}>
+              )} disabled={loading}>
               <View style={styles.menuContainer}>
                 <Text style={styles.menuName} numberOfLines={1}>{menu.menuName}</Text>
                 <Image style={styles.menuImage} source={{uri:menu.menuImage}}/>
@@ -542,7 +573,7 @@ export default ({ navigation, route }) => {
             <TouchableOpacity key={index} onPress={() => (
               setMenuModal(true),
               setChosenMenu({...menu, index})
-              )}>
+              )} disabled={loading}>
               <View style={styles.menuContainer}>
                 <Text style={styles.menuName} numberOfLines={1}><Text style={{fontSize:10, color:'red'}}>New </Text>{menu.menuName}</Text>
                 <Image style={styles.menuImage} source={menu?.menuImage?.uri? {uri:menu.menuImage.uri} : {uri:menu.menuImage}}/>

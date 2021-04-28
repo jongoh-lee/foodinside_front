@@ -21,6 +21,7 @@ export const COMPLETE_PROFILE = gql`
         $foodGuide: String!
         $origin: String!
 
+        $menuImage: String!
         $fullPrice: Int!
         $salePrice: Int!
         $createMenus: [CreateMenu!]
@@ -45,6 +46,7 @@ export const COMPLETE_PROFILE = gql`
                 foodGuide: $foodGuide
                 origin: $origin
 
+                menuImage: $menuImage
                 fullPrice: $fullPrice
                 salePrice: $salePrice
                 createMenus: $createMenus
@@ -68,6 +70,7 @@ export const COMPLETE_PROFILE = gql`
                 mainImage
                 foodGuide
                 origin
+                menuImage
                 fullPrice
                 salePrice
                 founderImage
