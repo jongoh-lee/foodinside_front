@@ -74,8 +74,8 @@ export default ({ id, isSelf, profileName, sector, token, mainImage, menuName, m
             <TouchableOpacity onPress={()=>setShowGuide(!showGuide)}>
               <View style={styles.notice}>
                 <View>
-                  <Text style={styles.text}>👩‍🍳 '단골' 고객 1개 메뉴 할인가 적용</Text>
-                  <Text style={styles.text}>💰  포토리뷰가 받는 좋아요 1개당 {token}P 발행</Text>
+                  <Text style={styles.text}>👩‍🍳 '단골' 고객 1개 메뉴 할인 적용</Text>
+                  <Text style={styles.text}>💰  포토리뷰가 받는 좋아요 1개당 {token}코인 적립</Text>
                 </View>
               
                 <View style={styles.touchBox}>

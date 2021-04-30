@@ -65,7 +65,7 @@ const DangolBar = ({ id, isDangol : isDangolProps, dangolCount : dangolCountProp
                 </View>
                 ) : (
                 <View style={styles.cardInfo}>
-                    <Text style={[styles.cardInfoText, mapCard ? {color:"rgba(255, 255, 255, .8)"} : null]}>포인트</Text>
+                    <Text style={[styles.cardInfoText, mapCard ? {color:"rgba(255, 255, 255, .8)"} : null]}>암호화폐</Text>
                     <Text style={[styles.cardInfoNum, mapCard ? {color : "white"} : null]} numberOfLines={1}>{myWallet ? (myWallet.incoming - myWallet.outgoing) : 0}</Text>
                 </View>
                 )}
@@ -101,7 +101,7 @@ const styles=StyleSheet.create({
         justifyContent:"center",
     },
     cardInfoText:{
-        fontSize:12,
+        fontSize:10,
         color:"rgba(0, 0, 0, .9)",
         paddingLeft:5,
     },

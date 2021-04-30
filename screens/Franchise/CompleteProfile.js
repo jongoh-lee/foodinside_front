@@ -399,8 +399,8 @@ export default ({ navigation, route }) => {
           </View>
           
           <View style={{flexDirection:"row", alignItems:"center"}}>
-            <Text style={styles.subTitle}>리뷰가 받는 좋아요 1개당 발행하는 포인트: </Text>
-            <ShadowInput {...tokenInput} placeholder={'포인트'} width={'20%'} editable={!loading} padding={8} textAlign={'left'} editable={!loading} keyboardType={"number-pad"}/>
+            <Text style={styles.subTitle}>리뷰가 좋아요를 받으면 발행하는 암호화폐: </Text>
+            <ShadowInput {...tokenInput} placeholder={'암호화폐'} width={'20%'} editable={!loading} padding={8} textAlign={'left'} editable={!loading} keyboardType={"number-pad"}/>
           </View>
 
           <View style={{flexDirection:"row", alignItems:"center", zIndex: -1}}>
