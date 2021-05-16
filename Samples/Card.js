@@ -1,6 +1,6 @@
 import * as React from "react";
 import { StyleSheet, View, Image, Text, ImageBackground,  } from "react-native";
-import constants from "../../constants";
+import constants from "../constants";
 import { ScrollView, TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 const WIDTH = constants.width - 20;
@@ -184,10 +184,10 @@ export default ({ signBoard, Submenu, profileName, sort, mainMenu }) => {
                                         <View style={styles.cardInfo}>
                                             <TouchableWithoutFeedback style={styles.logoRow} onPress={()=>setLogoBtn(!logoBtn)}>
                                               {logoBtn? <>
-                                              <Image style={styles.dangolLogo_checked} source={require('../../assets/Icons/cloche.png')} />
+                                              <Image style={styles.dangolLogo_checked} source={require('../assets/Icons/cloche.png')} />
                                               <Text style={styles.logoText_checked}>단골 중</Text>
                                               </> : <>
-                                              <Image style={styles.dangolLogo} source={require('../../assets/Icons/cloche.png')} />
+                                              <Image style={styles.dangolLogo} source={require('../assets/Icons/cloche.png')} />
                                               <Text style={styles.logoText}>단골</Text>
                                               </>}
                                             </TouchableWithoutFeedback>
