@@ -141,7 +141,7 @@ function TabsScreen() {
             <Tabs.Screen name='음식점' component={MyShopStackScreen}  options={{tabBarIcon:({focused, color })=>(
               <MaterialIcons name={ 'store' } color={focused? 'black' : color} size={25}/>
             )}}/>
-            <Tabs.Screen name='메뉴' component={View}  options={{tabBarIcon:()=>(<NavIcon name={'menu'} size={25}/>)}} listeners={({navigation})=>({tabPress:e => {
+            <Tabs.Screen name='메뉴' component={View}  options={{tabBarIcon:()=>(<NavIcon name={'swap-horizontal-bold'} size={25}/>)}} listeners={({navigation})=>({tabPress:e => {
               e.preventDefault()
               navigation.openDrawer()
             }})}/>

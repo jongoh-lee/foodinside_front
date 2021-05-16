@@ -182,7 +182,7 @@ function TabsScreen() {
             <Tabs.Screen 
             name='메뉴' 
             component={View} 
-            options={{tabBarIcon:()=>(<NavIcon name={'menu'} size={25}/>)}}
+            options={{tabBarIcon:()=>(<NavIcon name={'swap-horizontal-bold'} size={25}/>)}}
             listeners={({navigation})=>({
               tabPress:e => {
               e.preventDefault();

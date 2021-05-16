@@ -194,7 +194,7 @@ function TabScreen() {
           <Tabs.Screen name='내 정보' component={UserStackScreen} options={{tabBarIcon: ({ focused, color }) => (
             <FontAwesome5 name='user' color={focused?  'black' : color} size={20} solid/>
           )}}/>
-          <Tabs.Screen name='메뉴' component={View}  options={{tabBarIcon:()=>(<NavIcon name={'menu'} size={25}/>)}} listeners={({navigation})=>({tabPress:e => {
+          <Tabs.Screen name='메뉴' component={View}  options={{tabBarIcon:()=>(<NavIcon name={'swap-horizontal-bold'} size={25}/>)}} listeners={({navigation})=>({tabPress:e => {
             e.preventDefault()
             navigation.openDrawer()
           }})} />
