@@ -300,6 +300,14 @@ export const USER_FRAGMENT = gql`
       id
       incoming
       outgoing
+      profile{
+        id
+        profileName
+        mainImage
+        dangolCount
+        postsCount
+        myPosts
+      }
     }
     posts{
       id

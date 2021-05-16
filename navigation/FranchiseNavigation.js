@@ -42,6 +42,7 @@ import FranchisePostList from '../screens/Franchise/FranchisePostList';
 import FullUser from '../screens/Visitor/FullUser';
 import UserFollowers from '../screens/Visitor/UserFollowers';
 import CancelBooking from '../screens/Franchise/CancelBooking';
+import MyWallets from '../screens/Visitor/MyWallets';
 
 
 const SearchStack = createStackNavigator();
@@ -150,6 +151,7 @@ function ProfileStackScreen() {
       <ProfileStack.Screen name="FranchisePostList" component={FranchisePostList} options={{headerTitleAlign:"center", headerTitle:"포토리뷰", headerLeft:() => <BackArrow />}} />
       <ProfileStack.Screen name="SeeUser" component={FullUser} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}} />
       <ProfileStack.Screen name="UserFollowers" component={UserFollowers} options={{headerTitleAlign:"center", headerTitle:"팔로워", headerLeft:() => <BackArrow />}} />
+      <ProfileStack.Screen name="MyWallets" component={MyWallets} options={{headerTitleAlign:"center", headerTitle:"지갑", headerLeft:() => <BackArrow />}} />
     </ProfileStack.Navigator>
   );
 }

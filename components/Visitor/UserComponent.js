@@ -118,10 +118,10 @@ export default ({ id, avatar, username, email, isSelf ,dangolCount, followersCou
                         <Text style={styles.number}>{postsCount}</Text>
                         <Text style={styles.title}>포스트</Text>
                     </View>
-                    <View style={styles.inner}>
-                        <Text style={styles.number}>{wallets.length > 0 ? wallets?.map(el => (el.incoming - el.outgoing)).reduce((a, b) => a + b , 0) : 0}</Text>
-                        <Text style={styles.title}>포인트</Text>
-                    </View>
+                    <TouchableOpacity style={styles.inner} disabled={!isSelf} onPress={() => isSelf? navigation.navigate("MyWallets",{wallets}) : null}>
+                        <Text style={styles.number}>{wallets.length > 0 ? wallets.length : 0}</Text>
+                        <Text style={styles.title}>지갑</Text>
+                    </TouchableOpacity>
                     <TouchableOpacity style={styles.inner} onPress={() => isSelf? navigation.navigate("FollowList",{
                         tabname:"팔로워"
                     }) : navigation.navigate("UserFollowers",{

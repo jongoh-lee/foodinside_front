@@ -43,6 +43,7 @@ import SearchButton from '../components/Visitor/SearchButton';
 import BackArrow from '../components/Custom/BackArrow';
 import UploadPost from '../screens/Visitor/UploadPost';
 import ProfileList from '../screens/Visitor/ProfileList';
+import MyWallets from '../screens/Visitor/MyWallets';
 
     
 const FeedStack = createStackNavigator();
@@ -89,6 +90,7 @@ function MapStackScreen() {
       <MapStack.Screen name="FranchisePostList" component={FranchisePostList} options={{headerTitleAlign:"center", headerTitle:"포토리뷰", headerLeft:() => <BackArrow />}} />
       <MapStack.Screen name="FollowList" component={FollowTabScreen} options={{headerTitleAlign:"center", headerTitle:"팔로우", headerLeft:() => <BackArrow />}} />
       <MapStack.Screen name="UserFollowers" component={UserFollowers} options={{headerTitleAlign:"center", headerTitle:"팔로워", headerLeft:() => <BackArrow />}} />
+      <MapStack.Screen name="MyWallets" component={MyWallets} options={{headerTitleAlign:"center", headerTitle:"지갑", headerLeft:() => <BackArrow />}} />
     </MapStack.Navigator>
   );
 }
@@ -126,6 +128,7 @@ function FavoriteStackScreen() {
       <FavoriteStack.Screen name="SeeUser" component={FullUser} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}} />
       <FavoriteStack.Screen name="FollowList" component={FollowTabScreen} options={{headerTitleAlign:"center", headerTitle:"팔로우", headerLeft:() => <BackArrow />}} />
       <FavoriteStack.Screen name="UserFollowers" component={UserFollowers} options={{headerTitleAlign:"center", headerTitle:"팔로워", headerLeft:() => <BackArrow />}} />
+      <MapStack.Screen name="MyWallets" component={MyWallets} options={{headerTitleAlign:"center", headerTitle:"지갑", headerLeft:() => <BackArrow />}} />
     </FavoriteStack.Navigator>
   );
 }
@@ -163,6 +166,7 @@ function UserStackScreen() {
       <UserStack.Screen name="FollowList" component={FollowTabScreen} options={{headerTitleAlign:"center", headerTitle:"팔로우", headerLeft:() => <BackArrow />}} />
       <UserStack.Screen name="UserFollowers" component={UserFollowers} options={{headerTitleAlign:"center", headerTitle:"팔로워", headerLeft:() => <BackArrow />}} />
       <UserStack.Screen name="프로필 보기" component={FullProfile} options={{headerTitleAlign:"center", headerLeft:() => <BackArrow />}} />
+      <MapStack.Screen name="MyWallets" component={MyWallets} options={{headerTitleAlign:"center", headerTitle:"지갑", headerLeft:() => <BackArrow />}} />
     </UserStack.Navigator>
   );
 }
