@@ -47,8 +47,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
-    marginTop: 16,
-    color:'#999',
+    marginVertical:5,
+    color:'#000',
     fontWeight:"bold"
   },
 });
@@ -63,10 +63,10 @@ export default () => {
   return (
       <View style={styles.container}>
 
-        <TouchableOpacity style={styles.search}>
+        {/* <TouchableOpacity style={styles.search}>
           <Text style={styles.placeHolder}>검색</Text>
           <Feather name="search" size={24} style={styles.icon} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         {/* <View style={styles.chips}>
           <Chip label="Dates" />
@@ -74,7 +74,7 @@ export default () => {
           <Chip label="Filters" />
         </View> */}
 
-        <Text style={styles.title}>경리단길 주변 공유 음식점</Text>
+        <Text style={styles.title}>🏠 경리단길 주변 공유 음식점</Text>
       </View>
   );
 };
