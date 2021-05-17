@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
   image:{
     width:constants.width * 0.25,
     height:constants.width * 0.25,
-    backgroundColor:'white', 
+    backgroundColor:'#f0f0f0', 
     borderRadius:20,
     margin:5,
   },
