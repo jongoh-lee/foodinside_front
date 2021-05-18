@@ -70,18 +70,16 @@ export default ({ navigation }) => {
         <ScreenLoader/>
       ) : 
       //프로필 없으면 신청 화면으로 이동
-      profileData?.myProfile === null ?  (
+      profileData?.myProfile === null && (
         
         <View style={{position:"absolute", top:0, bottom:0,left:0, right:0, backgroundColor:"rgba(255, 255, 255, 0.5)", justifyContent:"center", alignItems:"center"}}>
-          {<TouchableOpacity style={{backgroundColor:"rgba(0, 0, 0, 0.7)", flexDirection:"row", alignItems:"center", width: 250, height: 80, borderRadius: 125}} onPress={()=> navigation.navigate("프로필")}>
+          <TouchableOpacity style={{backgroundColor:"rgba(0, 0, 0, 0.7)", flexDirection:"row", alignItems:"center", width: 250, height: 80, borderRadius: 125}} onPress={()=> navigation.navigate("프로필")}>
               <View style={{width: 60, height: 60, borderRadius: 30, alignItems:"center", justifyContent:"center", backgroundColor:"#f0f0f0", marginHorizontal: 10}}>
                 <Text style={{fontSize:20}}>🍜</Text>
               </View>
               <Text style={{fontSize:14, color:"#f0f0f0", fontWeight:"bold"}}>{`메뉴 등록하고 입점하기`}</Text>
-          </TouchableOpacity>}
+          </TouchableOpacity>
         </View>
-      ):(
-        null
       )}
     </View>
 )};
