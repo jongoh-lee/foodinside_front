@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, Animated, Image, TouchableOpacity, Platform, ActivityIndicator, ImageBackground} from "react-native";
+import { StyleSheet, Text, View, Animated, Image, Platform, ActivityIndicator, ImageBackground} from "react-native";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import constants from '../../constants';
 import MapCard from '../../components/Visitor/MapCard';
@@ -9,6 +9,7 @@ import ScreenLoader from '../../components/Custom/ScreenLoader';
 import { useLogOut } from '../../AuthContext';
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import Caption from '../../components/Custom/Caption';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const CARD_HEIGHT = 250;
 const CARD_WIDTH = constants.width * 0.8;
@@ -188,7 +189,13 @@ export default ({navigation}) => {
           <View style={styles.emptyCard}>
             <Image source={require("../../assets/cloche.png")} style={styles.cloche}/>
             <Caption>음식 준비 중...</Caption>
-            <View style={{position:"absolute", top:0, left:0, right:0, bottom:0, backgroundColor:"rgba(0, 0, 0, .3)"}} />
+            <View style={{position:"absolute", top:0, left:0, right:0, bottom:0, backgroundColor:"rgba(0, 0, 0, .3)"}}>
+              <View style={{position:"absolute", top:10, right:10}}>
+                <TouchableOpacity onPress={() => navigation.navigate("Screens", {screen:'Store'})} style={{padding:5, borderRadius:3, backgroundColor:"#ffffff"}}>
+                  <Caption>{`🍜 내 음식 등록 >`}</Caption>
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
 
         )}
