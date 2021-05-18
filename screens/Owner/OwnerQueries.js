@@ -10,6 +10,15 @@ export const MY_SHOP = gql`
     ${OWNER_FRAGMENT}
 `;
 
+export const OWNER_STATE = gql`
+    query myShop{
+        myShop{
+            id
+            ownerState
+        }
+    }
+`;
+
 export const CREATE_SHOP = gql`
     mutation createShop(
         $shopImages: [CreateShopImage!]!
