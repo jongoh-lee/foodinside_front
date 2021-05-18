@@ -50,7 +50,7 @@ export default ({ navigation, route }) => {
             <View style={styles.button}>
                 <MaterialCommunityIcons name="store" size={34} color="rgba(0,0,0, .3)" />
             </View>
-            <Text style={styles.buttonText}>공유 음식점 예시</Text>
+            <Text style={styles.buttonText}>등록 예시</Text>
           </TouchableWithoutFeedback>
 
           <TouchableWithoutFeedback style={{alignItems:"center"}} onPress={() => navigation.navigate("신청서 보기")}>
@@ -77,7 +77,7 @@ export default ({ navigation, route }) => {
             <View style={styles.button}>
                 <MaterialCommunityIcons name="store" size={34} color="rgba(0,0,0, .3)" />
             </View>
-            <Text style={styles.buttonText}>공유 음식점 예시</Text>
+            <Text style={styles.buttonText}>등록 예시</Text>
           </TouchableWithoutFeedback>
 
           <TouchableWithoutFeedback style={{alignItems:"center"}} onPress={() => navigation.navigate("수정 하기",{
@@ -107,7 +107,7 @@ export default ({ navigation, route }) => {
             <View style={styles.button}>
                 <MaterialCommunityIcons name="store" size={34} color="rgba(0,0,0, .3)" />
             </View>
-            <Text style={styles.buttonText}>공유 음식점 예시</Text>
+            <Text style={styles.buttonText}>등록 예시</Text>
           </TouchableWithoutFeedback>
 
           <TouchableWithoutFeedback style={{alignItems:"center"}} onPress={() => navigation.navigate("공간 완성")}>
@@ -138,14 +138,14 @@ export default ({ navigation, route }) => {
             <View style={styles.button}>
                 <MaterialCommunityIcons name="store" size={34} color="rgba(0,0,0, .3)" />
             </View>
-            <Text style={styles.buttonText}>공유 음식점 예시</Text>
+            <Text style={styles.buttonText}>등록 예시</Text>
           </TouchableWithoutFeedback>
 
           <TouchableWithoutFeedback style={{alignItems:"center"}} onPress={() => navigation.navigate("신청 하기")}>
             <View style={styles.button}>
                 <AntDesign name="form" size={34} color="rgba(0,0,0, .3)" />
             </View>
-            <Text style={styles.buttonText}>공유 음식점 신청</Text>
+            <Text style={styles.buttonText}>공간 등록</Text>
           </TouchableWithoutFeedback>
         </View>
     </>
