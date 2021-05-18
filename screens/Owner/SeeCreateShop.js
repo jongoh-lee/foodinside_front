@@ -61,9 +61,9 @@ export default ({ navigation }) => {
       <Text style={styles.warning}>영업 사실확인 용도로만 사용됩니다</Text> 
       
       <View style={{flexDirection:"row"}}>
-        <TouchableOpacity style={styles.imageInput} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelectRegistration})}>
+        <View style={styles.imageInput}>
           <Image style={styles.image} source={{uri: data.myShop.registration}}/>
-        </TouchableOpacity>
+        </View>
       </View>
 
       <View style={styles.textContainer}>
@@ -76,11 +76,11 @@ export default ({ navigation }) => {
         <Text style={{fontWeight:'bold'}}>업종:  </Text> 
         <RadioButton.Group value={data.myShop.classification} >
           <View style={{flexDirection:"row", alignItems:"center"}}>
-            <RadioButton value="일반" color={'#05e6f4'} uncheckedColor={'rgba(5, 230, 244, .3)'}/>
+            <RadioButton value="일반" color={'#05e6f4'} disabled={true} uncheckedColor={'rgba(5, 230, 244, .3)'}/>
             <Text>일반 음식점</Text>
           </View>
           <View style={{flexDirection:"row", alignItems:"center"}}>
-            <RadioButton value="휴게" color={'#05e6f4'} uncheckedColor={'rgba(5, 230, 244, .3)'}/>
+            <RadioButton value="휴게" color={'#05e6f4'} disabled={true} uncheckedColor={'rgba(5, 230, 244, .3)'}/>
             <Text>휴게 음식점</Text>
           </View>
         </RadioButton.Group>
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   image:{
     width:constants.width * 0.25,
     height:constants.width * 0.25,
-    backgroundColor:'white', 
+    backgroundColor:'#f0f0f0', 
     borderRadius:20,
     margin:5,
   },

@@ -142,15 +142,15 @@ export default ({ navigation, route }) => {
       <Text style={styles.warning}>가게 사진을 제출해주세요, 선정 결과는 이메일/문자로 알려드립니다</Text> 
     
       <View style={styles.imageBox}>
-        <TouchableOpacity style={styles.imageInput} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelectExterior, data: "EXTERIOR"})}>
+        <TouchableOpacity style={styles.imageInput} disabled={loading} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelectExterior, data: "EXTERIOR"})}>
           {exterior === null? <AntDesign name="plus" size={30} color="black" /> : <Image style={styles.image} source={{uri: exterior.uri}}/>}
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.imageInput} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelectHall, data: "HALL"})}>
+        <TouchableOpacity style={styles.imageInput} disabled={loading} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelectHall, data: "HALL"})}>
           {hall === null? <AntDesign name="plus" size={30} color="black" /> : <Image style={styles.image} source={{uri: hall.uri}}/>}
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.imageInput} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelectKitchen, data: "KITCHEN"})}>
+        <TouchableOpacity style={styles.imageInput} disabled={loading} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelectKitchen, data: "KITCHEN"})}>
           {kitchen === null? <AntDesign name="plus" size={30} color="black" /> : <Image style={styles.image} source={{uri: kitchen.uri}}/>}
         </TouchableOpacity>
       </View>
@@ -166,7 +166,7 @@ export default ({ navigation, route }) => {
       </View>
       <Text style={styles.warning}>주변 음식점과 함께 신청할수록 선정 확률이 높아집니다</Text> 
 
-      <TouchableWithoutFeedback onPress={() => navigation.navigate("주소 입력")}>
+      <TouchableWithoutFeedback disabled={loading} onPress={() => navigation.navigate("주소 입력")}>
         <View style={styles.addressButton}>
           <Text style={ route.params?.address? {color:"black"} : {color:"#8e8e8e"}}>{route.params?.address? route.params?.address: "주소 입력"}</Text>
         </View>
@@ -181,7 +181,7 @@ export default ({ navigation, route }) => {
       <Text style={styles.warning}>영업 사실확인 용도로만 사용됩니다</Text> 
       
       <View style={{flexDirection:"row"}}>
-        <TouchableOpacity style={styles.imageInput} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelectRegistration})}>
+        <TouchableOpacity style={styles.imageInput} disabled={loading} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelectRegistration})}>
           {registration === null? <AntDesign name="plus" size={30} color="black" /> : <Image style={styles.image} source={{uri: registration.uri}}/>}
         </TouchableOpacity>
       </View>
@@ -196,11 +196,11 @@ export default ({ navigation, route }) => {
         <Text style={{fontWeight:'bold'}}>업종:  </Text> 
         <RadioButton.Group onValueChange={classification => setClassification(classification)} value={classification}>
           <View style={{flexDirection:"row", alignItems:"center"}}>
-            <RadioButton value="일반" color={'#05e6f4'} uncheckedColor={'rgba(5, 230, 244, .3)'}/>
+            <RadioButton value="일반" color={'#05e6f4'} disabled={loading} uncheckedColor={'rgba(5, 230, 244, .3)'}/>
             <Text>일반 음식점</Text>
           </View>
           <View style={{flexDirection:"row", alignItems:"center"}}>
-            <RadioButton value="휴게" color={'#05e6f4'} uncheckedColor={'rgba(5, 230, 244, .3)'}/>
+            <RadioButton value="휴게" color={'#05e6f4'} disabled={loading} uncheckedColor={'rgba(5, 230, 244, .3)'}/>
             <Text>휴게 음식점</Text>
           </View>
         </RadioButton.Group>
