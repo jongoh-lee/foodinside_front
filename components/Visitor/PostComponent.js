@@ -2,7 +2,7 @@ import * as React from "react";
 import { StyleSheet, Image, View, Text, TouchableOpacity, Alert } from "react-native";
 import constants from "../../constants";
 import Swiper from 'react-native-swiper';
-import { MaterialCommunityIcons, Feather, AntDesign } from '@expo/vector-icons'; 
+import { MaterialCommunityIcons, Feather, AntDesign, Ionicons } from '@expo/vector-icons'; 
 import Caption from "../../components/Custom/Caption"
 import ScreenLoader from "../../components/Custom/ScreenLoader"
 import Modal from "react-native-modal";
@@ -187,9 +187,9 @@ export default ({ id : postId, user, userInfo, files, tasting, isSelf, isLiked:i
             <View style={styles.snsButton}>
               <TouchableOpacity onPress={onPressLike} disabled={likeLoading}>
                 {isLiked? (
-                    <MaterialCommunityIcons name="heart" size={30} style={{color:'red'}} /> 
+                    <Ionicons name="md-heart" size={30} style={{color:'red'}} /> 
                 ):(
-                    <MaterialCommunityIcons name="heart-outline" size={30} style={{color:'#9e9b9d'}} /> 
+                    <Ionicons name="ios-heart-empty" size={30} color="#9e9b9d" />
                 )}
               </TouchableOpacity>
               <Caption>{likeCount ? likeCount : 0}개</Caption>
@@ -295,6 +295,7 @@ const styles = StyleSheet.create({
     width: constants.width,
     height: constants.width,
     resizeMode: "cover",
+    backgroundColor:"#f0f0f0"
   },
 
   //postInfo
