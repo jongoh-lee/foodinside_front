@@ -33,7 +33,7 @@ export default ({ navigation }) => {
       <View style={[styles.textContainer, {marginTop: 20}]}>
         <Text style={styles.title}>내 가게가 공유 음식점이 될 수 있나요?</Text>
       </View>
-      <Text style={styles.warning}>가게 사진을 제출해주세요, 선정 결과는 이메일/문자로 알려드립니다</Text> 
+      <Text style={styles.warning}>가게 사진을 제출해주세요, 등록 결과는 이메일/문자로 알려드립니다</Text> 
     
       <View style={styles.imageBox}>
         {data?.myShop?.shopImages?.map(el => 
@@ -50,7 +50,7 @@ export default ({ navigation }) => {
       <View style={styles.textContainer}>
        <Text style={styles.title}>사업장 위치를 알려주세요</Text>
       </View>
-      <Text style={styles.warning}>주변 음식점과 함께 신청할수록 선정 확률이 높아집니다</Text> 
+      <Text style={styles.warning}>주변 음식점과 함께 신청할수록 등록 확률이 높아집니다</Text> 
 
         <Text style={styles.textInput}>{data.myShop.address + " " + data.myShop.addressDetail}</Text>
 
@@ -90,7 +90,7 @@ export default ({ navigation }) => {
        <Text style={styles.title}>연락처를 알려주세요</Text> 
       </View>
     
-      <Text style={styles.warning}>선정 결과는 문자로 안내해 드립니다</Text> 
+      <Text style={styles.warning}>등록 과정은 문자로 안내해 드립니다</Text> 
       
       <Text style={styles.textInput}>{data.myShop.contact}</Text>
     

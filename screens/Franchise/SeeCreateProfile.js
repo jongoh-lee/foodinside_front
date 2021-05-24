@@ -54,13 +54,13 @@ export default ({ navigation }) => {
       <View style={styles.textContainer_last}>
        <Text style={styles.title}>경력</Text> 
       </View>
-      <Text style={styles.warning}>선정 후 경력은 수정할 수 없고 모든 이용자가 볼 수 있습니다</Text> 
+      <Text style={styles.warning}>입점 후 경력은 수정할 수 없고 모든 이용자가 볼 수 있습니다</Text> 
       <Text style={styles.text}>{data.myProfile.career}</Text>
 
       <View style={styles.textContainer_last}>
         <Text style={styles.title}>연락처</Text>
       </View>
-      <Text style={styles.warning}>선정 결과는 문자로 안내드립니다</Text> 
+      <Text style={styles.warning}>진행 과정은 문자로 안내드립니다</Text> 
       <Text style={styles.text}>{data.myProfile.contact}</Text>
       
       <View style={{width:constants.width * .9}}>

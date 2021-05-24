@@ -139,7 +139,7 @@ export default ({ navigation, route }) => {
       <View style={[styles.textContainer, {marginTop:20}]}>
         <Text style={styles.title}>내 가게가 공유 음식점이 될 수 있나요?</Text>
       </View>
-      <Text style={styles.warning}>가게 사진을 제출해주세요, 선정 결과는 이메일/문자로 알려드립니다</Text> 
+      <Text style={styles.warning}>가게 사진을 제출해주세요, 진행 과정은 이메일/문자로 알려드립니다</Text> 
     
       <View style={styles.imageBox}>
         <TouchableOpacity style={styles.imageInput} disabled={loading} onPress={()=> navigation.navigate("SelectPhoto", {onSelect: onSelectExterior, data: "EXTERIOR"})}>
@@ -164,7 +164,7 @@ export default ({ navigation, route }) => {
       <View style={styles.textContainer}>
        <Text style={styles.title}>사업장 위치를 알려주세요</Text>
       </View>
-      <Text style={styles.warning}>주변 음식점과 함께 신청할수록 선정 확률이 높아집니다</Text> 
+      <Text style={styles.warning}>주변 음식점과 함께 신청할수록 등록 확률이 높아집니다</Text> 
 
       <TouchableWithoutFeedback disabled={loading} onPress={() => navigation.navigate("주소 입력")}>
         <View style={styles.addressButton}>
@@ -210,7 +210,7 @@ export default ({ navigation, route }) => {
        <Text style={styles.title}>연락처를 알려주세요</Text> 
       </View>
     
-      <Text style={styles.warning}>선정 결과는 문자로 안내해 드립니다</Text> 
+      <Text style={styles.warning}>진행 과정은 문자로 안내해 드립니다</Text> 
       
       <ShadowInput {...contactInput} placeholder={"연락처"} keyboardType="numeric" editable={!loading} textAlign={'left'} blurOnSubmit={true}/>
     

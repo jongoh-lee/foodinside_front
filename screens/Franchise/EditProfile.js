@@ -112,13 +112,13 @@ export default ({ navigation, route }) => {
       <View style={styles.textContainer_last}>
        <Text style={styles.title}>경력</Text> 
       </View>
-      <Text style={styles.warning}>선정 후 경력은 수정할 수 없고 모든 이용자가 볼 수 있습니다</Text> 
+      <Text style={styles.warning}>입점 후 경력은 수정할 수 없고 모든 이용자가 볼 수 있습니다</Text> 
       <ShadowInput {...careerInput} multiline={true} textAlign={'left'} blurOnSubmit={false} placeholder={`요리 입문 년도, 수상 내역, 자격증, 관련 경험 등 `} keyboardType="default" editable={!loading} returnKeyType={'none'}/>
 
       <View style={styles.textContainer_last}>
         <Text style={styles.title}>연락처</Text>
       </View>
-      <Text style={styles.warning}>선정 결과는 문자로 안내드립니다</Text> 
+      <Text style={styles.warning}>진행 과정은 문자로 안내드립니다</Text> 
       <ShadowInput {...contactInput} textAlign={'left'} placeholder={`( - ) 없이 번호만 입력해 주세요`} keyboardType="numeric" editable={!loading}/>
       
       <View style={{width:constants.width * .9}}>
