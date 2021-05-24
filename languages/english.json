@@ -1,4 +1,4 @@
 {
     "CFBundleDisplayName": "Foodinside",
-    "NSPhotoLibraryUsageDescription": "This app requires access to the photo library to upload your photo, other user can see your photo"
+    "NSPhotoLibraryUsageDescription": "Allow access to the photo library to upload your photo, Show your image to other user"
 }
