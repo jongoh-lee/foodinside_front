@@ -37,8 +37,22 @@ export default ({ navigation, route }) => {
             {data?.seeFullProfile && (
                 <FranchiseComponent {...data?.seeFullProfile} refetch={refetch}/>
             )}
-            <View style={{position:"absolute", bottom:20, right:20, width:70, height:70, borderRadius:35, backgroundColor:"rgba(255, 255, 255, .8)", justifyContent:"center", alignItems:"center"}}>
-                <TouchableOpacity onPress={()=> Alert.alert('알림', '영업 준비중 입니다', [{text: '확인'}])}>
+            <View style={{position:"absolute", bottom:20, right:20, justifyContent:"center", alignItems:"center"}}>
+                <TouchableOpacity style={{ 
+                    width:70, 
+                    height:70, 
+                    borderRadius:35,
+                    backgroundColor:"rgba(255, 255, 255, .8)",
+                    justifyContent:'center',
+                    alignItems:'center',
+                    shadowOffset: {
+                      width: 0,
+                      height: 1,
+                    },
+                    shadowOpacity: 0.20,
+                    shadowRadius: 1.41,
+                    elevation: 2}} 
+                    onPress={()=> Alert.alert('알림', '영업 준비중 입니다', [{text: '확인'}])}>
                     <Image style={{width:40, height:40, opacity:.8}} source={require('../../assets/Icons/foodDelivery_1.png')}/>
                     <Text style={{fontSize:10, fontWeight:"bold", alignSelf:"center"}}>주문하기</Text>
                 </TouchableOpacity>
