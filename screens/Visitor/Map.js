@@ -188,11 +188,11 @@ export default ({navigation}) => {
           //예약 목록이 없을 때
           <View style={styles.emptyCard}>
             <Image source={require("../../assets/cloche.png")} style={styles.cloche}/>
-            <Caption>음식 준비 중...</Caption>
+            <Caption>요리 준비 중...</Caption>
             <View style={{position:"absolute", top:0, left:0, right:0, bottom:0, backgroundColor:"rgba(0, 0, 0, .3)"}}>
               <View style={{position:"absolute", top:10, right:10}}>
                 <TouchableOpacity onPress={() => navigation.navigate("Screens", {screen:'Store'})} style={{padding:5, borderRadius:3, backgroundColor:"#ffffff"}}>
-                  <Caption>{`🍜 내 음식 등록 >`}</Caption>
+                  <Caption>{`🍜 내 요리 등록 >`}</Caption>
                 </TouchableOpacity>
               </View>
             </View>
