@@ -42,9 +42,9 @@ export default ({navigation}) => {
   // data > data.onSaleShop
   const initialMapState = {
     region: {
-        latitude:37.537140,
+        latitude:37.534140,
         longitude:126.988484,
-        latitudeDelta: 0.01,
+        latitudeDelta: 0.03,
         longitudeDelta: 0.005,
     },
   };
@@ -191,8 +191,23 @@ export default ({navigation}) => {
             <Caption>요리 준비 중...</Caption>
             <View style={{position:"absolute", top:0, left:0, right:0, bottom:0, backgroundColor:"rgba(0, 0, 0, .3)"}}>
               <View style={{position:"absolute", top:10, right:10}}>
-                <TouchableOpacity onPress={() => navigation.navigate("Screens", {screen:'Store'})} style={{padding:5, borderRadius:3, backgroundColor:"#ffffff"}}>
-                  <Caption>{`🍜 내 요리 등록 >`}</Caption>
+                <TouchableOpacity onPress={() => navigation.navigate("Screens", {screen:'Store'})} style={{
+                    width:60, 
+                    height:60, 
+                    borderRadius:5, 
+                    padding:5, 
+                    backgroundColor:"#fff", 
+                    justifyContent:"center", 
+                    alignItems:"center", 
+                    shadowOffset: {
+                      width: 0,
+                      height: 1,
+                    },
+                    shadowOpacity: 0.20,
+                    shadowRadius: 1.41,
+                    elevation: 2 }}>
+                  <Image source={require("../../assets/Icons/cooking.png")} style={{width:40, height:40, resizeMode:"cover"}}/>
+                  <Caption style={{marginTop:3}}>{`입점하기`}</Caption>
                 </TouchableOpacity>
               </View>
             </View>
