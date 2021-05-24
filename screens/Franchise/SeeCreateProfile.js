@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ScrollView, TouchableWithoutFeedback } from "react-native-gesture-handler";
-import {StyleSheet, View, Text, Image, SafeAreaView, AsyncStorage} from "react-native";
+import {StyleSheet, View, Text, Image, SafeAreaView} from "react-native";
 import constants from "../../constants";
 import { useQuery } from "@apollo/react-hooks";
 import BasicButton from "../../components/Custom/BasicButton";
