@@ -22,7 +22,7 @@ export default function App() {
   const [loaded, setLoaded] = React.useState(false);
   const [client, setClient] = React.useState(null);
   const [isLoggedIn, setIsLoggedIn] = React.useState(null);
-  const [isFirst, setIsFirst] = React.useState(null);
+  // const [isFirst, setIsFirst] = React.useState(null);
 
   const update = async () => {
     try {
@@ -66,12 +66,13 @@ export default function App() {
       } else {
         setIsLoggedIn(true);
       }
-      const isFirst = await AsyncStorage.getItem("isFirst");
-      if ( !isFirst || isFirst === "false") {
-        setIsFirst(false);
-      } else {
-        setIsFirst(true)
-      }
+      // 첫방문 팝업 안내
+      // const isFirst = await AsyncStorage.getItem("isFirst");
+      // if ( !isFirst || isFirst === "false") {
+      //   setIsFirst(false);
+      // } else {
+      //   setIsFirst(true)
+      // }
       setLoaded(true);
       setClient(client);
     } catch (e) {
@@ -85,10 +86,10 @@ export default function App() {
   return loaded && client && isLoggedIn !== null ?  (
     <ApolloProvider client={client}>
         <AuthProvider isLoggedIn={isLoggedIn}>
-          <IntroductionProvider isFirst={isFirst}>
+          {/* <IntroductionProvider isFirst={isFirst}> */}
             <StatusBar barStyle={'dark-content'} backgroundColor={'transparent'} translucent={true}/>
             <Navcontroller/>
-          </IntroductionProvider>
+          {/* </IntroductionProvider> */}
         </AuthProvider>
     </ApolloProvider>
    ) : (

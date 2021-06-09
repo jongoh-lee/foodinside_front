@@ -8,7 +8,7 @@
       "web"
     ],
     "sdkVersion": "39.0.0",
-    "version": "0.1.19",
+    "version": "0.1.25",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -25,19 +25,19 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.foodinside.foodinside",
-      "buildNumber": "0.1.19",
+      "buildNumber": "0.1.25",
       "icon": "./assets/iconIos.png",
       "config": {
         "googleMapsApiKey": "AIzaSyB77l5gKZERH5nDSvT5PboXLkl_uJbVcUQ"
       },
       "infoPlist": {
         "CFBundleAllowMixedLocalizations": true,
-        "NSPhotoLibraryUsageDescription": "This app requires access to the photo library to upload your photo, other user can see your photo"
+        "NSPhotoLibraryUsageDescription": "Allow access to the photo library to upload your photo, Show your image to other user"
       }
     },
     "android": {
       "package": "com.foodinside.foodinside",
-      "versionCode": 20,
+      "versionCode": 26,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyB77l5gKZERH5nDSvT5PboXLkl_uJbVcUQ"
