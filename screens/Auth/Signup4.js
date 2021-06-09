@@ -7,12 +7,14 @@ import foodinsidePrivacyPolicy from "../../assets/Rules/FOODINSIDE_PRIVACY_POLIC
 import foodinsideLocationBasedService from "../../assets/Rules/FOODINSIDE_LOCATION_BASED_SERVICE_TERMS_OF_USE";
 import { useMutation } from "@apollo/react-hooks";
 import { CREATE_ACCOUNT } from "./AuthQueries";
+import constants from "../../constants";
 
 export default ({ navigation, route }) => {
   const [loading, setLoading] = React.useState(false);
   const [agreeRules, setAgreeRules] = React.useState(false);
   const [agreePrivacy, setAgreePrivacy] = React.useState(false);
   const [agreeLocation, setAgreeLocation] = React.useState(false);
+  const [agreeAll, setAgreeAll] = React.useState(false);
 
   const [createAccountMutation] = useMutation(CREATE_ACCOUNT, {
     variables:{
@@ -39,6 +41,30 @@ export default ({ navigation, route }) => {
     }
   }
 
+  const AgreeAllButton = ({ agree, setState }) => {
+    const onPress = () => {
+      if(agree){
+        setAgreeRules(false);
+        setAgreeLocation(false);
+        setAgreePrivacy(false);
+        setState(false)
+      }else{
+        setAgreeRules(true);
+        setAgreeLocation(true);
+        setAgreePrivacy(true);
+        setState(true)
+      }
+    }
+
+    return (
+      <TouchableOpacity onPress={onPress} style={{flexDirection:"row", alignItems:"center", paddingRight:5}} disabled={loading}>
+        <Text style={{paddingRight:5, fontSize:15, color: agree ? "rgb(5, 230, 244)" : "rgba(5, 230, 244, .5)"}}>동의</Text>
+        <View style={{width:24, height:24, justifyContent:"center", alignItems:"center", borderColor: agree ? "rgb(5, 230, 244)" : "rgba(5, 230, 244, .3)", borderWidth:2, borderRadius:12}}>
+          <View style={{width:14, height:14, borderRadius:7, backgroundColor: agree ? "rgb(5, 230, 244)" : "rgba(5, 230, 244, .3)"}}/>
+        </View>
+      </TouchableOpacity>
+    )
+  }
 
   const AgreeButton = ({ agree, setState }) => {
     return (
@@ -54,10 +80,16 @@ export default ({ navigation, route }) => {
   return(
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.inner}>
-          <Text style={styles.title}>푸드 인사이드 이용약관</Text>
+        <View style={{width:constants.width * 0.9}}>
+          <Text style={styles.title}>푸드인사이드 이용약관</Text>
+
+          <View style={{flexDirection:"row", justifyContent:"space-between", alignItems:"center", marginBottom:10}}>
+            <Text style={[styles.text, {fontWeight:"bold", fontSize:15}]}>전체 동의</Text>
+            <AgreeAllButton agree={agreeAll} setState={setAgreeAll}/>
+          </View>
           
           <View style={{flexDirection:"row", justifyContent:"space-between", alignItems:"center"}}>
-            <Text style={styles.text}>푸드 인사이드 이용약관</Text>
+            <Text style={styles.text}>푸드인사이드 이용약관</Text>
             <AgreeButton agree={agreeRules} setState={setAgreeRules}/>
           </View>
 
@@ -68,7 +100,7 @@ export default ({ navigation, route }) => {
             </View>
 
           <View style={{flexDirection:"row", justifyContent:"space-between", alignItems:"center"}}>
-            <Text style={styles.text}>푸드 인사이드 개인정보 처리방침</Text>
+            <Text style={styles.text}>푸드인사이드 개인정보 처리방침</Text>
             <AgreeButton agree={agreePrivacy} setState={setAgreePrivacy}/>
           </View>
             <View style={styles.textBox}>
@@ -88,6 +120,7 @@ export default ({ navigation, route }) => {
             </View>
 
           <AuthButton text="가입 완료" onPress={handleSignUp} disabled={agreeRules && agreePrivacy && agreeLocation ? loading : true}/>
+        </View>
       </ScrollView>
     </View>
   )
@@ -96,7 +129,8 @@ export default ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container:{
     flex:1,
-    backgroundColor:"white"
+    backgroundColor:"white",
+    alignItems:"center"
   },
   inner:{
     padding:15,
