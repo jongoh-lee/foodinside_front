@@ -218,6 +218,7 @@ export default () => {
       */}
       <FranchiseStack.Screen name='SelectUpload' component={SelectUpload} options={{
         headerShown:false,
+        gestureEnabled:false
       }}/>
       <FranchiseStack.Screen name='포스트' component={UploadPost} options={{
         headerTitle:"최근 항목",
@@ -226,18 +227,22 @@ export default () => {
       <FranchiseStack.Screen name="프로필 신청" component={CreateProfile} options={{
         headerTitle:"프로필 신청",
         headerLeft:()=> <BackWarningArrow />,
+        gestureEnabled:false
       }} />
       <FranchiseStack.Screen name="프로필 수정(pre)" component={EditProfile} options={{
         headerTitle:"프로필 수정",
         headerLeft:()=> <BackWarningArrow />,
+        gestureEnabled:false
       }} />
       <FranchiseStack.Screen name="프로필 완성" component={CompleteProfile} options={{
         headerTitle:"프로필 완성",
         headerLeft:()=> <BackArrow />,
+        gestureEnabled:false
       }} />
       <FranchiseStack.Screen name="결제하기" component={BookingShop} options={{
         headerTitle:"결제하기",
         headerLeft:()=> <BackArrow />,
+        gestureEnabled:false
       }} />
       <FranchiseStack.Screen name="예약취소" component={CancelBooking} options={{
         headerTitle:"예약취소",

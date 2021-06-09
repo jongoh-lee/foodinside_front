@@ -222,13 +222,16 @@ export default () => {
       <VisitorStack.Screen name='SelectUpload' component={SelectUpload} options={{
         headerShown:false,
       }}/>
-      <VisitorStack.Screen name='포스트' component={UploadPost}/>
+      <VisitorStack.Screen name='포스트' component={UploadPost} options={{
+        gestureEnabled:false
+      }}/>
       <VisitorStack.Screen name='정보수정' component={EditUser} options={{
       headerTitle:"정보수정",
       headerTitleStyle:{
         fontSize:20,
         fontWeight:'bold'
       },
+      gestureEnabled:false
       }}/>
     </VisitorStack.Navigator>
   )

@@ -112,6 +112,7 @@ function MyShopStackScreen() {
         headerTitle:"공간 완성",
         headerTitleAlign:"center",
         headerLeft:() => <BackArrow />,
+        gestureEnabled:false,
       }}/>
     </MyShopStack.Navigator>
   );
@@ -177,34 +178,44 @@ export default () => {
         headerTitleStyle:{fontWeight:"bold"}
       }}/>
       <OwnerStack.Screen name='신청 하기' component={CreateShop} options={{
-        headerTitleStyle:{fontWeight:"bold"}
+        headerTitleStyle:{fontWeight:"bold"},
+        gestureEnabled:false
       }}/>
       <OwnerStack.Screen name='수정 하기' component={EditShop} options={{
-        headerTitleStyle:{fontWeight:"bold"}
+        headerTitleStyle:{fontWeight:"bold"},
+        gestureEnabled:false
       }}/>
       <OwnerStack.Screen name='사진 올리기' component={FormShopImage} options={{
-        headerTitleStyle:{fontWeight:"bold"}
+        headerTitleStyle:{fontWeight:"bold"},
+        gestureEnabled:false
       }}/>
       <OwnerStack.Screen name='설비 등록' component={FormShopFacility} options={{
-        headerTitleStyle:{fontWeight:"bold"}
+        headerTitleStyle:{fontWeight:"bold"},
+        gestureEnabled:false
       }}/>
       <OwnerStack.Screen name='규모 안내' component={FormShopScale} options={{
-        headerTitleStyle:{fontWeight:"bold"}
+        headerTitleStyle:{fontWeight:"bold"},
+        gestureEnabled:false
       }}/>
       <OwnerStack.Screen name='공간 소개' component={FormShopDescription} options={{
-        headerTitleStyle:{fontWeight:"bold"}
+        headerTitleStyle:{fontWeight:"bold"},
+        gestureEnabled:false
       }}/>
       <OwnerStack.Screen name='위치 등록' component={FormShopAddress} options={{
-        headerTitleStyle:{fontWeight:"bold"}
+        headerTitleStyle:{fontWeight:"bold"},
+        gestureEnabled:false
       }}/>
       <OwnerStack.Screen name='입점 규칙' component={FormShopRules} options={{
-        headerTitleStyle:{fontWeight:"bold"}
+        headerTitleStyle:{fontWeight:"bold"},
+        gestureEnabled:false
       }}/>
       <OwnerStack.Screen name='환불 정책' component={FormShopRefund} options={{
-        headerTitleStyle:{fontWeight:"bold"}
+        headerTitleStyle:{fontWeight:"bold"},
+        gestureEnabled:false
       }}/>
       <OwnerStack.Screen name='계좌 등록' component={FormShopAccount} options={{
-        headerTitleStyle:{fontWeight:"bold"}
+        headerTitleStyle:{fontWeight:"bold"},
+        gestureEnabled:false
       }}/>
     </OwnerStack.Navigator>
   )

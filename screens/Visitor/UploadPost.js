@@ -63,12 +63,13 @@ export default ({ navigation, route }) => {
                 {loading ? <ActivityIndicator size={"small"} color={"white"}/> : <Text style={styles.buttonText}>업로드</Text>}
            </TouchableOpacity>
         ),
+        gesturesEnabled: false
     });
     React.useEffect(() => {
         setImages(route.params.images)
     },[])
     return (
-        
+
     <ScrollView style={styles.container}>
         <View style={styles.imageRoll}>
             <ScrollView 
