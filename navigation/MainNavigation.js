@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, StyleSheet, View, Alert, Text, } from 'react-native';
+import { Image, StyleSheet, View, Alert, Text, Linking, } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import {
   DrawerItem,
@@ -65,6 +65,9 @@ const Screens = ({ navigation, style }) => {
 };
 
 const DrawerContent = props => {
+  const openHomepage = () => {
+    Linking.openURL('https://www.foodinside.net/')
+  }
   return (
     <DrawerContentScrollView {...props} scrollEnabled={false} contentContainerStyle={{ flex: 1 }}>
       <View style={styles.drawerContainer}>
@@ -77,7 +80,7 @@ const DrawerContent = props => {
           <Text style={{color:"white", fontSize:16}}>
             푸드인사이드
           </Text>
-          <Text style={{color:"white", marginBottom:20}} >
+          <Text style={{color:"white", marginBottom:20, textDecorationLine:"underline"}} onPress={openHomepage}>
             www.foodinside.net
           </Text>
         </View>
@@ -122,7 +125,8 @@ const DrawerContent = props => {
 
 export default ({style}) => {
   const [progress, setProgress] = React.useState(new Animated.Value(0));
-  const isFirst = useIsFirst();
+  //첫 방문 팝업
+  // const isFirst = useIsFirst();
   const scale = Animated.interpolate(progress, {
     inputRange: [0, 1],
     outputRange: [1, 0.8],
@@ -136,9 +140,6 @@ export default ({style}) => {
 
   return (
     <NavigationContainer>
-    {isFirst ? (
-      <FirstPopupPages />
-    ) : (
     <LinearGradient style={{ flex: 1 }} colors={['#fd9eba', '#fff1e6']}>
       <Drawer.Navigator
         // hideStatusBar
@@ -163,7 +164,6 @@ export default ({style}) => {
         </Drawer.Screen>
       </Drawer.Navigator>
     </LinearGradient>
-    )}
     </NavigationContainer>
   );
 };
