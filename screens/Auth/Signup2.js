@@ -56,7 +56,7 @@ export default ({ navigation, route }) => {
         <Text style={styles.text}>2자 이상 한글, 영문, 숫자 조합만 사용 가능합니다</Text>
 
         <AuthInput {...idInput} placeholder="아이디를 입력하세요" keyboardType="default" autoFocus={true} editable={edit}/> 
-        {value?.length < 2 ? <Text  style={{fontSize:10}} /> : data?.checkUsername ? <Text style={{fontSize:10, color:"green", paddingLeft:5}}>{"사용 가능한 아이디 입니다"}</Text> : <Text style={{fontSize:10, color:"red", paddingLeft:5}}>{"사용할 수 없는 아이디 입니다"}</Text>}
+        {error ? <Text style={{fontSize:10, color:"red", paddingLeft:5}}>{"네트워크 연결을 확인해 주세요"}</Text> : value?.length < 2 ? <Text  style={{fontSize:10}} /> : data?.checkUsername ? <Text style={{fontSize:10, color:"green", paddingLeft:5}}>{"사용 가능한 아이디 입니다"}</Text> : <Text style={{fontSize:10, color:"red", paddingLeft:5}}>{"사용할 수 없는 아이디 입니다"}</Text>}
 
         <AuthButton text="다음(2/4단계)" disabled={value?.length > 1 && data?.checkUsername? loading : true} onPress={() => handlecheckUsername()}/>
       </View>

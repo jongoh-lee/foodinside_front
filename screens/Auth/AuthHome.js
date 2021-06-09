@@ -37,14 +37,17 @@ export default ({ navigation, route }) => {
   }
   
   React.useEffect(()=>{
-    if(email === ""){
-      setAlert("")
-    }
     setEmail(route?.params?.email);
     if(route){
       setAlert("")
     }
   }, [route])
+
+  React.useEffect(()=>{
+    if(email === ""){
+      setAlert("")
+    }
+  }, [email])
     return (
     <SafeAreaView style={{flex:1, backgroundColor:"white"}}>
       <KeyboardAvoidingView 
