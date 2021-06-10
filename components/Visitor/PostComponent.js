@@ -177,7 +177,7 @@ export default ({ id : postId, user, userInfo, files, tasting, isSelf, isLiked:i
             {/* <View style={styles.snsButton}> */}
               {/* <TouchableOpacity>
                 {text.length > 0 ? (
-                  <MaterialCommunityIcons name={"comment-plus-outline"} size={30} style={{color:'black'}} />
+                  <MaterialCommunityIcons name={"comment-plus-outline"} size={30} style={{color:'red'}} />
                 ) : (
                   <MaterialCommunityIcons name={"comment-text-outline"} size={30} style={{color:'#9e9b9d'}} />
                 )}
@@ -187,9 +187,10 @@ export default ({ id : postId, user, userInfo, files, tasting, isSelf, isLiked:i
             <View style={styles.snsButton}>
               <TouchableOpacity onPress={onPressLike} disabled={likeLoading}>
                 {isLiked? (
-                    <Ionicons name="md-heart" size={30} style={{color:'red'}} /> 
+                    <AntDesign name="heart" size={30} color="red" />
                 ):(
-                    <Ionicons name="ios-heart-empty" size={30} color="#9e9b9d" />
+                    <AntDesign name="hearto" size={30} color="#9e9b9d" />
+                    
                 )}
               </TouchableOpacity>
               <Caption>{likeCount ? likeCount : 0}개</Caption>
