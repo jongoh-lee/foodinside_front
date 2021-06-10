@@ -91,13 +91,13 @@ const SetCalendar = ({
 
           //1. 리스트에 아무것도 없을 경우 그 날짜를 추가 합니다.
         if(Object.keys(updateList).length == 0){
-          setUpdateList({[date.dateString] : {id: marking.id, priceState:marking.priceState, active:true}});
+          setUpdateList({[date.dateString] : {id: marking?.id, priceState:marking?.priceState, active:true}});
         //2. 리스트에 값이 담겨 있는 경우 다음 값과 비교 합니다.
         }else if(Object.keys(updateList).length == 1){
           let firstNumber = Object.keys(updateList)[0]
             //두 번째 날짜가 첫 날짜 보다 적은 경우 날짜를 바꿉니다.
             if(date.dateString < firstNumber){
-              setUpdateList({[date.dateString] : {id: marking.id, priceState:marking.priceState, active:true}});
+              setUpdateList({[date.dateString] : {id: marking?.id, priceState:marking?.priceState, active:true}});
             //첫번째 날짜를 또 누른경우 초기화 됩니다.
             }else if(date.dateString == firstNumber){
               setUpdateList({});
@@ -125,7 +125,7 @@ const SetCalendar = ({
             }
         }else{
           // 리스트가 꽉 찬 상태에서 다음 숫자를 누를 경우 그 숫자가 첫번째가 됩니다.
-          setUpdateList({[date.dateString] : {id: marking.id, priceState:marking.priceState, active:true}});
+          setUpdateList({[date.dateString] : {id: marking?.id, priceState:marking?.priceState, active:true}});
         }
       }
     };

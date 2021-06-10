@@ -95,20 +95,20 @@ const Calendar = ({ id, calendarHeight,  franchiseState, isSelf, calendar, mainI
 
         //리스트에 아무것도 없을 경우 그 날짜를 추가 합니다.
         if(Object.keys(selectedList).length == 0){
-          setSelectedList({[date.dateString] : {id: marking.id, priceState:marking.priceState, active:true}});
+          setSelectedList({[date.dateString] : {id: marking?.id, priceState:marking?.priceState, active:true}});
           setFirstDate(date.dateString)
           setLastDate(null);
-          setTotalPrice(marking.priceState.replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+          setTotalPrice(marking?.priceState.replace(/\B(?=(\d{3})+(?!\d))/g, ","));
           setAlert("")
         //리스트에 날짜가 담긴 경우
         }else if(Object.keys(selectedList).length == 1){
           let firstNumber = Object.keys(selectedList)[0]
           //두 번째 날짜가 첫 날짜 보다 적은 경우 날짜를 바꿉니다.
             if(date.dateString < firstNumber){
-              setSelectedList({[date.dateString] : {id: marking.id, priceState:marking.priceState, active:true}});
+              setSelectedList({[date.dateString] : {id: marking?.id, priceState:marking?.priceState, active:true}});
               setFirstDate(date.dateString)
               setLastDate(null);
-              setTotalPrice(marking.priceState.replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+              setTotalPrice(marking?.priceState.replace(/\B(?=(\d{3})+(?!\d))/g, ","));
               setAlert("")
           //첫번째 날짜를 또 누른경우 초기화 됩니다.
             }else if(date.dateString == firstNumber){
@@ -167,10 +167,10 @@ const Calendar = ({ id, calendarHeight,  franchiseState, isSelf, calendar, mainI
             }
         }else{
           //리스트가 다 찬 상태에서 새로운 날짜를 선택한 경우
-          setSelectedList({[date.dateString] : {id: marking.id, priceState:marking.priceState, active:true}});
+          setSelectedList({[date.dateString] : {id: marking?.id, priceState:marking?.priceState, active:true}});
           setFirstDate(date.dateString)
           setLastDate(null);
-          setTotalPrice(marking.priceState.replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+          setTotalPrice(marking?.priceState.replace(/\B(?=(\d{3})+(?!\d))/g, ","));
         }
       }
     }
