@@ -15,34 +15,32 @@ const Auth = createStackNavigator();
 
 export default () => {
     return (
-        <NavigationContainer>
-            <Auth.Navigator initialRouteName="AuthHome" screenOptions={{headerShown:true, headerTitleAlign:"center", headerTitleStyle:{fontSize:18, fontWeight:'bold'} }} headerMode={"screen"}>
-                <Auth.Screen name="AuthHome" component={AuthHome} options={{
-                    headerShown: false,
-                }}/>
-                <Auth.Screen name="Confirm" component={Confirm} options={{
-                    headerShown: false,
-                }}/>
-                <Auth.Screen name="FindAccount" component={FindAccount} options={{
-                    headerShown: false,
-                }}/>
-                <Auth.Screen name="Signup1" component={Signup1} options={{
-                    headerTitle:"회원 가입하기(1/4단계)",
-                    headerLeft:()=> <BackArrow />,
-                }}/>
-                <Auth.Screen name="Signup2" component={Signup2} options={{
-                    headerTitle:"회원 가입하기(2/4단계)",
-                    headerLeft:()=> <BackArrow />,
-                }}/>
-                <Auth.Screen name="Signup3" component={Signup3} options={{
-                    headerTitle:"회원 가입하기(3/4단계)",
-                    headerLeft:()=> <BackArrow />,
-                }}/>
-                <Auth.Screen name="Signup4" component={Signup4} options={{
-                    headerTitle:"회원 가입하기(4/4단계)",
-                    headerLeft:()=> <BackArrow />,
-                }}/>
-            </Auth.Navigator>
-        </NavigationContainer>
+        <Auth.Navigator initialRouteName="AuthHome" screenOptions={{headerShown:true, headerTitleAlign:"center", headerTitleStyle:{fontSize:18, fontWeight:'bold'} }} headerMode={"screen"}>
+            <Auth.Screen name="AuthHome" component={AuthHome} options={{
+                headerShown: false,
+            }}/>
+            <Auth.Screen name="Confirm" component={Confirm} options={{
+                headerShown: false,
+            }}/>
+            <Auth.Screen name="FindAccount" component={FindAccount} options={{
+                headerShown: false,
+            }}/>
+            <Auth.Screen name="Signup1" component={Signup1} options={{
+                headerTitle:"회원 가입하기(1/4단계)",
+                headerLeft:()=> <BackArrow />,
+            }}/>
+            <Auth.Screen name="Signup2" component={Signup2} options={{
+                headerTitle:"회원 가입하기(2/4단계)",
+                headerLeft:()=> <BackArrow />,
+            }}/>
+            <Auth.Screen name="Signup3" component={Signup3} options={{
+                headerTitle:"회원 가입하기(3/4단계)",
+                headerLeft:()=> <BackArrow />,
+            }}/>
+            <Auth.Screen name="Signup4" component={Signup4} options={{
+                headerTitle:"회원 가입하기(4/4단계)",
+                headerLeft:()=> <BackArrow />,
+            }}/>
+        </Auth.Navigator>
     )
 };

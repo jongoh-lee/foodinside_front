@@ -20,6 +20,7 @@ import BackClose from '../components/Custom/BackClose';
 import FoodinsideIs from '../screens/Notification/FoodinsideIs';
 import { useIsFirst } from '../IntroductionContext';
 import FirstPopupPages from '../screens/Notification/FirstPopupPages';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -47,11 +48,7 @@ const Screens = ({ navigation, style }) => {
     <Animated.View style={StyleSheet.flatten([styles.stack, style])}>
       <Stack.Navigator
         screenOptions={{
-          headerTransparent: true,
-          headerTitle: null,
-          headerLeft: false,
-          headerRight: false,
-          headerTitleAlign:"center",
+          headerShown:false,
           gestureEnabled:false,
         }}
         >
@@ -125,13 +122,13 @@ const DrawerContent = props => {
 
 export default ({style}) => {
   const [progress, setProgress] = React.useState(new Animated.Value(0));
-  //첫 방문 팝업
+  //
   // const isFirst = useIsFirst();
-  const scale = Animated.interpolate(progress, {
+  const scale = Animated.interpolateNode(progress, {
     inputRange: [0, 1],
     outputRange: [1, 0.8],
   });
-  const borderRadius = Animated.interpolate(progress, {
+  const borderRadius = Animated.interpolateNode(progress, {
     inputRange: [0, 1],
     outputRange: [0, 16],
   });
@@ -139,7 +136,6 @@ export default ({style}) => {
   const animatedStyle = { borderRadius, transform: [{ scale }] };
 
   return (
-    <NavigationContainer>
     <LinearGradient style={{ flex: 1 }} colors={['#fd9eba', '#fff1e6']}>
       <Drawer.Navigator
         // hideStatusBar
@@ -164,7 +160,6 @@ export default ({style}) => {
         </Drawer.Screen>
       </Drawer.Navigator>
     </LinearGradient>
-    </NavigationContainer>
   );
 };
 
