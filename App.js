@@ -2,11 +2,11 @@ import * as React from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
 import * as Updates from 'expo-updates';
-import { Asset } from 'expo-asset'
+
 import { Ionicons, AntDesign, MaterialCommunityIcons, EvilIcons, MaterialIcons, Feather, Entypo, FontAwesome5,  } from '@expo/vector-icons';
-import { AppLoading } from 'expo';
+
 import { StatusBar } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
 import { persistCache } from 'apollo-cache-persist';
@@ -16,6 +16,8 @@ import apolloClientOptions from './apollo'
 import Navcontroller from './components/Navcontroller';
 import { AuthProvider } from './AuthContext';
 import { IntroductionProvider } from './IntroductionContext';
+import { Asset } from 'expo-asset';
+import AppLoading from 'expo-app-loading';
 
 
 export default function App() {
@@ -87,7 +89,7 @@ export default function App() {
     <ApolloProvider client={client}>
         <AuthProvider isLoggedIn={isLoggedIn}>
           {/* <IntroductionProvider isFirst={isFirst}> */}
-            <StatusBar barStyle={'dark-content'} backgroundColor={'transparent'} translucent={true}/>
+            <StatusBar barStyle={'dark-content'} backgroundColor='transparent' translucent={true}/>
             <Navcontroller/>
           {/* </IntroductionProvider> */}
         </AuthProvider>
