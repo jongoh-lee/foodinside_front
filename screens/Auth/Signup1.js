@@ -83,7 +83,7 @@ export default ({ route, navigation }) => {
             {!error && alert === alertList[1] && loadingProp && <Text  style={{fontSize:10}}>{` `}</Text>}
             {!error && alert === alertList[1] && !loadingProp && data?.checkEmail && <Text style={{fontSize:10, color:"green", paddingLeft:5}}>{"사용 가능한 이메일 입니다"}</Text>}
             {!error && alert === alertList[1] && !loadingProp && !data?.checkEmail && <Text style={{fontSize:10, color:"red", paddingLeft:5}}>{"이미 존재하는 이메일 입니다"}</Text>}
-            {/* {error === undefined && <Text style={{fontSize:10, color:"red", paddingLeft:5}}>{"네트워크 연결을 확인해 주세요"}</Text>} */}
+            {error !== undefined && <Text style={{fontSize:10, color:"red", paddingLeft:5}}>{"네트워크 연결을 확인해 주세요"}</Text>}
           {/* {loadingProp? <Text  style={{fontSize:10}} /> : value?.length < 3 || !value ? <Text  style={{fontSize:10}} /> : data?.checkEmail ? <Text style={{fontSize:10, color:"green", paddingLeft:5}}>{"사용 가능한 이메일 입니다"}</Text> : <Text style={{fontSize:10, color:"red", paddingLeft:5}}>{"사용할 수 없는 이메일 입니다"}</Text>} */}
 
           <AuthButton text="다음(1/4단계)" onPress={() => handlecheckEmail()} disabled={value?.length > 0 && data?.checkEmail ? loadingProp : true} loading={loading}/>
